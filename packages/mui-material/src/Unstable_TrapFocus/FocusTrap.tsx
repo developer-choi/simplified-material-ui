@@ -84,7 +84,6 @@ function defaultIsEnabled(): boolean {
 function FocusTrap(props: FocusTrapProps): React.JSX.Element {
   const {
     children,
-    disableAutoFocus = false,
     disableEnforceFocus = false,
     disableRestoreFocus = false,
     isEnabled = defaultIsEnabled,
@@ -95,22 +94,10 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
   const sentinelEnd = React.useRef<HTMLDivElement>(null);
   const nodeToRestore = React.useRef<EventTarget>(null);
   const reactFocusEventTarget = React.useRef<EventTarget>(null);
-  // This variable is useful when disableAutoFocus is true.
-  // It waits for the active element to move into the component to activate.
-  const activated = React.useRef(false);
-
+  
   const rootRef = React.useRef<HTMLElement>(null);
   const handleRef = useForkRef(getReactElementRef(children), rootRef);
   const lastKeydown = React.useRef<KeyboardEvent>(null);
-
-  React.useEffect(() => {
-    // We might render an empty child.
-    if (!open || !rootRef.current) {
-      return;
-    }
-
-    activated.current = !disableAutoFocus;
-  }, [disableAutoFocus, open]);
 
   React.useEffect(() => {
     // We might render an empty child.
@@ -134,10 +121,9 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
         }
         rootRef.current.setAttribute('tabIndex', '-1');
       }
-
-      if (activated.current) {
-        rootRef.current.focus();
-      }
+      
+      // disableAutoFocus가 항상 false이므로 항상 focus 시도
+      rootRef.current.focus();
     }
 
     return () => {
@@ -155,10 +141,7 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
         nodeToRestore.current = null;
       }
     };
-    // Missing `disableRestoreFocus` which is fine.
-    // We don't support changing that prop on an open FocusTrap
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
+  }, [open, disableRestoreFocus]); // disableAutoFocus 의존성 제거
 
   React.useEffect(() => {
     // We might render an empty child.
@@ -225,10 +208,6 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
         return;
       }
 
-      if (!activated.current) {
-        return;
-      }
-
       let tabbable: ReadonlyArray<HTMLElement> = [];
       if (activeEl === sentinelStart.current || activeEl === sentinelEnd.current) {
         tabbable = defaultGetTabbable(rootRef.current!);
@@ -264,13 +243,13 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
       doc.removeEventListener('focusin', contain);
       doc.removeEventListener('keydown', loopFocus, true);
     };
-  }, [disableAutoFocus, disableEnforceFocus, disableRestoreFocus, isEnabled, open]);
+  }, [disableEnforceFocus, disableRestoreFocus, isEnabled, open]);
 
   const onFocus = (event: React.FocusEvent<Element, Element>) => {
     if (nodeToRestore.current === null) {
       nodeToRestore.current = event.relatedTarget;
     }
-    activated.current = true;
+    // activated 설정 로직 제거
     reactFocusEventTarget.current = event.target;
 
     const childrenPropsHandler = children.props.onFocus;
@@ -283,7 +262,7 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
     if (nodeToRestore.current === null) {
       nodeToRestore.current = event.relatedTarget;
     }
-    activated.current = true;
+    // activated 설정 로직 제거
   };
 
   return (
@@ -314,16 +293,6 @@ FocusTrap.propTypes /* remove-proptypes */ = {
    * A single child content element.
    */
   children: elementAcceptingRef,
-  /**
-   * If `true`, the focus trap will not automatically shift focus to itself when it opens, and
-   * replace it to the last focused element when it closes.
-   * This also works correctly with any focus trap children that have the `disableAutoFocus` prop.
-   *
-   * Generally this should never be set to `true` as it makes the focus trap less
-   * accessible to assistive technologies, like screen readers.
-   * @default false
-   */
-  disableAutoFocus: PropTypes.bool,
   /**
    * If `true`, the focus trap will not prevent focus from leaving the focus trap while open.
    *
