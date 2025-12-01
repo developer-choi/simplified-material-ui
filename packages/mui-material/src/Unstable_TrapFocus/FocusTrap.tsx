@@ -34,32 +34,10 @@ function getTabIndex(node: HTMLElement): number {
   return node.tabIndex;
 }
 
-function isNonTabbableRadio(node: HTMLInputElement): boolean {
-  if (node.tagName !== 'INPUT' || node.type !== 'radio') {
-    return false;
-  }
-
-  if (!node.name) {
-    return false;
-  }
-
-  const getRadio = (selector: string) =>
-    node.ownerDocument.querySelector(`input[type="radio"]${selector}`);
-
-  let roving = getRadio(`[name="${node.name}"]:checked`);
-
-  if (!roving) {
-    roving = getRadio(`[name="${node.name}"]`);
-  }
-
-  return roving !== node;
-}
-
 function isNodeMatchingSelectorFocusable(node: HTMLInputElement): boolean {
   if (
     node.disabled ||
-    (node.tagName === 'INPUT' && node.type === 'hidden') ||
-    isNonTabbableRadio(node)
+    (node.tagName === 'INPUT' && node.type === 'hidden')
   ) {
     return false;
   }
