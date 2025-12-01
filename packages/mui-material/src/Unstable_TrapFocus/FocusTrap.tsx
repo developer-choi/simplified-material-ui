@@ -220,24 +220,16 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
     }
   };
 
-  const handleFocusSentinel = (event: React.FocusEvent<HTMLDivElement>) => {
-    if (nodeToRestore.current === null) {
-      nodeToRestore.current = event.relatedTarget;
-    }
-  };
-
   return (
     <React.Fragment>
       <div
         tabIndex={open ? 0 : -1}
-        onFocus={handleFocusSentinel}
         ref={sentinelStart}
         data-testid="sentinelStart"
       />
       {React.cloneElement(children, { ref: handleRef, onFocus })}
       <div
         tabIndex={open ? 0 : -1}
-        onFocus={handleFocusSentinel}
         ref={sentinelEnd}
         data-testid="sentinelEnd"
       />
