@@ -1,9 +1,7 @@
 'use client';
 import * as React from 'react';
-import ownerDocument from '@mui/utils/ownerDocument';
 import useForkRef from '@mui/utils/useForkRef';
 import useEventCallback from '@mui/utils/useEventCallback';
-import createChainedFunction from '@mui/utils/createChainedFunction';
 import extractEventHandlers from '@mui/utils/extractEventHandlers';
 import {EventHandlers} from '../utils/types';
 import {ariaHidden} from './ModalManager';
@@ -14,19 +12,9 @@ import {
   UseModalRootSlotProps,
 } from './useModal.types';
 
-function getHasTransition(children: UseModalParameters['children']) {
-  return children ? children.props.hasOwnProperty('in') : false;
-}
-
-const noop = () => {};
-
 function useModal(parameters: UseModalParameters): UseModalReturnValue {
   const {
     disableEscapeKeyDown = false,
-    closeAfterTransition = false,
-    onTransitionEnter,
-    onTransitionExited,
-    children,
     onClose,
     open,
     rootRef,
@@ -37,7 +25,6 @@ function useModal(parameters: UseModalParameters): UseModalReturnValue {
   const modalRef = React.useRef<HTMLDivElement>(null);
   const handleRef = useForkRef(modalRef, rootRef);
   const [exited, setExited] = React.useState(!open);
-  const hasTransition = getHasTransition(children);
 
   let ariaHiddenProp = true;
   if (parameters['aria-hidden'] === 'false' || parameters['aria-hidden'] === false) {
@@ -84,10 +71,12 @@ function useModal(parameters: UseModalParameters): UseModalReturnValue {
   React.useEffect(() => {
     if (open) {
       handleOpen();
-    } else if (!hasTransition || !closeAfterTransition) {
+      setExited(false);
+    } else {
       handleClose();
+      setExited(true);
     }
-  }, [open, handleClose, hasTransition, closeAfterTransition, handleOpen]);
+  }, [open, handleClose, handleOpen]);
 
   const createHandleKeyDown = (otherHandlers: EventHandlers) => (event: React.KeyboardEvent) => {
     otherHandlers.onKeyDown?.(event);
@@ -168,42 +157,17 @@ function useModal(parameters: UseModalParameters): UseModalReturnValue {
     };
   };
 
-  const getTransitionProps = () => {
-    const handleEnter = () => {
-      setExited(false);
-
-      if (onTransitionEnter) {
-        onTransitionEnter();
-      }
-    };
-
-    const handleExited = () => {
-      setExited(true);
-
-      if (onTransitionExited) {
-        onTransitionExited();
-      }
-
-      if (closeAfterTransition) {
-        handleClose();
-      }
-    };
-
-    return {
-      onEnter: createChainedFunction(handleEnter, children?.props.onEnter ?? noop),
-      onExited: createChainedFunction(handleExited, children?.props.onExited ?? noop),
-    };
-  };
-
   return {
     getRootProps,
     getBackdropProps,
-    getTransitionProps,
     rootRef: handleRef,
     portalRef: handlePortalRef,
     isTopModal: () => true,
     exited,
-    hasTransition,
+    hasTransition: false,
+    getTransitionProps: () => {
+      throw new Error('구현안함')
+    }
   };
 }
 

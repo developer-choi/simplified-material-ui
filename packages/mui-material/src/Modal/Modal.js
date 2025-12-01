@@ -72,7 +72,6 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
   } = props;
 
   // 하드코딩된 기본값들
-  const closeAfterTransition = false;
   const disableAutoFocus = false;
   const disableEnforceFocus = false;
   const disableEscapeKeyDown = false;
@@ -84,7 +83,6 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
 
   const propsWithDefaults = {
     ...props,
-    closeAfterTransition,
     disableAutoFocus,
     disableEnforceFocus,
     disableEscapeKeyDown,
@@ -98,11 +96,9 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
   const {
     getRootProps,
     getBackdropProps,
-    getTransitionProps,
     portalRef,
     isTopModal,
     exited,
-    hasTransition,
   } = useModal({
     ...propsWithDefaults,
     rootRef: ref,
@@ -118,18 +114,12 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
     childProps.tabIndex = '-1';
   }
 
-  if (hasTransition) {
-    const { onEnter, onExited } = getTransitionProps();
-    childProps.onEnter = onEnter;
-    childProps.onExited = onExited;
-  }
-
   // useSlot 제거 -> 직관적인 컴포넌트 사용
   // getRootProps를 직접 호출하여 prop을 생성
   const rootProps = getRootProps(other);
   const backdropProps = getBackdropProps();
 
-  if (!keepMounted && !open && (!hasTransition || exited)) {
+  if (!keepMounted && !open && exited) {
     return null;
   }
 
