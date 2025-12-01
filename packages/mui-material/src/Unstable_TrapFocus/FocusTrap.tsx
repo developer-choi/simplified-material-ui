@@ -98,47 +98,39 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
   const lastKeydown = React.useRef<KeyboardEvent>(null);
 
   React.useEffect(() => {
-    // We might render an empty child.
+    // 1. 방어 코드: 모달이 닫혀있거나 요소가 없으면 실행하지 않음
     if (!open || !rootRef.current) {
       return;
     }
 
+    // 2. Initial Focus (초기 포커스 진입)
+    // MUI 유틸리티 대신 표준 Web API인 document.activeElement 사용
     const activeElement = document.activeElement;
 
+    // 현재 포커스가 모달 밖에 있다면, 모달 컨테이너(Root)로 강제 이동
     if (!rootRef.current.contains(activeElement)) {
+      // 포커스를 받기 위해 tabIndex가 없다면 -1로 설정
       if (!rootRef.current.hasAttribute('tabIndex')) {
-        if (process.env.NODE_ENV !== 'production') {
-          console.error(
-            [
-              'MUI: The modal content node does not accept focus.',
-              'For the benefit of assistive technologies, ' +
-                'the tabIndex of the node is being set to "-1".',
-            ].join('\n'),
-          );
-        }
         rootRef.current.setAttribute('tabIndex', '-1');
       }
-      
-      // disableAutoFocus가 항상 false이므로 항상 focus 시도
+
       rootRef.current.focus();
     }
 
+    // 3. Cleanup & Restore (포커스 복원)
     return () => {
-      // restoreLastFocus()
-      if (!disableRestoreFocus) {
-        // In IE11 it is possible for document.activeElement to be null resulting
-        // in nodeToRestore.current being null.
-        // Not all elements in IE11 have a focus method.
-        // Once IE11 support is dropped the focus() call can be unconditional.
-        if (nodeToRestore.current && (nodeToRestore.current as HTMLElement).focus) {
-          ignoreNextEnforceFocus.current = true;
-          (nodeToRestore.current as HTMLElement).focus();
-        }
+      if (!disableRestoreFocus && nodeToRestore.current) {
+        // 포커스 트랩의 감시망을 잠시 끄고(flag), 원래 버튼으로 포커스 복귀
+        ignoreNextEnforceFocus.current = true;
 
+        // IE11 호환성 체크 로직 제거 (현대 브라우저는 HTMLElement에 focus가 무조건 있음)
+        nodeToRestore.current.focus();
+
+        // 참조 해제
         nodeToRestore.current = null;
       }
     };
-  }, [open, disableRestoreFocus]); // disableAutoFocus 의존성 제거
+  }, [open, disableRestoreFocus]);
 
   React.useEffect(() => {
     // We might render an empty child.
