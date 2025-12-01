@@ -82,8 +82,6 @@ function useModal(parameters: UseModalParameters): UseModalReturnValue {
     }
   });
 
-  const isTopModal = () => manager.isTopModal(getModal());
-
   const handlePortalRef = useEventCallback((node: HTMLElement) => {
     mountNodeRef.current = node;
 
@@ -91,7 +89,7 @@ function useModal(parameters: UseModalParameters): UseModalReturnValue {
       return;
     }
 
-    if (open && isTopModal()) {
+    if (open) {
       handleMounted();
     } else if (modalRef.current) {
       ariaHidden(modalRef.current, ariaHiddenProp);
@@ -127,8 +125,7 @@ function useModal(parameters: UseModalParameters): UseModalReturnValue {
     // Only special HTML elements have these default behaviors.
     if (
       event.key !== 'Escape' ||
-      event.which === 229 || // Wait until IME is settled.
-      !isTopModal()
+      event.which === 229 // Wait until IME is settled.
     ) {
       return;
     }
@@ -229,7 +226,7 @@ function useModal(parameters: UseModalParameters): UseModalReturnValue {
     getTransitionProps,
     rootRef: handleRef,
     portalRef: handlePortalRef,
-    isTopModal,
+    isTopModal: () => true,
     exited,
     hasTransition,
   };
