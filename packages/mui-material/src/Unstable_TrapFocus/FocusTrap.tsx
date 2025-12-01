@@ -91,8 +91,7 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
   const sentinelStart = React.useRef<HTMLDivElement>(null);
   const sentinelEnd = React.useRef<HTMLDivElement>(null);
   const nodeToRestore = React.useRef<EventTarget>(null);
-  const reactFocusEventTarget = React.useRef<EventTarget>(null);
-  
+
   const rootRef = React.useRef<HTMLElement>(null);
   const handleRef = useForkRef(getReactElementRef(children), rootRef);
   const lastKeydown = React.useRef<KeyboardEvent>(null);
@@ -189,13 +188,6 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
         return;
       }
 
-      // if the focus event is not coming from inside the children's react tree, reset the refs
-      if (activeEl !== reactFocusEventTarget.current) {
-        reactFocusEventTarget.current = null;
-      } else if (reactFocusEventTarget.current !== null) {
-        return;
-      }
-
       let tabbable: ReadonlyArray<HTMLElement> = [];
       if (activeEl === sentinelStart.current || activeEl === sentinelEnd.current) {
         tabbable = defaultGetTabbable(rootRef.current!);
@@ -237,8 +229,6 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
     if (nodeToRestore.current === null) {
       nodeToRestore.current = event.relatedTarget;
     }
-    // activated 설정 로직 제거
-    reactFocusEventTarget.current = event.target;
 
     const childrenPropsHandler = children.props.onFocus;
     if (childrenPropsHandler) {
