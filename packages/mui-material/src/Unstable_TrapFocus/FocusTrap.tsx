@@ -4,7 +4,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import useForkRef from '@mui/utils/useForkRef';
 import getReactElementRef from '@mui/utils/getReactElementRef';
-import elementAcceptingRef from '@mui/utils/elementAcceptingRef';
 import { FocusTrapProps } from './FocusTrap.types';
 
 // Inspired by https://github.com/focus-trap/tabbable
@@ -267,10 +266,6 @@ FocusTrap.propTypes /* remove-proptypes */ = {
   // │ These PropTypes are generated from the TypeScript type definitions. │
   // │ To update them, edit the TypeScript types and run `pnpm proptypes`. │
   // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * A single child content element.
-   */
-  children: elementAcceptingRef,
   /**
    * If `true`, the focus trap will not prevent focus from leaving the focus trap while open.
    *
