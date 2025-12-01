@@ -13,7 +13,6 @@ import { useDefaultProps } from '../DefaultPropsProvider';
 import Backdrop from '../Backdrop';
 import useModal from './useModal';
 import { getModalUtilityClass } from './modalClasses';
-import useSlot from '../utils/useSlot';
 
 const useUtilityClasses = (ownerState) => {
   const { open, exited, classes } = ownerState;
@@ -136,44 +135,16 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
     childProps.tabIndex = '-1';
   }
 
-  // It's a Transition like component
   if (hasTransition) {
     const { onEnter, onExited } = getTransitionProps();
     childProps.onEnter = onEnter;
     childProps.onExited = onExited;
   }
 
-  const [RootSlot, rootProps] = useSlot('root', {
-    ref,
-    elementType: ModalRoot,
-    externalForwardedProps: {
-      ...other,
-    },
-    getSlotProps: getRootProps,
-    ownerState,
-    className: clsx(
-      className,
-      classes?.root,
-      !ownerState.open && ownerState.exited && classes?.hidden,
-    ),
-  });
-
-  const [BackdropSlot, backdropProps] = useSlot('backdrop', {
-    elementType: ModalBackdrop,
-    shouldForwardComponentProp: true,
-    getSlotProps: (otherHandlers) => {
-      return getBackdropProps({
-        ...otherHandlers,
-        onClick: (event) => {
-          if (otherHandlers?.onClick) {
-            otherHandlers.onClick(event);
-          }
-        },
-      });
-    },
-    className: clsx(classes?.backdrop),
-    ownerState,
-  });
+  // useSlot 제거 -> 직관적인 컴포넌트 사용
+  // getRootProps를 직접 호출하여 prop을 생성
+  const rootProps = getRootProps(other);
+  const backdropProps = getBackdropProps();
 
   if (!keepMounted && !open && (!hasTransition || exited)) {
     return null;
@@ -181,8 +152,27 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
 
   return (
     <Portal ref={portalRef} container={container} disablePortal={disablePortal}>
-      <RootSlot {...rootProps}>
-        <BackdropSlot {...backdropProps} />
+      {/* RootSlot 대신 ModalRoot 직접 사용 */}
+      <ModalRoot
+        {...rootProps}
+        className={clsx(
+          className,
+          classes?.root,
+          !ownerState.open && ownerState.exited && classes?.hidden,
+          rootProps.className
+        )}
+        ownerState={ownerState}
+      >
+        {/* BackdropSlot 대신 ModalBackdrop 직접 사용 */}
+        {!hideBackdrop && (
+           <ModalBackdrop
+             {...backdropProps}
+             className={clsx(classes?.backdrop, backdropProps.className)}
+             open={open}
+             ownerState={ownerState}
+           />
+        )}
+
         <FocusTrap
           disableEnforceFocus={disableEnforceFocus}
           disableAutoFocus={disableAutoFocus}
@@ -192,7 +182,7 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
         >
           {React.cloneElement(children, childProps)}
         </FocusTrap>
-      </RootSlot>
+      </ModalRoot>
     </Portal>
   );
 });
