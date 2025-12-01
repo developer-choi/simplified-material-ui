@@ -95,8 +95,9 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
     }
 
     // 2. Initial Focus (초기 포커스 진입)
-    // MUI 유틸리티 대신 표준 Web API인 document.activeElement 사용
     const activeElement = document.activeElement;
+
+    nodeToRestore.current = activeElement;
 
     // 현재 포커스가 모달 밖에 있다면, 모달 컨테이너(Root)로 강제 이동
     if (!rootRef.current.contains(activeElement)) {
