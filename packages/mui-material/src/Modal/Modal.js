@@ -4,26 +4,12 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import HTMLElementType from '@mui/utils/HTMLElementType';
 import elementAcceptingRef from '@mui/utils/elementAcceptingRef';
-import composeClasses from '@mui/utils/composeClasses';
 import FocusTrap from '../Unstable_TrapFocus';
 import Portal from '../Portal';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import Backdrop from '../Backdrop';
 import useModal from './useModal';
-import { getModalUtilityClass } from './modalClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { open, exited, classes } = ownerState;
-
-  const slots = {
-    root: ['root', !open && exited && 'hidden'],
-    backdrop: ['backdrop'],
-  };
-
-  return composeClasses(slots, getModalUtilityClass, classes);
-};
 
 const ModalRoot = styled('div', {
   name: 'MuiModal',
@@ -73,15 +59,14 @@ const ModalBackdrop = styled(Backdrop, {
  * This component shares many concepts with [react-overlays](https://react-bootstrap.github.io/react-overlays/#modals).
  */
 const Modal = React.forwardRef(function Modal(inProps, ref) {
-  const props = useDefaultProps({ name: 'MuiModal', props: inProps });
+  const props = inProps;
   const {
     children,
-    classes: classesProp,
+    classes,
     className,
     container,
     onClose,
     open,
-    // eslint-disable-next-line react/prop-types
     theme,
     ...other
   } = props;
@@ -128,8 +113,6 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
     exited,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   const childProps = {};
   if (children.props.tabIndex === undefined) {
     childProps.tabIndex = '-1';
@@ -157,8 +140,6 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
         {...rootProps}
         className={clsx(
           className,
-          classes?.root,
-          !ownerState.open && ownerState.exited && classes?.hidden,
           rootProps.className
         )}
         ownerState={ownerState}
@@ -167,7 +148,7 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
         {!hideBackdrop && (
            <ModalBackdrop
              {...backdropProps}
-             className={clsx(classes?.backdrop, backdropProps.className)}
+             className={clsx(backdropProps.className)}
              open={open}
              ownerState={ownerState}
            />
