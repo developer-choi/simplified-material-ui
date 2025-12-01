@@ -2,8 +2,6 @@
 /* eslint-disable consistent-return, jsx-a11y/no-noninteractive-tabindex */
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import useForkRef from '@mui/utils/useForkRef';
-import getReactElementRef from '@mui/utils/getReactElementRef';
 import { FocusTrapProps } from './FocusTrap.types';
 
 // Inspired by https://github.com/focus-trap/tabbable
@@ -38,8 +36,21 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
   const nodeToRestore = React.useRef<EventTarget>(null);
 
   const rootRef = React.useRef<HTMLElement>(null);
-  const handleRef = useForkRef(getReactElementRef(children), rootRef);
   const lastKeydown = React.useRef<KeyboardEvent>(null);
+
+  // useForkRef 대체 로직
+  const handleRef = React.useCallback((instance: HTMLElement) => {
+    // 1. 내부 rootRef 업데이트
+    rootRef.current = instance;
+
+    // 2. children이 가진 원래 ref 업데이트
+    const childRef = (children as any).ref;
+    if (typeof childRef === 'function') {
+      childRef(instance);
+    } else if (childRef) {
+      childRef.current = instance;
+    }
+  }, []);
 
   React.useEffect(() => {
     // 1. 방어 코드: 모달이 닫혀있거나 요소가 없으면 실행하지 않음
@@ -92,6 +103,7 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
       if (nativeEvent.key !== 'Tab') {
         return;
       }
+
 
       // Make sure the next tab starts from the right place.
       // activeElement refers to the origin.
