@@ -282,22 +282,7 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
     doc.addEventListener('focusin', contain);
     doc.addEventListener('keydown', loopFocus, true);
 
-    // With Edge, Safari and Firefox, no focus related events are fired when the focused area stops being a focused area.
-    // for example https://bugzilla.mozilla.org/show_bug.cgi?id=559561.
-    // Instead, we can look if the active element was restored on the BODY element.
-    //
-    // The whatwg spec defines how the browser should behave but does not explicitly mention any events:
-    // https://html.spec.whatwg.org/multipage/interaction.html#focus-fixup-rule.
-    const interval = setInterval(() => {
-      const activeEl = getActiveElement(doc);
-      if (activeEl && activeEl.tagName === 'BODY') {
-        contain();
-      }
-    }, 50);
-
     return () => {
-      clearInterval(interval);
-
       doc.removeEventListener('focusin', contain);
       doc.removeEventListener('keydown', loopFocus, true);
     };
@@ -390,10 +375,5 @@ FocusTrap.propTypes /* remove-proptypes */ = {
    */
   open: PropTypes.bool.isRequired,
 } as any;
-
-if (process.env.NODE_ENV !== 'production') {
-  // eslint-disable-next-line
-  (FocusTrap as any)['propTypes' + ''] = exactProp(FocusTrap.propTypes);
-}
 
 export default FocusTrap;
