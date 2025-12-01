@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import useForkRef from '@mui/utils/useForkRef';
 import ownerDocument from '@mui/utils/ownerDocument';
 import getReactElementRef from '@mui/utils/getReactElementRef';
-import exactProp from '@mui/utils/exactProp';
 import elementAcceptingRef from '@mui/utils/elementAcceptingRef';
 import getActiveElement from '../utils/getActiveElement';
 import { FocusTrapProps } from './FocusTrap.types';
@@ -30,28 +29,8 @@ interface OrderedTabNode {
 }
 
 function getTabIndex(node: HTMLElement): number {
-  const tabindexAttr = parseInt(node.getAttribute('tabindex') || '', 10);
-
-  if (!Number.isNaN(tabindexAttr)) {
-    return tabindexAttr;
-  }
-
-  // Browsers do not return `tabIndex` correctly for contentEditable nodes;
-  // https://issues.chromium.org/issues/41283952
-  // so if they don't have a tabindex attribute specifically set, assume it's 0.
-  // in Chrome, <details/>, <audio controls/> and <video controls/> elements get a default
-  //  `tabIndex` of -1 when the 'tabindex' attribute isn't specified in the DOM,
-  //  yet they are still part of the regular tab order; in FF, they get a default
-  //  `tabIndex` of 0; since Chrome still puts those elements in the regular tab
-  //  order, consider their tab index to be 0.
-  if (
-    node.contentEditable === 'true' ||
-    ((node.nodeName === 'AUDIO' || node.nodeName === 'VIDEO' || node.nodeName === 'DETAILS') &&
-      node.getAttribute('tabindex') === null)
-  ) {
-    return 0;
-  }
-
+  // 브라우저 호환성 체크 로직 제거
+  // 단순하게 tabIndex 반환
   return node.tabIndex;
 }
 
@@ -130,7 +109,6 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
     disableAutoFocus = false,
     disableEnforceFocus = false,
     disableRestoreFocus = false,
-    getTabbable = defaultGetTabbable,
     isEnabled = defaultIsEnabled,
     open,
   } = props;
@@ -275,7 +253,7 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
 
       let tabbable: ReadonlyArray<HTMLElement> = [];
       if (activeEl === sentinelStart.current || activeEl === sentinelEnd.current) {
-        tabbable = getTabbable(rootRef.current!);
+        tabbable = defaultGetTabbable(rootRef.current!);
       }
 
       // one of the sentinel nodes was focused, so move the focus
@@ -323,7 +301,7 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
       doc.removeEventListener('focusin', contain);
       doc.removeEventListener('keydown', loopFocus, true);
     };
-  }, [disableAutoFocus, disableEnforceFocus, disableRestoreFocus, isEnabled, open, getTabbable]);
+  }, [disableAutoFocus, disableEnforceFocus, disableRestoreFocus, isEnabled, open]);
 
   const onFocus = (event: React.FocusEvent<Element, Element>) => {
     if (nodeToRestore.current === null) {
@@ -397,12 +375,6 @@ FocusTrap.propTypes /* remove-proptypes */ = {
    * @default false
    */
   disableRestoreFocus: PropTypes.bool,
-  /**
-   * Returns an array of ordered tabbable nodes (i.e. in tab order) within the root.
-   * For instance, you can provide the "tabbable" npm dependency.
-   * @param {HTMLElement} root
-   */
-  getTabbable: PropTypes.func,
   /**
    * This prop extends the `open` prop.
    * It allows to toggle the open state without having to wait for a rerender when changing the `open` prop.
