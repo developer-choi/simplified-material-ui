@@ -19,56 +19,9 @@ const candidatesSelector = [
   '[contenteditable]:not([contenteditable="false"])',
 ].join(',');
 
-interface OrderedTabNode {
-  documentOrder: number;
-  tabIndex: number;
-  node: HTMLElement;
-}
-
-function getTabIndex(node: HTMLElement): number {
-  // 브라우저 호환성 체크 로직 제거
-  // 단순하게 tabIndex 반환
-  return node.tabIndex;
-}
-
-function isNodeMatchingSelectorFocusable(node: HTMLInputElement): boolean {
-  if (
-    node.disabled ||
-    (node.tagName === 'INPUT' && node.type === 'hidden')
-  ) {
-    return false;
-  }
-  return true;
-}
-
 function defaultGetTabbable(root: HTMLElement): HTMLElement[] {
-  const regularTabNodes: HTMLElement[] = [];
-  const orderedTabNodes: OrderedTabNode[] = [];
-
-  Array.from(root.querySelectorAll(candidatesSelector)).forEach((node, i) => {
-    const nodeTabIndex = getTabIndex(node as HTMLElement);
-
-    if (nodeTabIndex === -1 || !isNodeMatchingSelectorFocusable(node as HTMLInputElement)) {
-      return;
-    }
-
-    if (nodeTabIndex === 0) {
-      regularTabNodes.push(node as HTMLElement);
-    } else {
-      orderedTabNodes.push({
-        documentOrder: i,
-        tabIndex: nodeTabIndex,
-        node: node as HTMLElement,
-      });
-    }
-  });
-
-  return orderedTabNodes
-    .sort((a, b) =>
-      a.tabIndex === b.tabIndex ? a.documentOrder - b.documentOrder : a.tabIndex - b.tabIndex,
-    )
-    .map((a) => a.node)
-    .concat(regularTabNodes);
+  // 🔥 [변경됨] 복잡한 정렬(sort) 로직을 제거하고, 단순히 DOM 순서대로 가져옵니다.
+  return Array.from(root.querySelectorAll(candidatesSelector)) as HTMLElement[];
 }
 
 /**
