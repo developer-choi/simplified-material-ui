@@ -76,7 +76,6 @@ const ModalBackdrop = styled(Backdrop, {
 const Modal = React.forwardRef(function Modal(inProps, ref) {
   const props = useDefaultProps({ name: 'MuiModal', props: inProps });
   const {
-    BackdropComponent = ModalBackdrop,
     BackdropProps,
     classes: classesProp,
     className,
@@ -92,7 +91,6 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
     disablePortal = false,
     disableRestoreFocus = false,
     disableScrollLock = false,
-    hideBackdrop = false,
     keepMounted = false,
     onClose,
     onTransitionEnter,
@@ -114,7 +112,6 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
     disablePortal,
     disableRestoreFocus,
     disableScrollLock,
-    hideBackdrop,
     keepMounted,
   };
 
@@ -181,7 +178,7 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
 
   const [BackdropSlot, backdropProps] = useSlot('backdrop', {
     ref: BackdropProps?.ref,
-    elementType: BackdropComponent,
+    elementType: ModalBackdrop,
     externalForwardedProps,
     shouldForwardComponentProp: true,
     additionalProps: BackdropProps,
@@ -206,7 +203,7 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
   return (
     <Portal ref={portalRef} container={container} disablePortal={disablePortal}>
       <RootSlot {...rootProps}>
-        {!hideBackdrop && BackdropComponent ? <BackdropSlot {...backdropProps} /> : null}
+        <BackdropSlot {...backdropProps} />
         <FocusTrap
           disableEnforceFocus={disableEnforceFocus}
           disableAutoFocus={disableAutoFocus}
