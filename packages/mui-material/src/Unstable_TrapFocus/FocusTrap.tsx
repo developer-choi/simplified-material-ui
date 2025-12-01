@@ -3,10 +3,8 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import useForkRef from '@mui/utils/useForkRef';
-import ownerDocument from '@mui/utils/ownerDocument';
 import getReactElementRef from '@mui/utils/getReactElementRef';
 import elementAcceptingRef from '@mui/utils/elementAcceptingRef';
-import getActiveElement from '../utils/getActiveElement';
 import { FocusTrapProps } from './FocusTrap.types';
 
 // Inspired by https://github.com/focus-trap/tabbable
@@ -105,8 +103,7 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
       return;
     }
 
-    const doc = ownerDocument(rootRef.current);
-    const activeElement = getActiveElement(doc);
+    const activeElement = document.activeElement;
 
     if (!rootRef.current.contains(activeElement)) {
       if (!rootRef.current.hasAttribute('tabIndex')) {
@@ -149,8 +146,7 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
       return;
     }
 
-    const doc = ownerDocument(rootRef.current);
-    const activeElement = getActiveElement(doc);
+    const activeElement = document.activeElement;
 
     const loopFocus = (nativeEvent: KeyboardEvent) => {
       lastKeydown.current = nativeEvent;
@@ -180,9 +176,9 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
         return;
       }
 
-      const activeEl = getActiveElement(doc);
+      const activeEl = document.activeElement;
 
-      if (!doc.hasFocus() || !isEnabled() || ignoreNextEnforceFocus.current) {
+      if (!document.hasFocus() || !isEnabled() || ignoreNextEnforceFocus.current) {
         ignoreNextEnforceFocus.current = false;
         return;
       }
@@ -236,12 +232,12 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
       }
     };
 
-    doc.addEventListener('focusin', contain);
-    doc.addEventListener('keydown', loopFocus, true);
+    document.addEventListener('focusin', contain);
+    document.addEventListener('keydown', loopFocus, true);
 
     return () => {
-      doc.removeEventListener('focusin', contain);
-      doc.removeEventListener('keydown', loopFocus, true);
+      document.removeEventListener('focusin', contain);
+      document.removeEventListener('keydown', loopFocus, true);
     };
   }, [disableEnforceFocus, disableRestoreFocus, isEnabled, open]);
 
