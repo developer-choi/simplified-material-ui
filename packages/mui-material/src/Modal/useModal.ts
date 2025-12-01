@@ -5,18 +5,14 @@ import useForkRef from '@mui/utils/useForkRef';
 import useEventCallback from '@mui/utils/useEventCallback';
 import createChainedFunction from '@mui/utils/createChainedFunction';
 import extractEventHandlers from '@mui/utils/extractEventHandlers';
-import { EventHandlers } from '../utils/types';
-import { ModalManager, ariaHidden } from './ModalManager';
+import {EventHandlers} from '../utils/types';
+import {ariaHidden} from './ModalManager';
 import {
+  UseModalBackdropSlotProps,
   UseModalParameters,
   UseModalReturnValue,
   UseModalRootSlotProps,
-  UseModalBackdropSlotProps,
 } from './useModal.types';
-
-function getContainer(container: UseModalParameters['container']) {
-  return typeof container === 'function' ? container() : container;
-}
 
 function getHasTransition(children: UseModalParameters['children']) {
   return children ? children.props.hasOwnProperty('in') : false;
@@ -24,15 +20,9 @@ function getHasTransition(children: UseModalParameters['children']) {
 
 const noop = () => {};
 
-// A modal manager used to track and manage the state of open Modals.
-// Modals don't open on the server so this won't conflict with concurrent requests.
-const manager = new ModalManager();
-
 function useModal(parameters: UseModalParameters): UseModalReturnValue {
   const {
-    container,
     disableEscapeKeyDown = false,
-    disableScrollLock = false,
     closeAfterTransition = false,
     onTransitionEnter,
     onTransitionExited,
@@ -43,7 +33,6 @@ function useModal(parameters: UseModalParameters): UseModalReturnValue {
   } = parameters;
 
   // @ts-ignore internal logic
-  const modal = React.useRef<{ modalRef: HTMLDivElement; mount: HTMLElement }>({});
   const mountNodeRef = React.useRef<HTMLElement>(null);
   const modalRef = React.useRef<HTMLDivElement>(null);
   const handleRef = useForkRef(modalRef, rootRef);
@@ -55,27 +44,12 @@ function useModal(parameters: UseModalParameters): UseModalReturnValue {
     ariaHiddenProp = false;
   }
 
-  const getDoc = () => ownerDocument(mountNodeRef.current);
-  const getModal = () => {
-    modal.current.modalRef = modalRef.current!;
-    modal.current.mount = mountNodeRef.current!;
-    return modal.current;
-  };
-
   const handleMounted = () => {
-    manager.mount(getModal(), { disableScrollLock });
-
-    // Fix a bug on Chrome where the scroll isn't initially 0.
-    if (modalRef.current) {
-      modalRef.current.scrollTop = 0;
-    }
+    // 여기서 스크롤 잠구면 됨
+    // manager.mount(getModal(), { disableScrollLock });
   };
 
   const handleOpen = useEventCallback(() => {
-    const resolvedContainer = getContainer(container) || getDoc().body;
-
-    manager.add(getModal(), resolvedContainer as HTMLElement);
-
     // The element was already mounted.
     if (modalRef.current) {
       handleMounted();
@@ -97,7 +71,8 @@ function useModal(parameters: UseModalParameters): UseModalReturnValue {
   });
 
   const handleClose = React.useCallback(() => {
-    manager.remove(getModal(), ariaHiddenProp);
+    // 여기서 스크롤 잠겼던거 다시 풀면됨
+    // manager.remove(getModal(), ariaHiddenProp);
   }, [ariaHiddenProp]);
 
   React.useEffect(() => {

@@ -90,7 +90,6 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
     disableEscapeKeyDown = false,
     disablePortal = false,
     disableRestoreFocus = false,
-    disableScrollLock = false,
     keepMounted = false,
     onClose,
     onTransitionEnter,
@@ -111,7 +110,6 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
     disableEscapeKeyDown,
     disablePortal,
     disableRestoreFocus,
-    disableScrollLock,
     keepMounted,
   };
 
@@ -333,11 +331,6 @@ Modal.propTypes /* remove-proptypes */ = {
    * @default false
    */
   disableRestoreFocus: PropTypes.bool,
-  /**
-   * Disable the scroll lock behavior.
-   * @default false
-   */
-  disableScrollLock: PropTypes.bool,
   /**
    * If `true`, the backdrop is not rendered.
    * @default false
