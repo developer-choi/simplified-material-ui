@@ -71,19 +71,12 @@ function defaultGetTabbable(root: HTMLElement): HTMLElement[] {
     .concat(regularTabNodes);
 }
 
-function defaultIsEnabled(): boolean {
-  return true;
-}
-
 /**
  * @ignore - internal component.
  */
 function FocusTrap(props: FocusTrapProps): React.JSX.Element {
   const {
     children,
-    disableEnforceFocus = false,
-    disableRestoreFocus = false,
-    isEnabled = defaultIsEnabled,
     open,
   } = props;
   const ignoreNextEnforceFocus = React.useRef(false);
@@ -117,7 +110,8 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
 
     // 3. Cleanup & Restore (포커스 복원)
     return () => {
-      if (!disableRestoreFocus && nodeToRestore.current) {
+      // 항상 포커스 복원 (disableRestoreFocus=false 기본값)
+      if (nodeToRestore.current && (nodeToRestore.current as HTMLElement).focus) {
         // 포커스 트랩의 감시망을 잠시 끄고(flag), 원래 버튼으로 포커스 복귀
         ignoreNextEnforceFocus.current = true;
 
@@ -128,7 +122,7 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
         nodeToRestore.current = null;
       }
     };
-  }, [open, disableRestoreFocus]);
+  }, [open]);
 
   React.useEffect(() => {
     // We might render an empty child.
@@ -141,7 +135,7 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
     const loopFocus = (nativeEvent: KeyboardEvent) => {
       lastKeydown.current = nativeEvent;
 
-      if (disableEnforceFocus || !isEnabled() || nativeEvent.key !== 'Tab') {
+      if (nativeEvent.key !== 'Tab') {
         return;
       }
 
@@ -168,22 +162,13 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
 
       const activeEl = document.activeElement;
 
-      if (!document.hasFocus() || !isEnabled() || ignoreNextEnforceFocus.current) {
+      if (!document.hasFocus() || ignoreNextEnforceFocus.current) {
         ignoreNextEnforceFocus.current = false;
         return;
       }
 
       // The focus is already inside
       if (rootElement.contains(activeEl)) {
-        return;
-      }
-
-      // The disableEnforceFocus is set and the focus is outside of the focus trap (and sentinel nodes)
-      if (
-        disableEnforceFocus &&
-        activeEl !== sentinelStart.current &&
-        activeEl !== sentinelEnd.current
-      ) {
         return;
       }
 
@@ -222,7 +207,7 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
       document.removeEventListener('focusin', contain);
       document.removeEventListener('keydown', loopFocus, true);
     };
-  }, [disableEnforceFocus, disableRestoreFocus, isEnabled, open]);
+  }, [open]);
 
   const onFocus = (event: React.FocusEvent<Element, Element>) => {
     if (nodeToRestore.current === null) {
@@ -239,7 +224,6 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
     if (nodeToRestore.current === null) {
       nodeToRestore.current = event.relatedTarget;
     }
-    // activated 설정 로직 제거
   };
 
   return (
@@ -266,30 +250,6 @@ FocusTrap.propTypes /* remove-proptypes */ = {
   // │ These PropTypes are generated from the TypeScript type definitions. │
   // │ To update them, edit the TypeScript types and run `pnpm proptypes`. │
   // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * If `true`, the focus trap will not prevent focus from leaving the focus trap while open.
-   *
-   * Generally this should never be set to `true` as it makes the focus trap less
-   * accessible to assistive technologies, like screen readers.
-   * @default false
-   */
-  disableEnforceFocus: PropTypes.bool,
-  /**
-   * If `true`, the focus trap will not restore focus to previously focused element once
-   * focus trap is hidden or unmounted.
-   * @default false
-   */
-  disableRestoreFocus: PropTypes.bool,
-  /**
-   * This prop extends the `open` prop.
-   * It allows to toggle the open state without having to wait for a rerender when changing the `open` prop.
-   * This prop should be memoized.
-   * It can be used to support multiple focus trap mounted at the same time.
-   * @default function defaultIsEnabled(): boolean {
-   *   return true;
-   * }
-   */
-  isEnabled: PropTypes.func,
   /**
    * If `true`, focus is locked.
    */
