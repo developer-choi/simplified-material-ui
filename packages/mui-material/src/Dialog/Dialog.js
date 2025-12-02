@@ -11,9 +11,8 @@ import Paper from '../Paper';
 import dialogClasses, { getDialogUtilityClass } from './dialogClasses';
 import DialogContext from './DialogContext';
 import Backdrop from '../Backdrop';
-import { styled, useTheme } from '../zero-styled';
+import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 
 const DialogBackdrop = styled(Backdrop, {
   name: 'MuiDialog',
@@ -92,8 +91,6 @@ const DialogPaper = styled(Paper, {
  * Dialogs are overlaid modal paper based components with a backdrop.
  */
 const Dialog = React.forwardRef(function Dialog(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiDialog' });
-
   const {
     'aria-describedby': ariaDescribedby,
     'aria-labelledby': ariaLabelledbyProp,
@@ -104,10 +101,10 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
     onClose,
     open,
     ...other
-  } = props;
+  } = inProps;
 
   const ownerState = {
-    ...props,
+    ...inProps,
     disableEscapeKeyDown,
   };
 
