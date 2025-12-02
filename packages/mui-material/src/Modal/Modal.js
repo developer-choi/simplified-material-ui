@@ -65,7 +65,6 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
   const {
     children,
     className,
-    container,
     onClose,
     open,
     disableEscapeKeyDown = false,
@@ -127,7 +126,7 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
   }
 
   return (
-    <Portal container={container}>
+    <Portal>
       <ModalRoot
         ref={ref}
         onKeyDown={handleKeyDown}

@@ -3,16 +3,10 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import useEnhancedEffect from '@mui/utils/useEnhancedEffect';
-import useForkRef from '@mui/utils/useForkRef';
 import setRef from '@mui/utils/setRef';
-import getReactElementRef from '@mui/utils/getReactElementRef';
 import exactProp from '@mui/utils/exactProp';
 import HTMLElementType from '@mui/utils/HTMLElementType';
-import { PortalProps } from './Portal.types';
-
-function getContainer(container: PortalProps['container']) {
-  return typeof container === 'function' ? container() : container;
-}
+import {PortalProps} from './Portal.types';
 
 /**
  * Portals provide a first-class way to render children into a DOM node
@@ -30,22 +24,15 @@ const Portal = React.forwardRef(function Portal(
   props: PortalProps,
   forwardedRef: React.ForwardedRef<Element>,
 ) {
-  const { children, container, disablePortal = false } = props;
-  const [mountNode, setMountNode] = React.useState<ReturnType<typeof getContainer>>(null);
-
-  const handleRef = useForkRef(
-    React.isValidElement(children) ? getReactElementRef(children) : null,
-    forwardedRef,
-  );
+  const { children } = props;
+  const [mountNode, setMountNode] = React.useState<Element | null>(null);
 
   useEnhancedEffect(() => {
-    if (!disablePortal) {
-      setMountNode(getContainer(container) || document.body);
-    }
-  }, [container, disablePortal]);
+    setMountNode(document.body);
+  }, []);
 
   useEnhancedEffect(() => {
-    if (mountNode && !disablePortal) {
+    if (mountNode) {
       setRef(forwardedRef, mountNode);
       return () => {
         setRef(forwardedRef, null);
@@ -53,17 +40,7 @@ const Portal = React.forwardRef(function Portal(
     }
 
     return undefined;
-  }, [forwardedRef, mountNode, disablePortal]);
-
-  if (disablePortal) {
-    if (React.isValidElement(children)) {
-      const newProps = {
-        ref: handleRef,
-      };
-      return React.cloneElement(children, newProps);
-    }
-    return children;
-  }
+  }, [forwardedRef, mountNode]);
 
   return mountNode ? ReactDOM.createPortal(children, mountNode) : mountNode;
 }) as React.ForwardRefExoticComponent<PortalProps & React.RefAttributes<Element>>;
