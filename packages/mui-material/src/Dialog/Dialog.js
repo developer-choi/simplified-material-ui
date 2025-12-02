@@ -25,7 +25,7 @@ const DialogBackdrop = styled(Backdrop, {
 });
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, scroll, maxWidth } = ownerState;
+  const { classes, scroll } = ownerState;
 
   const slots = {
     root: ['root'],
@@ -33,7 +33,6 @@ const useUtilityClasses = (ownerState) => {
     paper: [
       'paper',
       `paperScroll${capitalize(scroll)}`,
-      `paperWidth${capitalize(String(maxWidth))}`,
     ],
   };
 
@@ -141,40 +140,13 @@ const DialogPaper = styled(Paper, {
         },
       },
       {
-        props: ({ ownerState }) => !ownerState.maxWidth,
+        // 기본 maxWidth 설정 (sm 크기로 고정)
+        props: {},
         style: {
-          maxWidth: 'calc(100% - 64px)',
+          maxWidth: '600px',  // sm size
+          width: 'calc(100% - 64px)',
         },
       },
-      {
-        props: {
-          maxWidth: 'xs',
-        },
-        style: {
-          maxWidth:
-            theme.breakpoints.unit === 'px'
-              ? Math.max(theme.breakpoints.values.xs, 444)
-              : `max(${theme.breakpoints.values.xs}${theme.breakpoints.unit}, 444px)`,
-          [`&.${dialogClasses.paperScrollBody}`]: {
-            [theme.breakpoints.down(Math.max(theme.breakpoints.values.xs, 444) + 32 * 2)]: {
-              maxWidth: 'calc(100% - 64px)',
-            },
-          },
-        },
-      },
-      ...Object.keys(theme.breakpoints.values)
-        .filter((maxWidth) => maxWidth !== 'xs')
-        .map((maxWidth) => ({
-          props: { maxWidth },
-          style: {
-            maxWidth: `${theme.breakpoints.values[maxWidth]}${theme.breakpoints.unit}`,
-            [`&.${dialogClasses.paperScrollBody}`]: {
-              [theme.breakpoints.down(theme.breakpoints.values[maxWidth] + 32 * 2)]: {
-                maxWidth: 'calc(100% - 64px)',
-              },
-            },
-          },
-        })),
     ],
   })),
 );
@@ -192,7 +164,6 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
     children,
     className,
     disableEscapeKeyDown = false,
-    maxWidth = 'sm',
     onClick,
     onClose,
     open,
@@ -203,7 +174,6 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
   const ownerState = {
     ...props,
     disableEscapeKeyDown,
-    maxWidth,
     scroll,
   };
 
@@ -308,16 +278,6 @@ Dialog.propTypes /* remove-proptypes */ = {
    * @default false
    */
   disableEscapeKeyDown: PropTypes.bool,
-  /**
-   * Determine the max-width of the dialog.
-   * The dialog width grows with the size of the screen.
-   * Set to `false` to disable `maxWidth`.
-   * @default 'sm'
-   */
-  maxWidth: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl', false]),
-    PropTypes.string,
-  ]),
   /**
    * @ignore
    */
