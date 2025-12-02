@@ -25,7 +25,7 @@ const DialogBackdrop = styled(Backdrop, {
 });
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, scroll, maxWidth, fullWidth, fullScreen } = ownerState;
+  const { classes, scroll, maxWidth, fullWidth } = ownerState;
 
   const slots = {
     root: ['root'],
@@ -35,7 +35,6 @@ const useUtilityClasses = (ownerState) => {
       `paperScroll${capitalize(scroll)}`,
       `paperWidth${capitalize(String(maxWidth))}`,
       fullWidth && 'paperFullWidth',
-      fullScreen && 'paperFullScreen',
     ],
   };
 
@@ -183,21 +182,6 @@ const DialogPaper = styled(Paper, {
           width: 'calc(100% - 64px)',
         },
       },
-      {
-        props: ({ ownerState }) => ownerState.fullScreen,
-        style: {
-          margin: 0,
-          width: '100%',
-          maxWidth: '100%',
-          height: '100%',
-          maxHeight: 'none',
-          borderRadius: 0,
-          [`&.${dialogClasses.paperScrollBody}`]: {
-            margin: 0,
-            maxWidth: '100%',
-          },
-        },
-      },
     ],
   })),
 );
@@ -215,7 +199,6 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
     children,
     className,
     disableEscapeKeyDown = false,
-    fullScreen = false,
     fullWidth = false,
     maxWidth = 'sm',
     onClick,
@@ -228,7 +211,6 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
   const ownerState = {
     ...props,
     disableEscapeKeyDown,
-    fullScreen,
     fullWidth,
     maxWidth,
     scroll,
@@ -335,11 +317,6 @@ Dialog.propTypes /* remove-proptypes */ = {
    * @default false
    */
   disableEscapeKeyDown: PropTypes.bool,
-  /**
-   * If `true`, the dialog is full-screen.
-   * @default false
-   */
-  fullScreen: PropTypes.bool,
   /**
    * If `true`, the dialog stretches to `maxWidth`.
    *
