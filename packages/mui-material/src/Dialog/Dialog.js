@@ -25,15 +25,12 @@ const DialogBackdrop = styled(Backdrop, {
 });
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, scroll } = ownerState;
+  const { classes } = ownerState;
 
   const slots = {
     root: ['root'],
-    container: ['container', `scroll${capitalize(scroll)}`],
-    paper: [
-      'paper',
-      `paperScroll${capitalize(scroll)}`,
-    ],
+    container: ['container'],
+    paper: ['paper'],
   };
 
   return composeClasses(slots, getDialogUtilityClass, classes);
@@ -53,9 +50,7 @@ const DialogContainer = styled('div', {
   name: 'MuiDialog',
   slot: 'Container',
   overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [styles.container, styles[`scroll${capitalize(ownerState.scroll)}`]];
+    return [styles.container];
   },
 })({
   height: '100%',
@@ -64,50 +59,16 @@ const DialogContainer = styled('div', {
   },
   // We disable the focus ring for mouse, touch and keyboard users.
   outline: 0,
-  variants: [
-    {
-      props: {
-        scroll: 'paper',
-      },
-      style: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      },
-    },
-    {
-      props: {
-        scroll: 'body',
-      },
-      style: {
-        overflowY: 'auto',
-        overflowX: 'hidden',
-        textAlign: 'center',
-        '&::after': {
-          content: '""',
-          display: 'inline-block',
-          verticalAlign: 'middle',
-          height: '100%',
-          width: '0',
-        },
-      },
-    },
-  ],
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
 });
 
 const DialogPaper = styled(Paper, {
   name: 'MuiDialog',
   slot: 'Paper',
   overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.paper,
-      styles[`scrollPaper${capitalize(ownerState.scroll)}`],
-      styles[`paperWidth${capitalize(String(ownerState.maxWidth))}`],
-      ownerState.fullWidth && styles.paperFullWidth,
-      ownerState.fullScreen && styles.paperFullScreen,
-    ];
+    return [styles.paper];
   },
 })(
   memoTheme(({ theme }) => ({
@@ -118,36 +79,12 @@ const DialogPaper = styled(Paper, {
       overflowY: 'visible',
       boxShadow: 'none',
     },
-    variants: [
-      {
-        props: {
-          scroll: 'paper',
-        },
-        style: {
-          display: 'flex',
-          flexDirection: 'column',
-          maxHeight: 'calc(100% - 64px)',
-        },
-      },
-      {
-        props: {
-          scroll: 'body',
-        },
-        style: {
-          display: 'inline-block',
-          verticalAlign: 'middle',
-          textAlign: 'initial',
-        },
-      },
-      {
-        // 기본 maxWidth 설정 (sm 크기로 고정)
-        props: {},
-        style: {
-          maxWidth: '600px',  // sm size
-          width: 'calc(100% - 64px)',
-        },
-      },
-    ],
+    // 기본 스타일 (paper scroll 방식)
+    display: 'flex',
+    flexDirection: 'column',
+    maxHeight: 'calc(100% - 64px)',
+    maxWidth: '600px',  // sm size
+    width: 'calc(100% - 64px)',
   })),
 );
 
@@ -167,14 +104,12 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
     onClick,
     onClose,
     open,
-    scroll = 'paper',
     ...other
   } = props;
 
   const ownerState = {
     ...props,
     disableEscapeKeyDown,
-    scroll,
   };
 
   const classes = useUtilityClasses(ownerState);
@@ -293,11 +228,6 @@ Dialog.propTypes /* remove-proptypes */ = {
    * If `true`, the component is shown.
    */
   open: PropTypes.bool.isRequired,
-  /**
-   * Determine the container for scrolling the dialog.
-   * @default 'paper'
-   */
-  scroll: PropTypes.oneOf(['body', 'paper']),
   /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
