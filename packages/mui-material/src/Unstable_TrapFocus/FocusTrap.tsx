@@ -1,5 +1,3 @@
-'use client';
-/* eslint-disable consistent-return, jsx-a11y/no-noninteractive-tabindex */
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { FocusTrapProps } from './FocusTrap.types';
@@ -37,13 +35,6 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
 
   const rootRef = React.useRef<HTMLElement>(null);
   const lastKeydown = React.useRef<KeyboardEvent>(null);
-
-  // useForkRef 대체 로직
-  const handleRef = React.useCallback((instance: HTMLElement | null) => {
-    // 1. 내부 rootRef 업데이트만 수행
-    rootRef.current = instance;
-    // 2. children이 가진 원래 ref를 업데이트하는 로직은 삭제
-  }, []); // children 의존성 제거. 이 함수는 순수하게 rootRef.current만 업데이트함.
 
   React.useEffect(() => {
     // 1. 방어 코드: 모달이 닫혀있거나 요소가 없으면 실행하지 않음
@@ -186,7 +177,7 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
         ref={sentinelStart}
         data-testid="sentinelStart"
       />
-      {React.cloneElement(children, { ref: handleRef, onFocus })}
+      {React.cloneElement(children, { ref: rootRef, onFocus })}
       <div
         tabIndex={open ? 0 : -1}
         ref={sentinelEnd}
