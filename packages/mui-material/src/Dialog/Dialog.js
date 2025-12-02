@@ -221,8 +221,6 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
     onClick,
     onClose,
     open,
-    PaperComponent = Paper,
-    PaperProps = {},
     scroll = 'paper',
     ...other
   } = props;
@@ -286,15 +284,13 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
         role="presentation"
       >
         <DialogPaper
-          as={PaperComponent}
           elevation={24}
           role="dialog"
           aria-describedby={ariaDescribedby}
           aria-labelledby={ariaLabelledby}
           aria-modal={ariaModal}
-          className={clsx(classes.paper, PaperProps.className)}
+          className={classes.paper}
           ownerState={ownerState}
-          {...PaperProps}
         >
           <DialogContext.Provider value={dialogContextValue}>{children}</DialogContext.Provider>
         </DialogPaper>
@@ -376,17 +372,6 @@ Dialog.propTypes /* remove-proptypes */ = {
    * If `true`, the component is shown.
    */
   open: PropTypes.bool.isRequired,
-  /**
-   * The component used to render the body of the dialog.
-   * @default Paper
-   */
-  PaperComponent: PropTypes.elementType,
-  /**
-   * Props applied to the [`Paper`](https://mui.com/material-ui/api/paper/) element.
-   * @default {}
-   * @deprecated Use `slotProps.paper` instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   */
-  PaperProps: PropTypes.object,
   /**
    * Determine the container for scrolling the dialog.
    * @default 'paper'
