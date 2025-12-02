@@ -1,7 +1,6 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import useId from '@mui/utils/useId';
 import Modal from '../Modal';
 import Paper from '../Paper';
@@ -78,17 +77,11 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
     'aria-modal': ariaModal = true,
     children,
     className,
-    classes,
     disableEscapeKeyDown = false,
     onClose,
     open,
     ...other
   } = inProps;
-
-  const ownerState = {
-    ...inProps,
-    disableEscapeKeyDown,
-  };
 
   const backdropClick = React.useRef();
   const handleMouseDown = (event) => {
@@ -117,20 +110,17 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
   return (
     <DialogRoot
       ref={ref}
-      className={clsx(classes?.root, className)}
+      className={className}
       slots={{ backdrop: DialogBackdrop }}
       disableEscapeKeyDown={disableEscapeKeyDown}
       onClose={onClose}
       open={open}
       onClick={handleBackdropClick}
-      ownerState={ownerState}
       {...other}
     >
       {/* Transition 제거 - 과제 스펙에서는 선택 기능 */}
       <DialogContainer
-        className={classes?.container}
         onMouseDown={handleMouseDown}
-        ownerState={ownerState}
         role="presentation"
       >
         <DialogPaper
@@ -139,8 +129,6 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
           aria-describedby={ariaDescribedby}
           aria-labelledby={ariaLabelledby}
           aria-modal={ariaModal}
-          className={classes?.paper}
-          ownerState={ownerState}
         >
           <DialogContext.Provider value={dialogContextValue}>{children}</DialogContext.Provider>
         </DialogPaper>
@@ -173,10 +161,6 @@ Dialog.propTypes /* remove-proptypes */ = {
    */
   children: PropTypes.node,
   /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
-  /**
    * @ignore
    */
   className: PropTypes.string,
@@ -196,14 +180,6 @@ Dialog.propTypes /* remove-proptypes */ = {
    * If `true`, the component is shown.
    */
   open: PropTypes.bool.isRequired,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
 };
 
 export default Dialog;
