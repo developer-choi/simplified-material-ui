@@ -39,18 +39,11 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
   const lastKeydown = React.useRef<KeyboardEvent>(null);
 
   // useForkRef 대체 로직
-  const handleRef = React.useCallback((instance: HTMLElement) => {
-    // 1. 내부 rootRef 업데이트
+  const handleRef = React.useCallback((instance: HTMLElement | null) => {
+    // 1. 내부 rootRef 업데이트만 수행
     rootRef.current = instance;
-
-    // 2. children이 가진 원래 ref 업데이트
-    const childRef = (children as any).ref;
-    if (typeof childRef === 'function') {
-      childRef(instance);
-    } else if (childRef) {
-      childRef.current = instance;
-    }
-  }, []);
+    // 2. children이 가진 원래 ref를 업데이트하는 로직은 삭제
+  }, []); // children 의존성 제거. 이 함수는 순수하게 rootRef.current만 업데이트함.
 
   React.useEffect(() => {
     // 1. 방어 코드: 모달이 닫혀있거나 요소가 없으면 실행하지 않음
