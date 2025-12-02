@@ -3,6 +3,50 @@ import * as React from 'react';
 import FocusTrap from '../Unstable_TrapFocus';
 import Portal from '../Portal';
 
+const ModalRoot = React.forwardRef(function ModalRoot(props, ref) {
+  const { className, style, children, ...other } = props;
+  return (
+    <div
+      ref={ref}
+      className={className}
+      {...other}
+      style={{
+        position: 'fixed',
+        zIndex: 1300,
+        right: 0,
+        bottom: 0,
+        top: 0,
+        left: 0,
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
+});
+
+const ModalBackdrop = React.forwardRef(function ModalBackdrop(props, ref) {
+  const { style, ...other } = props;
+  return (
+    <div
+      ref={ref}
+      aria-hidden="true"
+      {...other}
+      style={{
+        zIndex: -1,
+        position: 'fixed',
+        right: 0,
+        bottom: 0,
+        top: 0,
+        left: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        WebkitTapHighlightColor: 'transparent',
+        ...style,
+      }}
+    />
+  );
+});
+
 /**
  * Modal is a lower-level construct that is leveraged by the following components:
  *
@@ -84,38 +128,20 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
 
   return (
     <Portal container={container}>
-      <div
+      <ModalRoot
         ref={ref}
-        role="presentation"
         onKeyDown={handleKeyDown}
         className={className}
         {...other}
         style={{
-          position: 'fixed',
-          zIndex: 1300,
-          right: 0,
-          bottom: 0,
-          top: 0,
-          left: 0,
           visibility: !open && exited ? 'hidden' : undefined,
           ...other.style,
         }}
       >
         {!hideBackdrop && (
-           <div
-             aria-hidden="true"
+           <ModalBackdrop
              onMouseDown={handleBackdropMouseDown}
              onClick={handleBackdropClick}
-             style={{
-               zIndex: -1,
-               position: 'fixed',
-               right: 0,
-               bottom: 0,
-               top: 0,
-               left: 0,
-               backgroundColor: 'rgba(0, 0, 0, 0.5)',
-               WebkitTapHighlightColor: 'transparent',
-             }}
            />
         )}
 
@@ -124,7 +150,7 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
         >
           {React.cloneElement(children, childProps)}
         </FocusTrap>
-      </div>
+      </ModalRoot>
     </Portal>
   );
 });
