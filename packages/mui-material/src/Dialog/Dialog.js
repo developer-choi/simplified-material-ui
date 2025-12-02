@@ -9,7 +9,6 @@ import Paper from '../Paper';
 import DialogContext from './DialogContext';
 import Backdrop from '../Backdrop';
 import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 
 const DialogBackdrop = styled(Backdrop, {
   name: 'MuiDialog',
@@ -54,23 +53,21 @@ const DialogPaper = styled(Paper, {
   overridesResolver: (props, styles) => {
     return [styles.paper];
   },
-})(
-  memoTheme(({ theme }) => ({
-    margin: 32,
-    position: 'relative',
-    overflowY: 'auto',
-    '@media print': {
-      overflowY: 'visible',
-      boxShadow: 'none',
-    },
-    // 기본 스타일 (paper scroll 방식)
-    display: 'flex',
-    flexDirection: 'column',
-    maxHeight: 'calc(100% - 64px)',
-    maxWidth: '600px',  // sm size
-    width: 'calc(100% - 64px)',
-  })),
-);
+})({
+  margin: 32,
+  position: 'relative',
+  overflowY: 'auto',
+  '@media print': {
+    overflowY: 'visible',
+    boxShadow: 'none',
+  },
+  // 기본 스타일 (paper scroll 방식)
+  display: 'flex',
+  flexDirection: 'column',
+  maxHeight: 'calc(100% - 64px)',
+  maxWidth: '600px',  // sm size
+  width: 'calc(100% - 64px)',
+});
 
 /**
  * Dialogs are overlaid modal paper based components with a backdrop.
