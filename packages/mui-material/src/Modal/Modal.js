@@ -2,7 +2,6 @@
 import * as React from 'react';
 import FocusTrap from '../Unstable_TrapFocus';
 import Portal from '../Portal';
-import useModal from './useModal';
 
 /**
  * Modal is a lower-level construct that is leveraged by the following components:
@@ -25,62 +24,72 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
     container,
     onClose,
     open,
+    disableEscapeKeyDown = false,
+    hideBackdrop = false,
     ...other
   } = props;
 
-  // 하드코딩된 기본값들
-  const disableAutoFocus = false;
-  const disableEnforceFocus = false;
-  const disableEscapeKeyDown = false;
-  const disablePortal = false;
-  const disableRestoreFocus = false;
-  const keepMounted = false;
-  const disableScrollLock = false;
-  const hideBackdrop = false;
+  const [exited, setExited] = React.useState(!open);
+  const backdropClickRef = React.useRef(false);
 
-  const propsWithDefaults = {
-    ...props,
-    disableAutoFocus,
-    disableEnforceFocus,
-    disableEscapeKeyDown,
-    disablePortal,
-    disableRestoreFocus,
-    keepMounted,
-    disableScrollLock,
-    hideBackdrop,
-  };
+  // Open state change effect
+  React.useEffect(() => {
+    if (open) {
+      setExited(false);
+    } else {
+      setExited(true);
+    }
+  }, [open]);
 
-  const {
-    getRootProps,
-    getBackdropProps,
-    portalRef,
-    isTopModal,
-    exited,
-  } = useModal({
-    ...propsWithDefaults,
-    rootRef: ref,
-  });
+  // ESC Key Handler
+  const handleKeyDown = React.useCallback((event) => {
+    if (event.key !== 'Escape' || event.which === 229) {
+      return;
+    }
+
+    if (!disableEscapeKeyDown && onClose) {
+      event.stopPropagation();
+      onClose(event, 'escapeKeyDown');
+    }
+  }, [disableEscapeKeyDown, onClose]);
+
+  // Backdrop Mouse Handlers
+  const handleBackdropMouseDown = React.useCallback((event) => {
+    backdropClickRef.current = event.target === event.currentTarget;
+  }, []);
+
+  const handleBackdropClick = React.useCallback((event) => {
+    if (!backdropClickRef.current) {
+      return;
+    }
+    backdropClickRef.current = false;
+
+    if (event.target !== event.currentTarget) {
+      return;
+    }
+
+    if (onClose) {
+      onClose(event, 'backdropClick');
+    }
+  }, [onClose]);
+
+  if (!open && exited) {
+    return null;
+  }
 
   const childProps = {};
   if (children.props.tabIndex === undefined) {
     childProps.tabIndex = '-1';
   }
 
-  // useSlot 제거 -> 직관적인 컴포넌트 사용
-  // getRootProps를 직접 호출하여 prop을 생성
-  const rootProps = getRootProps(other);
-  const backdropProps = getBackdropProps();
-
-  if (!keepMounted && !open && exited) {
-    return null;
-  }
-
   return (
-    <Portal ref={portalRef} container={container} disablePortal={disablePortal}>
-      {/* RootSlot 대신 div 직접 사용 */}
+    <Portal container={container}>
       <div
-        {...rootProps}
+        ref={ref}
+        role="presentation"
+        onKeyDown={handleKeyDown}
         className={className}
+        {...other}
         style={{
           position: 'fixed',
           zIndex: 1300,
@@ -89,13 +98,14 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
           top: 0,
           left: 0,
           visibility: !open && exited ? 'hidden' : undefined,
-          ...rootProps.style,
+          ...other.style,
         }}
       >
-        {/* BackdropSlot 대신 div 직접 사용 */}
         {!hideBackdrop && (
            <div
-             {...backdropProps}
+             aria-hidden="true"
+             onMouseDown={handleBackdropMouseDown}
+             onClick={handleBackdropClick}
              style={{
                zIndex: -1,
                position: 'fixed',
@@ -105,16 +115,11 @@ const Modal = React.forwardRef(function Modal(inProps, ref) {
                left: 0,
                backgroundColor: 'rgba(0, 0, 0, 0.5)',
                WebkitTapHighlightColor: 'transparent',
-               ...backdropProps.style,
              }}
            />
         )}
 
         <FocusTrap
-          disableEnforceFocus={disableEnforceFocus}
-          disableAutoFocus={disableAutoFocus}
-          disableRestoreFocus={disableRestoreFocus}
-          isEnabled={isTopModal}
           open={open}
         >
           {React.cloneElement(children, childProps)}
