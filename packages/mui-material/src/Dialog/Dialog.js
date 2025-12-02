@@ -2,7 +2,6 @@
 import * as React from 'react';
 import useId from '@mui/utils/useId';
 import Modal from '../Modal';
-import DialogContext from './DialogContext';
 
 const DialogContainer = React.forwardRef(function DialogContainer(props, ref) {
   const { children, style, ...other } = props;
@@ -69,9 +68,6 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
   } = inProps;
 
   const ariaLabelledby = useId(ariaLabelledbyProp);
-  const dialogContextValue = React.useMemo(() => {
-    return { titleId: ariaLabelledby };
-  }, [ariaLabelledby]);
 
   return (
     <Modal
@@ -87,7 +83,7 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
           aria-describedby={ariaDescribedby}
           aria-labelledby={ariaLabelledby}
         >
-          <DialogContext.Provider value={dialogContextValue}>{children}</DialogContext.Provider>
+          {children}
         </DialogPaper>
       </DialogContainer>
     </Modal>
