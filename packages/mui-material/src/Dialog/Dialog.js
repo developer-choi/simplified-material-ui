@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import useId from '@mui/utils/useId';
 import Modal from '../Modal';
-import Fade from '../Fade';
 import Paper from '../Paper';
 import DialogContext from './DialogContext';
 import Backdrop from '../Backdrop';
