@@ -25,7 +25,7 @@ const DialogBackdrop = styled(Backdrop, {
 });
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, scroll, maxWidth, fullWidth } = ownerState;
+  const { classes, scroll, maxWidth } = ownerState;
 
   const slots = {
     root: ['root'],
@@ -34,7 +34,6 @@ const useUtilityClasses = (ownerState) => {
       'paper',
       `paperScroll${capitalize(scroll)}`,
       `paperWidth${capitalize(String(maxWidth))}`,
-      fullWidth && 'paperFullWidth',
     ],
   };
 
@@ -176,12 +175,6 @@ const DialogPaper = styled(Paper, {
             },
           },
         })),
-      {
-        props: ({ ownerState }) => ownerState.fullWidth,
-        style: {
-          width: 'calc(100% - 64px)',
-        },
-      },
     ],
   })),
 );
@@ -199,7 +192,6 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
     children,
     className,
     disableEscapeKeyDown = false,
-    fullWidth = false,
     maxWidth = 'sm',
     onClick,
     onClose,
@@ -211,7 +203,6 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
   const ownerState = {
     ...props,
     disableEscapeKeyDown,
-    fullWidth,
     maxWidth,
     scroll,
   };
@@ -317,13 +308,6 @@ Dialog.propTypes /* remove-proptypes */ = {
    * @default false
    */
   disableEscapeKeyDown: PropTypes.bool,
-  /**
-   * If `true`, the dialog stretches to `maxWidth`.
-   *
-   * Notice that the dialog width grow is limited by the default margin.
-   * @default false
-   */
-  fullWidth: PropTypes.bool,
   /**
    * Determine the max-width of the dialog.
    * The dialog width grows with the size of the screen.
