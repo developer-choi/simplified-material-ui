@@ -2,13 +2,10 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import useId from '@mui/utils/useId';
-import capitalize from '../utils/capitalize';
 import Modal from '../Modal';
 import Fade from '../Fade';
 import Paper from '../Paper';
-import dialogClasses, { getDialogUtilityClass } from './dialogClasses';
 import DialogContext from './DialogContext';
 import Backdrop from '../Backdrop';
 import { styled } from '../zero-styled';
@@ -22,18 +19,6 @@ const DialogBackdrop = styled(Backdrop, {
   // Improve scrollable dialog support.
   zIndex: -1,
 });
-
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-
-  const slots = {
-    root: ['root'],
-    container: ['container'],
-    paper: ['paper'],
-  };
-
-  return composeClasses(slots, getDialogUtilityClass, classes);
-};
 
 const DialogRoot = styled(Modal, {
   name: 'MuiDialog',
@@ -97,6 +82,7 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
     'aria-modal': ariaModal = true,
     children,
     className,
+    classes,
     disableEscapeKeyDown = false,
     onClose,
     open,
@@ -107,8 +93,6 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
     ...inProps,
     disableEscapeKeyDown,
   };
-
-  const classes = useUtilityClasses(ownerState);
 
   const backdropClick = React.useRef();
   const handleMouseDown = (event) => {
@@ -137,7 +121,7 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
   return (
     <DialogRoot
       ref={ref}
-      className={clsx(classes.root, className)}
+      className={clsx(classes?.root, className)}
       slots={{ backdrop: DialogBackdrop }}
       disableEscapeKeyDown={disableEscapeKeyDown}
       onClose={onClose}
@@ -148,7 +132,7 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
     >
       {/* Transition 제거 - 과제 스펙에서는 선택 기능 */}
       <DialogContainer
-        className={classes.container}
+        className={classes?.container}
         onMouseDown={handleMouseDown}
         ownerState={ownerState}
         role="presentation"
@@ -159,7 +143,7 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
           aria-describedby={ariaDescribedby}
           aria-labelledby={ariaLabelledby}
           aria-modal={ariaModal}
-          className={classes.paper}
+          className={classes?.paper}
           ownerState={ownerState}
         >
           <DialogContext.Provider value={dialogContextValue}>{children}</DialogContext.Provider>
