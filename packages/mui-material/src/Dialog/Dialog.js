@@ -14,7 +14,6 @@ import Backdrop from '../Backdrop';
 import { styled, useTheme } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import useSlot from '../utils/useSlot';
 
 const DialogBackdrop = styled(Backdrop, {
   name: 'MuiDialog',
@@ -232,8 +231,6 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
     PaperComponent = Paper,
     PaperProps = {},
     scroll = 'paper',
-    slots = {},
-    slotProps = {},
     TransitionComponent = Fade,
     transitionDuration = defaultTransitionDuration,
     TransitionProps,
@@ -279,102 +276,55 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
     return { titleId: ariaLabelledby };
   }, [ariaLabelledby]);
 
-  const backwardCompatibleSlots = {
-    transition: TransitionComponent,
-    ...slots,
-  };
-
-  const backwardCompatibleSlotProps = {
-    transition: TransitionProps,
-    paper: PaperProps,
-    backdrop: BackdropProps,
-    ...slotProps,
-  };
-
-  const externalForwardedProps = {
-    slots: backwardCompatibleSlots,
-    slotProps: backwardCompatibleSlotProps,
-  };
-
-  const [RootSlot, rootSlotProps] = useSlot('root', {
-    elementType: DialogRoot,
-    shouldForwardComponentProp: true,
-    externalForwardedProps,
-    ownerState,
-    className: clsx(classes.root, className),
-    ref,
-  });
-
-  const [BackdropSlot, backdropSlotProps] = useSlot('backdrop', {
-    elementType: DialogBackdrop,
-    shouldForwardComponentProp: true,
-    externalForwardedProps,
-    ownerState,
-  });
-
-  const [PaperSlot, paperSlotProps] = useSlot('paper', {
-    elementType: DialogPaper,
-    shouldForwardComponentProp: true,
-    externalForwardedProps,
-    ownerState,
-    className: clsx(classes.paper, PaperProps.className),
-  });
-
-  const [ContainerSlot, containerSlotProps] = useSlot('container', {
-    elementType: DialogContainer,
-    externalForwardedProps,
-    ownerState,
-    className: classes.container,
-  });
-
-  const [TransitionSlot, transitionSlotProps] = useSlot('transition', {
-    elementType: Fade,
-    externalForwardedProps,
-    ownerState,
-    additionalProps: {
-      appear: true,
-      in: open,
-      timeout: transitionDuration,
-      role: 'presentation',
-    },
-  });
-
   return (
-    <RootSlot
+    <DialogRoot
+      ref={ref}
+      className={clsx(classes.root, className)}
       closeAfterTransition
-      slots={{ backdrop: BackdropSlot }}
+      slots={{ backdrop: DialogBackdrop }}
       slotProps={{
         backdrop: {
           transitionDuration,
           as: BackdropComponent,
-          ...backdropSlotProps,
         },
       }}
       disableEscapeKeyDown={disableEscapeKeyDown}
       onClose={onClose}
       open={open}
       onClick={handleBackdropClick}
-      {...rootSlotProps}
+      ownerState={ownerState}
       {...other}
     >
-      <TransitionSlot {...transitionSlotProps}>
+      <TransitionComponent
+        appear
+        in={open}
+        timeout={transitionDuration}
+        role="presentation"
+        {...TransitionProps}
+      >
         {/* roles are applied via cloneElement from TransitionComponent */}
         {/* roles needs to be applied on the immediate child of Modal or it'll inject one */}
-        <ContainerSlot onMouseDown={handleMouseDown} {...containerSlotProps}>
-          <PaperSlot
+        <DialogContainer
+          className={classes.container}
+          onMouseDown={handleMouseDown}
+          ownerState={ownerState}
+        >
+          <DialogPaper
             as={PaperComponent}
             elevation={24}
             role="dialog"
             aria-describedby={ariaDescribedby}
             aria-labelledby={ariaLabelledby}
             aria-modal={ariaModal}
-            {...paperSlotProps}
+            className={clsx(classes.paper, PaperProps.className)}
+            ownerState={ownerState}
+            {...PaperProps}
           >
             <DialogContext.Provider value={dialogContextValue}>{children}</DialogContext.Provider>
-          </PaperSlot>
-        </ContainerSlot>
-      </TransitionSlot>
-    </RootSlot>
+          </DialogPaper>
+        </DialogContainer>
+      </TransitionComponent>
+    </DialogRoot>
   );
 });
 
@@ -483,28 +433,6 @@ Dialog.propTypes /* remove-proptypes */ = {
    * @default 'paper'
    */
   scroll: PropTypes.oneOf(['body', 'paper']),
-  /**
-   * The props used for each slot inside.
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    backdrop: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    container: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    paper: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    transition: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * The components used for each slot inside.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    backdrop: PropTypes.elementType,
-    container: PropTypes.elementType,
-    paper: PropTypes.elementType,
-    root: PropTypes.elementType,
-    transition: PropTypes.elementType,
-  }),
   /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
