@@ -212,8 +212,6 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
     'aria-describedby': ariaDescribedby,
     'aria-labelledby': ariaLabelledbyProp,
     'aria-modal': ariaModal = true,
-    BackdropComponent,
-    BackdropProps,
     children,
     className,
     disableEscapeKeyDown = false,
@@ -273,11 +271,6 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
       ref={ref}
       className={clsx(classes.root, className)}
       slots={{ backdrop: DialogBackdrop }}
-      slotProps={{
-        backdrop: {
-          as: BackdropComponent,
-        },
-      }}
       disableEscapeKeyDown={disableEscapeKeyDown}
       onClose={onClose}
       open={open}
@@ -329,22 +322,6 @@ Dialog.propTypes /* remove-proptypes */ = {
    * @default true
    */
   'aria-modal': PropTypes.oneOfType([PropTypes.oneOf(['false', 'true']), PropTypes.bool]),
-  /**
-   * A backdrop component. This prop enables custom backdrop rendering.
-   * @deprecated Use `slots.backdrop` instead. While this prop currently works, it will be removed in the next major version.
-   * Use the `slots.backdrop` prop to make your application ready for the next version of Material UI.
-   * @default styled(Backdrop, {
-   *   name: 'MuiModal',
-   *   slot: 'Backdrop',
-   * })({
-   *   zIndex: -1,
-   * })
-   */
-  BackdropComponent: PropTypes.elementType,
-  /**
-   * @ignore
-   */
-  BackdropProps: PropTypes.object,
   /**
    * Dialog children, usually the included sub-components.
    */
