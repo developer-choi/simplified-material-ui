@@ -101,7 +101,6 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
     children,
     className,
     disableEscapeKeyDown = false,
-    onClick,
     onClose,
     open,
     ...other
@@ -121,10 +120,6 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
     backdropClick.current = event.target === event.currentTarget;
   };
   const handleBackdropClick = (event) => {
-    if (onClick) {
-      onClick(event);
-    }
-
     // Ignore the events not coming from the "backdrop".
     if (!backdropClick.current) {
       return;
@@ -213,10 +208,6 @@ Dialog.propTypes /* remove-proptypes */ = {
    * @default false
    */
   disableEscapeKeyDown: PropTypes.bool,
-  /**
-   * @ignore
-   */
-  onClick: PropTypes.func,
   /**
    * Callback fired when the component requests to be closed.
    *
