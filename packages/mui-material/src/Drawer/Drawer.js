@@ -18,26 +18,21 @@ import useSlot from '../utils/useSlot';
 import { mergeSlotProps } from '../utils';
 
 const overridesResolver = (props, styles) => {
-  const { ownerState } = props;
-
   return [
     styles.root,
-    (ownerState.variant === 'permanent' || ownerState.variant === 'persistent') && styles.docked,
     styles.modal,
   ];
 };
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, anchor, variant } = ownerState;
+  const { classes, anchor } = ownerState;
 
   const slots = {
     root: ['root', `anchor${capitalize(anchor)}`],
-    docked: [(variant === 'permanent' || variant === 'persistent') && 'docked'],
     modal: ['modal'],
     paper: [
       'paper',
       `paperAnchor${capitalize(anchor)}`,
-      variant !== 'temporary' && `paperAnchorDocked${capitalize(anchor)}`,
     ],
   };
 
@@ -54,16 +49,6 @@ const DrawerRoot = styled(Modal, {
   })),
 );
 
-const DrawerDockedRoot = styled('div', {
-  shouldForwardProp: rootShouldForwardProp,
-  name: 'MuiDrawer',
-  slot: 'Docked',
-  skipVariantsResolver: false,
-  overridesResolver,
-})({
-  flex: '0 0 auto',
-});
-
 const DrawerPaper = styled(Paper, {
   name: 'MuiDrawer',
   slot: 'Paper',
@@ -73,8 +58,6 @@ const DrawerPaper = styled(Paper, {
     return [
       styles.paper,
       styles[`paperAnchor${capitalize(ownerState.anchor)}`],
-      ownerState.variant !== 'temporary' &&
-        styles[`paperAnchorDocked${capitalize(ownerState.anchor)}`],
     ];
   },
 })(
@@ -136,34 +119,6 @@ const DrawerPaper = styled(Paper, {
           maxHeight: '100%',
         },
       },
-      {
-        props: ({ ownerState }) =>
-          ownerState.anchor === 'left' && ownerState.variant !== 'temporary',
-        style: {
-          borderRight: `1px solid ${(theme.vars || theme).palette.divider}`,
-        },
-      },
-      {
-        props: ({ ownerState }) =>
-          ownerState.anchor === 'top' && ownerState.variant !== 'temporary',
-        style: {
-          borderBottom: `1px solid ${(theme.vars || theme).palette.divider}`,
-        },
-      },
-      {
-        props: ({ ownerState }) =>
-          ownerState.anchor === 'right' && ownerState.variant !== 'temporary',
-        style: {
-          borderLeft: `1px solid ${(theme.vars || theme).palette.divider}`,
-        },
-      },
-      {
-        props: ({ ownerState }) =>
-          ownerState.anchor === 'bottom' && ownerState.variant !== 'temporary',
-        style: {
-          borderTop: `1px solid ${(theme.vars || theme).palette.divider}`,
-        },
-      },
     ],
   })),
 );
@@ -211,11 +166,12 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
     // eslint-disable-next-line react/prop-types
     TransitionComponent,
     transitionDuration = defaultTransitionDuration,
-    variant = 'temporary',
     slots = {},
     slotProps = {},
     ...other
   } = props;
+
+  const variant = 'temporary';
 
   // Let's assume that the Drawer will always be rendered on user space.
   // We use this state is order to skip the appear transition during the
@@ -285,22 +241,11 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
     ownerState,
     externalForwardedProps,
     additionalProps: {
-      elevation: variant === 'temporary' ? elevation : 0,
+      elevation,
       square: true,
-      ...(variant === 'temporary' && {
-        role: 'dialog',
-        'aria-modal': 'true',
-      }),
+      role: 'dialog',
+      'aria-modal': 'true',
     },
-  });
-
-  const [DockedSlot, dockedSlotProps] = useSlot('docked', {
-    elementType: DrawerDockedRoot,
-    ref,
-    className: clsx(classes.root, classes.docked, className),
-    ownerState,
-    externalForwardedProps,
-    additionalProps: other, // pass `other` here because `DockedSlot` is also a root slot for some variants
   });
 
   const [TransitionSlot, transitionSlotProps] = useSlot('transition', {
