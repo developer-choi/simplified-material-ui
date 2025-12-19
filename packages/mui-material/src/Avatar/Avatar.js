@@ -147,7 +147,6 @@ const Avatar = React.forwardRef(function Avatar(inProps, ref) {
     alt,
     children: childrenProp,
     className,
-    component = 'div',
     imgProps,
     sizes,
     src,
@@ -160,7 +159,6 @@ const Avatar = React.forwardRef(function Avatar(inProps, ref) {
 
   const ownerState = {
     ...props,
-    component,
     variant,
   };
 
@@ -202,7 +200,6 @@ const Avatar = React.forwardRef(function Avatar(inProps, ref) {
   return (
     <AvatarRoot
       ref={ref}
-      as={component}
       className={clsx(classes.root, className)}
       ownerState={ownerState}
       {...other}
@@ -235,11 +232,6 @@ Avatar.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   className: PropTypes.string,
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
   /**
    * [Attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img#attributes) applied to the `img` element if the component is used to display an image.
    * It can be used to listen for the loading error event.
