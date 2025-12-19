@@ -975,24 +975,42 @@ docs/[상위개념을 뜻하는 키워드]/
   └── [ComponentName]-simplified.md   # 단순화 후 분석
 ```
 
-#### original.md 구조
-- 무슨 기능을 하는가?
-- 내부 구조
-- 주요 Props
-- 설계 패턴
-- 복잡도의 이유
-- 사용 예시
+---
 
-#### simplified.md 구조
-- 무슨 기능을 하는가? (남은 기능)
-- 내부 구조
-- **커밋 히스토리로 보는 단순화 과정** ⭐
-- 원본과의 차이점 (표 형식)
-- 스타일 비교 (코드 비교)
-- 설계 철학의 변화
-- 사용 예시
-- 제한 사항
-- 장단점
+#### ⭐ original.md 작성 가이드
+
+**작성 항목**:
+1. 무슨 기능을 하는가?
+2. 내부 구조
+3. 주요 Props
+4. 설계 패턴
+5. 복잡도의 이유
+6. 사용 예시
+
+**형식 예시**: `docs/modal/Dialog-original.md` 참고
+
+---
+
+#### ⭐ simplified.md 작성 가이드
+
+**작성 항목**:
+1. 무슨 기능을 하는가? (남은 기능)
+2. 내부 구조
+3. **⭐ 커밋 히스토리로 보는 단순화 과정** (계획서의 Phase와 일치하게 그룹화)
+4. 원본과의 차이점 (표 형식)
+5. 스타일 비교
+6. 설계 철학의 변화
+7. 사용 예시
+8. 제한 사항
+9. 장단점
+
+**형식 예시**: `docs/modal/Dialog-simplified.md` 참고
+
+**커밋 히스토리 주의사항**:
+- 계획서의 Phase와 일치하게 그룹화
+- 각 커밋의 해시 8자리 포함
+- 변경 줄 수는 선택적
+- 시간 순서대로 나열 (가장 먼저 한 것부터)
 
 #### ⚠️ "무슨 기능을 하는가?" 작성 시 주의사항
 
@@ -1029,58 +1047,17 @@ Modal이 제공하는 기능 (상속):
 ```
 → 명확하게 구분!
 
-**다른 예시**:
-
-**Button 컴포넌트**:
-- ❌ "클릭 이벤트 처리" → 이건 HTML button이 원래 하는 일
-- ✅ "ButtonBase를 감싸서 Material Design 스타일 적용"
-
-**TextField 컴포넌트**:
-- ❌ "텍스트 입력 받기" → 이건 HTML input이 하는 일
-- ✅ "Input과 FormControl을 조합하여 레이블, 헬퍼텍스트 레이아웃 제공"
-
-## 참고 자료
-
-### 완료된 컴포넌트 커밋 목록
-
-Dialog 관련 주요 커밋:
-```
-4a35ad54c5 Dialog 하위 컴포넌트들 md 분석결과 추가
-58a1b606c8 Dialog에 DialogContext 기능 삭제
-e204177dad Dialog.js에 DialogContainer 및 DialogPaper 컴포넌트 재도입
-d0b0d6712a Dialog 구현 단순화 및 스타일 의존성 제거
-0321935f39 classes, sx, ownerState 등 스타일 시스템 삭제
-9f7e5eb9c5 불필요한 import 정리 (Fade 삭제)
-59795afe84 memoTheme 삭제 및 스타일 단순화
-91ff3513e8 useUtilityClasses, composeClasses 삭제
-87da2fa64f useDefaultProps 삭제
-de1cf3d20a onClick prop 삭제
-5ff021ece3 scroll prop 삭제
-1dd9a04d48 maxWidth prop 삭제
-a8629a8885 fullWidth prop 삭제
-ea2b00cc17 fullScreen prop 삭제
-b00786739b PaperComponent 고정으로 변경
-8bc8941d89 BackdropComponent 고정으로 변경
-88c1b47207 Dialog에서 Transition 다 삭제
-9e72205c7a Dialog에 Slot 삭제
-```
-
-### 참고 문서
-
-- `docs/modal/Modal-original.md` - 원본 Modal 분석
-- `docs/modal/Modal-simplified.md` - 단순화된 Modal 분석
-
 ## 작업 체크리스트
 
 새 컴포넌트를 단순화할 때:
 
 1. [ ] 원본 컴포넌트 코드 읽기
-2. [ ] `ComponentName-original.md` 작성
-3. [ ] **삭제 계획서 작성 (커밋 목록 포함)** 📋
-4. [ ] **사용자 컨펌 대기** ✋
-5. [ ] **기능 하나씩 삭제 + 커밋 반복** ⚠️
-6. [ ] 최종 코드 검증
-7. [ ] `[ComponentName]-simplified.md` 작성 (커밋 히스토리 포함)
+2. [ ] **삭제 계획서 작성 (커밋 목록 포함)** 📋
+3. [ ] **사용자 컨펌 대기** ✋
+4. [ ] **기능 하나씩 삭제 + 커밋 반복** ⚠️
+5. [ ] 최종 코드 검증
+6. [ ] `ComponentName-original.md` 작성
+7. [ ] `ComponentName-simplified.md` 작성 (커밋 히스토리 포함)
 
 ## 주의 사항
 
