@@ -88,35 +88,10 @@ const DrawerPaper = styled(Paper, {
       },
       {
         props: {
-          anchor: 'top',
-        },
-        style: {
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 'auto',
-          maxHeight: '100%',
-        },
-      },
-      {
-        props: {
           anchor: 'right',
         },
         style: {
           right: 0,
-        },
-      },
-      {
-        props: {
-          anchor: 'bottom',
-        },
-        style: {
-          top: 'auto',
-          left: 0,
-          bottom: 0,
-          right: 0,
-          height: 'auto',
-          maxHeight: '100%',
         },
       },
     ],
@@ -126,8 +101,6 @@ const DrawerPaper = styled(Paper, {
 const oppositeDirection = {
   left: 'right',
   right: 'left',
-  top: 'down',
-  bottom: 'up',
 };
 
 export function isHorizontal(anchor) {
