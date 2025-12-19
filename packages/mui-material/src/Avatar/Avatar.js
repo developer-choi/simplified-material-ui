@@ -89,11 +89,11 @@ const AvatarFallback = styled(Person, {
   height: '75%',
 });
 
-function useLoaded({ crossOrigin, referrerPolicy, src, srcSet }) {
+function useLoaded({ src }) {
   const [loaded, setLoaded] = React.useState(false);
 
   React.useEffect(() => {
-    if (!src && !srcSet) {
+    if (!src) {
       return undefined;
     }
 
@@ -113,17 +113,12 @@ function useLoaded({ crossOrigin, referrerPolicy, src, srcSet }) {
       }
       setLoaded('error');
     };
-    image.crossOrigin = crossOrigin;
-    image.referrerPolicy = referrerPolicy;
     image.src = src;
-    if (srcSet) {
-      image.srcset = srcSet;
-    }
 
     return () => {
       active = false;
     };
-  }, [crossOrigin, referrerPolicy, src, srcSet]);
+  }, [src]);
 
   return loaded;
 }
