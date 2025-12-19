@@ -83,10 +83,6 @@ const DrawerPaper = styled(Paper, {
 const Drawer = React.forwardRef(function Drawer(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiDrawer' });
   const theme = useTheme();
-  const defaultTransitionDuration = {
-    enter: theme.transitions.duration.enteringScreen,
-    exit: theme.transitions.duration.leavingScreen,
-  };
 
   const {
     BackdropProps,
@@ -101,7 +97,6 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
     SlideProps,
     // eslint-disable-next-line react/prop-types
     TransitionComponent,
-    transitionDuration = defaultTransitionDuration,
     slots = {},
     slotProps = {},
     ...other
@@ -138,9 +133,7 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
       paper: PaperProps,
       transition: SlideProps,
       ...slotProps,
-      backdrop: mergeSlotProps(slotProps.backdrop || { ...BackdropProps, ...BackdropPropsProp }, {
-        transitionDuration,
-      }),
+      backdrop: slotProps.backdrop || { ...BackdropProps, ...BackdropPropsProp },
     },
   };
 
@@ -189,7 +182,7 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
     additionalProps: {
       in: open,
       direction: 'right',
-      timeout: transitionDuration,
+      timeout: 225,
       appear: mounted.current,
     },
   });
