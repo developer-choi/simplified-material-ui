@@ -2,24 +2,9 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import Person from '../internal/svg-icons/Person';
-import { getAvatarUtilityClass } from './avatarClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, colorDefault } = ownerState;
-
-  const slots = {
-    root: ['root', colorDefault && 'colorDefault'],
-    img: ['img'],
-    fallback: ['fallback'],
-  };
-
-  return composeClasses(slots, getAvatarUtilityClass, classes);
-};
-
 const AvatarRoot = styled('div', {
   name: 'MuiAvatar',
   slot: 'Root',
@@ -146,16 +131,8 @@ const Avatar = React.forwardRef(function Avatar(props, ref) {
   // This issue explains why this is required: https://github.com/mui/material-ui/issues/42184
   delete ownerState.ownerState;
 
-  const classes = useUtilityClasses(ownerState);
-
   if (hasImgNotFailing) {
-    children = (
-      <AvatarImg
-        className={classes.img}
-        alt={alt}
-        src={src}
-      />
-    );
+    children = <AvatarImg alt={alt} src={src} />;
     // We only render valid children, non valid children are rendered with a fallback
     // We consider that invalid children are all falsy values, except 0, which is valid.
   } else if (!!childrenProp || childrenProp === 0) {
@@ -163,16 +140,11 @@ const Avatar = React.forwardRef(function Avatar(props, ref) {
   } else if (hasImg && alt) {
     children = alt[0];
   } else {
-    children = <AvatarFallback className={classes.fallback} />;
+    children = <AvatarFallback />;
   }
 
   return (
-    <AvatarRoot
-      ref={ref}
-      className={clsx(classes.root, className)}
-      ownerState={ownerState}
-      {...other}
-    >
+    <AvatarRoot ref={ref} className={className} ownerState={ownerState} {...other}>
       {children}
     </AvatarRoot>
   );
