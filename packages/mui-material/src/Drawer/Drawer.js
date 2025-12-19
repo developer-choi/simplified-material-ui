@@ -5,51 +5,6 @@ import clsx from 'clsx';
 import integerPropType from '@mui/utils/integerPropType';
 import Modal from '../Modal';
 import Paper from '../Paper';
-import rootShouldForwardProp from '../styles/rootShouldForwardProp';
-import { styled } from '../zero-styled';
-
-const overridesResolver = (props, styles) => {
-  return [
-    styles.root,
-    styles.modal,
-  ];
-};
-
-const DrawerRoot = styled(Modal, {
-  name: 'MuiDrawer',
-  slot: 'Root',
-  overridesResolver,
-})({
-  zIndex: 1200,
-});
-
-const DrawerPaper = styled(Paper, {
-  name: 'MuiDrawer',
-  slot: 'Paper',
-  overridesResolver: (props, styles) => {
-    return [
-      styles.paper,
-      styles.paperAnchorLeft,
-    ];
-  },
-})({
-  overflowY: 'auto',
-  display: 'flex',
-  flexDirection: 'column',
-  height: '100%',
-  flex: '1 0 auto',
-  zIndex: 1200,
-  // Add iOS momentum scrolling for iOS < 13.0
-  WebkitOverflowScrolling: 'touch',
-  // temporary style
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  // We disable the focus ring for mouse, touch and keyboard users.
-  // At some point, it would be better to keep it for keyboard users.
-  // :focus-ring CSS pseudo-class will help.
-  outline: 0,
-});
 
 
 /**
@@ -77,24 +32,36 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
   };
 
   return (
-    <DrawerRoot
+    <Modal
       ref={ref}
       className={className}
-      ownerState={ownerState}
       open={open}
       onClose={onClose}
+      style={{ zIndex: 1200 }}
       {...other}
     >
-      <DrawerPaper
-        ownerState={ownerState}
+      <Paper
         elevation={16}
         square
         role="dialog"
         aria-modal="true"
+        style={{
+          overflowY: 'auto',
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%',
+          flex: '1 0 auto',
+          zIndex: 1200,
+          WebkitOverflowScrolling: 'touch',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          outline: 0,
+        }}
       >
         {children}
-      </DrawerPaper>
-    </DrawerRoot>
+      </Paper>
+    </Modal>
   );
 });
 
