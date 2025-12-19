@@ -8,7 +8,6 @@ import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import Person from '../internal/svg-icons/Person';
 import { getAvatarUtilityClass } from './avatarClasses';
-import useSlot from '../utils/useSlot';
 
 const useUtilityClasses = (ownerState) => {
   const { classes, variant, colorDefault } = ownerState;
@@ -149,8 +148,6 @@ const Avatar = React.forwardRef(function Avatar(inProps, ref) {
     children: childrenProp,
     className,
     component = 'div',
-    slots = {},
-    slotProps = {},
     imgProps,
     sizes,
     src,
@@ -170,7 +167,6 @@ const Avatar = React.forwardRef(function Avatar(inProps, ref) {
   // Use a hook instead of onError on the img element to support server-side rendering.
   const loaded = useLoaded({
     ...imgProps,
-    ...(typeof slotProps.img === 'function' ? slotProps.img(ownerState) : slotProps.img),
     src,
     srcSet,
   });
@@ -183,43 +179,16 @@ const Avatar = React.forwardRef(function Avatar(inProps, ref) {
 
   const classes = useUtilityClasses(ownerState);
 
-  const [RootSlot, rootSlotProps] = useSlot('root', {
-    ref,
-    className: clsx(classes.root, className),
-    elementType: AvatarRoot,
-    externalForwardedProps: {
-      slots,
-      slotProps,
-      component,
-      ...other,
-    },
-    ownerState,
-  });
-
-  const [ImgSlot, imgSlotProps] = useSlot('img', {
-    className: classes.img,
-    elementType: AvatarImg,
-    externalForwardedProps: {
-      slots,
-      slotProps: { img: { ...imgProps, ...slotProps.img } },
-    },
-    additionalProps: { alt, src, srcSet, sizes },
-    ownerState,
-  });
-
-  const [FallbackSlot, fallbackSlotProps] = useSlot('fallback', {
-    className: classes.fallback,
-    elementType: AvatarFallback,
-    externalForwardedProps: {
-      slots,
-      slotProps,
-    },
-    shouldForwardComponentProp: true,
-    ownerState,
-  });
-
   if (hasImgNotFailing) {
-    children = <ImgSlot {...imgSlotProps} />;
+    children = (
+      <AvatarImg
+        className={classes.img}
+        alt={alt}
+        src={src}
+        srcSet={srcSet}
+        sizes={sizes}
+      />
+    );
     // We only render valid children, non valid children are rendered with a fallback
     // We consider that invalid children are all falsy values, except 0, which is valid.
   } else if (!!childrenProp || childrenProp === 0) {
@@ -227,10 +196,20 @@ const Avatar = React.forwardRef(function Avatar(inProps, ref) {
   } else if (hasImg && alt) {
     children = alt[0];
   } else {
-    children = <FallbackSlot {...fallbackSlotProps} />;
+    children = <AvatarFallback className={classes.fallback} />;
   }
 
-  return <RootSlot {...rootSlotProps}>{children}</RootSlot>;
+  return (
+    <AvatarRoot
+      ref={ref}
+      as={component}
+      className={clsx(classes.root, className)}
+      ownerState={ownerState}
+      {...other}
+    >
+      {children}
+    </AvatarRoot>
+  );
 });
 
 Avatar.propTypes /* remove-proptypes */ = {
@@ -271,24 +250,6 @@ Avatar.propTypes /* remove-proptypes */ = {
    * The `sizes` attribute for the `img` element.
    */
   sizes: PropTypes.string,
-  /**
-   * The props used for each slot inside.
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    fallback: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    img: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * The components used for each slot inside.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    fallback: PropTypes.elementType,
-    img: PropTypes.elementType,
-    root: PropTypes.elementType,
-  }),
   /**
    * The `src` attribute for the `img` element.
    */
