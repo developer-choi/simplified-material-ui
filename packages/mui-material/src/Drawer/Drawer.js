@@ -25,15 +25,12 @@ const overridesResolver = (props, styles) => {
 };
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, anchor } = ownerState;
+  const { classes } = ownerState;
 
   const slots = {
-    root: ['root', `anchor${capitalize(anchor)}`],
+    root: ['root', 'anchorLeft'],
     modal: ['modal'],
-    paper: [
-      'paper',
-      `paperAnchor${capitalize(anchor)}`,
-    ],
+    paper: ['paper', 'paperAnchorLeft'],
   };
 
   return composeClasses(slots, getDrawerUtilityClass, classes);
@@ -53,11 +50,9 @@ const DrawerPaper = styled(Paper, {
   name: 'MuiDrawer',
   slot: 'Paper',
   overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
     return [
       styles.paper,
-      styles[`paperAnchor${capitalize(ownerState.anchor)}`],
+      styles.paperAnchorLeft,
     ];
   },
 })(
@@ -73,34 +68,14 @@ const DrawerPaper = styled(Paper, {
     // temporary style
     position: 'fixed',
     top: 0,
+    left: 0,
     // We disable the focus ring for mouse, touch and keyboard users.
     // At some point, it would be better to keep it for keyboard users.
     // :focus-ring CSS pseudo-class will help.
     outline: 0,
-    variants: [
-      {
-        props: {
-          anchor: 'left',
-        },
-        style: {
-          left: 0,
-        },
-      },
-    ],
   })),
 );
 
-const oppositeDirection = {
-  left: 'right',
-};
-
-export function isHorizontal(anchor) {
-  return ['left', 'right'].includes(anchor);
-}
-
-export function getAnchor({ direction }, anchor) {
-  return direction === 'rtl' && isHorizontal(anchor) ? oppositeDirection[anchor] : anchor;
-}
 
 /**
  * The props of the [Modal](/material-ui/api/modal/) component are available
@@ -116,7 +91,6 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
   };
 
   const {
-    anchor: anchorProp = 'left',
     BackdropProps,
     children,
     className,
@@ -136,6 +110,7 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
   } = props;
 
   const variant = 'temporary';
+  const anchor = 'left';
 
   // Let's assume that the Drawer will always be rendered on user space.
   // We use this state is order to skip the appear transition during the
@@ -144,9 +119,6 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
   React.useEffect(() => {
     mounted.current = true;
   }, []);
-
-  const anchorInvariant = getAnchor({ direction: isRtl ? 'rtl' : 'ltr' }, anchorProp);
-  const anchor = anchorProp;
 
   const ownerState = {
     ...props,
@@ -218,7 +190,7 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
     externalForwardedProps,
     additionalProps: {
       in: open,
-      direction: oppositeDirection[anchorInvariant],
+      direction: 'right',
       timeout: transitionDuration,
       appear: mounted.current,
     },
