@@ -319,10 +319,6 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
 
   const slidingDrawer = <TransitionSlot {...transitionSlotProps}>{drawer}</TransitionSlot>;
 
-  if (variant === 'persistent') {
-    return <DockedSlot {...dockedSlotProps}>{slidingDrawer}</DockedSlot>;
-  }
-
   // variant === temporary
   return <RootSlot {...rootSlotProps}>{slidingDrawer}</RootSlot>;
 });
