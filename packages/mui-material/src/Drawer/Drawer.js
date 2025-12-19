@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import integerPropType from '@mui/utils/integerPropType';
 import composeClasses from '@mui/utils/composeClasses';
-import { useRtl } from '@mui/system/RtlProvider';
 import Modal from '../Modal';
 import Slide from '../Slide';
 import Paper from '../Paper';
@@ -84,7 +83,6 @@ const DrawerPaper = styled(Paper, {
 const Drawer = React.forwardRef(function Drawer(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiDrawer' });
   const theme = useTheme();
-  const isRtl = useRtl();
   const defaultTransitionDuration = {
     enter: theme.transitions.duration.enteringScreen,
     exit: theme.transitions.duration.leavingScreen,
