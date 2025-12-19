@@ -84,7 +84,6 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
   const {
     children,
     className,
-    ModalProps: { BackdropProps: BackdropPropsProp, ...ModalProps } = {},
     onClose,
     open = false,
     ...other
@@ -110,11 +109,7 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
       ownerState={ownerState}
       open={open}
       onClose={onClose}
-      slotProps={{
-        backdrop: BackdropPropsProp,
-      }}
       {...other}
-      {...ModalProps}
     >
       <DrawerPaper
         className={classes.paper}
