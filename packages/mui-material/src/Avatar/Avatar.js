@@ -1,67 +1,13 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { styled } from '../zero-styled';
-import Person from '../internal/svg-icons/Person';
-const AvatarRoot = styled('div', {
-  name: 'MuiAvatar',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
 
-    return [
-      styles.root,
-      ownerState.colorDefault && styles.colorDefault,
-    ];
-  },
-})({
-  position: 'relative',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexShrink: 0,
-  width: 40,
-  height: 40,
-  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-  fontSize: 20,
-  lineHeight: 1,
-  borderRadius: '50%',
-  overflow: 'hidden',
-  userSelect: 'none',
-  variants: [
-    {
-      props: { colorDefault: true },
-      style: {
-        color: '#fafafa',
-        backgroundColor: '#bdbdbd',
-      },
-    },
-  ],
-});
-
-const AvatarImg = styled('img', {
-  name: 'MuiAvatar',
-  slot: 'Img',
-})({
-  width: '100%',
-  height: '100%',
-  textAlign: 'center',
-  // Handle non-square image.
-  objectFit: 'cover',
-  // Hide alt text.
-  color: 'transparent',
-  // Hide the image broken icon, only works on Chrome.
-  textIndent: 10000,
-});
-
-const AvatarFallback = styled(Person, {
-  name: 'MuiAvatar',
-  slot: 'Fallback',
-})({
-  width: '75%',
-  height: '75%',
-});
+// Person 아이콘 (인라인 SVG)
+const PersonIcon = (props) => (
+  <svg style={{ width: '75%', height: '75%' }} viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+  </svg>
+);
 
 function useLoaded({ src }) {
   const [loaded, setLoaded] = React.useState(false);
@@ -103,40 +49,64 @@ const Avatar = React.forwardRef(function Avatar(props, ref) {
     children: childrenProp,
     className,
     src,
+    style,
     ...other
   } = props;
 
-  let children = null;
-
-  const ownerState = {
-    ...props,
-  };
-
-  // Use a hook instead of onError on the img element to support server-side rendering.
   const loaded = useLoaded({ src });
   const hasImg = !!src;
   const hasImgNotFailing = hasImg && loaded !== 'error';
 
-  ownerState.colorDefault = !hasImgNotFailing;
-  // This issue explains why this is required: https://github.com/mui/material-ui/issues/42184
-  delete ownerState.ownerState;
-
+  // Fallback 우선순위 로직 (4가지)
+  let children = null;
   if (hasImgNotFailing) {
-    children = <AvatarImg alt={alt} src={src} />;
-    // We only render valid children, non valid children are rendered with a fallback
-    // We consider that invalid children are all falsy values, except 0, which is valid.
+    // 1. 이미지 로드 성공
+    children = (
+      <img
+        src={src}
+        alt={alt}
+        style={{
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          color: 'transparent',
+          textIndent: 10000,
+        }}
+      />
+    );
   } else if (!!childrenProp || childrenProp === 0) {
+    // 2. children prop 있음
     children = childrenProp;
   } else if (hasImg && alt) {
+    // 3. 이미지 실패 + alt → 이니셜 (alt[0])
     children = alt[0];
   } else {
-    children = <AvatarFallback />;
+    // 4. 빈 Avatar → Person 아이콘
+    children = <PersonIcon />;
   }
 
+  const rootStyle = {
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+    width: 40,
+    height: 40,
+    fontSize: 20,
+    lineHeight: 1,
+    borderRadius: '50%',
+    overflow: 'hidden',
+    userSelect: 'none',
+    backgroundColor: hasImgNotFailing ? 'transparent' : '#bdbdbd',
+    color: '#fff',
+    ...style,
+  };
+
   return (
-    <AvatarRoot ref={ref} className={className} ownerState={ownerState} {...other}>
+    <div ref={ref} className={className} style={rootStyle} {...other}>
       {children}
-    </AvatarRoot>
+    </div>
   );
 });
 
