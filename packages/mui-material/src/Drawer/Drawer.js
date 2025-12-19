@@ -1,7 +1,6 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import integerPropType from '@mui/utils/integerPropType';
 import Modal from '../Modal';
 import Paper from '../Paper';
@@ -19,17 +18,6 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
     open = false,
     ...other
   } = inProps;
-
-  const variant = 'temporary';
-  const anchor = 'left';
-
-  const ownerState = {
-    ...inProps,
-    anchor,
-    open,
-    variant,
-    ...other,
-  };
 
   return (
     <Modal
