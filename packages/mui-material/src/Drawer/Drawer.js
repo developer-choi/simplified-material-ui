@@ -5,11 +5,6 @@ import integerPropType from '@mui/utils/integerPropType';
 import Modal from '../Modal';
 import Paper from '../Paper';
 
-
-/**
- * The props of the [Modal](/material-ui/api/modal/) component are available
- * when `variant="temporary"` is set.
- */
 const Drawer = React.forwardRef(function Drawer(inProps, ref) {
   const {
     children,
