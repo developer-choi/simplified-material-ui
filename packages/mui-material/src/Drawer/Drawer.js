@@ -317,10 +317,6 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
 
   const drawer = <PaperSlot {...paperSlotProps}>{children}</PaperSlot>;
 
-  if (variant === 'permanent') {
-    return <DockedSlot {...dockedSlotProps}>{drawer}</DockedSlot>;
-  }
-
   const slidingDrawer = <TransitionSlot {...transitionSlotProps}>{drawer}</TransitionSlot>;
 
   if (variant === 'persistent') {
