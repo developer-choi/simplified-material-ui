@@ -10,7 +10,6 @@ import capitalize from '../utils/capitalize';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled, useTheme } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import { getDrawerUtilityClass } from './drawerClasses';
 
 const overridesResolver = (props, styles) => {
@@ -78,7 +77,6 @@ const DrawerPaper = styled(Paper, {
  * when `variant="temporary"` is set.
  */
 const Drawer = React.forwardRef(function Drawer(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiDrawer' });
   const theme = useTheme();
 
   const {
@@ -87,13 +85,13 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
     onClose,
     open = false,
     ...other
-  } = props;
+  } = inProps;
 
   const variant = 'temporary';
   const anchor = 'left';
 
   const ownerState = {
-    ...props,
+    ...inProps,
     anchor,
     open,
     variant,
