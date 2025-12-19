@@ -12,8 +12,6 @@ import { styled, useTheme } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import { getDrawerUtilityClass } from './drawerClasses';
-import useSlot from '../utils/useSlot';
-import { mergeSlotProps } from '../utils';
 
 const overridesResolver = (props, styles) => {
   return [
@@ -91,8 +89,6 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
     ModalProps: { BackdropProps: BackdropPropsProp, ...ModalProps } = {},
     onClose,
     open = false,
-    slots = {},
-    slotProps = {},
     ...other
   } = props;
 
@@ -110,58 +106,32 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
 
   const classes = useUtilityClasses(ownerState);
 
-  const externalForwardedProps = {
-    slots: {
-      ...slots,
-    },
-    slotProps: {
-      ...slotProps,
-      backdrop: slotProps.backdrop || BackdropPropsProp,
-    },
-  };
-
-  const [RootSlot, rootSlotProps] = useSlot('root', {
-    ref,
-    elementType: DrawerRoot,
-    className: clsx(classes.root, classes.modal, className),
-    shouldForwardComponentProp: true,
-    ownerState,
-    externalForwardedProps: {
-      ...externalForwardedProps,
-      ...other,
-      ...ModalProps,
-    },
-    additionalProps: {
-      open,
-      onClose,
-      hideBackdrop,
-      slots: {
-        backdrop: externalForwardedProps.slots.backdrop,
-      },
-      slotProps: {
-        backdrop: externalForwardedProps.slotProps.backdrop,
-      },
-    },
-  });
-
-  const [PaperSlot, paperSlotProps] = useSlot('paper', {
-    elementType: DrawerPaper,
-    shouldForwardComponentProp: true,
-    className: classes.paper,
-    ownerState,
-    externalForwardedProps,
-    additionalProps: {
-      elevation,
-      square: true,
-      role: 'dialog',
-      'aria-modal': 'true',
-    },
-  });
-
-  const drawer = <PaperSlot {...paperSlotProps}>{children}</PaperSlot>;
-
-  // variant === temporary
-  return <RootSlot {...rootSlotProps}>{drawer}</RootSlot>;
+  return (
+    <DrawerRoot
+      ref={ref}
+      className={clsx(classes.root, classes.modal, className)}
+      ownerState={ownerState}
+      open={open}
+      onClose={onClose}
+      hideBackdrop={hideBackdrop}
+      slotProps={{
+        backdrop: BackdropPropsProp,
+      }}
+      {...other}
+      {...ModalProps}
+    >
+      <DrawerPaper
+        className={classes.paper}
+        ownerState={ownerState}
+        elevation={elevation}
+        square
+        role="dialog"
+        aria-modal="true"
+      >
+        {children}
+      </DrawerPaper>
+    </DrawerRoot>
+  );
 });
 
 Drawer.propTypes /* remove-proptypes */ = {
