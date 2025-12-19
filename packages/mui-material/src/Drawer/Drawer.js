@@ -84,7 +84,6 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
   const theme = useTheme();
 
   const {
-    BackdropProps,
     children,
     className,
     elevation = 16,
@@ -92,7 +91,6 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
     ModalProps: { BackdropProps: BackdropPropsProp, ...ModalProps } = {},
     onClose,
     open = false,
-    PaperProps = {},
     slots = {},
     slotProps = {},
     ...other
@@ -117,9 +115,8 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
       ...slots,
     },
     slotProps: {
-      paper: PaperProps,
       ...slotProps,
-      backdrop: slotProps.backdrop || { ...BackdropProps, ...BackdropPropsProp },
+      backdrop: slotProps.backdrop || BackdropPropsProp,
     },
   };
 
@@ -150,7 +147,7 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
   const [PaperSlot, paperSlotProps] = useSlot('paper', {
     elementType: DrawerPaper,
     shouldForwardComponentProp: true,
-    className: clsx(classes.paper, PaperProps.className),
+    className: classes.paper,
     ownerState,
     externalForwardedProps,
     additionalProps: {
