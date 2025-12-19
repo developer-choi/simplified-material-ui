@@ -3,7 +3,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import Person from '../internal/svg-icons/Person';
 const AvatarRoot = styled('div', {
   name: 'MuiAvatar',
@@ -16,39 +15,30 @@ const AvatarRoot = styled('div', {
       ownerState.colorDefault && styles.colorDefault,
     ];
   },
-})(
-  memoTheme(({ theme }) => ({
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0,
-    width: 40,
-    height: 40,
-    fontFamily: theme.typography.fontFamily,
-    fontSize: theme.typography.pxToRem(20),
-    lineHeight: 1,
-    borderRadius: '50%',
-    overflow: 'hidden',
-    userSelect: 'none',
-    variants: [
-      {
-        props: { colorDefault: true },
-        style: {
-          color: (theme.vars || theme).palette.background.default,
-          ...(theme.vars
-            ? {
-                backgroundColor: theme.vars.palette.Avatar.defaultBg,
-              }
-            : {
-                backgroundColor: theme.palette.grey[400],
-                ...theme.applyStyles('dark', { backgroundColor: theme.palette.grey[600] }),
-              }),
-        },
+})({
+  position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexShrink: 0,
+  width: 40,
+  height: 40,
+  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+  fontSize: 20,
+  lineHeight: 1,
+  borderRadius: '50%',
+  overflow: 'hidden',
+  userSelect: 'none',
+  variants: [
+    {
+      props: { colorDefault: true },
+      style: {
+        color: '#fafafa',
+        backgroundColor: '#bdbdbd',
       },
-    ],
-  })),
-);
+    },
+  ],
+});
 
 const AvatarImg = styled('img', {
   name: 'MuiAvatar',
