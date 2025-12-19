@@ -134,10 +134,7 @@ const Avatar = React.forwardRef(function Avatar(inProps, ref) {
     alt,
     children: childrenProp,
     className,
-    imgProps,
-    sizes,
     src,
-    srcSet,
     ...other
   } = props;
 
@@ -148,12 +145,8 @@ const Avatar = React.forwardRef(function Avatar(inProps, ref) {
   };
 
   // Use a hook instead of onError on the img element to support server-side rendering.
-  const loaded = useLoaded({
-    ...imgProps,
-    src,
-    srcSet,
-  });
-  const hasImg = src || srcSet;
+  const loaded = useLoaded({ src });
+  const hasImg = !!src;
   const hasImgNotFailing = hasImg && loaded !== 'error';
 
   ownerState.colorDefault = !hasImgNotFailing;
@@ -168,8 +161,6 @@ const Avatar = React.forwardRef(function Avatar(inProps, ref) {
         className={classes.img}
         alt={alt}
         src={src}
-        srcSet={srcSet}
-        sizes={sizes}
       />
     );
     // We only render valid children, non valid children are rendered with a fallback
@@ -218,24 +209,9 @@ Avatar.propTypes /* remove-proptypes */ = {
    */
   className: PropTypes.string,
   /**
-   * [Attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img#attributes) applied to the `img` element if the component is used to display an image.
-   * It can be used to listen for the loading error event.
-   * @deprecated Use `slotProps.img` instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   */
-  imgProps: PropTypes.object,
-  /**
-   * The `sizes` attribute for the `img` element.
-   */
-  sizes: PropTypes.string,
-  /**
    * The `src` attribute for the `img` element.
    */
   src: PropTypes.string,
-  /**
-   * The `srcSet` attribute for the `img` element.
-   * Use this attribute for responsive image display.
-   */
-  srcSet: PropTypes.string,
   /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
