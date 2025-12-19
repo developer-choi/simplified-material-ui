@@ -5,7 +5,6 @@ import clsx from 'clsx';
 import integerPropType from '@mui/utils/integerPropType';
 import composeClasses from '@mui/utils/composeClasses';
 import Modal from '../Modal';
-import Slide from '../Slide';
 import Paper from '../Paper';
 import capitalize from '../utils/capitalize';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
@@ -94,9 +93,6 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
     onClose,
     open = false,
     PaperProps = {},
-    SlideProps,
-    // eslint-disable-next-line react/prop-types
-    TransitionComponent,
     slots = {},
     slotProps = {},
     ...other
@@ -104,14 +100,6 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
 
   const variant = 'temporary';
   const anchor = 'left';
-
-  // Let's assume that the Drawer will always be rendered on user space.
-  // We use this state is order to skip the appear transition during the
-  // initial mount of the component.
-  const mounted = React.useRef(false);
-  React.useEffect(() => {
-    mounted.current = true;
-  }, []);
 
   const ownerState = {
     ...props,
@@ -126,12 +114,10 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
 
   const externalForwardedProps = {
     slots: {
-      transition: TransitionComponent,
       ...slots,
     },
     slotProps: {
       paper: PaperProps,
-      transition: SlideProps,
       ...slotProps,
       backdrop: slotProps.backdrop || { ...BackdropProps, ...BackdropPropsProp },
     },
@@ -175,24 +161,10 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
     },
   });
 
-  const [TransitionSlot, transitionSlotProps] = useSlot('transition', {
-    elementType: Slide,
-    ownerState,
-    externalForwardedProps,
-    additionalProps: {
-      in: open,
-      direction: 'right',
-      timeout: 225,
-      appear: mounted.current,
-    },
-  });
-
   const drawer = <PaperSlot {...paperSlotProps}>{children}</PaperSlot>;
 
-  const slidingDrawer = <TransitionSlot {...transitionSlotProps}>{drawer}</TransitionSlot>;
-
   // variant === temporary
-  return <RootSlot {...rootSlotProps}>{slidingDrawer}</RootSlot>;
+  return <RootSlot {...rootSlotProps}>{drawer}</RootSlot>;
 });
 
 Drawer.propTypes /* remove-proptypes */ = {
