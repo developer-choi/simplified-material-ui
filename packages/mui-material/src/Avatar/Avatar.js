@@ -5,7 +5,6 @@ import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import Person from '../internal/svg-icons/Person';
 import { getAvatarUtilityClass } from './avatarClasses';
 
@@ -123,8 +122,7 @@ function useLoaded({ src }) {
   return loaded;
 }
 
-const Avatar = React.forwardRef(function Avatar(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiAvatar' });
+const Avatar = React.forwardRef(function Avatar(props, ref) {
   const {
     alt,
     children: childrenProp,
