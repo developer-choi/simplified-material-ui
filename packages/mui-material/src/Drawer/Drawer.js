@@ -84,7 +84,6 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
   const {
     children,
     className,
-    elevation = 16,
     hideBackdrop = false,
     ModalProps: { BackdropProps: BackdropPropsProp, ...ModalProps } = {},
     onClose,
@@ -98,7 +97,6 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
   const ownerState = {
     ...props,
     anchor,
-    elevation,
     open,
     variant,
     ...other,
@@ -123,7 +121,7 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
       <DrawerPaper
         className={classes.paper}
         ownerState={ownerState}
-        elevation={elevation}
+        elevation={16}
         square
         role="dialog"
         aria-modal="true"
