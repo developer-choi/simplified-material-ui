@@ -3,32 +3,17 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import integerPropType from '@mui/utils/integerPropType';
-import composeClasses from '@mui/utils/composeClasses';
 import Modal from '../Modal';
 import Paper from '../Paper';
-import capitalize from '../utils/capitalize';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled, useTheme } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { getDrawerUtilityClass } from './drawerClasses';
 
 const overridesResolver = (props, styles) => {
   return [
     styles.root,
     styles.modal,
   ];
-};
-
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-
-  const slots = {
-    root: ['root', 'anchorLeft'],
-    modal: ['modal'],
-    paper: ['paper', 'paperAnchorLeft'],
-  };
-
-  return composeClasses(slots, getDrawerUtilityClass, classes);
 };
 
 const DrawerRoot = styled(Modal, {
@@ -98,19 +83,16 @@ const Drawer = React.forwardRef(function Drawer(inProps, ref) {
     ...other,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <DrawerRoot
       ref={ref}
-      className={clsx(classes.root, classes.modal, className)}
+      className={className}
       ownerState={ownerState}
       open={open}
       onClose={onClose}
       {...other}
     >
       <DrawerPaper
-        className={classes.paper}
         ownerState={ownerState}
         elevation={16}
         square
