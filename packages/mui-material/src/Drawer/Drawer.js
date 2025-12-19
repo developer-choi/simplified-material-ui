@@ -6,8 +6,7 @@ import integerPropType from '@mui/utils/integerPropType';
 import Modal from '../Modal';
 import Paper from '../Paper';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
-import { styled, useTheme } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
+import { styled } from '../zero-styled';
 
 const overridesResolver = (props, styles) => {
   return [
@@ -20,11 +19,9 @@ const DrawerRoot = styled(Modal, {
   name: 'MuiDrawer',
   slot: 'Root',
   overridesResolver,
-})(
-  memoTheme(({ theme }) => ({
-    zIndex: (theme.vars || theme).zIndex.drawer,
-  })),
-);
+})({
+  zIndex: 1200,
+});
 
 const DrawerPaper = styled(Paper, {
   name: 'MuiDrawer',
@@ -35,26 +32,24 @@ const DrawerPaper = styled(Paper, {
       styles.paperAnchorLeft,
     ];
   },
-})(
-  memoTheme(({ theme }) => ({
-    overflowY: 'auto',
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    flex: '1 0 auto',
-    zIndex: (theme.vars || theme).zIndex.drawer,
-    // Add iOS momentum scrolling for iOS < 13.0
-    WebkitOverflowScrolling: 'touch',
-    // temporary style
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    // We disable the focus ring for mouse, touch and keyboard users.
-    // At some point, it would be better to keep it for keyboard users.
-    // :focus-ring CSS pseudo-class will help.
-    outline: 0,
-  })),
-);
+})({
+  overflowY: 'auto',
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%',
+  flex: '1 0 auto',
+  zIndex: 1200,
+  // Add iOS momentum scrolling for iOS < 13.0
+  WebkitOverflowScrolling: 'touch',
+  // temporary style
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  // We disable the focus ring for mouse, touch and keyboard users.
+  // At some point, it would be better to keep it for keyboard users.
+  // :focus-ring CSS pseudo-class will help.
+  outline: 0,
+});
 
 
 /**
@@ -62,8 +57,6 @@ const DrawerPaper = styled(Paper, {
  * when `variant="temporary"` is set.
  */
 const Drawer = React.forwardRef(function Drawer(inProps, ref) {
-  const theme = useTheme();
-
   const {
     children,
     className,
