@@ -10,10 +10,10 @@ import Person from '../internal/svg-icons/Person';
 import { getAvatarUtilityClass } from './avatarClasses';
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, variant, colorDefault } = ownerState;
+  const { classes, colorDefault } = ownerState;
 
   const slots = {
-    root: ['root', variant, colorDefault && 'colorDefault'],
+    root: ['root', colorDefault && 'colorDefault'],
     img: ['img'],
     fallback: ['fallback'],
   };
@@ -29,7 +29,6 @@ const AvatarRoot = styled('div', {
 
     return [
       styles.root,
-      styles[ownerState.variant],
       ownerState.colorDefault && styles.colorDefault,
     ];
   },
@@ -49,18 +48,6 @@ const AvatarRoot = styled('div', {
     overflow: 'hidden',
     userSelect: 'none',
     variants: [
-      {
-        props: { variant: 'rounded' },
-        style: {
-          borderRadius: (theme.vars || theme).shape.borderRadius,
-        },
-      },
-      {
-        props: { variant: 'square' },
-        style: {
-          borderRadius: 0,
-        },
-      },
       {
         props: { colorDefault: true },
         style: {
@@ -151,7 +138,6 @@ const Avatar = React.forwardRef(function Avatar(inProps, ref) {
     sizes,
     src,
     srcSet,
-    variant = 'circular',
     ...other
   } = props;
 
@@ -159,7 +145,6 @@ const Avatar = React.forwardRef(function Avatar(inProps, ref) {
 
   const ownerState = {
     ...props,
-    variant,
   };
 
   // Use a hook instead of onError on the img element to support server-side rendering.
@@ -258,14 +243,6 @@ Avatar.propTypes /* remove-proptypes */ = {
     PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
     PropTypes.func,
     PropTypes.object,
-  ]),
-  /**
-   * The shape of the avatar.
-   * @default 'circular'
-   */
-  variant: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['circular', 'rounded', 'square']),
-    PropTypes.string,
   ]),
 };
 
