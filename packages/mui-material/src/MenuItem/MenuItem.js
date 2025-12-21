@@ -9,7 +9,6 @@ import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import ListContext from '../List/ListContext';
 import ButtonBase from '../ButtonBase';
-import useEnhancedEffect from '../utils/useEnhancedEffect';
 import useForkRef from '../utils/useForkRef';
 import { dividerClasses } from '../Divider';
 import { listItemIconClasses } from '../ListItemIcon';
@@ -164,7 +163,6 @@ const MenuItemRoot = styled(ButtonBase, {
 const MenuItem = React.forwardRef(function MenuItem(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiMenuItem' });
   const {
-    autoFocus = false,
     component = 'li',
     dense = false,
     divider = false,
@@ -185,19 +183,6 @@ const MenuItem = React.forwardRef(function MenuItem(inProps, ref) {
     [context.dense, dense, disableGutters],
   );
 
-  const menuItemRef = React.useRef(null);
-  useEnhancedEffect(() => {
-    if (autoFocus) {
-      if (menuItemRef.current) {
-        menuItemRef.current.focus();
-      } else if (process.env.NODE_ENV !== 'production') {
-        console.error(
-          'MUI: Unable to set focus to a MenuItem whose component has not been rendered.',
-        );
-      }
-    }
-  }, [autoFocus]);
-
   const ownerState = {
     ...props,
     dense: childContext.dense,
@@ -207,7 +192,7 @@ const MenuItem = React.forwardRef(function MenuItem(inProps, ref) {
 
   const classes = useUtilityClasses(props);
 
-  const handleRef = useForkRef(menuItemRef, ref);
+  const handleRef = useForkRef(null, ref);
 
   let tabIndex;
   if (!props.disabled) {
@@ -236,12 +221,6 @@ MenuItem.propTypes /* remove-proptypes */ = {
   // │ These PropTypes are generated from the TypeScript type definitions. │
   // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
   // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * If `true`, the list item is focused during the first mount.
-   * Focus will also be triggered if the value changes from false to true.
-   * @default false
-   */
-  autoFocus: PropTypes.bool,
   /**
    * The content of the component.
    */
