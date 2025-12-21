@@ -29,32 +29,12 @@ function previousItem(list, item, disableListWrap) {
   return disableListWrap ? null : list.lastChild;
 }
 
-function textCriteriaMatches(nextFocus, textCriteria) {
-  if (textCriteria === undefined) {
-    return true;
-  }
-  let text = nextFocus.innerText;
-  if (text === undefined) {
-    // jsdom doesn't support innerText
-    text = nextFocus.textContent;
-  }
-  text = text.trim().toLowerCase();
-  if (text.length === 0) {
-    return false;
-  }
-  if (textCriteria.repeating) {
-    return text[0] === textCriteria.keys[0];
-  }
-  return text.startsWith(textCriteria.keys.join(''));
-}
-
 function moveFocus(
   list,
   currentFocus,
   disableListWrap,
   disabledItemsFocusable,
   traversalFunction,
-  textCriteria,
 ) {
   let wrappedOnce = false;
   let nextFocus = traversalFunction(list, currentFocus, currentFocus ? disableListWrap : false);
@@ -73,11 +53,7 @@ function moveFocus(
       ? false
       : nextFocus.disabled || nextFocus.getAttribute('aria-disabled') === 'true';
 
-    if (
-      !nextFocus.hasAttribute('tabindex') ||
-      !textCriteriaMatches(nextFocus, textCriteria) ||
-      nextFocusDisabled
-    ) {
+    if (!nextFocus.hasAttribute('tabindex') || nextFocusDisabled) {
       // Move to the next element.
       nextFocus = traversalFunction(list, nextFocus, disableListWrap);
     } else {
@@ -108,12 +84,6 @@ const MenuList = React.forwardRef(function MenuList(props, ref) {
     ...other
   } = props;
   const listRef = React.useRef(null);
-  const textCriteriaRef = React.useRef({
-    keys: [],
-    repeating: true,
-    previousKeyMatched: true,
-    lastTime: null,
-  });
 
   useEnhancedEffect(() => {
     if (autoFocus) {
@@ -174,33 +144,6 @@ const MenuList = React.forwardRef(function MenuList(props, ref) {
     } else if (key === 'End') {
       event.preventDefault();
       moveFocus(list, null, disableListWrap, disabledItemsFocusable, previousItem);
-    } else if (key.length === 1) {
-      const criteria = textCriteriaRef.current;
-      const lowerKey = key.toLowerCase();
-      const currTime = performance.now();
-      if (criteria.keys.length > 0) {
-        // Reset
-        if (currTime - criteria.lastTime > 500) {
-          criteria.keys = [];
-          criteria.repeating = true;
-          criteria.previousKeyMatched = true;
-        } else if (criteria.repeating && lowerKey !== criteria.keys[0]) {
-          criteria.repeating = false;
-        }
-      }
-      criteria.lastTime = currTime;
-      criteria.keys.push(lowerKey);
-      const keepFocusOnCurrent =
-        currentFocus && !criteria.repeating && textCriteriaMatches(currentFocus, criteria);
-      if (
-        criteria.previousKeyMatched &&
-        (keepFocusOnCurrent ||
-          moveFocus(list, currentFocus, false, disabledItemsFocusable, nextItem, criteria))
-      ) {
-        event.preventDefault();
-      } else {
-        criteria.previousKeyMatched = false;
-      }
     }
 
     if (onKeyDown) {
