@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import ButtonBase from '../ButtonBase';
 
 const MenuItem = React.forwardRef(function MenuItem(props, ref) {
@@ -50,37 +49,5 @@ const MenuItem = React.forwardRef(function MenuItem(props, ref) {
     </ButtonBase>
   );
 });
-
-MenuItem.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * The content of the component.
-   */
-  children: PropTypes.node,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * @ignore
-   */
-  disabled: PropTypes.bool,
-  /**
-   * If `true`, the component is selected.
-   * @default false
-   */
-  selected: PropTypes.bool,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-};
 
 export default MenuItem;
