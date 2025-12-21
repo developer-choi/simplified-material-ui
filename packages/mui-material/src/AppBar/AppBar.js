@@ -5,7 +5,6 @@ import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import capitalize from '../utils/capitalize';
 import Paper from '../Paper';
 import { getAppBarUtilityClass } from './appBarClasses';
@@ -107,8 +106,7 @@ const AppBarRoot = styled(Paper, {
   })),
 );
 
-const AppBar = React.forwardRef(function AppBar(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiAppBar' });
+const AppBar = React.forwardRef(function AppBar(props, ref) {
   const {
     className,
     color = 'primary',
