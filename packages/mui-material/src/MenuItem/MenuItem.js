@@ -2,16 +2,14 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import ButtonBase from '../ButtonBase';
 import useForkRef from '../utils/useForkRef';
 import { listItemIconClasses } from '../ListItemIcon';
 import { listItemTextClasses } from '../ListItemText';
-import menuItemClasses, { getMenuItemUtilityClass } from './menuItemClasses';
+import menuItemClasses from './menuItemClasses';
 
 export const overridesResolver = (props, styles) => {
   const { ownerState } = props;
@@ -19,24 +17,6 @@ export const overridesResolver = (props, styles) => {
   return [
     styles.root,
   ];
-};
-
-const useUtilityClasses = (ownerState) => {
-  const { disabled, selected, classes } = ownerState;
-  const slots = {
-    root: [
-      'root',
-      disabled && 'disabled',
-      selected && 'selected',
-    ],
-  };
-
-  const composedClasses = composeClasses(slots, getMenuItemUtilityClass, classes);
-
-  return {
-    ...classes,
-    ...composedClasses,
-  };
 };
 
 const MenuItemRoot = styled(ButtonBase, {
@@ -85,8 +65,7 @@ const MenuItemRoot = styled(ButtonBase, {
   })),
 );
 
-const MenuItem = React.forwardRef(function MenuItem(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiMenuItem' });
+const MenuItem = React.forwardRef(function MenuItem(props, ref) {
   const {
     className,
     ...other
@@ -96,8 +75,6 @@ const MenuItem = React.forwardRef(function MenuItem(inProps, ref) {
     ...props,
   };
 
-  const classes = useUtilityClasses(props);
-
   const handleRef = useForkRef(null, ref);
 
   return (
@@ -105,10 +82,9 @@ const MenuItem = React.forwardRef(function MenuItem(inProps, ref) {
       ref={handleRef}
       role="menuitem"
       component="li"
-      className={clsx(classes.root, className)}
+      className={className}
       {...other}
       ownerState={ownerState}
-      classes={classes}
     />
   );
 });
@@ -122,10 +98,6 @@ MenuItem.propTypes /* remove-proptypes */ = {
    * The content of the component.
    */
   children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
   /**
    * @ignore
    */
