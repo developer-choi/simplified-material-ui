@@ -8,10 +8,10 @@ import { useDefaultProps } from '../DefaultPropsProvider';
 import { getBackdropUtilityClass } from './backdropClasses';
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, invisible } = ownerState;
+  const { classes } = ownerState;
 
   const slots = {
-    root: ['root', invisible && 'invisible'],
+    root: ['root'],
   };
 
   return composeClasses(slots, getBackdropUtilityClass, classes);
@@ -21,9 +21,7 @@ const BackdropRoot = styled('div', {
   name: 'MuiBackdrop',
   slot: 'Root',
   overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [styles.root, ownerState.invisible && styles.invisible];
+    return [styles.root];
   },
 })({
   position: 'fixed',
@@ -36,14 +34,6 @@ const BackdropRoot = styled('div', {
   left: 0,
   backgroundColor: 'rgba(0, 0, 0, 0.5)',
   WebkitTapHighlightColor: 'transparent',
-  variants: [
-    {
-      props: { invisible: true },
-      style: {
-        backgroundColor: 'transparent',
-      },
-    },
-  ],
 });
 
 const Backdrop = React.forwardRef(function Backdrop(inProps, ref) {
@@ -51,14 +41,12 @@ const Backdrop = React.forwardRef(function Backdrop(inProps, ref) {
   const {
     children,
     className,
-    invisible = false,
     open,
     ...other
   } = props;
 
   const ownerState = {
     ...props,
-    invisible,
   };
 
   const classes = useUtilityClasses(ownerState);
@@ -98,12 +86,6 @@ Backdrop.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   className: PropTypes.string,
-  /**
-   * If `true`, the backdrop is invisible.
-   * It can be used when rendering a popover or a custom select component.
-   * @default false
-   */
-  invisible: PropTypes.bool,
   /**
    * If `true`, the component is shown.
    */
