@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import { isFragment } from 'react-is';
 import PropTypes from 'prop-types';
 import ownerDocument from '../utils/ownerDocument';
 import List from '../List';
@@ -101,13 +100,11 @@ const MenuList = React.forwardRef(function MenuList(props, ref) {
     // eslint-disable-next-line react/prop-types
     actions,
     autoFocus = false,
-    autoFocusItem = false,
     children,
     className,
     disabledItemsFocusable = false,
     disableListWrap = false,
     onKeyDown,
-    variant = 'selectedMenu',
     ...other
   } = props;
   const listRef = React.useRef(null);
@@ -213,75 +210,6 @@ const MenuList = React.forwardRef(function MenuList(props, ref) {
 
   const handleRef = useForkRef(listRef, ref);
 
-  /**
-   * the index of the item should receive focus
-   * in a `variant="selectedMenu"` it's the first `selected` item
-   * otherwise it's the very first item.
-   */
-  let activeItemIndex = -1;
-  // since we inject focus related props into children we have to do a lookahead
-  // to check if there is a `selected` item. We're looking for the last `selected`
-  // item and use the first valid item as a fallback
-  React.Children.forEach(children, (child, index) => {
-    if (!React.isValidElement(child)) {
-      if (activeItemIndex === index) {
-        activeItemIndex += 1;
-        if (activeItemIndex >= children.length) {
-          // there are no focusable items within the list.
-          activeItemIndex = -1;
-        }
-      }
-      return;
-    }
-
-    if (process.env.NODE_ENV !== 'production') {
-      if (isFragment(child)) {
-        console.error(
-          [
-            "MUI: The Menu component doesn't accept a Fragment as a child.",
-            'Consider providing an array instead.',
-          ].join('\n'),
-        );
-      }
-    }
-
-    if (!child.props.disabled) {
-      if (variant === 'selectedMenu' && child.props.selected) {
-        activeItemIndex = index;
-      } else if (activeItemIndex === -1) {
-        activeItemIndex = index;
-      }
-    }
-
-    if (
-      activeItemIndex === index &&
-      (child.props.disabled || child.props.muiSkipListHighlight || child.type.muiSkipListHighlight)
-    ) {
-      activeItemIndex += 1;
-      if (activeItemIndex >= children.length) {
-        // there are no focusable items within the list.
-        activeItemIndex = -1;
-      }
-    }
-  });
-
-  const items = React.Children.map(children, (child, index) => {
-    if (index === activeItemIndex) {
-      const newChildProps = {};
-      if (autoFocusItem) {
-        newChildProps.autoFocus = true;
-      }
-
-      if (child.props.tabIndex === undefined && variant === 'selectedMenu') {
-        newChildProps.tabIndex = 0;
-      }
-
-      return React.cloneElement(child, newChildProps);
-    }
-
-    return child;
-  });
-
   return (
     <List
       role="menu"
@@ -291,7 +219,7 @@ const MenuList = React.forwardRef(function MenuList(props, ref) {
       tabIndex={autoFocus ? 0 : -1}
       {...other}
     >
-      {items}
+      {children}
     </List>
   );
 });
