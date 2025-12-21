@@ -35,42 +35,66 @@ Material-UI의 복잡한 컴포넌트들을 **최소한의 기능만 남기고 �
 4. **작업 시작**
    - 승인된 계획에 따라 진행
 
-#### 계획서 예시
+#### 계획서 제출 양식 ⭐
+
+**⚠️ 계획서는 반드시 아래 양식을 따라야 합니다. 아래 Phase 1-17 예시를 참고하세요.**
 
 ```markdown
-## Button 컴포넌트 단순화 계획
+## [ComponentName] 컴포넌트 단순화 계획
 
 ### 현재 상태
-- 파일: packages/mui-material/src/Button/Button.js
-- 코드 라인: 450줄
-- 주요 기능: variant, size, color, startIcon, endIcon, fullWidth 등
+- 파일: packages/mui-material/src/[ComponentName]/[ComponentName].js
+- 코드 라인: XXX줄
+- 베이스: [상속하는 컴포넌트 있으면 명시]
+- 주요 기능: [주요 props나 기능 나열]
 
 ### 삭제 예정 기능 및 커밋 계획
 
-#### Phase 1: Slot 시스템 제거
-1. `slots`, `slotProps` prop 삭제
-   - 커밋: "Button에서 Slot 시스템 삭제"
+#### Phase N: [Phase 이름]
 
-#### Phase 2: Icon Props 제거
-2. `startIcon` prop 삭제
-   - 커밋: "startIcon prop 삭제"
-3. `endIcon` prop 삭제
-   - 커밋: "endIcon prop 삭제"
+**무엇을**: [삭제할 기능에 대한 1줄 설명]
 
-#### Phase 3: Variant Props 제거
-4. `variant` prop 삭제 (contained만 유지)
-   - 커밋: "variant prop 삭제 (contained 고정)"
-5. `color` prop 삭제 (primary만 유지)
-   - 커밋: "color prop 삭제 (primary 고정)"
+**왜 불필요한가**:
+[코드 예시 필요시 포함]
 
-... (계속)
+- **학습 목적**:
+  - [이 기능이 학습 목적과 맞지 않는 이유]
+  - [더 단순한 방법으로도 개념 이해 가능한 이유]
+
+- **복잡도**:
+  - [이 기능이 복잡한 이유 나열]
+  - [관련 코드나 로직이 얼마나 복잡한지]
+
+- **현실/일관성/대안** (선택):
+  - [실제로는 잘 안 쓰이는 기능인지]
+  - [다른 단순화된 컴포넌트와의 일관성]
+  - [대체 가능한 더 단순한 방법]
+
+**삭제 대상**:
+- [삭제할 prop 1]
+- [삭제할 prop 2]
+- [삭제할 함수/컴포넌트 등]
+
+**커밋**:
+1. [변경사항 설명]
+   - 커밋: "[ComponentName 단순화 X/Y] [커밋 메시지]"
+
+---
+
+... (다른 Phase들 계속)
 
 ### 최종 목표
-- 예상 코드 라인: ~80줄
-- 남을 props: children, onClick, disabled, className
+- 남을 props: [최종적으로 남을 props 나열]
+- 고정값: [고정될 값들 명시]
+- 스타일: [스타일 처리 방법]
 
 승인하시겠습니까? (y/n)
 ```
+
+**⚠️ 핵심 규칙:**
+- 각 Phase마다 "**무엇을**", "**왜 불필요한가**", "**삭제 대상**", "**커밋**" 4개 섹션 필수
+- "왜 불필요한가"에는 "학습 목적", "복잡도" 중 최소 1개 이상 포함
+- 아래 Phase 1-17 예시를 참고하여 구체적으로 작성
 
 ### 1. 점진적 단순화 원칙 ⚠️
 
