@@ -2,26 +2,11 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import HTMLElementType from '@mui/utils/HTMLElementType';
 import MenuList from '../MenuList';
 import Popover, { PopoverPaper } from '../Popover';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
-import { useDefaultProps } from '../DefaultPropsProvider';
-import { getMenuUtilityClass } from './menuClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-
-  const slots = {
-    root: ['root'],
-    paper: ['paper'],
-    list: ['list'],
-  };
-
-  return composeClasses(slots, getMenuUtilityClass, classes);
-};
 
 const MenuRoot = styled(Popover, {
   shouldForwardProp: (prop) => rootShouldForwardProp(prop) || prop === 'classes',
@@ -49,23 +34,14 @@ const MenuMenuList = styled(MenuList, {
   outline: 0,
 });
 
-const Menu = React.forwardRef(function Menu(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiMenu' });
-
+const Menu = React.forwardRef(function Menu(props, ref) {
   const {
     children,
     className,
     onClose,
     open,
-    PopoverClasses,
     ...other
   } = props;
-
-  const ownerState = {
-    ...props,
-  };
-
-  const classes = useUtilityClasses(ownerState);
 
   const handleListKeyDown = (event) => {
     if (event.key === 'Tab') {
@@ -89,19 +65,15 @@ const Menu = React.forwardRef(function Menu(inProps, ref) {
         horizontal: 'left',
       }}
       PaperProps={{
-        className: classes.paper,
         component: MenuPaper,
       }}
       open={open}
       ref={ref}
-      className={clsx(classes.root, className)}
-      ownerState={ownerState}
+      className={className}
       {...other}
-      classes={PopoverClasses}
     >
       <MenuMenuList
         autoFocus
-        className={classes.list}
         onKeyDown={handleListKeyDown}
       >
         {children}
@@ -128,10 +100,6 @@ Menu.propTypes /* remove-proptypes */ = {
    */
   children: PropTypes.node,
   /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
-  /**
    * @ignore
    */
   className: PropTypes.string,
@@ -146,18 +114,6 @@ Menu.propTypes /* remove-proptypes */ = {
    * If `true`, the component is shown.
    */
   open: PropTypes.bool.isRequired,
-  /**
-   * `classes` prop applied to the [`Popover`](https://mui.com/material-ui/api/popover/) element.
-   */
-  PopoverClasses: PropTypes.object,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
 };
 
 export default Menu;
