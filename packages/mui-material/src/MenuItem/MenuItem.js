@@ -20,18 +20,16 @@ export const overridesResolver = (props, styles) => {
 
   return [
     styles.root,
-    ownerState.dense && styles.dense,
     ownerState.divider && styles.divider,
     !ownerState.disableGutters && styles.gutters,
   ];
 };
 
 const useUtilityClasses = (ownerState) => {
-  const { disabled, dense, divider, disableGutters, selected, classes } = ownerState;
+  const { disabled, divider, disableGutters, selected, classes } = ownerState;
   const slots = {
     root: [
       'root',
-      dense && 'dense',
       disabled && 'disabled',
       !disableGutters && 'gutters',
       divider && 'divider',
@@ -136,26 +134,6 @@ const MenuItemRoot = styled(ButtonBase, {
           backgroundClip: 'padding-box',
         },
       },
-      {
-        props: ({ ownerState }) => !ownerState.dense,
-        style: {
-          [theme.breakpoints.up('sm')]: {
-            minHeight: 'auto',
-          },
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.dense,
-        style: {
-          minHeight: 32, // https://m2.material.io/components/menus#specs > Dense
-          paddingTop: 4,
-          paddingBottom: 4,
-          ...theme.typography.body2,
-          [`& .${listItemIconClasses.root} svg`]: {
-            fontSize: '1.25rem',
-          },
-        },
-      },
     ],
   })),
 );
@@ -164,7 +142,6 @@ const MenuItem = React.forwardRef(function MenuItem(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiMenuItem' });
   const {
     component = 'li',
-    dense = false,
     divider = false,
     disableGutters = false,
     focusVisibleClassName,
@@ -177,15 +154,14 @@ const MenuItem = React.forwardRef(function MenuItem(inProps, ref) {
   const context = React.useContext(ListContext);
   const childContext = React.useMemo(
     () => ({
-      dense: dense || context.dense || false,
+      dense: context.dense || false,
       disableGutters,
     }),
-    [context.dense, dense, disableGutters],
+    [context.dense, disableGutters],
   );
 
   const ownerState = {
     ...props,
-    dense: childContext.dense,
     divider,
     disableGutters,
   };
@@ -238,12 +214,6 @@ MenuItem.propTypes /* remove-proptypes */ = {
    * Either a string to use a HTML element or a component.
    */
   component: PropTypes.elementType,
-  /**
-   * If `true`, compact vertical padding designed for keyboard and mouse input is used.
-   * The prop defaults to the value inherited from the parent Menu component.
-   * @default false
-   */
-  dense: PropTypes.bool,
   /**
    * @ignore
    */
