@@ -6,14 +6,12 @@ import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import HTMLElementType from '@mui/utils/HTMLElementType';
 import { useRtl } from '@mui/system/RtlProvider';
-import useSlotProps from '@mui/utils/useSlotProps';
 import MenuList from '../MenuList';
 import Popover, { PopoverPaper } from '../Popover';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import { getMenuUtilityClass } from './menuClasses';
-import useSlot from '../utils/useSlot';
 
 const RTL_ORIGIN = {
   vertical: 'top',
@@ -79,8 +77,6 @@ const Menu = React.forwardRef(function Menu(inProps, ref) {
     transitionDuration = 'auto',
     TransitionProps: { onEntering, ...TransitionProps } = {},
     variant = 'selectedMenu',
-    slots = {},
-    slotProps = {},
     ...other
   } = props;
 
@@ -160,51 +156,6 @@ const Menu = React.forwardRef(function Menu(inProps, ref) {
     }
   });
 
-  const externalForwardedProps = {
-    slots,
-    slotProps: {
-      list: MenuListProps,
-      transition: TransitionProps,
-      paper: PaperProps,
-      ...slotProps,
-    },
-  };
-
-  const rootSlotProps = useSlotProps({
-    elementType: slots.root,
-    externalSlotProps: slotProps.root,
-    ownerState,
-    className: [classes.root, className],
-  });
-
-  const [PaperSlot, paperSlotProps] = useSlot('paper', {
-    className: classes.paper,
-    elementType: MenuPaper,
-    externalForwardedProps,
-    shouldForwardComponentProp: true,
-    ownerState,
-  });
-
-  const [ListSlot, listSlotProps] = useSlot('list', {
-    className: clsx(classes.list, MenuListProps.className),
-    elementType: MenuMenuList,
-    shouldForwardComponentProp: true,
-    externalForwardedProps,
-    getSlotProps: (handlers) => ({
-      ...handlers,
-      onKeyDown: (event) => {
-        handleListKeyDown(event);
-        handlers.onKeyDown?.(event);
-      },
-    }),
-    ownerState,
-  });
-
-  const resolvedTransitionProps =
-    typeof externalForwardedProps.slotProps.transition === 'function'
-      ? externalForwardedProps.slotProps.transition(ownerState)
-      : externalForwardedProps.slotProps.transition;
-
   return (
     <MenuRoot
       onClose={onClose}
@@ -213,46 +164,37 @@ const Menu = React.forwardRef(function Menu(inProps, ref) {
         horizontal: isRtl ? 'right' : 'left',
       }}
       transformOrigin={isRtl ? RTL_ORIGIN : LTR_ORIGIN}
-      slots={{
-        root: slots.root,
-        paper: PaperSlot,
-        backdrop: slots.backdrop,
-        ...(slots.transition && {
-          // TODO: pass `slots.transition` directly once `TransitionComponent` is removed from Popover
-          transition: slots.transition,
-        }),
+      PaperProps={{
+        ...PaperProps,
+        className: clsx(classes.paper, PaperProps.className),
+        component: MenuPaper,
       }}
-      slotProps={{
-        root: rootSlotProps,
-        paper: paperSlotProps,
-        backdrop:
-          typeof slotProps.backdrop === 'function'
-            ? slotProps.backdrop(ownerState)
-            : slotProps.backdrop,
-        transition: {
-          ...resolvedTransitionProps,
-          onEntering: (...args) => {
-            handleEntering(...args);
-            resolvedTransitionProps?.onEntering?.(...args);
-          },
+      TransitionProps={{
+        ...TransitionProps,
+        onEntering: (...args) => {
+          handleEntering(...args);
+          TransitionProps?.onEntering?.(...args);
         },
       }}
       open={open}
       ref={ref}
       transitionDuration={transitionDuration}
+      className={clsx(classes.root, className)}
       ownerState={ownerState}
       {...other}
       classes={PopoverClasses}
     >
-      <ListSlot
+      <MenuMenuList
         actions={menuListActionsRef}
         autoFocus={autoFocus && (activeItemIndex === -1 || disableAutoFocusItem)}
         autoFocusItem={autoFocusItem}
         variant={variant}
-        {...listSlotProps}
+        className={clsx(classes.list, MenuListProps.className)}
+        onKeyDown={handleListKeyDown}
+        {...MenuListProps}
       >
         {children}
-      </ListSlot>
+      </MenuMenuList>
     </MenuRoot>
   );
 });
@@ -323,28 +265,6 @@ Menu.propTypes /* remove-proptypes */ = {
    * `classes` prop applied to the [`Popover`](https://mui.com/material-ui/api/popover/) element.
    */
   PopoverClasses: PropTypes.object,
-  /**
-   * The props used for each slot inside.
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    backdrop: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    list: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    paper: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    transition: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * The components used for each slot inside.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    backdrop: PropTypes.elementType,
-    list: PropTypes.elementType,
-    paper: PropTypes.elementType,
-    root: PropTypes.elementType,
-    transition: PropTypes.elementType,
-  }),
   /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
