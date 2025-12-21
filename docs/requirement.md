@@ -35,15 +35,11 @@ Material-UI의 복잡한 컴포넌트들을 **최소한의 기능만 남기고 �
 
 ### 3. 원본 문서 작성 (*-original.md) 📄
 
-**⚠️ 중요**: 사용자가 명시적으로 요청할 때만 작성합니다.
+**⚠️ 중요**: 사용자 승인 후 Plan Mode에서 빠져나온 다음 커밋단위로 작업 시작 하기 전에 반드시 `*-original.md` 문서를 작성해야합니다. 
+- **파일경로:** docs/[카테고리]/[ComponentName]-original.md
 
 **⭐ 이 단계에서 작성하는 이유**: 아직 원본 파일이 수정되지 않은 상태이므로 git history를 뒤질 필요가 없습니다.
-
-```
-docs/[카테고리]/[ComponentName]-original.md
-```
-
-- 양식: docs/format/original.md
+- **양식:** docs/format/original.md
 
 ### 4. 점진적 단순화 (커밋) 🔧
 
