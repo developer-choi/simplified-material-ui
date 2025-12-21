@@ -96,18 +96,6 @@ const AppBarRoot = styled(Paper, {
         style: {
           '--AppBar-background': (theme.vars ?? theme).palette.primary.main,
           '--AppBar-color': (theme.vars ?? theme).palette.primary.contrastText,
-        },
-      },
-      {
-        props: { enableColorOnDark: true },
-        style: {
-          backgroundColor: 'var(--AppBar-background)',
-          color: 'var(--AppBar-color)',
-        },
-      },
-      {
-        props: { enableColorOnDark: false },
-        style: {
           backgroundColor: 'var(--AppBar-background)',
           color: 'var(--AppBar-color)',
           ...theme.applyStyles('dark', {
@@ -129,7 +117,6 @@ const AppBar = React.forwardRef(function AppBar(inProps, ref) {
   const {
     className,
     color = 'primary',
-    enableColorOnDark = false,
     position = 'fixed',
     ...other
   } = props;
@@ -138,7 +125,6 @@ const AppBar = React.forwardRef(function AppBar(inProps, ref) {
     ...props,
     color,
     position,
-    enableColorOnDark,
   };
 
   const classes = useUtilityClasses(ownerState);
