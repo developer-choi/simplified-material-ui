@@ -64,17 +64,6 @@ docs/[카테고리]/
   └── [ComponentName]-simplified.md   # 단순화 후 분석
 ```
 
-#### original.md 작성 항목
-
-1. 무슨 기능을 하는가?
-2. 내부 구조
-3. 주요 Props
-4. 설계 패턴
-5. 복잡도의 이유
-6. 사용 예시
-
-**예시**: `docs/modal/Dialog-original.md`
-
 #### simplified.md 작성 항목
 
 1. 무슨 기능을 하는가? (남은 기능만)

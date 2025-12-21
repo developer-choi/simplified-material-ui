@@ -301,9 +301,3 @@ React.useEffect(() => {
   }
 }, [open, handleMounted, handleClose]);
 ```
-
----
-
-*분석 일자: 2025-12-07*
-*브랜치: master*
-*파일: packages/mui-material/src/Modal/Modal.js*

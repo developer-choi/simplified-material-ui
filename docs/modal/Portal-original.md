@@ -170,54 +170,6 @@ return mountNode ? ReactDOM.createPortal(children, mountNode) : mountNode;
 
 ---
 
-## 사용 예시
-
-### 기본 사용
-```typescript
-<Portal>
-  <div>document.body에 렌더링됨</div>
-</Portal>
-```
-
-### 커스텀 컨테이너
-```typescript
-const containerRef = useRef<HTMLElement>(null);
-
-<div ref={containerRef} />
-
-<Portal container={containerRef.current}>
-  <div>containerRef에 렌더링됨</div>
-</Portal>
-```
-
-### 함수로 컨테이너 지정 (SSR 안전)
-```typescript
-<Portal container={() => document.getElementById('modal-root')}>
-  <div>modal-root에 렌더링됨</div>
-</Portal>
-```
-
-### Portal 비활성화
-```typescript
-<Portal disablePortal>
-  <div>일반 렌더링 (부모 아래)</div>
-</Portal>
-```
-
----
-
-## PropTypes
-
-```typescript
-Portal.propTypes = {
-  children: PropTypes.node,
-  container: PropTypes.oneOfType([HTMLElementType, PropTypes.func]),
-  disablePortal: PropTypes.bool,
-};
-```
-
----
-
 ## 복잡도의 이유
 
 Portal은 약 90줄의 간단한 컴포넌트지만, 다음 기능들을 지원합니다:
@@ -240,26 +192,3 @@ Portal은 약 90줄의 간단한 컴포넌트지만, 다음 기능들을 지원�
 | **Ref 전달** | ❌ | ✅ (forwardedRef) |
 | **Portal 비활성화** | ❌ | ✅ (disablePortal) |
 | **동적 컨테이너** | ❌ | ✅ (useEffect) |
-
----
-
-## 의존성
-
-```typescript
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
-import useEnhancedEffect from '@mui/utils/useEnhancedEffect';
-import useForkRef from '@mui/utils/useForkRef';
-import setRef from '@mui/utils/setRef';
-import getReactElementRef from '@mui/utils/getReactElementRef';
-import exactProp from '@mui/utils/exactProp';
-import HTMLElementType from '@mui/utils/HTMLElementType';
-```
-
----
-
-*분석 일자: 2025-12-07*
-*브랜치: master*
-*파일: packages/mui-material/src/Portal/Portal.tsx*
-*코드 라인: 약 90줄*

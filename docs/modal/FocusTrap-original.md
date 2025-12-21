@@ -387,28 +387,3 @@ FocusTrap은 **428줄**이며, 복잡한 이유는:
 5. **interval 체크** - focusin 이벤트 미발생 대응
 6. **Ref 병합** - useForkRef, getReactElementRef
 7. **다양한 Props** - 6개의 옵션 props
-
----
-
-## 사용 예시
-
-```javascript
-<FocusTrap
-  open={open}
-  disableAutoFocus={false}
-  disableEnforceFocus={false}
-  disableRestoreFocus={false}
->
-  <div>
-    <button>Button 1</button>
-    <input />
-    <button>Button 2</button>
-  </div>
-</FocusTrap>
-```
-
----
-
-*분석 일자: 2025-12-07*
-*브랜치: master*
-*파일: packages/mui-material/src/Unstable_TrapFocus/FocusTrap.tsx*
