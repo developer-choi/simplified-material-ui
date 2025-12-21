@@ -1,38 +1,9 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import HTMLElementType from '@mui/utils/HTMLElementType';
 import MenuList from '../MenuList';
-import Popover, { PopoverPaper } from '../Popover';
-import rootShouldForwardProp from '../styles/rootShouldForwardProp';
-import { styled } from '../zero-styled';
-
-const MenuRoot = styled(Popover, {
-  shouldForwardProp: (prop) => rootShouldForwardProp(prop) || prop === 'classes',
-  name: 'MuiMenu',
-  slot: 'Root',
-})({});
-
-export const MenuPaper = styled(PopoverPaper, {
-  name: 'MuiMenu',
-  slot: 'Paper',
-})({
-  // specZ: The maximum height of a simple menu should be one or more rows less than the view
-  // height. This ensures a tappable area outside of the simple menu with which to dismiss
-  // the menu.
-  maxHeight: 'calc(100% - 96px)',
-  // Add iOS momentum scrolling for iOS < 13.0
-  WebkitOverflowScrolling: 'touch',
-});
-
-const MenuMenuList = styled(MenuList, {
-  name: 'MuiMenu',
-  slot: 'List',
-})({
-  // We disable the focus ring for mouse, touch and keyboard users.
-  outline: 0,
-});
+import Popover from '../Popover';
 
 const Menu = React.forwardRef(function Menu(props, ref) {
   const {
@@ -54,7 +25,7 @@ const Menu = React.forwardRef(function Menu(props, ref) {
   };
 
   return (
-    <MenuRoot
+    <Popover
       onClose={onClose}
       anchorOrigin={{
         vertical: 'bottom',
@@ -65,20 +36,24 @@ const Menu = React.forwardRef(function Menu(props, ref) {
         horizontal: 'left',
       }}
       PaperProps={{
-        component: MenuPaper,
+        style: {
+          maxHeight: 'calc(100% - 96px)',
+          WebkitOverflowScrolling: 'touch',
+        },
       }}
       open={open}
       ref={ref}
       className={className}
       {...other}
     >
-      <MenuMenuList
+      <MenuList
         autoFocus
         onKeyDown={handleListKeyDown}
+        style={{ outline: 0 }}
       >
         {children}
-      </MenuMenuList>
-    </MenuRoot>
+      </MenuList>
+    </Popover>
   );
 });
 
