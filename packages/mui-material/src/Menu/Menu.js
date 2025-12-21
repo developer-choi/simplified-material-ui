@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import { isFragment } from 'react-is';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
@@ -74,7 +73,6 @@ const Menu = React.forwardRef(function Menu(inProps, ref) {
     open,
     PaperProps = {},
     PopoverClasses,
-    variant = 'selectedMenu',
     ...other
   } = props;
 
@@ -86,7 +84,6 @@ const Menu = React.forwardRef(function Menu(inProps, ref) {
     disableAutoFocusItem,
     MenuListProps,
     PaperProps,
-    variant,
   };
 
   const classes = useUtilityClasses(ownerState);
@@ -104,40 +101,6 @@ const Menu = React.forwardRef(function Menu(inProps, ref) {
       }
     }
   };
-
-  /**
-   * the index of the item should receive focus
-   * in a `variant="selectedMenu"` it's the first `selected` item
-   * otherwise it's the very first item.
-   */
-  let activeItemIndex = -1;
-  // since we inject focus related props into children we have to do a lookahead
-  // to check if there is a `selected` item. We're looking for the last `selected`
-  // item and use the first valid item as a fallback
-  React.Children.map(children, (child, index) => {
-    if (!React.isValidElement(child)) {
-      return;
-    }
-
-    if (process.env.NODE_ENV !== 'production') {
-      if (isFragment(child)) {
-        console.error(
-          [
-            "MUI: The Menu component doesn't accept a Fragment as a child.",
-            'Consider providing an array instead.',
-          ].join('\n'),
-        );
-      }
-    }
-
-    if (!child.props.disabled) {
-      if (variant === 'selectedMenu' && child.props.selected) {
-        activeItemIndex = index;
-      } else if (activeItemIndex === -1) {
-        activeItemIndex = index;
-      }
-    }
-  });
 
   return (
     <MenuRoot
@@ -161,9 +124,8 @@ const Menu = React.forwardRef(function Menu(inProps, ref) {
     >
       <MenuMenuList
         actions={menuListActionsRef}
-        autoFocus={autoFocus && (activeItemIndex === -1 || disableAutoFocusItem)}
+        autoFocus={autoFocus}
         autoFocusItem={autoFocusItem}
-        variant={variant}
         className={clsx(classes.list, MenuListProps.className)}
         onKeyDown={handleListKeyDown}
         {...MenuListProps}
@@ -248,11 +210,6 @@ Menu.propTypes /* remove-proptypes */ = {
     PropTypes.func,
     PropTypes.object,
   ]),
-  /**
-   * The variant to use. Use `menu` to prevent selected items from impacting the initial focus.
-   * @default 'selectedMenu'
-   */
-  variant: PropTypes.oneOf(['menu', 'selectedMenu']),
 };
 
 export default Menu;
