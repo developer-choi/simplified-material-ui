@@ -72,17 +72,11 @@ const AppBar = React.forwardRef(function AppBar(props, ref) {
     ...other
   } = props;
 
-  const ownerState = {
-    ...props,
-    color,
-    position,
-  };
-
   return (
     <AppBarRoot
       square
       component="header"
-      ownerState={ownerState}
+      position={position}
       elevation={4}
       className={clsx(
         {
