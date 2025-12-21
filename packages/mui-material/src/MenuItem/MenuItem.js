@@ -1,31 +1,19 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import rootShouldForwardProp from '../styles/rootShouldForwardProp';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import ButtonBase from '../ButtonBase';
-import { listItemIconClasses } from '../ListItemIcon';
-import { listItemTextClasses } from '../ListItemText';
-import menuItemClasses from './menuItemClasses';
 
-export const overridesResolver = (props, styles) => {
-  const { ownerState } = props;
+const MenuItem = React.forwardRef(function MenuItem(props, ref) {
+  const {
+    className,
+    selected,
+    disabled,
+    children,
+    style,
+    ...other
+  } = props;
 
-  return [
-    styles.root,
-  ];
-};
-
-const MenuItemRoot = styled(ButtonBase, {
-  shouldForwardProp: (prop) => rootShouldForwardProp(prop) || prop === 'classes',
-  name: 'MuiMenuItem',
-  slot: 'Root',
-  overridesResolver,
-})(
-  memoTheme(({ theme }) => ({
-    ...theme.typography.body1,
+  const baseStyle = {
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
@@ -34,55 +22,32 @@ const MenuItemRoot = styled(ButtonBase, {
     minHeight: 48,
     paddingTop: 6,
     paddingBottom: 6,
-    boxSizing: 'border-box',
-    whiteSpace: 'nowrap',
-    '&:hover': {
-      textDecoration: 'none',
-      backgroundColor: (theme.vars || theme).palette.action.hover,
-    },
-    [`&.${menuItemClasses.selected}`]: {
-      backgroundColor: '#e3f2fd',
-    },
-    [`&.${menuItemClasses.focusVisible}`]: {
-      backgroundColor: (theme.vars || theme).palette.action.focus,
-    },
-    [`&.${menuItemClasses.disabled}`]: {
-      opacity: (theme.vars || theme).palette.action.disabledOpacity,
-    },
-    [`& .${listItemTextClasses.root}`]: {
-      marginTop: 0,
-      marginBottom: 0,
-    },
-    [`& .${listItemTextClasses.inset}`]: {
-      paddingLeft: 36,
-    },
-    [`& .${listItemIconClasses.root}`]: {
-      minWidth: 36,
-    },
     paddingLeft: 16,
     paddingRight: 16,
-  })),
-);
-
-const MenuItem = React.forwardRef(function MenuItem(props, ref) {
-  const {
-    className,
-    ...other
-  } = props;
-
-  const ownerState = {
-    ...props,
+    boxSizing: 'border-box',
+    whiteSpace: 'nowrap',
+    fontSize: '1rem',
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontWeight: 400,
+    lineHeight: 1.5,
+    letterSpacing: '0.00938em',
+    backgroundColor: selected ? '#e3f2fd' : 'transparent',
+    opacity: disabled ? 0.38 : 1,
+    ...style,
   };
 
   return (
-    <MenuItemRoot
+    <ButtonBase
       ref={ref}
       role="menuitem"
       component="li"
       className={className}
+      style={baseStyle}
+      disabled={disabled}
       {...other}
-      ownerState={ownerState}
-    />
+    >
+      {children}
+    </ButtonBase>
   );
 });
 
