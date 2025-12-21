@@ -2,7 +2,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import ownerDocument from '../utils/ownerDocument';
-import List from '../List';
 import getActiveElement from '../utils/getActiveElement';
 import useForkRef from '../utils/useForkRef';
 import useEnhancedEffect from '../utils/useEnhancedEffect';
@@ -121,16 +120,22 @@ const MenuList = React.forwardRef(function MenuList(props, ref) {
   const handleRef = useForkRef(listRef, ref);
 
   return (
-    <List
+    <ul
       role="menu"
       ref={handleRef}
       className={className}
       onKeyDown={handleKeyDown}
       tabIndex={autoFocus ? 0 : -1}
+      style={{
+        listStyle: 'none',
+        margin: 0,
+        padding: '8px 0',
+        outline: 0,
+      }}
       {...other}
     >
       {children}
-    </List>
+    </ul>
   );
 });
 
