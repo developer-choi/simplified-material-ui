@@ -3,83 +3,71 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import Paper from '../Paper';
 
-const AppBarRoot = styled(Paper)(
-  memoTheme(({ theme }) => ({
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    boxSizing: 'border-box', // Prevent padding issue with the Modal and fixed positioned AppBar.
-    flexShrink: 0,
-    variants: [
-      {
-        props: { position: 'fixed' },
-        style: {
-          position: 'fixed',
-          zIndex: (theme.vars || theme).zIndex.appBar,
-          top: 0,
-          left: 'auto',
-          right: 0,
-          '@media print': {
-            // Prevent the app bar to be visible on each printed page.
-            position: 'absolute',
-          },
-        },
-      },
-      {
-        props: { position: 'absolute' },
-        style: {
+const AppBarRoot = styled(Paper)({
+  display: 'flex',
+  flexDirection: 'column',
+  width: '100%',
+  boxSizing: 'border-box',
+  flexShrink: 0,
+  variants: [
+    {
+      props: { position: 'fixed' },
+      style: {
+        position: 'fixed',
+        zIndex: 1100,
+        top: 0,
+        left: 'auto',
+        right: 0,
+        '@media print': {
           position: 'absolute',
-          zIndex: (theme.vars || theme).zIndex.appBar,
-          top: 0,
-          left: 'auto',
-          right: 0,
         },
       },
-      {
-        props: { position: 'sticky' },
-        style: {
-          position: 'sticky',
-          zIndex: (theme.vars || theme).zIndex.appBar,
-          top: 0,
-          left: 'auto',
-          right: 0,
-        },
+    },
+    {
+      props: { position: 'absolute' },
+      style: {
+        position: 'absolute',
+        zIndex: 1100,
+        top: 0,
+        left: 'auto',
+        right: 0,
       },
-      {
-        props: { position: 'static' },
-        style: {
-          position: 'static',
-        },
+    },
+    {
+      props: { position: 'sticky' },
+      style: {
+        position: 'sticky',
+        zIndex: 1100,
+        top: 0,
+        left: 'auto',
+        right: 0,
       },
-      {
-        props: { position: 'relative' },
-        style: {
-          position: 'relative',
-        },
+    },
+    {
+      props: { position: 'static' },
+      style: {
+        position: 'static',
       },
-      {
-        props: { color: 'primary' },
-        style: {
-          '--AppBar-background': (theme.vars ?? theme).palette.primary.main,
-          '--AppBar-color': (theme.vars ?? theme).palette.primary.contrastText,
-          backgroundColor: 'var(--AppBar-background)',
-          color: 'var(--AppBar-color)',
-          ...theme.applyStyles('dark', {
-            backgroundColor: theme.vars
-              ? theme.vars.palette.AppBar.darkBg
-              : 'var(--AppBar-background)',
-            color: theme.vars
-              ? theme.vars.palette.AppBar.darkColor
-              : 'var(--AppBar-color)',
-          }),
-        },
+    },
+    {
+      props: { position: 'relative' },
+      style: {
+        position: 'relative',
       },
-    ],
-  })),
-);
+    },
+    {
+      props: { color: 'primary' },
+      style: {
+        '--AppBar-background': '#1976d2',
+        '--AppBar-color': '#fff',
+        backgroundColor: 'var(--AppBar-background)',
+        color: 'var(--AppBar-color)',
+      },
+    },
+  ],
+});
 
 const AppBar = React.forwardRef(function AppBar(props, ref) {
   const {
