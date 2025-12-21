@@ -30,6 +30,60 @@
 
 ---
 
+## 핵심 학습 포인트
+
+### 1. Fallback 우선순위 시스템
+
+```javascript
+if (hasImgNotFailing) {
+  children = <img src={src} alt={alt} />;
+} else if (!!childrenProp || childrenProp === 0) {
+  children = childrenProp;
+} else if (hasImg && alt) {
+  children = alt[0];  // 이니셜
+} else {
+  children = <PersonIcon />;  // Person 아이콘
+}
+```
+
+**학습 가치**:
+- 예외 처리 로직
+- 우선순위 결정
+- 0 체크 (`childrenProp === 0`)
+- 조건부 렌더링
+
+### 2. 이미지 로딩 상태 관리
+
+```javascript
+const image = new Image();
+image.onload = () => setLoaded('loaded');
+image.onerror = () => setLoaded('error');
+image.src = src;
+```
+
+**학습 가치**:
+- Image 객체 사용 (SSR 지원)
+- useEffect cleanup
+- active 플래그 (메모리 누수 방지)
+
+### 3. 인라인 스타일 병합
+
+```javascript
+const rootStyle = {
+  width: 40,
+  height: 40,
+  // ...
+  ...style,  // 사용자 스타일 병합
+};
+```
+
+**학습 가치**:
+- 객체 spread로 스타일 병합
+- 사용자 커스터마이징 허용
+
+
+---
+
 ## 내부 구조
 
 ### 1. 컴포넌트 구조
@@ -466,56 +520,3 @@ if (hasImgNotFailing) {
 | **ownerState** | ✅ | ❌ |
 | **classes prop** | ✅ | ❌ |
 | **sx prop** | ✅ | ❌ |
-
----
-
-## 핵심 학습 포인트
-
-### 1. Fallback 우선순위 시스템
-
-```javascript
-if (hasImgNotFailing) {
-  children = <img src={src} alt={alt} />;
-} else if (!!childrenProp || childrenProp === 0) {
-  children = childrenProp;
-} else if (hasImg && alt) {
-  children = alt[0];  // 이니셜
-} else {
-  children = <PersonIcon />;  // Person 아이콘
-}
-```
-
-**학습 가치**:
-- 예외 처리 로직
-- 우선순위 결정
-- 0 체크 (`childrenProp === 0`)
-- 조건부 렌더링
-
-### 2. 이미지 로딩 상태 관리
-
-```javascript
-const image = new Image();
-image.onload = () => setLoaded('loaded');
-image.onerror = () => setLoaded('error');
-image.src = src;
-```
-
-**학습 가치**:
-- Image 객체 사용 (SSR 지원)
-- useEffect cleanup
-- active 플래그 (메모리 누수 방지)
-
-### 3. 인라인 스타일 병합
-
-```javascript
-const rootStyle = {
-  width: 40,
-  height: 40,
-  // ...
-  ...style,  // 사용자 스타일 병합
-};
-```
-
-**학습 가치**:
-- 객체 spread로 스타일 병합
-- 사용자 커스터마이징 허용
