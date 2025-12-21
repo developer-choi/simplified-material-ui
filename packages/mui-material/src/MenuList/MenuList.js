@@ -4,10 +4,8 @@ import PropTypes from 'prop-types';
 import ownerDocument from '../utils/ownerDocument';
 import List from '../List';
 import getActiveElement from '../utils/getActiveElement';
-import getScrollbarSize from '../utils/getScrollbarSize';
 import useForkRef from '../utils/useForkRef';
 import useEnhancedEffect from '../utils/useEnhancedEffect';
-import { ownerWindow } from '../utils';
 
 function nextItem(list, item, disableListWrap) {
   if (list === item) {
@@ -72,9 +70,6 @@ function moveFocus(
  */
 const MenuList = React.forwardRef(function MenuList(props, ref) {
   const {
-    // private
-    // eslint-disable-next-line react/prop-types
-    actions,
     autoFocus = false,
     children,
     className,
@@ -90,25 +85,6 @@ const MenuList = React.forwardRef(function MenuList(props, ref) {
       listRef.current.focus();
     }
   }, [autoFocus]);
-
-  React.useImperativeHandle(
-    actions,
-    () => ({
-      adjustStyleForScrollbar: (containerElement, { direction }) => {
-        // Let's ignore that piece of logic if users are already overriding the width
-        // of the menu.
-        const noExplicitWidth = !listRef.current.style.width;
-        if (containerElement.clientHeight < listRef.current.clientHeight && noExplicitWidth) {
-          const scrollbarSize = `${getScrollbarSize(ownerWindow(containerElement))}px`;
-          listRef.current.style[direction === 'rtl' ? 'paddingLeft' : 'paddingRight'] =
-            scrollbarSize;
-          listRef.current.style.width = `calc(100% + ${scrollbarSize})`;
-        }
-        return listRef.current;
-      },
-    }),
-    [],
-  );
 
   const handleKeyDown = (event) => {
     const list = listRef.current;
