@@ -19,17 +19,15 @@ export const overridesResolver = (props, styles) => {
 
   return [
     styles.root,
-    !ownerState.disableGutters && styles.gutters,
   ];
 };
 
 const useUtilityClasses = (ownerState) => {
-  const { disabled, disableGutters, selected, classes } = ownerState;
+  const { disabled, selected, classes } = ownerState;
   const slots = {
     root: [
       'root',
       disabled && 'disabled',
-      !disableGutters && 'gutters',
       selected && 'selected',
     ],
   };
@@ -109,15 +107,8 @@ const MenuItemRoot = styled(ButtonBase, {
     [`& .${listItemIconClasses.root}`]: {
       minWidth: 36,
     },
-    variants: [
-      {
-        props: ({ ownerState }) => !ownerState.disableGutters,
-        style: {
-          paddingLeft: 16,
-          paddingRight: 16,
-        },
-      },
-    ],
+    paddingLeft: 16,
+    paddingRight: 16,
   })),
 );
 
@@ -125,7 +116,6 @@ const MenuItem = React.forwardRef(function MenuItem(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiMenuItem' });
   const {
     component = 'li',
-    disableGutters = false,
     focusVisibleClassName,
     role = 'menuitem',
     tabIndex: tabIndexProp,
@@ -137,14 +127,13 @@ const MenuItem = React.forwardRef(function MenuItem(inProps, ref) {
   const childContext = React.useMemo(
     () => ({
       dense: context.dense || false,
-      disableGutters,
+      disableGutters: false,
     }),
-    [context.dense, disableGutters],
+    [context.dense],
   );
 
   const ownerState = {
     ...props,
-    disableGutters,
   };
 
   const classes = useUtilityClasses(props);
@@ -199,11 +188,6 @@ MenuItem.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   disabled: PropTypes.bool,
-  /**
-   * If `true`, the left and right padding is removed.
-   * @default false
-   */
-  disableGutters: PropTypes.bool,
   /**
    * This prop can help identify which element has keyboard focus.
    * The class name will be applied when the element gains the focus through keyboard interaction.
