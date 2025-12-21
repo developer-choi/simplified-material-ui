@@ -88,7 +88,6 @@ const MenuItemRoot = styled(ButtonBase, {
 const MenuItem = React.forwardRef(function MenuItem(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiMenuItem' });
   const {
-    component = 'li',
     role = 'menuitem',
     tabIndex: tabIndexProp,
     className,
@@ -113,7 +112,7 @@ const MenuItem = React.forwardRef(function MenuItem(inProps, ref) {
       ref={handleRef}
       role={role}
       tabIndex={tabIndex}
-      component={component}
+      component="li"
       className={clsx(classes.root, className)}
       {...other}
       ownerState={ownerState}
@@ -139,11 +138,6 @@ MenuItem.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   className: PropTypes.string,
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
   /**
    * @ignore
    */
