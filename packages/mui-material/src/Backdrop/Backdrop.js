@@ -2,20 +2,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
-import { useDefaultProps } from '../DefaultPropsProvider';
-import { getBackdropUtilityClass } from './backdropClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-
-  const slots = {
-    root: ['root'],
-  };
-
-  return composeClasses(slots, getBackdropUtilityClass, classes);
-};
 
 const BackdropRoot = styled('div', {
   name: 'MuiBackdrop',
@@ -36,20 +23,13 @@ const BackdropRoot = styled('div', {
   WebkitTapHighlightColor: 'transparent',
 });
 
-const Backdrop = React.forwardRef(function Backdrop(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiBackdrop' });
+const Backdrop = React.forwardRef(function Backdrop(props, ref) {
   const {
     children,
     className,
     open,
     ...other
   } = props;
-
-  const ownerState = {
-    ...props,
-  };
-
-  const classes = useUtilityClasses(ownerState);
 
   if (!open) {
     return null;
@@ -58,9 +38,7 @@ const Backdrop = React.forwardRef(function Backdrop(inProps, ref) {
   return (
     <BackdropRoot
       aria-hidden
-      className={clsx(classes.root, className)}
-      classes={classes}
-      ownerState={ownerState}
+      className={className}
       ref={ref}
       {...other}
     >
@@ -78,10 +56,6 @@ Backdrop.propTypes /* remove-proptypes */ = {
    * The content of the component.
    */
   children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
   /**
    * @ignore
    */
