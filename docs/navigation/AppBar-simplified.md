@@ -11,13 +11,6 @@ AppBar 자체가 하는 일:
 4. **인라인 스타일** - styled API 제거, style prop 사용
 5. **일반 header 태그** - Paper 상속 제거
 
-제거된 기능:
-- 동적 색상 시스템 (color prop)
-- 다크 모드 지원 (enableColorOnDark)
-- 테마 통합 (useDefaultProps, useUtilityClasses)
-- CSS 클래스 시스템
-- PropTypes 검증
-
 ## 내부 구조
 
 ```
@@ -199,25 +192,6 @@ a506215a [AppBar 단순화 8/14] color variant를 기본 스타일로 통합
 | **CSS 클래스** | 자동 생성 | 없음 (mui-fixed만) |
 | **PropTypes** | 68줄 | 없음 |
 
-## 스타일 비교
-
-### 원본
-```javascript
-const AppBarRoot = styled(Paper, {
-  name: 'MuiAppBar',
-  slot: 'Root',
-  overridesResolver: (props, styles) => [...]
-})(memoTheme(({ theme }) => ({
-  display: 'flex',
-  // ...
-  variants: [
-    { props: { position: 'fixed' }, style: { ... } },
-    { props: { color: 'primary' }, style: { ... } },
-    // ... 10개 이상
-  ]
-})))
-```
-
 ### 단순화
 ```javascript
 <header
@@ -235,106 +209,3 @@ const AppBarRoot = styled(Paper, {
   }}
 />
 ```
-
-## 설계 철학의 변화
-
-### 원본: 유연성과 확장성
-- 테마 시스템 완전 통합
-- 다양한 색상/위치 옵션
-- CSS-in-JS로 동적 스타일
-- 클래스 기반 커스터마이징
-- Paper 상속으로 기능 확장
-
-### 단순화: 단순성과 명확성
-- 하드코딩된 고정 값
-- position만 유연성 유지
-- 인라인 스타일로 명확한 표현
-- 최소한의 의존성
-- 일반 HTML header 태그
-
-## 사용 예시
-
-### 기본 사용
-```jsx
-<AppBar>
-  <div style={{ padding: '16px' }}>
-    <h1>My App</h1>
-  </div>
-</AppBar>
-```
-
-### Position 변경 (유지됨)
-```jsx
-<AppBar position="static">
-  <div>Static AppBar</div>
-</AppBar>
-
-<AppBar position="sticky">
-  <div>Sticky AppBar</div>
-</AppBar>
-```
-
-### 스타일 커스터마이징
-```jsx
-<AppBar style={{ backgroundColor: 'darkblue' }}>
-  <div>Custom Background</div>
-</AppBar>
-```
-
-### className 추가
-```jsx
-<AppBar className="my-appbar">
-  <div>Custom Class</div>
-</AppBar>
-```
-
-## 제한 사항
-
-1. **색상 고정** - primary (#1976d2)만 가능
-2. **다크 모드 없음** - 항상 동일한 색상
-3. **elevation 고정** - boxShadow 변경 불가 (style prop으로는 가능)
-4. **테마 미지원** - Material-UI 테마 시스템 사용 불가
-5. **CSS 클래스 없음** - classes prop 없음 (className은 가능)
-6. **Paper 기능 없음** - square, elevation prop 없음
-
-## 장단점
-
-### 장점
-1. **단순함** - 54줄, 이해하기 쉬움
-2. **독립성** - React 외 의존성 없음
-3. **명확함** - 인라인 스타일로 모든 값 즉시 확인
-4. **가벼움** - 번들 크기 대폭 감소
-5. **디버깅 용이** - 추상화 계층 없음
-6. **Position 유연성** - 5가지 position 여전히 지원
-
-### 단점
-1. **커스터마이징 제한** - 색상, elevation 변경 어려움
-2. **테마 미지원** - Material-UI 테마 사용 불가
-3. **다크 모드 없음** - 직접 구현 필요
-4. **동적 색상 불가** - palette 색상 사용 불가
-5. **PropTypes 없음** - 런타임 검증 없음
-6. **Paper 기능 없음** - elevation prop 등 사용 불가
-
-## 학습 포인트
-
-이 단순화 과정을 통해 배울 수 있는 것:
-
-1. **AppBar의 핵심** - 네비게이션 바의 본질은 "상단 고정 영역"
-2. **Position의 중요성** - 다양한 CSS position이 실제로 필요
-3. **색상은 부가 기능** - primary 하나로도 충분히 동작
-4. **테마의 역할** - 테마는 디자인 시스템, 컴포넌트 로직과 분리 가능
-5. **인라인 스타일의 장점** - 복잡한 추상화 없이 명확한 표현
-6. **의존성 최소화** - React만으로도 충분한 기능 구현 가능
-
-## 결론
-
-277줄 → 54줄 (80.5% 감소)
-
-단순화된 AppBar는:
-- ✅ 네비게이션 바의 **핵심 기능** 유지 (position, header 태그)
-- ✅ **Position 유연성** 완전히 유지
-- ✅ **학습 용이성** 대폭 향상
-- ⚠️ **커스터마이징** 제한됨 (색상 고정)
-- ❌ **테마/다크모드** 미지원
-
-Material-UI AppBar의 **구조와 역할**을 이해하는 데 최적화된 버전입니다.

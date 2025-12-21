@@ -64,37 +64,7 @@ docs/[카테고리]/
   └── [ComponentName]-simplified.md   # 단순화 후 분석
 ```
 
-#### simplified.md 작성 항목
-
-1. 무슨 기능을 하는가? (남은 기능만)
-2. 내부 구조
-3. **커밋 히스토리로 보는 단순화 과정** (계획서 커밋 번호와 일치)
-4. 원본과의 차이점 (표)
-5. 스타일 비교
-6. 설계 철학의 변화
-7. 사용 예시
-8. 제한 사항
-9. 장단점
-
-**예시**: `docs/modal/Dialog-simplified.md`
-
-**커밋 히스토리 작성 규칙**:
-- 계획서 커밋 번호와 일치
-- 각 커밋 해시 포함
-- 시간 순서대로 나열
-
-#### "무슨 기능을 하는가?" 작성 시 주의
-
-**해당 컴포넌트 자체가 하는 일만 작성하세요. 하위 컴포넌트의 기능까지 포함하지 마세요.**
-
-**❌ 나쁜 예시** (Dialog):
-- 백드롭, 포커스 트랩, ESC 키, Portal → Modal이 하는 일
-
-**✅ 좋은 예시** (Dialog):
-- Dialog 자체: Modal 래핑, 중앙 정렬, Paper 스타일, ARIA 속성
-- Modal이 제공: 백드롭, 포커스 트랩, ESC 키, Portal
-
-예시: `docs/modal/Dialog-simplified.md` 참고
+// TODO simplified랑 original md 가이드 여기
 
 ---
 
