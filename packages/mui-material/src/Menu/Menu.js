@@ -53,31 +53,19 @@ const Menu = React.forwardRef(function Menu(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiMenu' });
 
   const {
-    autoFocus = true,
     children,
     className,
-    disableAutoFocusItem = false,
-    MenuListProps = {},
     onClose,
     open,
-    PaperProps = {},
     PopoverClasses,
     ...other
   } = props;
 
   const ownerState = {
     ...props,
-    autoFocus,
-    disableAutoFocusItem,
-    MenuListProps,
-    PaperProps,
   };
 
   const classes = useUtilityClasses(ownerState);
-
-  const autoFocusItem = autoFocus && !disableAutoFocusItem && open;
-
-  const menuListActionsRef = React.useRef(null);
 
   const handleListKeyDown = (event) => {
     if (event.key === 'Tab') {
@@ -101,8 +89,7 @@ const Menu = React.forwardRef(function Menu(inProps, ref) {
         horizontal: 'left',
       }}
       PaperProps={{
-        ...PaperProps,
-        className: clsx(classes.paper, PaperProps.className),
+        className: classes.paper,
         component: MenuPaper,
       }}
       open={open}
@@ -113,12 +100,9 @@ const Menu = React.forwardRef(function Menu(inProps, ref) {
       classes={PopoverClasses}
     >
       <MenuMenuList
-        actions={menuListActionsRef}
-        autoFocus={autoFocus}
-        autoFocusItem={autoFocusItem}
-        className={clsx(classes.list, MenuListProps.className)}
+        autoFocus
+        className={classes.list}
         onKeyDown={handleListKeyDown}
-        {...MenuListProps}
       >
         {children}
       </MenuMenuList>
@@ -140,14 +124,6 @@ Menu.propTypes /* remove-proptypes */ = {
     PropTypes.func,
   ]),
   /**
-   * If `true` (Default) will focus the `[role="menu"]` if no focusable child is found. Disabled
-   * children are not focusable. If you set this prop to `false` focus will be placed
-   * on the parent modal container. This has severe accessibility implications
-   * and should only be considered if you manage focus otherwise.
-   * @default true
-   */
-  autoFocus: PropTypes.bool,
-  /**
    * Menu contents, normally `MenuItem`s.
    */
   children: PropTypes.node,
@@ -160,20 +136,6 @@ Menu.propTypes /* remove-proptypes */ = {
    */
   className: PropTypes.string,
   /**
-   * When opening the menu will not focus the active item but the `[role="menu"]`
-   * unless `autoFocus` is also set to `false`. Not using the default means not
-   * following WAI-ARIA authoring practices. Please be considerate about possible
-   * accessibility implications.
-   * @default false
-   */
-  disableAutoFocusItem: PropTypes.bool,
-  /**
-   * Props applied to the [`MenuList`](https://mui.com/material-ui/api/menu-list/) element.
-   * @deprecated use the `slotProps.list` prop instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   * @default {}
-   */
-  MenuListProps: PropTypes.object,
-  /**
    * Callback fired when the component requests to be closed.
    *
    * @param {object} event The event source of the callback.
@@ -184,10 +146,6 @@ Menu.propTypes /* remove-proptypes */ = {
    * If `true`, the component is shown.
    */
   open: PropTypes.bool.isRequired,
-  /**
-   * @ignore
-   */
-  PaperProps: PropTypes.object,
   /**
    * `classes` prop applied to the [`Popover`](https://mui.com/material-ui/api/popover/) element.
    */
