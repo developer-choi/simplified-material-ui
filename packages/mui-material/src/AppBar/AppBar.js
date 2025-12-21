@@ -1,90 +1,51 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { styled } from '../zero-styled';
-import Paper from '../Paper';
-
-const AppBarRoot = styled(Paper)({
-  display: 'flex',
-  flexDirection: 'column',
-  width: '100%',
-  boxSizing: 'border-box',
-  flexShrink: 0,
-  '--AppBar-background': '#1976d2',
-  '--AppBar-color': '#fff',
-  backgroundColor: 'var(--AppBar-background)',
-  color: 'var(--AppBar-color)',
-  variants: [
-    {
-      props: { position: 'fixed' },
-      style: {
-        position: 'fixed',
-        zIndex: 1100,
-        top: 0,
-        left: 'auto',
-        right: 0,
-        '@media print': {
-          position: 'absolute',
-        },
-      },
-    },
-    {
-      props: { position: 'absolute' },
-      style: {
-        position: 'absolute',
-        zIndex: 1100,
-        top: 0,
-        left: 'auto',
-        right: 0,
-      },
-    },
-    {
-      props: { position: 'sticky' },
-      style: {
-        position: 'sticky',
-        zIndex: 1100,
-        top: 0,
-        left: 'auto',
-        right: 0,
-      },
-    },
-    {
-      props: { position: 'static' },
-      style: {
-        position: 'static',
-      },
-    },
-    {
-      props: { position: 'relative' },
-      style: {
-        position: 'relative',
-      },
-    },
-  ],
-});
 
 const AppBar = React.forwardRef(function AppBar(props, ref) {
   const {
     className,
     color = 'primary',
     position = 'fixed',
+    style,
     ...other
   } = props;
 
+  const positionStyles = {
+    position: position,
+    ...(position === 'fixed' || position === 'absolute' || position === 'sticky'
+      ? {
+          zIndex: 1100,
+          top: 0,
+          left: 'auto',
+          right: 0,
+        }
+      : {}),
+  };
+
   return (
-    <AppBarRoot
-      square
-      component="header"
-      position={position}
-      elevation={4}
-      className={clsx(
-        {
-          'mui-fixed': position === 'fixed', // Useful for the Dialog
-        },
-        className,
-      )}
+    <header
       ref={ref}
+      className={
+        position === 'fixed'
+          ? className
+            ? `mui-fixed ${className}`
+            : 'mui-fixed'
+          : className
+      }
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        boxSizing: 'border-box',
+        flexShrink: 0,
+        backgroundColor: '#1976d2',
+        color: '#fff',
+        boxShadow:
+          '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)',
+        ...positionStyles,
+        ...style,
+      }}
       {...other}
     />
   );
