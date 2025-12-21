@@ -7,7 +7,6 @@ import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import ListContext from '../List/ListContext';
 import ButtonBase from '../ButtonBase';
 import useForkRef from '../utils/useForkRef';
 import { listItemIconClasses } from '../ListItemIcon';
@@ -96,15 +95,6 @@ const MenuItem = React.forwardRef(function MenuItem(inProps, ref) {
     ...other
   } = props;
 
-  const context = React.useContext(ListContext);
-  const childContext = React.useMemo(
-    () => ({
-      dense: context.dense || false,
-      disableGutters: false,
-    }),
-    [context.dense],
-  );
-
   const ownerState = {
     ...props,
   };
@@ -119,18 +109,16 @@ const MenuItem = React.forwardRef(function MenuItem(inProps, ref) {
   }
 
   return (
-    <ListContext.Provider value={childContext}>
-      <MenuItemRoot
-        ref={handleRef}
-        role={role}
-        tabIndex={tabIndex}
-        component={component}
-        className={clsx(classes.root, className)}
-        {...other}
-        ownerState={ownerState}
-        classes={classes}
-      />
-    </ListContext.Provider>
+    <MenuItemRoot
+      ref={handleRef}
+      role={role}
+      tabIndex={tabIndex}
+      component={component}
+      className={clsx(classes.root, className)}
+      {...other}
+      ownerState={ownerState}
+      classes={classes}
+    />
   );
 });
 
