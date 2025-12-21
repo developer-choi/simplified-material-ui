@@ -7,7 +7,6 @@ import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import capitalize from '../utils/capitalize';
-import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
 import Paper from '../Paper';
 import { getAppBarUtilityClass } from './appBarClasses';
 
