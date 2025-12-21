@@ -4,23 +4,12 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import HTMLElementType from '@mui/utils/HTMLElementType';
-import { useRtl } from '@mui/system/RtlProvider';
 import MenuList from '../MenuList';
 import Popover, { PopoverPaper } from '../Popover';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import { getMenuUtilityClass } from './menuClasses';
-
-const RTL_ORIGIN = {
-  vertical: 'top',
-  horizontal: 'right',
-};
-
-const LTR_ORIGIN = {
-  vertical: 'top',
-  horizontal: 'left',
-};
 
 const useUtilityClasses = (ownerState) => {
   const { classes } = ownerState;
@@ -76,8 +65,6 @@ const Menu = React.forwardRef(function Menu(inProps, ref) {
     ...other
   } = props;
 
-  const isRtl = useRtl();
-
   const ownerState = {
     ...props,
     autoFocus,
@@ -107,9 +94,12 @@ const Menu = React.forwardRef(function Menu(inProps, ref) {
       onClose={onClose}
       anchorOrigin={{
         vertical: 'bottom',
-        horizontal: isRtl ? 'right' : 'left',
+        horizontal: 'left',
       }}
-      transformOrigin={isRtl ? RTL_ORIGIN : LTR_ORIGIN}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'left',
+      }}
       PaperProps={{
         ...PaperProps,
         className: clsx(classes.paper, PaperProps.className),
