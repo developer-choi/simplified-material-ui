@@ -88,8 +88,6 @@ const MenuItemRoot = styled(ButtonBase, {
 const MenuItem = React.forwardRef(function MenuItem(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiMenuItem' });
   const {
-    role = 'menuitem',
-    tabIndex: tabIndexProp,
     className,
     ...other
   } = props;
@@ -102,16 +100,10 @@ const MenuItem = React.forwardRef(function MenuItem(inProps, ref) {
 
   const handleRef = useForkRef(null, ref);
 
-  let tabIndex;
-  if (!props.disabled) {
-    tabIndex = tabIndexProp !== undefined ? tabIndexProp : -1;
-  }
-
   return (
     <MenuItemRoot
       ref={handleRef}
-      role={role}
-      tabIndex={tabIndex}
+      role="menuitem"
       component="li"
       className={clsx(classes.root, className)}
       {...other}
@@ -143,10 +135,6 @@ MenuItem.propTypes /* remove-proptypes */ = {
    */
   disabled: PropTypes.bool,
   /**
-   * @ignore
-   */
-  role: PropTypes.string,
-  /**
    * If `true`, the component is selected.
    * @default false
    */
@@ -159,10 +147,6 @@ MenuItem.propTypes /* remove-proptypes */ = {
     PropTypes.func,
     PropTypes.object,
   ]),
-  /**
-   * @default 0
-   */
-  tabIndex: PropTypes.number,
 };
 
 export default MenuItem;
