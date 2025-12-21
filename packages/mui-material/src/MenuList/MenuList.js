@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import ownerDocument from '../utils/ownerDocument';
 import getActiveElement from '../utils/getActiveElement';
 import useForkRef from '../utils/useForkRef';
@@ -138,51 +137,5 @@ const MenuList = React.forwardRef(function MenuList(props, ref) {
     </ul>
   );
 });
-
-MenuList.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * If `true`, will focus the `[role="menu"]` container and move into tab order.
-   * @default false
-   */
-  autoFocus: PropTypes.bool,
-  /**
-   * If `true`, will focus the first menuitem if `variant="menu"` or selected item
-   * if `variant="selectedMenu"`.
-   * @default false
-   */
-  autoFocusItem: PropTypes.bool,
-  /**
-   * MenuList contents, normally `MenuItem`s.
-   */
-  children: PropTypes.node,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * If `true`, will allow focus on disabled items.
-   * @default false
-   */
-  disabledItemsFocusable: PropTypes.bool,
-  /**
-   * If `true`, the menu items will not wrap focus.
-   * @default false
-   */
-  disableListWrap: PropTypes.bool,
-  /**
-   * @ignore
-   */
-  onKeyDown: PropTypes.func,
-  /**
-   * The variant to use. Use `menu` to prevent selected items from impacting the initial focus
-   * and the vertical alignment relative to the anchor element.
-   * @default 'selectedMenu'
-   */
-  variant: PropTypes.oneOf(['menu', 'selectedMenu']),
-};
 
 export default MenuList;
