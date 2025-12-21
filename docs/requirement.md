@@ -23,7 +23,7 @@ Material-UI의 복잡한 컴포넌트들을 **최소한의 기능만 남기고 �
    - `[ComponentName]-original.md` 작성
 
 2. **삭제 계획 작성**
-   - 삭제할 기능들을 Phase별로 정리
+   - 삭제할 기능들을 Commit별로 정리
    - 각 기능마다 커밋 메시지 초안 작성
    - 예상 커밋 목록 생성
 
@@ -42,7 +42,7 @@ Material-UI의 복잡한 컴포넌트들을 **최소한의 기능만 남기고 �
 - `EnterPlanMode` 도구를 호출하여 plan mode로 진입합니다
 - Plan mode에서 계획서를 작성한 후 `ExitPlanMode`로 사용자 승인을 받습니다
 
-**계획서는 반드시 아래 양식을 따라야 합니다. 아래 Phase 1-17 예시를 참고하세요.**
+**계획서는 반드시 아래 양식을 따라야 합니다. 아래 Commit 1-27 예시를 참고하세요.**
 
 ```markdown
 ## [ComponentName] 컴포넌트 단순화 계획
@@ -55,7 +55,7 @@ Material-UI의 복잡한 컴포넌트들을 **최소한의 기능만 남기고 �
 
 ### 삭제 예정 기능 및 커밋 계획
 
-#### Phase N: [Phase 이름]
+#### Commit N: [기능 이름]
 
 **무엇을**: [삭제할 기능에 대한 1줄 설명]
 
@@ -86,7 +86,7 @@ Material-UI의 복잡한 컴포넌트들을 **최소한의 기능만 남기고 �
 
 ---
 
-... (다른 Phase들 계속)
+... (다른 Commit들 계속)
 
 ### 최종 목표
 - 남을 props: [최종적으로 남을 props 나열]
@@ -97,9 +97,9 @@ Material-UI의 복잡한 컴포넌트들을 **최소한의 기능만 남기고 �
 ```
 
 **⚠️ 핵심 규칙:**
-- 각 Phase마다 "**무엇을**", "**왜 불필요한가**", "**삭제 대상**", "**커밋**" 4개 섹션 필수
+- 각 커밋마다 "**무엇을**", "**왜 불필요한가**", "**삭제 대상**", "**커밋**" 4개 섹션 필수
 - "왜 불필요한가"에는 "학습 목적", "복잡도" 중 최소 1개 이상 포함
-- 아래 Phase 1-17 예시를 참고하여 구체적으로 작성
+- 아래 예시(Commit 1-27)를 참고하여 구체적으로 작성
 
 ### 1. 점진적 단순화 원칙 ⚠️
 
@@ -142,7 +142,7 @@ e204177dad Dialog.js에 DialogContainer 및 DialogPaper 컴포넌트 재도입
 
 일반적으로 다음 기능들을 순서대로 제거합니다:
 
-#### Phase 1: Slot 시스템 제거
+#### Commit 1: Slot 시스템 제거
 
 **무엇을**: Material-UI v5의 컴포넌트 커스터마이징 시스템
 
@@ -182,7 +182,7 @@ e204177dad Dialog.js에 DialogContainer 및 DialogPaper 컴포넌트 재도입
 
 ---
 
-#### Phase 2: Transition/Animation 제거
+#### Commit 2: Transition/Animation 제거
 
 **무엇을**: 컴포넌트 등장/사라질 때 애니메이션 (Fade, Grow, Slide 등)
 
@@ -227,7 +227,7 @@ e204177dad Dialog.js에 DialogContainer 및 DialogPaper 컴포넌트 재도입
 
 ---
 
-#### Phase 3: Component Props 제거
+#### Commit 3-4: Component Props 제거
 
 **무엇을**: 내부 컴포넌트를 교체할 수 있는 props
 
@@ -265,7 +265,7 @@ b00786739b PaperComponent 고정으로 변경
 
 ---
 
-#### Phase 4: Layout/Style Props 제거
+#### Commit 5-8: Layout/Style Props 제거
 
 **무엇을**: 레이아웃과 크기를 조절하는 props (fullScreen, fullWidth, maxWidth, scroll 등)
 
@@ -311,7 +311,7 @@ a8629a8885 fullWidth prop 삭제
 
 ---
 
-#### Phase 5: Event Props 제거
+#### Commit 9: Event Props 제거
 
 **무엇을**: 추가 이벤트 핸들러 props (onClick, onBackdropClick 등)
 
@@ -348,7 +348,7 @@ de1cf3d20a onClick prop 삭제
 
 ---
 
-#### Phase 6: Theme 시스템 제거
+#### Commit 10-12: Theme 시스템 제거
 
 **무엇을**: Material-UI의 테마 통합 시스템
 
@@ -398,7 +398,7 @@ const styles = memoTheme(({ theme }) => ({
 
 ---
 
-#### Phase 7: Style 시스템 제거
+#### Commit 13-14: Style 시스템 제거
 
 **무엇을**: Material-UI의 스타일링 시스템 (styled, sx, ownerState 등)
 
@@ -461,7 +461,7 @@ d0b0d6712a Dialog 구현 단순화 및 스타일 의존성 제거
 
 ---
 
-#### Phase 8: Context 제거
+#### Commit 15: Context 제거
 
 **무엇을**: React Context API로 하위 컴포넌트와 통신
 
@@ -507,7 +507,7 @@ const { titleId } = React.useContext(DialogContext);
 
 ---
 
-#### Phase 9: Disable/Enable Props 제거
+#### Commit 16-17: Disable/Enable Props 제거
 
 **무엇을**: 기능을 켜고 끄는 boolean props (disable*)
 
@@ -561,7 +561,7 @@ aca44b10ab disableAutoFocus, activated 삭제
 
 ---
 
-#### Phase 10: 복잡한 Ref 처리 제거
+#### Commit 18-19: 복잡한 Ref 처리 제거
 
 **무엇을**: 여러 ref를 병합하거나 전달하는 복잡한 로직
 
@@ -606,7 +606,7 @@ a231c0619f FocusTrap ref 처리 단순화 및 rootRef 직접 전달
 
 ---
 
-#### Phase 11: 브라우저 호환성 코드 제거
+#### Commit 20: 브라우저 호환성 코드 제거
 
 **무엇을**: 구형 브라우저를 지원하기 위한 코드
 
@@ -651,7 +651,7 @@ const element = Array.from(list);
 
 ---
 
-#### Phase 12: Interval/Polling 로직 제거
+#### Commit 21: Interval/Polling 로직 제거
 
 **무엇을**: 주기적으로 상태를 체크하는 코드
 
@@ -708,7 +708,7 @@ container.addEventListener('focusout', (e) => {
 
 ---
 
-#### Phase 13: 특수 케이스 처리 제거
+#### Commit 22: 특수 케이스 처리 제거
 
 **무엇을**: 특정 요소나 상황을 위한 예외 처리
 
@@ -767,7 +767,7 @@ if (element.type === 'radio' && element.name) {
 
 ---
 
-#### Phase 14: 복잡한 알고리즘 단순화
+#### Commit 23: 복잡한 알고리즘 단순화
 
 **무엇을**: 복잡한 계산이나 정렬 로직 (tabIndex 정렬, 우선순위 등)
 
@@ -835,7 +835,7 @@ function defaultGetTabbable(root) {
 
 ---
 
-#### Phase 15: 유틸리티 함수 제거
+#### Commit 24-25: 유틸리티 함수 제거
 
 **무엇을**: 재사용을 위한 helper 함수들
 
@@ -880,7 +880,7 @@ d3af9906d2 handleFocusSentinel() 코드 삭제
 
 ---
 
-#### Phase 16: Deprecated Props 제거
+#### Commit 26: Deprecated Props 제거
 
 **무엇을**: 하위 호환성을 위해 남겨둔 옛날 props
 
@@ -928,7 +928,7 @@ const PaperSlot = Paper;
 
 ---
 
-#### Phase 17: 메타데이터 제거
+#### Commit 27: 메타데이터 제거
 
 **무엇을**: 개발/디버깅/문서화를 위한 추가 정보
 
@@ -1025,7 +1025,7 @@ docs/[상위개념을 뜻하는 키워드]/
 **작성 항목**:
 1. 무슨 기능을 하는가? (남은 기능)
 2. 내부 구조
-3. **⭐ 커밋 히스토리로 보는 단순화 과정** (계획서의 Phase와 일치하게 그룹화)
+3. **⭐ 커밋 히스토리로 보는 단순화 과정** (계획서의 Commit와 일치하게 그룹화)
 4. 원본과의 차이점 (표 형식)
 5. 스타일 비교
 6. 설계 철학의 변화
@@ -1036,7 +1036,7 @@ docs/[상위개념을 뜻하는 키워드]/
 **형식 예시**: `docs/modal/Dialog-simplified.md` 참고
 
 **커밋 히스토리 주의사항**:
-- 계획서의 Phase와 일치하게 그룹화
+- 계획서의 커밋 번호와 일치하게 작성
 - 각 커밋의 해시 8자리 포함
 - 변경 줄 수는 선택적
 - 시간 순서대로 나열 (가장 먼저 한 것부터)
