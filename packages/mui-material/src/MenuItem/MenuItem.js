@@ -10,7 +10,6 @@ import { useDefaultProps } from '../DefaultPropsProvider';
 import ListContext from '../List/ListContext';
 import ButtonBase from '../ButtonBase';
 import useForkRef from '../utils/useForkRef';
-import { dividerClasses } from '../Divider';
 import { listItemIconClasses } from '../ListItemIcon';
 import { listItemTextClasses } from '../ListItemText';
 import menuItemClasses, { getMenuItemUtilityClass } from './menuItemClasses';
@@ -20,19 +19,17 @@ export const overridesResolver = (props, styles) => {
 
   return [
     styles.root,
-    ownerState.divider && styles.divider,
     !ownerState.disableGutters && styles.gutters,
   ];
 };
 
 const useUtilityClasses = (ownerState) => {
-  const { disabled, divider, disableGutters, selected, classes } = ownerState;
+  const { disabled, disableGutters, selected, classes } = ownerState;
   const slots = {
     root: [
       'root',
       disabled && 'disabled',
       !disableGutters && 'gutters',
-      divider && 'divider',
       selected && 'selected',
     ],
   };
@@ -102,13 +99,6 @@ const MenuItemRoot = styled(ButtonBase, {
     [`&.${menuItemClasses.disabled}`]: {
       opacity: (theme.vars || theme).palette.action.disabledOpacity,
     },
-    [`& + .${dividerClasses.root}`]: {
-      marginTop: theme.spacing(1),
-      marginBottom: theme.spacing(1),
-    },
-    [`& + .${dividerClasses.inset}`]: {
-      marginLeft: 52,
-    },
     [`& .${listItemTextClasses.root}`]: {
       marginTop: 0,
       marginBottom: 0,
@@ -127,13 +117,6 @@ const MenuItemRoot = styled(ButtonBase, {
           paddingRight: 16,
         },
       },
-      {
-        props: ({ ownerState }) => ownerState.divider,
-        style: {
-          borderBottom: `1px solid ${(theme.vars || theme).palette.divider}`,
-          backgroundClip: 'padding-box',
-        },
-      },
     ],
   })),
 );
@@ -142,7 +125,6 @@ const MenuItem = React.forwardRef(function MenuItem(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiMenuItem' });
   const {
     component = 'li',
-    divider = false,
     disableGutters = false,
     focusVisibleClassName,
     role = 'menuitem',
@@ -162,7 +144,6 @@ const MenuItem = React.forwardRef(function MenuItem(inProps, ref) {
 
   const ownerState = {
     ...props,
-    divider,
     disableGutters,
   };
 
@@ -223,11 +204,6 @@ MenuItem.propTypes /* remove-proptypes */ = {
    * @default false
    */
   disableGutters: PropTypes.bool,
-  /**
-   * If `true`, a 1px light border is added to the bottom of the menu item.
-   * @default false
-   */
-  divider: PropTypes.bool,
   /**
    * This prop can help identify which element has keyboard focus.
    * The class name will be applied when the element gains the focus through keyboard interaction.
