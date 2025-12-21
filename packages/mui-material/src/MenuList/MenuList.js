@@ -7,35 +7,29 @@ import getActiveElement from '../utils/getActiveElement';
 import useForkRef from '../utils/useForkRef';
 import useEnhancedEffect from '../utils/useEnhancedEffect';
 
-function nextItem(list, item, disableListWrap) {
+function nextItem(list, item) {
   if (list === item) {
     return list.firstChild;
   }
   if (item && item.nextElementSibling) {
     return item.nextElementSibling;
   }
-  return disableListWrap ? null : list.firstChild;
+  return list.firstChild;
 }
 
-function previousItem(list, item, disableListWrap) {
+function previousItem(list, item) {
   if (list === item) {
-    return disableListWrap ? list.firstChild : list.lastChild;
+    return list.lastChild;
   }
   if (item && item.previousElementSibling) {
     return item.previousElementSibling;
   }
-  return disableListWrap ? null : list.lastChild;
+  return list.lastChild;
 }
 
-function moveFocus(
-  list,
-  currentFocus,
-  disableListWrap,
-  disabledItemsFocusable,
-  traversalFunction,
-) {
+function moveFocus(list, currentFocus, traversalFunction) {
   let wrappedOnce = false;
-  let nextFocus = traversalFunction(list, currentFocus, currentFocus ? disableListWrap : false);
+  let nextFocus = traversalFunction(list, currentFocus);
 
   while (nextFocus) {
     // Prevent infinite loop.
@@ -46,14 +40,13 @@ function moveFocus(
       wrappedOnce = true;
     }
 
-    // Same logic as useAutocomplete.js
-    const nextFocusDisabled = disabledItemsFocusable
-      ? false
-      : nextFocus.disabled || nextFocus.getAttribute('aria-disabled') === 'true';
+    // Skip disabled items
+    const nextFocusDisabled =
+      nextFocus.disabled || nextFocus.getAttribute('aria-disabled') === 'true';
 
     if (!nextFocus.hasAttribute('tabindex') || nextFocusDisabled) {
       // Move to the next element.
-      nextFocus = traversalFunction(list, nextFocus, disableListWrap);
+      nextFocus = traversalFunction(list, nextFocus);
     } else {
       nextFocus.focus();
       return true;
@@ -73,8 +66,6 @@ const MenuList = React.forwardRef(function MenuList(props, ref) {
     autoFocus = false,
     children,
     className,
-    disabledItemsFocusable = false,
-    disableListWrap = false,
     onKeyDown,
     ...other
   } = props;
@@ -110,16 +101,16 @@ const MenuList = React.forwardRef(function MenuList(props, ref) {
     if (key === 'ArrowDown') {
       // Prevent scroll of the page
       event.preventDefault();
-      moveFocus(list, currentFocus, disableListWrap, disabledItemsFocusable, nextItem);
+      moveFocus(list, currentFocus, nextItem);
     } else if (key === 'ArrowUp') {
       event.preventDefault();
-      moveFocus(list, currentFocus, disableListWrap, disabledItemsFocusable, previousItem);
+      moveFocus(list, currentFocus, previousItem);
     } else if (key === 'Home') {
       event.preventDefault();
-      moveFocus(list, null, disableListWrap, disabledItemsFocusable, nextItem);
+      moveFocus(list, null, nextItem);
     } else if (key === 'End') {
       event.preventDefault();
-      moveFocus(list, null, disableListWrap, disabledItemsFocusable, previousItem);
+      moveFocus(list, null, previousItem);
     }
 
     if (onKeyDown) {
