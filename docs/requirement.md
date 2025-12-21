@@ -161,18 +161,7 @@ e204177dad Dialog.js에 DialogContainer 및 DialogPaper 컴포넌트 재도입
 **무엇을**: Material-UI v5의 컴포넌트 커스터마이징 시스템
 
 **왜 불필요한가**:
-```javascript
-// Slot 시스템으로 할 수 있는 것
-<Dialog
-  slots={{
-    paper: CustomPaper,      // Paper를 내 컴포넌트로 교체
-    backdrop: CustomBackdrop, // Backdrop도 교체
-  }}
-  slotProps={{
-    paper: { myProp: 'value' },
-  }}
-/>
-```
+- 참고: Dialog 단순화 `9e72205c7a` (Slot 삭제)
 
 - **학습 목적**:
   - 커스터마이징 배우는 게 아니라 컴포넌트의 핵심 개념을 배우는 것
@@ -201,22 +190,7 @@ e204177dad Dialog.js에 DialogContainer 및 DialogPaper 컴포넌트 재도입
 **무엇을**: 컴포넌트 등장/사라질 때 애니메이션 (Fade, Grow, Slide 등)
 
 **왜 불필요한가**:
-```javascript
-// Transition은 복잡함
-<Fade in={open} timeout={300}>
-  <Dialog>{children}</Dialog>
-</Fade>
-
-// 또는
-<Slide
-  in={open}
-  direction="right"
-  timeout={{ enter: 225, exit: 195 }}
-  appear={mounted.current}  // 초기 마운트 시 스킵
->
-  <DrawerPaper>{children}</DrawerPaper>
-</Slide>
-```
+- 참고: Dialog 단순화 `88c1b47207` (Transition 삭제)
 
 - **학습 목적**:
   - 컴포넌트의 핵심은 UI 구조이지 "애니메이션"이 아님
@@ -246,16 +220,7 @@ e204177dad Dialog.js에 DialogContainer 및 DialogPaper 컴포넌트 재도입
 **무엇을**: 내부 컴포넌트를 교체할 수 있는 props
 
 **왜 불필요한가**:
-```javascript
-// 컴포넌트 교체 예시
-<Dialog
-  BackdropComponent={MyCustomBackdrop}
-  PaperComponent={MyCustomPaper}
-  ContainerComponent={MyCustomContainer}
->
-  {children}
-</Dialog>
-```
+- 참고: Dialog 단순화 `8bc8941d89`, `b00786739b` (BackdropComponent, PaperComponent)
 
 - **학습 목적**:
   - 고정된 컴포넌트로도 Dialog의 핵심 개념을 충분히 이해 가능
@@ -284,20 +249,7 @@ b00786739b PaperComponent 고정으로 변경
 **무엇을**: 레이아웃과 크기를 조절하는 props (fullScreen, fullWidth, maxWidth, scroll 등)
 
 **왜 불필요한가**:
-```javascript
-// 다양한 레이아웃 옵션
-<Dialog maxWidth="xs">  {/* 444px */}
-<Dialog maxWidth="sm">  {/* 600px */}
-<Dialog maxWidth="md">  {/* 960px */}
-<Dialog maxWidth="lg">  {/* 1280px */}
-<Dialog maxWidth="xl">  {/* 1920px */}
-
-<Dialog fullWidth>      {/* maxWidth까지 꽉 참 */}
-<Dialog fullScreen>     {/* 전체 화면 */}
-
-<Dialog scroll="paper">  {/* Dialog 내부만 스크롤 */}
-<Dialog scroll="body">   {/* body 전체 스크롤 */}
-```
+- 참고: Dialog 단순화 `ea2b00cc17`, `a8629a8885`, `1dd9a04d48`, `5ff021ece3`
 
 - **학습 목적**:
   - Dialog의 핵심은 "모달 대화상자"이지 "반응형 레이아웃"이 아님
@@ -330,14 +282,7 @@ a8629a8885 fullWidth prop 삭제
 **무엇을**: 추가 이벤트 핸들러 props (onClick, onBackdropClick 등)
 
 **왜 불필요한가**:
-```javascript
-// 다양한 이벤트 핸들러
-<Dialog
-  onClick={handleDialogClick}
-  onBackdropClick={handleBackdropClick}
-  onClose={handleClose}
->
-```
+- 참고: Dialog 단순화 `de1cf3d20a` (onClick 삭제)
 
 - **학습 목적**:
   - 이벤트 처리는 React의 기본 개념
@@ -367,23 +312,7 @@ de1cf3d20a onClick prop 삭제
 **무엇을**: Material-UI의 테마 통합 시스템
 
 **왜 불필요한가**:
-```javascript
-// useDefaultProps: 테마에서 기본값 가져오기
-const props = useDefaultProps({ props: inProps, name: 'MuiDialog' });
-// theme.components.MuiDialog.defaultProps에서 기본값 병합
-
-// useUtilityClasses: CSS 클래스 이름 생성
-const classes = {
-  root: 'MuiDialog-root MuiDialog-scroll-paper',
-  paper: 'MuiDialog-paper MuiDialog-paperScrollPaper'
-};
-
-// memoTheme: 테마 기반 스타일 메모이제이션
-const styles = memoTheme(({ theme }) => ({
-  zIndex: theme.zIndex.modal,  // 1300
-  color: theme.palette.primary.main,  // #1976d2
-}));
-```
+- 참고: Dialog 단순화 `87da2fa64f`, `91ff3513e8`, `59795afe84`
 
 - **학습 목적**:
   - 테마 시스템은 Material-UI 전체의 주제로, 개별 컴포넌트 학습에는 과함
@@ -417,35 +346,7 @@ const styles = memoTheme(({ theme }) => ({
 **무엇을**: Material-UI의 스타일링 시스템 (styled, sx, ownerState 등)
 
 **왜 불필요한가**:
-```javascript
-// styled (복잡)
-const DialogPaper = styled(Paper, {
-  name: 'MuiDialog',
-  slot: 'Paper',
-  overridesResolver: (props, styles) => [
-    styles.paper,
-    styles[`paperScroll${capitalize(ownerState.scroll)}`],
-  ],
-})(memoTheme(({ theme }) => ({
-  margin: 32,
-  maxWidth: theme.breakpoints.values.sm,
-  variants: [
-    { props: { scroll: 'paper' }, style: { ... } },
-    { props: { scroll: 'body' }, style: { ... } },
-  ]
-})));
-
-// 인라인 스타일 (단순)
-const DialogPaper = ({ children, ...props }) => (
-  <div {...props} style={{
-    margin: 32,
-    maxWidth: 600,
-    ...props.style
-  }}>
-    {children}
-  </div>
-);
-```
+- 참고: Dialog 단순화 `0321935f39`, `d0b0d6712a`
 
 - **학습 목적**:
   - 컴포넌트 구조 배우는 것이지 CSS-in-JS 배우는 게 아님
@@ -480,21 +381,7 @@ d0b0d6712a Dialog 구현 단순화 및 스타일 의존성 제거
 **무엇을**: React Context API로 하위 컴포넌트와 통신
 
 **왜 불필요한가**:
-```javascript
-// Context 사용 예시
-const DialogContext = React.createContext({ titleId: undefined });
-
-// Dialog가 Provider 제공
-<DialogContext.Provider value={{ titleId }}>
-  <Modal>
-    {children}  {/* DialogTitle이 여기에 */}
-  </Modal>
-</DialogContext.Provider>
-
-// DialogTitle이 Context에서 ID 가져옴
-const { titleId } = React.useContext(DialogContext);
-<h2 id={titleId}>Title</h2>
-```
+- 참고: Dialog 단순화 `58a1b606c8` (DialogContext 삭제)
 
 - **학습 목적**:
   - Context는 React의 별도 주제 (prop drilling 해결)
@@ -526,17 +413,7 @@ const { titleId } = React.useContext(DialogContext);
 **무엇을**: 기능을 켜고 끄는 boolean props (disable*)
 
 **왜 불필요한가**:
-```javascript
-// 다양한 disable props
-<Modal
-  disableAutoFocus      // 자동 포커스 끄기
-  disableEnforceFocus   // 포커스 강제 끄기
-  disableRestoreFocus   // 포커스 복원 끄기
-  disableScrollLock     // 스크롤 잠금 끄기
-  disablePortal         // Portal 끄기
-  disableEscapeKeyDown  // ESC 키 끄기
->
-```
+- 참고: Modal/FocusTrap 단순화 `5131949fbe`, `aca44b10ab`
 
 - **학습 목적**:
   - Material Design 가이드라인: Modal은 기본 동작이 있음
@@ -547,17 +424,6 @@ const { titleId } = React.useContext(DialogContext);
   - 상호 의존성 (disableAutoFocus면 disableRestoreFocus도 고려)
   - 테스트 케이스 2^n개 (n = disable props 개수)
 - **현실**: 99% 기본값 사용
-
-**예시**:
-```javascript
-// 삭제 전
-if (!disableAutoFocus) {
-  focusTrap.activate();
-}
-
-// 삭제 후
-focusTrap.activate();  // 항상 실행
-```
 
 **삭제 대상**:
 - `disableAutoFocus` → 항상 자동 포커스
@@ -580,19 +446,7 @@ aca44b10ab disableAutoFocus, activated 삭제
 **무엇을**: 여러 ref를 병합하거나 전달하는 복잡한 로직
 
 **왜 불필요한가**:
-```javascript
-// useForkRef: 여러 ref를 하나로 병합
-const handleRef = useForkRef(
-  ownRef,           // 컴포넌트 내부 ref
-  forwardedRef,     // 부모가 전달한 ref
-  childRef          // 자식의 ref
-);
-
-// getReactElementRef: 자식 요소의 ref 가져오기
-const childRef = getReactElementRef(children);
-const mergedRef = useForkRef(childRef, ownRef);
-const newChild = React.cloneElement(children, { ref: mergedRef });
-```
+- 참고: FocusTrap 단순화 `a231c0619f`, `35cdefd8ab`
 
 - **학습 목적**:
   - ref 병합은 React의 고급 주제
@@ -625,19 +479,6 @@ a231c0619f FocusTrap ref 처리 단순화 및 rootRef 직접 전달
 **무엇을**: 구형 브라우저를 지원하기 위한 코드
 
 **왜 불필요한가**:
-```javascript
-// IE11 대응
-const element = Array.from ? Array.from(list) : [].slice.call(list);
-
-// Safari 구버전 대응
-WebkitOverflowScrolling: 'touch',  // iOS < 13
-
-// Polyfill 조건문
-if (!window.Promise) {
-  // Promise polyfill
-}
-```
-
 - **학습 목적**:
   - 현대 브라우저(Chrome, Firefox, Safari, Edge)만 타겟
   - 호환성 코드는 레거시 지원용으로 학습과 무관
@@ -654,15 +495,6 @@ if (!window.Promise) {
 - Polyfill (Array.from, Promise, Object.assign 등)
 - Feature detection 조건문
 
-**예시**:
-```javascript
-// 삭제 전
-const element = Array.from ? Array.from(list) : [].slice.call(list);
-
-// 삭제 후
-const element = Array.from(list);
-```
-
 ---
 
 #### Commit 21: Interval/Polling 로직 제거
@@ -670,24 +502,7 @@ const element = Array.from(list);
 **무엇을**: 주기적으로 상태를 체크하는 코드
 
 **왜 불필요한가**:
-```javascript
-// Interval로 포커스 추적 (구형 브라우저 버그 우회)
-let intervalId;
-
-function activate() {
-  // 500ms마다 포커스가 컨테이너 밖으로 나갔는지 체크
-  intervalId = setInterval(() => {
-    if (!container.contains(document.activeElement)) {
-      // 포커스가 밖으로 나감 → 다시 안으로
-      container.focus();
-    }
-  }, 500);
-}
-
-function deactivate() {
-  clearInterval(intervalId);
-}
-```
+- 참고: FocusTrap 단순화 `b6b4d72c5d` (interval 로직 삭제)
 
 - **학습 목적**:
   - 이벤트 기반 처리가 더 직관적
@@ -705,21 +520,6 @@ function deactivate() {
 - 브라우저별 이벤트 버그 우회 코드
 - interval ID 관리 코드
 
-**커밋 예시**:
-```
-b6b4d72c5d Focus Trap에서 interval 로직 삭제
-```
-
-**대안**:
-```javascript
-// 이벤트 기반 (간단)
-container.addEventListener('focusout', (e) => {
-  if (!container.contains(e.relatedTarget)) {
-    container.focus();  // 포커스 복원
-  }
-});
-```
-
 ---
 
 #### Commit 22: 특수 케이스 처리 제거
@@ -727,25 +527,7 @@ container.addEventListener('focusout', (e) => {
 **무엇을**: 특정 요소나 상황을 위한 예외 처리
 
 **왜 불필요한가**:
-```javascript
-// 라디오 버튼 그룹 특수 처리
-if (element.type === 'radio' && element.name) {
-  const group = container.querySelectorAll(
-    `input[type="radio"][name="${element.name}"]`
-  );
-  // 라디오 그룹 내에서 checked된 것으로 포커스
-  const checked = group.find(r => r.checked) || group[0];
-  checked.focus();
-  return;  // 일반 Tab 처리 스킵
-}
-
-// handleFocusSentinel: "혹시 모를" 방어 로직
-function handleFocusSentinel() {
-  if (!nodeToRestore) {
-    nodeToRestore = document.activeElement;  // 지금이라도 저장
-  }
-}
-```
+- 참고: FocusTrap 단순화 `d3af9906d2` (handleFocusSentinel 삭제)
 
 - **학습 목적**:
   - 일반적인 케이스(Tab 순서)만 이해해도 충분
@@ -763,22 +545,6 @@ function handleFocusSentinel() {
 - Edge case 방어 코드
 - "혹시 모를" 방어적 로직 (handleFocusSentinel 등)
 
-**커밋 예시**:
-```
-d3af9906d2 handleFocusSentinel() 코드 삭제
-```
-
-**예시**:
-```javascript
-// 삭제 전: 라디오 버튼 특수 처리
-if (element.type === 'radio' && element.name) {
-  const group = container.querySelectorAll(`input[type="radio"][name="${element.name}"]`);
-  // 라디오 그룹 내에서 checked된 것으로 이동
-}
-
-// 삭제 후: 일반 Tab 순서대로만 이동
-```
-
 ---
 
 #### Commit 23: 복잡한 알고리즘 단순화
@@ -786,29 +552,6 @@ if (element.type === 'radio' && element.name) {
 **무엇을**: 복잡한 계산이나 정렬 로직 (tabIndex 정렬, 우선순위 등)
 
 **왜 불필요한가**:
-```javascript
-// tabIndex 기반 정렬 (60줄)
-function defaultGetTabbable(root) {
-  const regularTabNodes = [];      // tabIndex=0 또는 없음
-  const orderedTabNodes = [];      // tabIndex=1,2,3...
-
-  Array.from(root.querySelectorAll(selector)).forEach(node => {
-    const tabIndex = parseInt(node.getAttribute('tabIndex'), 10);
-    if (tabIndex > 0) {
-      orderedTabNodes.push({ node, tabIndex });
-    } else {
-      regularTabNodes.push(node);
-    }
-  });
-
-  // tabIndex 숫자 순으로 정렬 후 regularTabNodes 추가
-  return orderedTabNodes
-    .sort((a, b) => a.tabIndex - b.tabIndex)
-    .map(item => item.node)
-    .concat(regularTabNodes);
-}
-```
-
 - **학습 목적**:
   - HTML 표준: tabIndex > 0은 안티패턴 (거의 사용 안 함)
   - DOM 순서로도 99% 케이스에서 정상 동작
@@ -824,29 +567,6 @@ function defaultGetTabbable(root) {
 - React 내부 이벤트 트리 추적 (`reactFocusEventTarget`)
 - 복잡한 우선순위 계산
 
-**예시**:
-```javascript
-// 삭제 전: tabIndex 정렬 (60줄)
-function defaultGetTabbable(root) {
-  const regularTabNodes = [];
-  const orderedTabNodes = [];
-  Array.from(root.querySelectorAll(selector)).forEach(node => {
-    const tabIndex = parseInt(node.getAttribute('tabIndex'), 10);
-    if (tabIndex > 0) {
-      orderedTabNodes.push({ node, tabIndex });
-    } else {
-      regularTabNodes.push(node);
-    }
-  });
-  return orderedTabNodes.sort(...).map(...).concat(regularTabNodes);
-}
-
-// 삭제 후: DOM 순서 (3줄)
-function defaultGetTabbable(root) {
-  return Array.from(root.querySelectorAll(selector));
-}
-```
-
 ---
 
 #### Commit 24-25: 유틸리티 함수 제거
@@ -854,23 +574,7 @@ function defaultGetTabbable(root) {
 **무엇을**: 재사용을 위한 helper 함수들
 
 **왜 불필요한가**:
-```javascript
-// 유틸리티 함수 예시
-function reactFocusEventTarget() {
-  // React의 내부 이벤트 타겟 추적
-  // 30줄의 복잡한 로직...
-}
-
-function handleFocusSentinel() {
-  // "혹시 모를" 방어 로직
-  if (!nodeToRestore) {
-    nodeToRestore = document.activeElement;
-  }
-}
-
-// 사용: 한 곳에서만 호출
-const target = reactFocusEventTarget();
-```
+- 참고: FocusTrap 단순화 `5d4f290314`, `d3af9906d2`
 
 - **학습 목적**:
   - 함수 추상화는 코드 재사용이 목적
@@ -899,22 +603,6 @@ d3af9906d2 handleFocusSentinel() 코드 삭제
 **무엇을**: 하위 호환성을 위해 남겨둔 옛날 props
 
 **왜 불필요한가**:
-```javascript
-// 옛날 API와 새 API 동시 지원
-const {
-  PaperComponent,           // deprecated (v4 스타일)
-  TransitionComponent,      // deprecated (v4 스타일)
-  BackdropProps,            // deprecated (v4 스타일)
-  slots = {},               // 새 API (v5+)
-  slotProps = {},           // 새 API (v5+)
-} = props;
-
-// 병합 로직 (복잡)
-const PaperSlot = slots.paper ?? PaperComponent ?? Paper;
-const TransitionSlot = slots.transition ?? TransitionComponent ?? Fade;
-const backdropProps = { ...BackdropProps, ...slotProps.backdrop };
-```
-
 - **학습 목적**:
   - 하위 호환성은 프로덕션 라이브러리의 책임
   - 학습용으로는 최신 방식 하나만 이해하면 충분
@@ -931,15 +619,6 @@ const backdropProps = { ...BackdropProps, ...slotProps.backdrop };
 - `BackdropProps`, `componentsProps` 등 옛날 props
 - 옛날 API를 새로운 API로 변환하는 병합 코드
 
-**예시**:
-```javascript
-// 삭제 전: 옛날 API 지원
-const PaperSlot = slots?.paper ?? PaperComponent ?? Paper;
-
-// 삭제 후: 고정
-const PaperSlot = Paper;
-```
-
 ---
 
 #### Commit 27: 메타데이터 제거
@@ -947,27 +626,6 @@ const PaperSlot = Paper;
 **무엇을**: 개발/디버깅/문서화를 위한 추가 정보
 
 **왜 불필요한가**:
-```javascript
-// PropTypes (런타임 타입 검증)
-Dialog.propTypes = {
-  open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func,
-  children: PropTypes.node,
-  disableEscapeKeyDown: PropTypes.bool,
-  maxWidth: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
-  // ... 100줄
-};
-
-// displayName (디버깅용)
-Dialog.displayName = 'Dialog';
-
-// defaultProps (기본값)
-Dialog.defaultProps = {
-  maxWidth: 'sm',
-  scroll: 'paper',
-};
-```
-
 - **학습 목적**:
   - PropTypes는 타입 검증 도구이지 컴포넌트 로직이 아님
   - TypeScript를 사용하면 빌드 타임에 검증 (더 강력)
@@ -984,29 +642,6 @@ Dialog.defaultProps = {
 - `displayName` - 디버깅 시 컴포넌트 이름 표시
 - `defaultProps` - 함수 파라미터 기본값으로 대체
 - JSDoc 주석 - 복잡한 설명
-
-**예시**:
-```javascript
-// 삭제 전
-Dialog.propTypes = {
-  open: PropTypes.bool.isRequired,
-  children: PropTypes.node,
-  // ... 50줄
-};
-
-Dialog.displayName = 'Dialog';
-
-Dialog.defaultProps = {
-  maxWidth: 'sm',
-};
-
-// 삭제 후: 전부 삭제
-
-// 대신 함수 파라미터 기본값 사용
-function Dialog({ open, children, maxWidth = 'sm' }) {
-  // ...
-}
-```
 
 ### 3. 결과물
 
