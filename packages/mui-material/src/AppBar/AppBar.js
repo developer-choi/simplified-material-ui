@@ -92,50 +92,21 @@ const AppBarRoot = styled(Paper, {
         },
       },
       {
-        props: { color: 'inherit' },
+        props: { color: 'primary' },
         style: {
-          '--AppBar-color': 'inherit',
+          '--AppBar-background': (theme.vars ?? theme).palette.primary.main,
+          '--AppBar-color': (theme.vars ?? theme).palette.primary.contrastText,
         },
       },
       {
-        props: { color: 'default' },
-        style: {
-          '--AppBar-background': theme.vars
-            ? theme.vars.palette.AppBar.defaultBg
-            : theme.palette.grey[100],
-          '--AppBar-color': theme.vars
-            ? theme.vars.palette.text.primary
-            : theme.palette.getContrastText(theme.palette.grey[100]),
-          ...theme.applyStyles('dark', {
-            '--AppBar-background': theme.vars
-              ? theme.vars.palette.AppBar.defaultBg
-              : theme.palette.grey[900],
-            '--AppBar-color': theme.vars
-              ? theme.vars.palette.text.primary
-              : theme.palette.getContrastText(theme.palette.grey[900]),
-          }),
-        },
-      },
-      ...Object.entries(theme.palette)
-        .filter(createSimplePaletteValueFilter(['contrastText']))
-        .map(([color]) => ({
-          props: { color },
-          style: {
-            '--AppBar-background': (theme.vars ?? theme).palette[color].main,
-            '--AppBar-color': (theme.vars ?? theme).palette[color].contrastText,
-          },
-        })),
-      {
-        props: (props) =>
-          props.enableColorOnDark === true && !['inherit', 'transparent'].includes(props.color),
+        props: { enableColorOnDark: true },
         style: {
           backgroundColor: 'var(--AppBar-background)',
           color: 'var(--AppBar-color)',
         },
       },
       {
-        props: (props) =>
-          props.enableColorOnDark === false && !['inherit', 'transparent'].includes(props.color),
+        props: { enableColorOnDark: false },
         style: {
           backgroundColor: 'var(--AppBar-background)',
           color: 'var(--AppBar-color)',
@@ -146,18 +117,6 @@ const AppBarRoot = styled(Paper, {
             color: theme.vars
               ? joinVars(theme.vars.palette.AppBar.darkColor, 'var(--AppBar-color)')
               : null,
-          }),
-        },
-      },
-      {
-        props: { color: 'transparent' },
-        style: {
-          '--AppBar-background': 'transparent',
-          '--AppBar-color': 'inherit',
-          backgroundColor: 'var(--AppBar-background)',
-          color: 'var(--AppBar-color)',
-          ...theme.applyStyles('dark', {
-            backgroundImage: 'none',
           }),
         },
       },
