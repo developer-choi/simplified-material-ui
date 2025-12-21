@@ -6,7 +6,6 @@ import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import ButtonBase from '../ButtonBase';
-import useForkRef from '../utils/useForkRef';
 import { listItemIconClasses } from '../ListItemIcon';
 import { listItemTextClasses } from '../ListItemText';
 import menuItemClasses from './menuItemClasses';
@@ -75,11 +74,9 @@ const MenuItem = React.forwardRef(function MenuItem(props, ref) {
     ...props,
   };
 
-  const handleRef = useForkRef(null, ref);
-
   return (
     <MenuItemRoot
-      ref={handleRef}
+      ref={ref}
       role="menuitem"
       component="li"
       className={className}
