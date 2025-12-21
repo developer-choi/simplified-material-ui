@@ -60,11 +60,9 @@ Material-UI의 복잡한 컴포넌트들을 **최소한의 기능만 남기고 �
 
 ```
 docs/[카테고리]/
-  ├── [ComponentName]-original.md     # 원본 분석
-  └── [ComponentName]-simplified.md   # 단순화 후 분석
+  ├── [ComponentName]-original.md     # 원본 분석 (양식: docs/format/original.md)
+  └── [ComponentName]-simplified.md   # 단순화 후 분석 (양식: docs/format/simplified.md)
 ```
-
-// TODO simplified랑 original md 가이드 여기
 
 ---
 
