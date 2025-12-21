@@ -74,8 +74,6 @@ const Menu = React.forwardRef(function Menu(inProps, ref) {
     open,
     PaperProps = {},
     PopoverClasses,
-    transitionDuration = 'auto',
-    TransitionProps: { onEntering, ...TransitionProps } = {},
     variant = 'selectedMenu',
     ...other
   } = props;
@@ -87,10 +85,7 @@ const Menu = React.forwardRef(function Menu(inProps, ref) {
     autoFocus,
     disableAutoFocusItem,
     MenuListProps,
-    onEntering,
     PaperProps,
-    transitionDuration,
-    TransitionProps,
     variant,
   };
 
@@ -99,18 +94,6 @@ const Menu = React.forwardRef(function Menu(inProps, ref) {
   const autoFocusItem = autoFocus && !disableAutoFocusItem && open;
 
   const menuListActionsRef = React.useRef(null);
-
-  const handleEntering = (element, isAppearing) => {
-    if (menuListActionsRef.current) {
-      menuListActionsRef.current.adjustStyleForScrollbar(element, {
-        direction: isRtl ? 'rtl' : 'ltr',
-      });
-    }
-
-    if (onEntering) {
-      onEntering(element, isAppearing);
-    }
-  };
 
   const handleListKeyDown = (event) => {
     if (event.key === 'Tab') {
@@ -169,16 +152,8 @@ const Menu = React.forwardRef(function Menu(inProps, ref) {
         className: clsx(classes.paper, PaperProps.className),
         component: MenuPaper,
       }}
-      TransitionProps={{
-        ...TransitionProps,
-        onEntering: (...args) => {
-          handleEntering(...args);
-          TransitionProps?.onEntering?.(...args);
-        },
-      }}
       open={open}
       ref={ref}
-      transitionDuration={transitionDuration}
       className={clsx(classes.root, className)}
       ownerState={ownerState}
       {...other}
@@ -273,26 +248,6 @@ Menu.propTypes /* remove-proptypes */ = {
     PropTypes.func,
     PropTypes.object,
   ]),
-  /**
-   * The length of the transition in `ms`, or 'auto'
-   * @default 'auto'
-   */
-  transitionDuration: PropTypes.oneOfType([
-    PropTypes.oneOf(['auto']),
-    PropTypes.number,
-    PropTypes.shape({
-      appear: PropTypes.number,
-      enter: PropTypes.number,
-      exit: PropTypes.number,
-    }),
-  ]),
-  /**
-   * Props applied to the transition element.
-   * By default, the element is based on this [`Transition`](https://reactcommunity.org/react-transition-group/transition/) component.
-   * @deprecated use the `slotProps.transition` prop instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   * @default {}
-   */
-  TransitionProps: PropTypes.object,
   /**
    * The variant to use. Use `menu` to prevent selected items from impacting the initial focus.
    * @default 'selectedMenu'
