@@ -58,6 +58,7 @@ Component
 
 ### 1단계: [단계명]
 - `[Commit Hash]` - [Commit Message] ([변경 사항 요약])
+- 이 기능이 불필요한 이유 작성 (예시: docs/format/commit.md 의 "왜 불필요한가" 항목 참고)
 
 ### 2단계: [단계명]
 - `[Commit Hash]` - [Commit Message] ([변경 사항 요약])
