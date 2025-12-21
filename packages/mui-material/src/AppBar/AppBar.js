@@ -11,6 +11,10 @@ const AppBarRoot = styled(Paper)({
   width: '100%',
   boxSizing: 'border-box',
   flexShrink: 0,
+  '--AppBar-background': '#1976d2',
+  '--AppBar-color': '#fff',
+  backgroundColor: 'var(--AppBar-background)',
+  color: 'var(--AppBar-color)',
   variants: [
     {
       props: { position: 'fixed' },
@@ -55,15 +59,6 @@ const AppBarRoot = styled(Paper)({
       props: { position: 'relative' },
       style: {
         position: 'relative',
-      },
-    },
-    {
-      props: { color: 'primary' },
-      style: {
-        '--AppBar-background': '#1976d2',
-        '--AppBar-color': '#fff',
-        backgroundColor: 'var(--AppBar-background)',
-        color: 'var(--AppBar-color)',
       },
     },
   ],
