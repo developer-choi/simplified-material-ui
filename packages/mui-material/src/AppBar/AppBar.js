@@ -2,36 +2,11 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import capitalize from '../utils/capitalize';
 import Paper from '../Paper';
-import { getAppBarUtilityClass } from './appBarClasses';
 
-const useUtilityClasses = (ownerState) => {
-  const { color, position, classes } = ownerState;
-
-  const slots = {
-    root: ['root', `color${capitalize(color)}`, `position${capitalize(position)}`],
-  };
-
-  return composeClasses(slots, getAppBarUtilityClass, classes);
-};
-
-const AppBarRoot = styled(Paper, {
-  name: 'MuiAppBar',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.root,
-      styles[`position${capitalize(ownerState.position)}`],
-      styles[`color${capitalize(ownerState.color)}`],
-    ];
-  },
-})(
+const AppBarRoot = styled(Paper)(
   memoTheme(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
@@ -120,8 +95,6 @@ const AppBar = React.forwardRef(function AppBar(props, ref) {
     position,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <AppBarRoot
       square
@@ -129,7 +102,6 @@ const AppBar = React.forwardRef(function AppBar(props, ref) {
       ownerState={ownerState}
       elevation={4}
       className={clsx(
-        classes.root,
         {
           'mui-fixed': position === 'fixed', // Useful for the Dialog
         },
