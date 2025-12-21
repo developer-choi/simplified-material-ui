@@ -51,7 +51,6 @@ const Backdrop = React.forwardRef(function Backdrop(inProps, ref) {
   const {
     children,
     className,
-    component = 'div',
     invisible = false,
     open,
     ...other
@@ -59,7 +58,6 @@ const Backdrop = React.forwardRef(function Backdrop(inProps, ref) {
 
   const ownerState = {
     ...props,
-    component,
     invisible,
   };
 
@@ -72,7 +70,6 @@ const Backdrop = React.forwardRef(function Backdrop(inProps, ref) {
   return (
     <BackdropRoot
       aria-hidden
-      as={component}
       className={clsx(classes.root, className)}
       classes={classes}
       ownerState={ownerState}
@@ -101,11 +98,6 @@ Backdrop.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   className: PropTypes.string,
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
   /**
    * If `true`, the backdrop is invisible.
    * It can be used when rendering a popover or a custom select component.
