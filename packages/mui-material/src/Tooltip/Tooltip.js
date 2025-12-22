@@ -120,7 +120,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
   const {
     children: childrenProp,
     classes: classesProp,
-    describeChild = false,
     disableFocusListener = false,
     disableTouchListener = false,
     enterDelay = 100,
@@ -337,18 +336,7 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     open = false;
   }
 
-  const nameOrDescProps = {};
-  const titleIsString = typeof title === 'string';
-  if (describeChild) {
-    nameOrDescProps.title = !open && titleIsString ? title : null;
-    nameOrDescProps['aria-describedby'] = open ? id : null;
-  } else {
-    nameOrDescProps['aria-label'] = titleIsString ? title : null;
-    nameOrDescProps['aria-labelledby'] = open && !titleIsString ? id : null;
-  }
-
   const childrenProps = {
-    ...nameOrDescProps,
     ...other,
     ...children.props,
     className: clsx(other.className, children.props.className),
@@ -498,12 +486,6 @@ Tooltip.propTypes /* remove-proptypes */ = {
     tooltip: PropTypes.object,
     transition: PropTypes.object,
   }),
-  /**
-   * Set to `true` if the `title` acts as an accessible description.
-   * By default the `title` acts as an accessible label for the child.
-   * @default false
-   */
-  describeChild: PropTypes.bool,
   /**
    * Do not respond to focus-visible events.
    * @default false
