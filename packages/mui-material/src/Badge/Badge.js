@@ -117,7 +117,6 @@ const Badge = React.forwardRef(function Badge(inProps, ref) {
     classes: classesProp,
     children,
     invisible: invisibleProp = false,
-    max: maxProp = 99,
     badgeContent: badgeContentProp,
     showZero = false,
     ...other
@@ -131,10 +130,8 @@ const Badge = React.forwardRef(function Badge(inProps, ref) {
   const {
     badgeContent,
     invisible: invisibleFromHook,
-    max,
     displayValue: displayValueFromHook,
   } = useBadge({
-    max: maxProp,
     invisible: invisibleProp,
     badgeContent: badgeContentProp,
     showZero,
@@ -151,7 +148,6 @@ const Badge = React.forwardRef(function Badge(inProps, ref) {
     ...props,
     badgeContent,
     invisible,
-    max,
     displayValue,
     showZero,
     anchorOrigin,
@@ -203,11 +199,6 @@ Badge.propTypes /* remove-proptypes */ = {
    * @default false
    */
   invisible: PropTypes.bool,
-  /**
-   * Max count to show.
-   * @default 99
-   */
-  max: PropTypes.number,
   /**
    * Controls whether the badge is hidden when `badgeContent` is zero.
    * @default false

@@ -7,13 +7,11 @@ function useBadge(parameters: UseBadgeParameters): UseBadgeReturnValue {
   const {
     badgeContent: badgeContentProp,
     invisible: invisibleProp = false,
-    max: maxProp = 99,
     showZero = false,
   } = parameters;
 
   const prevProps = usePreviousProps({
     badgeContent: badgeContentProp,
-    max: maxProp,
   });
 
   let invisible = invisibleProp;
@@ -22,15 +20,13 @@ function useBadge(parameters: UseBadgeParameters): UseBadgeReturnValue {
     invisible = true;
   }
 
-  const { badgeContent, max = maxProp } = invisible ? prevProps : parameters;
+  const { badgeContent } = invisible ? prevProps : parameters;
 
-  const displayValue: React.ReactNode =
-    badgeContent && Number(badgeContent) > max ? `${max}+` : badgeContent;
+  const displayValue: React.ReactNode = badgeContent;
 
   return {
     badgeContent,
     invisible,
-    max,
     displayValue,
   };
 }
