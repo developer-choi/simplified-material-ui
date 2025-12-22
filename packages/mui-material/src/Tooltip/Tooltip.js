@@ -24,17 +24,15 @@ function round(value) {
 }
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, disableInteractive, arrow, touch, placement } = ownerState;
+  const { classes, disableInteractive, touch, placement } = ownerState;
 
   const slots = {
-    popper: ['popper', !disableInteractive && 'popperInteractive', arrow && 'popperArrow'],
+    popper: ['popper', !disableInteractive && 'popperInteractive'],
     tooltip: [
       'tooltip',
-      arrow && 'tooltipArrow',
       touch && 'touch',
       `tooltipPlacement${capitalize(placement.split('-')[0])}`,
     ],
-    arrow: ['arrow'],
   };
 
   return composeClasses(slots, getTooltipUtilityClass, classes);
@@ -162,29 +160,6 @@ const TooltipTooltip = styled('div', {
   })),
 );
 
-const TooltipArrow = styled('span', {
-  name: 'MuiTooltip',
-  slot: 'Arrow',
-})(
-  memoTheme(({ theme }) => ({
-    overflow: 'hidden',
-    position: 'absolute',
-    width: '1em',
-    height: '0.71em' /* = width / sqrt(2) = (length of the hypotenuse) */,
-    boxSizing: 'border-box',
-    color: theme.vars ? theme.vars.palette.Tooltip.bg : theme.alpha(theme.palette.grey[700], 0.9),
-    '&::before': {
-      content: '""',
-      margin: 'auto',
-      display: 'block',
-      width: '100%',
-      height: '100%',
-      backgroundColor: 'currentColor',
-      transform: 'rotate(45deg)',
-    },
-  })),
-);
-
 let hystersisOpen = false;
 const hystersisTimer = new Timeout();
 let cursorPosition = { x: 0, y: 0 };
@@ -207,7 +182,6 @@ function composeEventHandler(handler, eventHandler) {
 const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiTooltip' });
   const {
-    arrow = false,
     children: childrenProp,
     classes: classesProp,
     describeChild = false,
@@ -237,7 +211,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
   const isRtl = useRtl();
 
   const [childNode, setChildNode] = React.useState();
-  const [arrowRef, setArrowRef] = React.useState(null);
   const ignoreNonTouchEvents = React.useRef(false);
 
   const disableInteractive = disableInteractiveProp || followCursor;
@@ -535,7 +508,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
   const ownerState = {
     ...props,
     isRtl,
-    arrow,
     disableInteractive,
     placement,
     touch: ignoreNonTouchEvents.current,
@@ -579,7 +551,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
         >
           <TooltipTooltip className={classes.tooltip} ownerState={ownerState}>
             {title}
-            {arrow ? <TooltipArrow className={classes.arrow} ownerState={ownerState} ref={setArrowRef} /> : null}
           </TooltipTooltip>
         </div>,
         document.body
