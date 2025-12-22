@@ -6,9 +6,7 @@ import clsx from 'clsx';
 import useTimeout, { Timeout } from '@mui/utils/useTimeout';
 import elementAcceptingRef from '@mui/utils/elementAcceptingRef';
 import isFocusVisible from '@mui/utils/isFocusVisible';
-import getReactElementRef from '@mui/utils/getReactElementRef';
 import useEventCallback from '../utils/useEventCallback';
-import useForkRef from '../utils/useForkRef';
 import useId from '../utils/useId';
 import useControlled from '../utils/useControlled';
 
@@ -222,8 +220,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     };
   }, [handleClose, open]);
 
-  const handleRef = useForkRef(getReactElementRef(children), setChildNode, ref);
-
   // There is no point in displaying an empty tooltip.
   // So we exclude all falsy values, except 0, which is valid.
   if (!title && title !== 0) {
@@ -235,7 +231,7 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     ...children.props,
     className: clsx(other.className, children.props.className),
     onTouchStart: detectTouchStart,
-    ref: handleRef,
+    ref: setChildNode,
   };
 
   if (process.env.NODE_ENV !== 'production') {
