@@ -7,93 +7,10 @@ import useTimeout, { Timeout } from '@mui/utils/useTimeout';
 import elementAcceptingRef from '@mui/utils/elementAcceptingRef';
 import isFocusVisible from '@mui/utils/isFocusVisible';
 import getReactElementRef from '@mui/utils/getReactElementRef';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import useEventCallback from '../utils/useEventCallback';
 import useForkRef from '../utils/useForkRef';
 import useId from '../utils/useId';
 import useControlled from '../utils/useControlled';
-import tooltipClasses from './tooltipClasses';
-
-function round(value) {
-  return Math.round(value * 1e5) / 1e5;
-}
-
-const TooltipTooltip = styled('div', {
-  name: 'MuiTooltip',
-  slot: 'Tooltip',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.tooltip,
-      ownerState.touch && styles.touch,
-      ownerState.arrow && styles.tooltipArrow,
-      styles[`tooltipPlacement${capitalize(ownerState.placement.split('-')[0])}`],
-    ];
-  },
-})(
-  memoTheme(({ theme }) => ({
-    backgroundColor: 'rgba(97, 97, 97, 0.92)',
-    borderRadius: '4px',
-    color: '#fff',
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    padding: '4px 8px',
-    fontSize: '0.6875rem',
-    maxWidth: 300,
-    margin: 2,
-    wordWrap: 'break-word',
-    fontWeight: 500,
-    [`.${tooltipClasses.popper}[data-popper-placement*="left"] &`]: {
-      transformOrigin: 'right center',
-    },
-    [`.${tooltipClasses.popper}[data-popper-placement*="right"] &`]: {
-      transformOrigin: 'left center',
-    },
-    [`.${tooltipClasses.popper}[data-popper-placement*="top"] &`]: {
-      transformOrigin: 'center bottom',
-      marginBottom: '14px',
-    },
-    [`.${tooltipClasses.popper}[data-popper-placement*="bottom"] &`]: {
-      transformOrigin: 'center top',
-      marginTop: '14px',
-    },
-    variants: [
-      {
-        props: ({ ownerState }) => ownerState.arrow,
-        style: {
-          position: 'relative',
-          margin: 0,
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.touch,
-        style: {
-          padding: '8px 16px',
-          fontSize: '0.875rem',
-          lineHeight: `${round(16 / 14)}em`,
-          fontWeight: 400,
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.touch,
-        style: {
-          [`.${tooltipClasses.popper}[data-popper-placement*="top"] &`]: {
-            marginBottom: '24px',
-          },
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.touch,
-        style: {
-          [`.${tooltipClasses.popper}[data-popper-placement*="bottom"] &`]: {
-            marginTop: '24px',
-          },
-        },
-      },
-    ],
-  })),
-);
 
 // TODO v6: Remove PopperComponent, PopperProps, TransitionComponent and TransitionProps.
 const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
@@ -363,12 +280,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     }
   }
 
-  const ownerState = {
-    ...inProps,
-    placement,
-    touch: ignoreNonTouchEvents.current,
-  };
-
   // Calculate tooltip position based on childNode
   const [tooltipPosition, setTooltipPosition] = React.useState({ top: 0, left: 0 });
 
@@ -401,9 +312,24 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
             pointerEvents: 'none',
           }}
         >
-          <TooltipTooltip ownerState={ownerState}>
+          <div
+            style={{
+              backgroundColor: 'rgba(97, 97, 97, 0.92)',
+              borderRadius: '4px',
+              color: '#fff',
+              fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+              padding: ignoreNonTouchEvents.current ? '8px 16px' : '4px 8px',
+              fontSize: ignoreNonTouchEvents.current ? '0.875rem' : '0.6875rem',
+              maxWidth: 300,
+              margin: 2,
+              wordWrap: 'break-word',
+              fontWeight: ignoreNonTouchEvents.current ? 400 : 500,
+              transformOrigin: 'center top',
+              marginTop: ignoreNonTouchEvents.current ? '24px' : '14px',
+            }}
+          >
             {title}
-          </TooltipTooltip>
+          </div>
         </div>,
         document.body
       )}
