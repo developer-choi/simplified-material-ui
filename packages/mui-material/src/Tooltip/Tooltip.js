@@ -5,36 +5,19 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import useTimeout, { Timeout } from '@mui/utils/useTimeout';
 import elementAcceptingRef from '@mui/utils/elementAcceptingRef';
-import composeClasses from '@mui/utils/composeClasses';
 import isFocusVisible from '@mui/utils/isFocusVisible';
 import getReactElementRef from '@mui/utils/getReactElementRef';
-import { styled, useTheme } from '../zero-styled';
+import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import useEventCallback from '../utils/useEventCallback';
 import useForkRef from '../utils/useForkRef';
 import useId from '../utils/useId';
 import useControlled from '../utils/useControlled';
-import tooltipClasses, { getTooltipUtilityClass } from './tooltipClasses';
+import tooltipClasses from './tooltipClasses';
 
 function round(value) {
   return Math.round(value * 1e5) / 1e5;
 }
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, touch } = ownerState;
-
-  const slots = {
-    popper: ['popper'],
-    tooltip: [
-      'tooltip',
-      touch && 'touch',
-      'tooltipPlacementBottom',
-    ],
-  };
-
-  return composeClasses(slots, getTooltipUtilityClass, classes);
-};
 
 const TooltipTooltip = styled('div', {
   name: 'MuiTooltip',
@@ -51,18 +34,16 @@ const TooltipTooltip = styled('div', {
   },
 })(
   memoTheme(({ theme }) => ({
-    backgroundColor: theme.vars
-      ? theme.vars.palette.Tooltip.bg
-      : theme.alpha(theme.palette.grey[700], 0.92),
-    borderRadius: (theme.vars || theme).shape.borderRadius,
-    color: (theme.vars || theme).palette.common.white,
-    fontFamily: theme.typography.fontFamily,
+    backgroundColor: 'rgba(97, 97, 97, 0.92)',
+    borderRadius: '4px',
+    color: '#fff',
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     padding: '4px 8px',
-    fontSize: theme.typography.pxToRem(11),
+    fontSize: '0.6875rem',
     maxWidth: 300,
     margin: 2,
     wordWrap: 'break-word',
-    fontWeight: theme.typography.fontWeightMedium,
+    fontWeight: 500,
     [`.${tooltipClasses.popper}[data-popper-placement*="left"] &`]: {
       transformOrigin: 'right center',
     },
@@ -89,9 +70,9 @@ const TooltipTooltip = styled('div', {
         props: ({ ownerState }) => ownerState.touch,
         style: {
           padding: '8px 16px',
-          fontSize: theme.typography.pxToRem(14),
+          fontSize: '0.875rem',
           lineHeight: `${round(16 / 14)}em`,
-          fontWeight: theme.typography.fontWeightRegular,
+          fontWeight: 400,
         },
       },
       {
@@ -116,10 +97,8 @@ const TooltipTooltip = styled('div', {
 
 // TODO v6: Remove PopperComponent, PopperProps, TransitionComponent and TransitionProps.
 const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiTooltip' });
   const {
     children: childrenProp,
-    classes: classesProp,
     disableFocusListener = false,
     disableTouchListener = false,
     enterDelay = 100,
@@ -131,14 +110,12 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     open: openProp,
     title,
     ...other
-  } = props;
+  } = inProps;
 
   const placement = 'bottom'; // Fixed placement
 
   // to prevent runtime errors, developers will need to provide a child as a React element anyway.
   const children = React.isValidElement(childrenProp) ? childrenProp : <span>{childrenProp}</span>;
-
-  const theme = useTheme();
 
   const [childNode, setChildNode] = React.useState();
   const ignoreNonTouchEvents = React.useRef(false);
@@ -387,12 +364,10 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
   }
 
   const ownerState = {
-    ...props,
+    ...inProps,
     placement,
     touch: ignoreNonTouchEvents.current,
   };
-
-  const classes = useUtilityClasses(ownerState);
 
   // Calculate tooltip position based on childNode
   const [tooltipPosition, setTooltipPosition] = React.useState({ top: 0, left: 0 });
@@ -415,7 +390,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
       {React.cloneElement(children, childrenProps)}
       {open && childNode && ReactDOM.createPortal(
         <div
-          className={clsx(classes.popper)}
           id={id}
           style={{
             position: 'absolute',
@@ -427,7 +401,7 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
             pointerEvents: 'none',
           }}
         >
-          <TooltipTooltip className={classes.tooltip} ownerState={ownerState}>
+          <TooltipTooltip ownerState={ownerState}>
             {title}
           </TooltipTooltip>
         </div>,
@@ -451,10 +425,6 @@ Tooltip.propTypes /* remove-proptypes */ = {
    * Tooltip reference element.
    */
   children: elementAcceptingRef.isRequired,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
   /**
    * @ignore
    */
