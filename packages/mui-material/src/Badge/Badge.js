@@ -7,7 +7,6 @@ import composeClasses from '@mui/utils/composeClasses';
 import useBadge from './useBadge';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import capitalize from '../utils/capitalize';
 import badgeClasses, { getBadgeUtilityClass } from './badgeClasses';
@@ -16,14 +15,13 @@ const RADIUS_STANDARD = 10;
 const RADIUS_DOT = 4;
 
 const useUtilityClasses = (ownerState) => {
-  const { color, invisible, classes = {} } = ownerState;
+  const { invisible, classes = {} } = ownerState;
 
   const slots = {
     root: ['root'],
     badge: [
       'badge',
       invisible && 'invisible',
-      color !== 'default' && `color${capitalize(color)}`,
     ],
   };
 
@@ -55,7 +53,6 @@ const BadgeBadge = styled('span', {
           ownerState.anchorOrigin.horizontal,
         )}${capitalize(ownerState.overlap)}`
       ],
-      ownerState.color !== 'default' && styles[`color${capitalize(ownerState.color)}`],
       ownerState.invisible && styles.invisible,
     ];
   },
@@ -78,20 +75,13 @@ const BadgeBadge = styled('span', {
     height: RADIUS_STANDARD * 2,
     borderRadius: RADIUS_STANDARD,
     zIndex: 1, // Render the badge on top of potential ripples.
+    backgroundColor: (theme.vars || theme).palette.primary.main,
+    color: (theme.vars || theme).palette.primary.contrastText,
     transition: theme.transitions.create('transform', {
       easing: theme.transitions.easing.easeInOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
     variants: [
-      ...Object.entries(theme.palette)
-        .filter(createSimplePaletteValueFilter(['contrastText']))
-        .map(([color]) => ({
-          props: { color },
-          style: {
-            backgroundColor: (theme.vars || theme).palette[color].main,
-            color: (theme.vars || theme).palette[color].contrastText,
-          },
-        })),
       {
         props: ({ ownerState }) =>
           ownerState.anchorOrigin.vertical === 'top' &&
@@ -126,7 +116,6 @@ const Badge = React.forwardRef(function Badge(inProps, ref) {
     className,
     classes: classesProp,
     children,
-    color: colorProp = 'default',
     invisible: invisibleProp = false,
     max: maxProp = 99,
     badgeContent: badgeContentProp,
@@ -137,6 +126,7 @@ const Badge = React.forwardRef(function Badge(inProps, ref) {
   const anchorOrigin = { vertical: 'top', horizontal: 'right' };
   const overlap = 'rectangular';
   const variant = 'standard';
+  const color = 'primary';
 
   const {
     badgeContent,
@@ -151,15 +141,10 @@ const Badge = React.forwardRef(function Badge(inProps, ref) {
   });
 
   const prevProps = usePreviousProps({
-    color: colorProp,
     badgeContent: badgeContentProp,
   });
 
   const invisible = invisibleFromHook || badgeContent == null;
-
-  const {
-    color = colorProp,
-  } = invisible ? prevProps : props;
   const displayValue = displayValueFromHook;
 
   const ownerState = {
@@ -213,16 +198,6 @@ Badge.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   className: PropTypes.string,
-  /**
-   * The color of the component.
-   * It supports both default and custom theme colors, which can be added as shown in the
-   * [palette customization guide](https://mui.com/material-ui/customization/palette/#custom-colors).
-   * @default 'default'
-   */
-  color: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['default', 'primary', 'secondary', 'error', 'info', 'success', 'warning']),
-    PropTypes.string,
-  ]),
   /**
    * If `true`, the badge is invisible.
    * @default false
