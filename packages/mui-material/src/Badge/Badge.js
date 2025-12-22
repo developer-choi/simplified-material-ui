@@ -16,7 +16,7 @@ const RADIUS_STANDARD = 10;
 const RADIUS_DOT = 4;
 
 const useUtilityClasses = (ownerState) => {
-  const { color, invisible, overlap, variant, classes = {} } = ownerState;
+  const { color, invisible, variant, classes = {} } = ownerState;
 
   const slots = {
     root: ['root'],
@@ -24,7 +24,6 @@ const useUtilityClasses = (ownerState) => {
       'badge',
       variant,
       invisible && 'invisible',
-      `overlap${capitalize(overlap)}`,
       color !== 'default' && `color${capitalize(color)}`,
     ],
   };
@@ -137,7 +136,6 @@ const Badge = React.forwardRef(function Badge(inProps, ref) {
     className,
     classes: classesProp,
     children,
-    overlap: overlapProp = 'rectangular',
     color: colorProp = 'default',
     invisible: invisibleProp = false,
     max: maxProp = 99,
@@ -148,6 +146,7 @@ const Badge = React.forwardRef(function Badge(inProps, ref) {
   } = props;
 
   const anchorOrigin = { vertical: 'top', horizontal: 'right' };
+  const overlap = 'rectangular';
 
   const {
     badgeContent,
@@ -163,7 +162,6 @@ const Badge = React.forwardRef(function Badge(inProps, ref) {
 
   const prevProps = usePreviousProps({
     color: colorProp,
-    overlap: overlapProp,
     variant: variantProp,
     badgeContent: badgeContentProp,
   });
@@ -172,7 +170,6 @@ const Badge = React.forwardRef(function Badge(inProps, ref) {
 
   const {
     color = colorProp,
-    overlap = overlapProp,
     variant = variantProp,
   } = invisible ? prevProps : props;
   const displayValue = variant !== 'dot' ? displayValueFromHook : undefined;
@@ -248,11 +245,6 @@ Badge.propTypes /* remove-proptypes */ = {
    * @default 99
    */
   max: PropTypes.number,
-  /**
-   * Wrapped shape the badge should overlap.
-   * @default 'rectangular'
-   */
-  overlap: PropTypes.oneOf(['circular', 'rectangular']),
   /**
    * Controls whether the badge is hidden when `badgeContent` is zero.
    * @default false
