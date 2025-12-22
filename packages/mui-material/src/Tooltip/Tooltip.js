@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import useTimeout, { Timeout } from '@mui/utils/useTimeout';
 import elementAcceptingRef from '@mui/utils/elementAcceptingRef';
 import composeClasses from '@mui/utils/composeClasses';
-import { useRtl } from '@mui/system/RtlProvider';
 import isFocusVisible from '@mui/utils/isFocusVisible';
 import getReactElementRef from '@mui/utils/getReactElementRef';
 import { styled, useTheme } from '../zero-styled';
@@ -96,50 +95,6 @@ const TooltipTooltip = styled('div', {
         },
       },
       {
-        props: ({ ownerState }) => !ownerState.isRtl,
-        style: {
-          [`.${tooltipClasses.popper}[data-popper-placement*="left"] &`]: {
-            marginRight: '14px',
-          },
-          [`.${tooltipClasses.popper}[data-popper-placement*="right"] &`]: {
-            marginLeft: '14px',
-          },
-        },
-      },
-      {
-        props: ({ ownerState }) => !ownerState.isRtl && ownerState.touch,
-        style: {
-          [`.${tooltipClasses.popper}[data-popper-placement*="left"] &`]: {
-            marginRight: '24px',
-          },
-          [`.${tooltipClasses.popper}[data-popper-placement*="right"] &`]: {
-            marginLeft: '24px',
-          },
-        },
-      },
-      {
-        props: ({ ownerState }) => !!ownerState.isRtl,
-        style: {
-          [`.${tooltipClasses.popper}[data-popper-placement*="left"] &`]: {
-            marginLeft: '14px',
-          },
-          [`.${tooltipClasses.popper}[data-popper-placement*="right"] &`]: {
-            marginRight: '14px',
-          },
-        },
-      },
-      {
-        props: ({ ownerState }) => !!ownerState.isRtl && ownerState.touch,
-        style: {
-          [`.${tooltipClasses.popper}[data-popper-placement*="left"] &`]: {
-            marginLeft: '24px',
-          },
-          [`.${tooltipClasses.popper}[data-popper-placement*="right"] &`]: {
-            marginRight: '24px',
-          },
-        },
-      },
-      {
         props: ({ ownerState }) => ownerState.touch,
         style: {
           [`.${tooltipClasses.popper}[data-popper-placement*="top"] &`]: {
@@ -185,7 +140,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
   const children = React.isValidElement(childrenProp) ? childrenProp : <span>{childrenProp}</span>;
 
   const theme = useTheme();
-  const isRtl = useRtl();
 
   const [childNode, setChildNode] = React.useState();
   const ignoreNonTouchEvents = React.useRef(false);
@@ -446,7 +400,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
 
   const ownerState = {
     ...props,
-    isRtl,
     placement,
     touch: ignoreNonTouchEvents.current,
   };
