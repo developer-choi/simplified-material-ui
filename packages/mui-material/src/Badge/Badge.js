@@ -16,7 +16,7 @@ const RADIUS_STANDARD = 10;
 const RADIUS_DOT = 4;
 
 const useUtilityClasses = (ownerState) => {
-  const { color, anchorOrigin, invisible, overlap, variant, classes = {} } = ownerState;
+  const { color, invisible, overlap, variant, classes = {} } = ownerState;
 
   const slots = {
     root: ['root'],
@@ -24,10 +24,6 @@ const useUtilityClasses = (ownerState) => {
       'badge',
       variant,
       invisible && 'invisible',
-      `anchorOrigin${capitalize(anchorOrigin.vertical)}${capitalize(anchorOrigin.horizontal)}`,
-      `anchorOrigin${capitalize(anchorOrigin.vertical)}${capitalize(
-        anchorOrigin.horizontal,
-      )}${capitalize(overlap)}`,
       `overlap${capitalize(overlap)}`,
       color !== 'default' && `color${capitalize(color)}`,
     ],
@@ -123,111 +119,6 @@ const BadgeBadge = styled('span', {
         },
       },
       {
-        props: ({ ownerState }) =>
-          ownerState.anchorOrigin.vertical === 'bottom' &&
-          ownerState.anchorOrigin.horizontal === 'right' &&
-          ownerState.overlap === 'rectangular',
-        style: {
-          bottom: 0,
-          right: 0,
-          transform: 'scale(1) translate(50%, 50%)',
-          transformOrigin: '100% 100%',
-          [`&.${badgeClasses.invisible}`]: {
-            transform: 'scale(0) translate(50%, 50%)',
-          },
-        },
-      },
-      {
-        props: ({ ownerState }) =>
-          ownerState.anchorOrigin.vertical === 'top' &&
-          ownerState.anchorOrigin.horizontal === 'left' &&
-          ownerState.overlap === 'rectangular',
-        style: {
-          top: 0,
-          left: 0,
-          transform: 'scale(1) translate(-50%, -50%)',
-          transformOrigin: '0% 0%',
-          [`&.${badgeClasses.invisible}`]: {
-            transform: 'scale(0) translate(-50%, -50%)',
-          },
-        },
-      },
-      {
-        props: ({ ownerState }) =>
-          ownerState.anchorOrigin.vertical === 'bottom' &&
-          ownerState.anchorOrigin.horizontal === 'left' &&
-          ownerState.overlap === 'rectangular',
-        style: {
-          bottom: 0,
-          left: 0,
-          transform: 'scale(1) translate(-50%, 50%)',
-          transformOrigin: '0% 100%',
-          [`&.${badgeClasses.invisible}`]: {
-            transform: 'scale(0) translate(-50%, 50%)',
-          },
-        },
-      },
-      {
-        props: ({ ownerState }) =>
-          ownerState.anchorOrigin.vertical === 'top' &&
-          ownerState.anchorOrigin.horizontal === 'right' &&
-          ownerState.overlap === 'circular',
-        style: {
-          top: '14%',
-          right: '14%',
-          transform: 'scale(1) translate(50%, -50%)',
-          transformOrigin: '100% 0%',
-          [`&.${badgeClasses.invisible}`]: {
-            transform: 'scale(0) translate(50%, -50%)',
-          },
-        },
-      },
-      {
-        props: ({ ownerState }) =>
-          ownerState.anchorOrigin.vertical === 'bottom' &&
-          ownerState.anchorOrigin.horizontal === 'right' &&
-          ownerState.overlap === 'circular',
-        style: {
-          bottom: '14%',
-          right: '14%',
-          transform: 'scale(1) translate(50%, 50%)',
-          transformOrigin: '100% 100%',
-          [`&.${badgeClasses.invisible}`]: {
-            transform: 'scale(0) translate(50%, 50%)',
-          },
-        },
-      },
-      {
-        props: ({ ownerState }) =>
-          ownerState.anchorOrigin.vertical === 'top' &&
-          ownerState.anchorOrigin.horizontal === 'left' &&
-          ownerState.overlap === 'circular',
-        style: {
-          top: '14%',
-          left: '14%',
-          transform: 'scale(1) translate(-50%, -50%)',
-          transformOrigin: '0% 0%',
-          [`&.${badgeClasses.invisible}`]: {
-            transform: 'scale(0) translate(-50%, -50%)',
-          },
-        },
-      },
-      {
-        props: ({ ownerState }) =>
-          ownerState.anchorOrigin.vertical === 'bottom' &&
-          ownerState.anchorOrigin.horizontal === 'left' &&
-          ownerState.overlap === 'circular',
-        style: {
-          bottom: '14%',
-          left: '14%',
-          transform: 'scale(1) translate(-50%, 50%)',
-          transformOrigin: '0% 100%',
-          [`&.${badgeClasses.invisible}`]: {
-            transform: 'scale(0) translate(-50%, 50%)',
-          },
-        },
-      },
-      {
         props: { invisible: true },
         style: {
           transition: theme.transitions.create('transform', {
@@ -240,17 +131,9 @@ const BadgeBadge = styled('span', {
   })),
 );
 
-function getAnchorOrigin(anchorOrigin) {
-  return {
-    vertical: anchorOrigin?.vertical ?? 'top',
-    horizontal: anchorOrigin?.horizontal ?? 'right',
-  };
-}
-
 const Badge = React.forwardRef(function Badge(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiBadge' });
   const {
-    anchorOrigin: anchorOriginProp,
     className,
     classes: classesProp,
     children,
@@ -263,6 +146,8 @@ const Badge = React.forwardRef(function Badge(inProps, ref) {
     variant: variantProp = 'standard',
     ...other
   } = props;
+
+  const anchorOrigin = { vertical: 'top', horizontal: 'right' };
 
   const {
     badgeContent,
@@ -277,7 +162,6 @@ const Badge = React.forwardRef(function Badge(inProps, ref) {
   });
 
   const prevProps = usePreviousProps({
-    anchorOrigin: getAnchorOrigin(anchorOriginProp),
     color: colorProp,
     overlap: overlapProp,
     variant: variantProp,
@@ -289,11 +173,8 @@ const Badge = React.forwardRef(function Badge(inProps, ref) {
   const {
     color = colorProp,
     overlap = overlapProp,
-    anchorOrigin: anchorOriginPropProp,
     variant = variantProp,
   } = invisible ? prevProps : props;
-
-  const anchorOrigin = getAnchorOrigin(anchorOriginPropProp);
   const displayValue = variant !== 'dot' ? displayValueFromHook : undefined;
 
   const ownerState = {
@@ -331,17 +212,6 @@ Badge.propTypes /* remove-proptypes */ = {
   // │ These PropTypes are generated from the TypeScript type definitions. │
   // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
   // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * The anchor of the badge.
-   * @default {
-   *   vertical: 'top',
-   *   horizontal: 'right',
-   * }
-   */
-  anchorOrigin: PropTypes.shape({
-    horizontal: PropTypes.oneOf(['left', 'right']),
-    vertical: PropTypes.oneOf(['bottom', 'top']),
-  }),
   /**
    * The content rendered within the badge.
    */
