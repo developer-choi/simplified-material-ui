@@ -161,7 +161,6 @@ const TooltipTooltip = styled('div', {
 
 let hystersisOpen = false;
 const hystersisTimer = new Timeout();
-let cursorPosition = { x: 0, y: 0 };
 
 export function testReset() {
   hystersisOpen = false;
@@ -191,7 +190,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     enterDelay = 100,
     enterNextDelay = 0,
     enterTouchDelay = 700,
-    followCursor = false,
     id: idProp,
     leaveDelay = 0,
     leaveTouchDelay = 1500,
@@ -213,7 +211,7 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
   const [childNode, setChildNode] = React.useState();
   const ignoreNonTouchEvents = React.useRef(false);
 
-  const disableInteractive = disableInteractiveProp || followCursor;
+  const disableInteractive = disableInteractiveProp;
 
   const closeTimer = useTimeout();
   const enterTimer = useTimeout();
@@ -421,15 +419,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     open = false;
   }
 
-  const handleMouseMove = (event) => {
-    const childrenProps = children.props;
-    if (childrenProps.onMouseMove) {
-      childrenProps.onMouseMove(event);
-    }
-
-    cursorPosition = { x: event.clientX, y: event.clientY };
-  };
-
   const nameOrDescProps = {};
   const titleIsString = typeof title === 'string';
   if (describeChild) {
@@ -447,7 +436,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     className: clsx(other.className, children.props.className),
     onTouchStart: detectTouchStart,
     ref: handleRef,
-    ...(followCursor ? { onMouseMove: handleMouseMove } : {}),
   };
 
   if (process.env.NODE_ENV !== 'production') {
