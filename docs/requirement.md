@@ -58,8 +58,16 @@ Material-UI의 복잡한 컴포넌트들을 **최소한의 기능만 남기고 �
 
 **⚠️ 중요**: 커밋 정리를 완료 한 후 반드시 이어서 아래의 문서를 작성해야합니다.
 - **파일경로:** docs/[카테고리]/[ComponentName]-simplified.md
+- **양식:** docs/format/simplified.md
+
+### 6. 아이디어 제안
+위에서 작성한 *-original.md외 *-simplified.md 문서에서
+
+아래의 양식에는 없지만, 포함되면 좋을것 같은 내용이 있으면 사용자에게 제안해주세요.
+- 양식: docs/format/original.md
 - 양식: docs/format/simplified.md
 
+예시로, 이것도 사용자가 알아가면 좋을것같다 가 있을 수 있습니다.
 ---
 
 ## 삭제 대상 참고
