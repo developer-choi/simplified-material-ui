@@ -23,10 +23,10 @@ function round(value) {
 }
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, disableInteractive, touch } = ownerState;
+  const { classes, touch } = ownerState;
 
   const slots = {
-    popper: ['popper', !disableInteractive && 'popperInteractive'],
+    popper: ['popper'],
     tooltip: [
       'tooltip',
       touch && 'touch',
@@ -178,7 +178,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     describeChild = false,
     disableFocusListener = false,
     disableHoverListener = false,
-    disableInteractive: disableInteractiveProp = false,
     disableTouchListener = false,
     enterDelay = 100,
     enterTouchDelay = 700,
@@ -201,8 +200,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
 
   const [childNode, setChildNode] = React.useState();
   const ignoreNonTouchEvents = React.useRef(false);
-
-  const disableInteractive = disableInteractiveProp;
 
   const enterTimer = useTimeout();
   const touchTimer = useTimeout();
@@ -433,8 +430,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     }, [childNode]);
   }
 
-  const interactiveWrapperListeners = {};
-
   if (!disableTouchListener) {
     childrenProps.onTouchStart = handleTouchStart;
     childrenProps.onTouchEnd = handleTouchEnd;
@@ -443,21 +438,11 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
   if (!disableHoverListener) {
     childrenProps.onMouseOver = composeEventHandler(handleMouseOver, childrenProps.onMouseOver);
     childrenProps.onMouseLeave = composeEventHandler(handleMouseLeave, childrenProps.onMouseLeave);
-
-    if (!disableInteractive) {
-      interactiveWrapperListeners.onMouseOver = handleMouseOver;
-      interactiveWrapperListeners.onMouseLeave = handleMouseLeave;
-    }
   }
 
   if (!disableFocusListener) {
     childrenProps.onFocus = composeEventHandler(handleFocus, childrenProps.onFocus);
     childrenProps.onBlur = composeEventHandler(handleBlur, childrenProps.onBlur);
-
-    if (!disableInteractive) {
-      interactiveWrapperListeners.onFocus = handleFocus;
-      interactiveWrapperListeners.onBlur = handleBlur;
-    }
   }
 
   if (process.env.NODE_ENV !== 'production') {
@@ -474,7 +459,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
   const ownerState = {
     ...props,
     isRtl,
-    disableInteractive,
     placement,
     touch: ignoreNonTouchEvents.current,
   };
@@ -511,9 +495,8 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
             transform: 'translate(-50%, -100%)',
             marginBottom: '8px',
             zIndex: 1500,
-            pointerEvents: disableInteractive ? 'none' : 'auto',
+            pointerEvents: 'none',
           }}
-          {...interactiveWrapperListeners}
         >
           <TooltipTooltip className={classes.tooltip} ownerState={ownerState}>
             {title}
@@ -590,12 +573,6 @@ Tooltip.propTypes /* remove-proptypes */ = {
    * @default false
    */
   disableHoverListener: PropTypes.bool,
-  /**
-   * Makes a tooltip not interactive, i.e. it will close when the user
-   * hovers over the tooltip before the `leaveDelay` is expired.
-   * @default false
-   */
-  disableInteractive: PropTypes.bool,
   /**
    * Do not respond to long press touch events.
    * @default false
