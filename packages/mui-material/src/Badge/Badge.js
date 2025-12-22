@@ -253,7 +253,6 @@ const Badge = React.forwardRef(function Badge(inProps, ref) {
     anchorOrigin: anchorOriginProp,
     className,
     classes: classesProp,
-    component,
     children,
     overlap: overlapProp = 'rectangular',
     color: colorProp = 'default',
@@ -316,7 +315,6 @@ const Badge = React.forwardRef(function Badge(inProps, ref) {
     <BadgeRoot
       className={clsx(classes.root, className)}
       ref={ref}
-      as={component}
       ownerState={ownerState}
       {...other}
     >
@@ -370,11 +368,6 @@ Badge.propTypes /* remove-proptypes */ = {
     PropTypes.oneOf(['default', 'primary', 'secondary', 'error', 'info', 'success', 'warning']),
     PropTypes.string,
   ]),
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
   /**
    * If `true`, the badge is invisible.
    * @default false
