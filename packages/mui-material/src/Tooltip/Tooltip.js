@@ -159,16 +159,6 @@ const TooltipTooltip = styled('div', {
   })),
 );
 
-
-function composeEventHandler(handler, eventHandler) {
-  return (event, ...params) => {
-    if (eventHandler) {
-      eventHandler(event, ...params);
-    }
-    handler(event, ...params);
-  };
-}
-
 // TODO v6: Remove PopperComponent, PopperProps, TransitionComponent and TransitionProps.
 const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiTooltip' });
@@ -177,7 +167,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     classes: classesProp,
     describeChild = false,
     disableFocusListener = false,
-    disableHoverListener = false,
     disableTouchListener = false,
     enterDelay = 100,
     enterTouchDelay = 700,
@@ -397,7 +386,7 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
   const nameOrDescProps = {};
   const titleIsString = typeof title === 'string';
   if (describeChild) {
-    nameOrDescProps.title = !open && titleIsString && !disableHoverListener ? title : null;
+    nameOrDescProps.title = !open && titleIsString ? title : null;
     nameOrDescProps['aria-describedby'] = open ? id : null;
   } else {
     nameOrDescProps['aria-label'] = titleIsString ? title : null;
@@ -435,14 +424,13 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     childrenProps.onTouchEnd = handleTouchEnd;
   }
 
-  if (!disableHoverListener) {
-    childrenProps.onMouseOver = composeEventHandler(handleMouseOver, childrenProps.onMouseOver);
-    childrenProps.onMouseLeave = composeEventHandler(handleMouseLeave, childrenProps.onMouseLeave);
-  }
+  // Hover handlers are always active
+  childrenProps.onMouseOver = handleMouseOver;
+  childrenProps.onMouseLeave = handleMouseLeave;
 
   if (!disableFocusListener) {
-    childrenProps.onFocus = composeEventHandler(handleFocus, childrenProps.onFocus);
-    childrenProps.onBlur = composeEventHandler(handleBlur, childrenProps.onBlur);
+    childrenProps.onFocus = handleFocus;
+    childrenProps.onBlur = handleBlur;
   }
 
   if (process.env.NODE_ENV !== 'production') {
@@ -569,11 +557,6 @@ Tooltip.propTypes /* remove-proptypes */ = {
    */
   disableFocusListener: PropTypes.bool,
   /**
-   * Do not respond to hover events.
-   * @default false
-   */
-  disableHoverListener: PropTypes.bool,
-  /**
    * Do not respond to long press touch events.
    * @default false
    */
@@ -584,11 +567,6 @@ Tooltip.propTypes /* remove-proptypes */ = {
    * @default 100
    */
   enterDelay: PropTypes.number,
-  /**
-   * The number of milliseconds to wait before showing the tooltip when one was already recently opened.
-   * @default 0
-   */
-  enterNextDelay: PropTypes.number,
   /**
    * The number of milliseconds a user must touch the element before showing the tooltip.
    * @default 700
