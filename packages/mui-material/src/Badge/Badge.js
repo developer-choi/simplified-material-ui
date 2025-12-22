@@ -15,14 +15,11 @@ const RADIUS_STANDARD = 10;
 const RADIUS_DOT = 4;
 
 const useUtilityClasses = (ownerState) => {
-  const { invisible, classes = {} } = ownerState;
+  const { classes = {} } = ownerState;
 
   const slots = {
     root: ['root'],
-    badge: [
-      'badge',
-      invisible && 'invisible',
-    ],
+    badge: ['badge'],
   };
 
   return composeClasses(slots, getBadgeUtilityClass, classes);
@@ -53,7 +50,6 @@ const BadgeBadge = styled('span', {
           ownerState.anchorOrigin.horizontal,
         )}${capitalize(ownerState.overlap)}`
       ],
-      ownerState.invisible && styles.invisible,
     ];
   },
 })(
@@ -92,18 +88,6 @@ const BadgeBadge = styled('span', {
           right: 0,
           transform: 'scale(1) translate(50%, -50%)',
           transformOrigin: '100% 0%',
-          [`&.${badgeClasses.invisible}`]: {
-            transform: 'scale(0) translate(50%, -50%)',
-          },
-        },
-      },
-      {
-        props: { invisible: true },
-        style: {
-          transition: theme.transitions.create('transform', {
-            easing: theme.transitions.easing.easeInOut,
-            duration: theme.transitions.duration.leavingScreen,
-          }),
         },
       },
     ],
@@ -116,9 +100,7 @@ const Badge = React.forwardRef(function Badge(inProps, ref) {
     className,
     classes: classesProp,
     children,
-    invisible: invisibleProp = false,
     badgeContent: badgeContentProp,
-    showZero = false,
     ...other
   } = props;
 
@@ -127,29 +109,13 @@ const Badge = React.forwardRef(function Badge(inProps, ref) {
   const variant = 'standard';
   const color = 'primary';
 
-  const {
-    badgeContent,
-    invisible: invisibleFromHook,
-    displayValue: displayValueFromHook,
-  } = useBadge({
-    invisible: invisibleProp,
-    badgeContent: badgeContentProp,
-    showZero,
-  });
-
-  const prevProps = usePreviousProps({
-    badgeContent: badgeContentProp,
-  });
-
-  const invisible = invisibleFromHook || badgeContent == null;
-  const displayValue = displayValueFromHook;
+  const badgeContent = badgeContentProp;
+  const displayValue = badgeContent;
 
   const ownerState = {
     ...props,
     badgeContent,
-    invisible,
     displayValue,
-    showZero,
     anchorOrigin,
     color,
     overlap,
@@ -194,16 +160,6 @@ Badge.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   className: PropTypes.string,
-  /**
-   * If `true`, the badge is invisible.
-   * @default false
-   */
-  invisible: PropTypes.bool,
-  /**
-   * Controls whether the badge is hidden when `badgeContent` is zero.
-   * @default false
-   */
-  showZero: PropTypes.bool,
   /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
