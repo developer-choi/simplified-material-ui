@@ -2,26 +2,9 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
-import capitalize from '../utils/capitalize';
-import badgeClasses, { getBadgeUtilityClass } from './badgeClasses';
 
 const RADIUS_STANDARD = 10;
-const RADIUS_DOT = 4;
-
-const useUtilityClasses = (ownerState) => {
-  const { classes = {} } = ownerState;
-
-  const slots = {
-    root: ['root'],
-    badge: ['badge'],
-  };
-
-  return composeClasses(slots, getBadgeUtilityClass, classes);
-};
 
 const BadgeRoot = styled('span', {
   name: 'MuiBadge',
@@ -88,11 +71,9 @@ const BadgeBadge = styled('span', {
   })),
 );
 
-const Badge = React.forwardRef(function Badge(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiBadge' });
+const Badge = React.forwardRef(function Badge(props, ref) {
   const {
     className,
-    classes: classesProp,
     children,
     badgeContent: badgeContentProp,
     ...other
@@ -107,26 +88,21 @@ const Badge = React.forwardRef(function Badge(inProps, ref) {
   const displayValue = badgeContent;
 
   const ownerState = {
-    ...props,
-    badgeContent,
-    displayValue,
     anchorOrigin,
     color,
     overlap,
     variant,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <BadgeRoot
-      className={clsx(classes.root, className)}
+      className={className}
       ref={ref}
       ownerState={ownerState}
       {...other}
     >
       {children}
-      <BadgeBadge className={classes.badge} ownerState={ownerState}>
+      <BadgeBadge ownerState={ownerState}>
         {displayValue}
       </BadgeBadge>
     </BadgeRoot>
@@ -146,10 +122,6 @@ Badge.propTypes /* remove-proptypes */ = {
    * The badge will be added relative to this node.
    */
   children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
   /**
    * @ignore
    */
