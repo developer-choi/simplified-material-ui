@@ -2,7 +2,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import usePreviousProps from '@mui/utils/usePreviousProps';
 import composeClasses from '@mui/utils/composeClasses';
 import useBadge from './useBadge';
 import { styled } from '../zero-styled';
@@ -73,10 +72,6 @@ const BadgeBadge = styled('span', {
     zIndex: 1, // Render the badge on top of potential ripples.
     backgroundColor: (theme.vars || theme).palette.primary.main,
     color: (theme.vars || theme).palette.primary.contrastText,
-    transition: theme.transitions.create('transform', {
-      easing: theme.transitions.easing.easeInOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
     variants: [
       {
         props: ({ ownerState }) =>
