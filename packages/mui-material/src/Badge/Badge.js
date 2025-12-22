@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
 
 const Badge = React.forwardRef(function Badge(props, ref) {
   const {
@@ -57,24 +56,5 @@ const Badge = React.forwardRef(function Badge(props, ref) {
     </span>
   );
 });
-
-Badge.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * The content rendered within the badge.
-   */
-  badgeContent: PropTypes.node,
-  /**
-   * The badge will be added relative to this node.
-   */
-  children: PropTypes.node,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-};
 
 export default Badge;
