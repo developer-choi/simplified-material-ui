@@ -12,7 +12,6 @@ import getReactElementRef from '@mui/utils/getReactElementRef';
 import { styled, useTheme } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import capitalize from '../utils/capitalize';
 import useEventCallback from '../utils/useEventCallback';
 import useForkRef from '../utils/useForkRef';
 import useId from '../utils/useId';
@@ -24,14 +23,14 @@ function round(value) {
 }
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, disableInteractive, touch, placement } = ownerState;
+  const { classes, disableInteractive, touch } = ownerState;
 
   const slots = {
     popper: ['popper', !disableInteractive && 'popperInteractive'],
     tooltip: [
       'tooltip',
       touch && 'touch',
-      `tooltipPlacement${capitalize(placement.split('-')[0])}`,
+      'tooltipPlacementBottom',
     ],
   };
 
@@ -199,10 +198,11 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     onClose,
     onOpen,
     open: openProp,
-    placement = 'bottom',
     title,
     ...other
   } = props;
+
+  const placement = 'bottom'; // Fixed placement
 
   // to prevent runtime errors, developers will need to provide a child as a React element anyway.
   const children = React.isValidElement(childrenProp) ? childrenProp : <span>{childrenProp}</span>;
