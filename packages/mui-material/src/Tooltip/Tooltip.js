@@ -1,5 +1,6 @@
 'use client';
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import useTimeout, { Timeout } from '@mui/utils/useTimeout';
@@ -12,7 +13,6 @@ import { styled, useTheme } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import capitalize from '../utils/capitalize';
-import Popper from '../Popper';
 import useEventCallback from '../utils/useEventCallback';
 import useForkRef from '../utils/useForkRef';
 import useId from '../utils/useId';
@@ -39,109 +39,6 @@ const useUtilityClasses = (ownerState) => {
 
   return composeClasses(slots, getTooltipUtilityClass, classes);
 };
-
-const TooltipPopper = styled(Popper, {
-  name: 'MuiTooltip',
-  slot: 'Popper',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.popper,
-      !ownerState.disableInteractive && styles.popperInteractive,
-      ownerState.arrow && styles.popperArrow,
-      !ownerState.open && styles.popperClose,
-    ];
-  },
-})(
-  memoTheme(({ theme }) => ({
-    zIndex: (theme.vars || theme).zIndex.tooltip,
-    pointerEvents: 'none',
-    variants: [
-      {
-        props: ({ ownerState }) => !ownerState.disableInteractive,
-        style: {
-          pointerEvents: 'auto',
-        },
-      },
-      {
-        props: ({ open }) => !open,
-        style: {
-          pointerEvents: 'none',
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.arrow,
-        style: {
-          [`&[data-popper-placement*="bottom"] .${tooltipClasses.arrow}`]: {
-            top: 0,
-            marginTop: '-0.71em',
-            '&::before': {
-              transformOrigin: '0 100%',
-            },
-          },
-          [`&[data-popper-placement*="top"] .${tooltipClasses.arrow}`]: {
-            bottom: 0,
-            marginBottom: '-0.71em',
-            '&::before': {
-              transformOrigin: '100% 0',
-            },
-          },
-          [`&[data-popper-placement*="right"] .${tooltipClasses.arrow}`]: {
-            height: '1em',
-            width: '0.71em',
-            '&::before': {
-              transformOrigin: '100% 100%',
-            },
-          },
-          [`&[data-popper-placement*="left"] .${tooltipClasses.arrow}`]: {
-            height: '1em',
-            width: '0.71em',
-            '&::before': {
-              transformOrigin: '0 0',
-            },
-          },
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.arrow && !ownerState.isRtl,
-        style: {
-          [`&[data-popper-placement*="right"] .${tooltipClasses.arrow}`]: {
-            left: 0,
-            marginLeft: '-0.71em',
-          },
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.arrow && !!ownerState.isRtl,
-        style: {
-          [`&[data-popper-placement*="right"] .${tooltipClasses.arrow}`]: {
-            right: 0,
-            marginRight: '-0.71em',
-          },
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.arrow && !ownerState.isRtl,
-        style: {
-          [`&[data-popper-placement*="left"] .${tooltipClasses.arrow}`]: {
-            right: 0,
-            marginRight: '-0.71em',
-          },
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.arrow && !!ownerState.isRtl,
-        style: {
-          [`&[data-popper-placement*="left"] .${tooltipClasses.arrow}`]: {
-            left: 0,
-            marginLeft: '-0.71em',
-          },
-        },
-      },
-    ],
-  })),
-);
 
 const TooltipTooltip = styled('div', {
   name: 'MuiTooltip',
@@ -329,8 +226,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     onOpen,
     open: openProp,
     placement = 'bottom',
-    PopperComponent: PopperComponentProp,
-    PopperProps = {},
     title,
     ...other
   } = props;
@@ -553,8 +448,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     open = false;
   }
 
-  const popperRef = React.useRef();
-
   const handleMouseMove = (event) => {
     const childrenProps = children.props;
     if (childrenProps.onMouseMove) {
@@ -562,10 +455,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     }
 
     cursorPosition = { x: event.clientX, y: event.clientY };
-
-    if (popperRef.current) {
-      popperRef.current.update();
-    }
   };
 
   const nameOrDescProps = {};
@@ -649,68 +538,52 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     arrow,
     disableInteractive,
     placement,
-    PopperComponentProp,
     touch: ignoreNonTouchEvents.current,
   };
 
-  const popperOptions = React.useMemo(() => {
-    let tooltipModifiers = [
-      {
-        name: 'arrow',
-        enabled: Boolean(arrowRef),
-        options: {
-          element: arrowRef,
-          padding: 4,
-        },
-      },
-    ];
-
-    if (PopperProps.popperOptions?.modifiers) {
-      tooltipModifiers = tooltipModifiers.concat(PopperProps.popperOptions.modifiers);
-    }
-
-    return {
-      ...PopperProps.popperOptions,
-      modifiers: tooltipModifiers,
-    };
-  }, [arrowRef, PopperProps.popperOptions]);
-
   const classes = useUtilityClasses(ownerState);
+
+  // Calculate tooltip position based on childNode
+  const [tooltipPosition, setTooltipPosition] = React.useState({ top: 0, left: 0 });
+
+  React.useLayoutEffect(() => {
+    if (open && childNode) {
+      const rect = childNode.getBoundingClientRect();
+      const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+
+      setTooltipPosition({
+        top: rect.top + scrollY,
+        left: rect.left + scrollX + rect.width / 2,
+      });
+    }
+  }, [open, childNode]);
 
   return (
     <React.Fragment>
       {React.cloneElement(children, childrenProps)}
-      <TooltipPopper
-        as={PopperComponentProp ?? Popper}
-        className={clsx(classes.popper, PopperProps?.className)}
-        placement={placement}
-        anchorEl={
-          followCursor
-            ? {
-                getBoundingClientRect: () => ({
-                  top: cursorPosition.y,
-                  left: cursorPosition.x,
-                  right: cursorPosition.x,
-                  bottom: cursorPosition.y,
-                  width: 0,
-                  height: 0,
-                }),
-              }
-            : childNode
-        }
-        popperRef={popperRef}
-        open={childNode ? open : false}
-        ownerState={ownerState}
-        id={id}
-        {...interactiveWrapperListeners}
-        {...PopperProps}
-        popperOptions={popperOptions}
-      >
-        <TooltipTooltip className={classes.tooltip} ownerState={ownerState}>
-          {title}
-          {arrow ? <TooltipArrow className={classes.arrow} ownerState={ownerState} ref={setArrowRef} /> : null}
-        </TooltipTooltip>
-      </TooltipPopper>
+      {open && childNode && ReactDOM.createPortal(
+        <div
+          className={clsx(classes.popper)}
+          id={id}
+          style={{
+            position: 'absolute',
+            top: tooltipPosition.top,
+            left: tooltipPosition.left,
+            transform: 'translate(-50%, -100%)',
+            marginBottom: '8px',
+            zIndex: 1500,
+            pointerEvents: disableInteractive ? 'none' : 'auto',
+          }}
+          {...interactiveWrapperListeners}
+        >
+          <TooltipTooltip className={classes.tooltip} ownerState={ownerState}>
+            {title}
+            {arrow ? <TooltipArrow className={classes.arrow} ownerState={ownerState} ref={setArrowRef} /> : null}
+          </TooltipTooltip>
+        </div>,
+        document.body
+      )}
     </React.Fragment>
   );
 });
