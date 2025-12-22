@@ -11,7 +11,6 @@ import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFil
 import { useDefaultProps } from '../DefaultPropsProvider';
 import capitalize from '../utils/capitalize';
 import badgeClasses, { getBadgeUtilityClass } from './badgeClasses';
-import useSlot from '../utils/useSlot';
 
 const RADIUS_STANDARD = 10;
 const RADIUS_DOT = 4;
@@ -255,16 +254,12 @@ const Badge = React.forwardRef(function Badge(inProps, ref) {
     className,
     classes: classesProp,
     component,
-    components = {},
-    componentsProps = {},
     children,
     overlap: overlapProp = 'rectangular',
     color: colorProp = 'default',
     invisible: invisibleProp = false,
     max: maxProp = 99,
     badgeContent: badgeContentProp,
-    slots,
-    slotProps,
     showZero = false,
     variant: variantProp = 'standard',
     ...other
@@ -317,44 +312,19 @@ const Badge = React.forwardRef(function Badge(inProps, ref) {
 
   const classes = useUtilityClasses(ownerState);
 
-  // support both `slots` and `components` for backward compatibility
-  const externalForwardedProps = {
-    slots: {
-      root: slots?.root ?? components.Root,
-      badge: slots?.badge ?? components.Badge,
-    },
-    slotProps: {
-      root: slotProps?.root ?? componentsProps.root,
-      badge: slotProps?.badge ?? componentsProps.badge,
-    },
-  };
-
-  const [RootSlot, rootProps] = useSlot('root', {
-    elementType: BadgeRoot,
-    externalForwardedProps: {
-      ...externalForwardedProps,
-      ...other,
-    },
-    ownerState,
-    className: clsx(classes.root, className),
-    ref,
-    additionalProps: {
-      as: component,
-    },
-  });
-
-  const [BadgeSlot, badgeProps] = useSlot('badge', {
-    elementType: BadgeBadge,
-    externalForwardedProps,
-    ownerState,
-    className: classes.badge,
-  });
-
   return (
-    <RootSlot {...rootProps}>
+    <BadgeRoot
+      className={clsx(classes.root, className)}
+      ref={ref}
+      as={component}
+      ownerState={ownerState}
+      {...other}
+    >
       {children}
-      <BadgeSlot {...badgeProps}>{displayValue}</BadgeSlot>
-    </RootSlot>
+      <BadgeBadge className={classes.badge} ownerState={ownerState}>
+        {displayValue}
+      </BadgeBadge>
+    </BadgeRoot>
   );
 });
 
@@ -406,29 +376,6 @@ Badge.propTypes /* remove-proptypes */ = {
    */
   component: PropTypes.elementType,
   /**
-   * The components used for each slot inside.
-   *
-   * @deprecated use the `slots` prop instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   *
-   * @default {}
-   */
-  components: PropTypes.shape({
-    Badge: PropTypes.elementType,
-    Root: PropTypes.elementType,
-  }),
-  /**
-   * The extra props for the slot components.
-   * You can override the existing props or add new ones.
-   *
-   * @deprecated use the `slotProps` prop instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   *
-   * @default {}
-   */
-  componentsProps: PropTypes.shape({
-    badge: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
    * If `true`, the badge is invisible.
    * @default false
    */
@@ -448,22 +395,6 @@ Badge.propTypes /* remove-proptypes */ = {
    * @default false
    */
   showZero: PropTypes.bool,
-  /**
-   * The props used for each slot inside.
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    badge: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * The components used for each slot inside.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    badge: PropTypes.elementType,
-    root: PropTypes.elementType,
-  }),
   /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
