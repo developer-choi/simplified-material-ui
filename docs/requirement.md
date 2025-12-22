@@ -56,12 +56,8 @@ Material-UI의 복잡한 컴포넌트들을 **최소한의 기능만 남기고 �
 
 ### 5. 단순화 문서 작성 (*-simplified.md) 📝
 
-**⚠️ 중요**: 사용자가 명시적으로 요청할 때만 작성합니다.
-
-```
-docs/[카테고리]/[ComponentName]-simplified.md
-```
-
+**⚠️ 중요**: 커밋 정리를 완료 한 후 반드시 이어서 아래의 문서를 작성해야합니다.
+- **파일경로:** docs/[카테고리]/[ComponentName]-simplified.md
 - 양식: docs/format/simplified.md
 
 ---
@@ -74,19 +70,6 @@ docs/[카테고리]/[ComponentName]-simplified.md
 - `docs/format/commits.md`에 없는 새로운 삭제 대상을 발견하면
 - 같은 양식으로 `docs/format/commits.md`에 추가하세요
 - 이후 다른 컴포넌트 단순화 작업에서 더 잘 삭제하기 위함
-
----
-
-## 작업 체크리스트
-
-1. [ ] 원본 코드 읽기
-2. [ ] **Plan Mode로 계획서 작성**
-3. [ ] **사용자 승인 대기**
-4. [ ] **`*-original.md` 작성** (사용자 요청 시)
-5. [ ] **기능 하나씩 삭제 + 커밋**
-6. [ ] **최종 검증**
-7. [ ] **사용자 리뷰 대기**
-8. [ ] **`*-simplified.md` 작성** (사용자 요청 시)
 
 ---
 
