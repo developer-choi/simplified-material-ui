@@ -12,7 +12,6 @@ import { styled, useTheme } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import capitalize from '../utils/capitalize';
-import Grow from '../Grow';
 import Popper from '../Popper';
 import useEventCallback from '../utils/useEventCallback';
 import useForkRef from '../utils/useForkRef';
@@ -333,8 +332,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     PopperComponent: PopperComponentProp,
     PopperProps = {},
     title,
-    TransitionComponent: TransitionComponentProp,
-    TransitionProps,
     ...other
   } = props;
 
@@ -705,23 +702,14 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
         open={childNode ? open : false}
         ownerState={ownerState}
         id={id}
-        transition
         {...interactiveWrapperListeners}
         {...PopperProps}
         popperOptions={popperOptions}
       >
-        {({ TransitionProps: TransitionPropsInner }) => (
-          <Grow
-            timeout={theme.transitions.duration.shorter}
-            {...TransitionPropsInner}
-            {...TransitionProps}
-          >
-            <TooltipTooltip className={classes.tooltip} ownerState={ownerState}>
-              {title}
-              {arrow ? <TooltipArrow className={classes.arrow} ownerState={ownerState} ref={setArrowRef} /> : null}
-            </TooltipTooltip>
-          </Grow>
-        )}
+        <TooltipTooltip className={classes.tooltip} ownerState={ownerState}>
+          {title}
+          {arrow ? <TooltipArrow className={classes.arrow} ownerState={ownerState} ref={setArrowRef} /> : null}
+        </TooltipTooltip>
       </TooltipPopper>
     </React.Fragment>
   );
