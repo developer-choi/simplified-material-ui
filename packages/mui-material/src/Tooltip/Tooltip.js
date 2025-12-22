@@ -159,13 +159,6 @@ const TooltipTooltip = styled('div', {
   })),
 );
 
-let hystersisOpen = false;
-const hystersisTimer = new Timeout();
-
-export function testReset() {
-  hystersisOpen = false;
-  hystersisTimer.clear();
-}
 
 function composeEventHandler(handler, eventHandler) {
   return (event, ...params) => {
@@ -188,10 +181,8 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     disableInteractive: disableInteractiveProp = false,
     disableTouchListener = false,
     enterDelay = 100,
-    enterNextDelay = 0,
     enterTouchDelay = 700,
     id: idProp,
-    leaveDelay = 0,
     leaveTouchDelay = 1500,
     onClose,
     onOpen,
@@ -213,9 +204,7 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
 
   const disableInteractive = disableInteractiveProp;
 
-  const closeTimer = useTimeout();
   const enterTimer = useTimeout();
-  const leaveTimer = useTimeout();
   const touchTimer = useTimeout();
 
   const [openState, setOpenState] = useControlled({
@@ -269,9 +258,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
   React.useEffect(() => stopTouchInteraction, [stopTouchInteraction]);
 
   const handleOpen = (event) => {
-    hystersisTimer.clear();
-    hystersisOpen = true;
-
     // The mouseover event will trigger for every nested element in the tooltip.
     // We can skip rerendering when the tooltip is already open.
     // We are using the mouseover event instead of the mouseenter event to fix a hide/show issue.
@@ -287,18 +273,13 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
      * @param {React.SyntheticEvent | Event} event
      */
     (event) => {
-      hystersisTimer.start(800 + leaveDelay, () => {
-        hystersisOpen = false;
-      });
       setOpenState(false);
 
       if (onClose && open) {
         onClose(event);
       }
 
-      closeTimer.start(theme.transitions.duration.shortest, () => {
-        ignoreNonTouchEvents.current = false;
-      });
+      ignoreNonTouchEvents.current = false;
     },
   );
 
@@ -315,9 +296,8 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     }
 
     enterTimer.clear();
-    leaveTimer.clear();
-    if (enterDelay || (hystersisOpen && enterNextDelay)) {
-      enterTimer.start(hystersisOpen ? enterNextDelay : enterDelay, () => {
+    if (enterDelay) {
+      enterTimer.start(enterDelay, () => {
         handleOpen(event);
       });
     } else {
@@ -327,9 +307,7 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
 
   const handleMouseLeave = (event) => {
     enterTimer.clear();
-    leaveTimer.start(leaveDelay, () => {
-      handleClose(event);
-    });
+    handleClose(event);
   };
 
   const [, setChildIsFocusVisible] = React.useState(false);
