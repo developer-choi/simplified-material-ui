@@ -16,13 +16,12 @@ const RADIUS_STANDARD = 10;
 const RADIUS_DOT = 4;
 
 const useUtilityClasses = (ownerState) => {
-  const { color, invisible, variant, classes = {} } = ownerState;
+  const { color, invisible, classes = {} } = ownerState;
 
   const slots = {
     root: ['root'],
     badge: [
       'badge',
-      variant,
       invisible && 'invisible',
       color !== 'default' && `color${capitalize(color)}`,
     ],
@@ -94,15 +93,6 @@ const BadgeBadge = styled('span', {
           },
         })),
       {
-        props: { variant: 'dot' },
-        style: {
-          borderRadius: RADIUS_DOT,
-          height: RADIUS_DOT * 2,
-          minWidth: RADIUS_DOT * 2,
-          padding: 0,
-        },
-      },
-      {
         props: ({ ownerState }) =>
           ownerState.anchorOrigin.vertical === 'top' &&
           ownerState.anchorOrigin.horizontal === 'right' &&
@@ -141,12 +131,12 @@ const Badge = React.forwardRef(function Badge(inProps, ref) {
     max: maxProp = 99,
     badgeContent: badgeContentProp,
     showZero = false,
-    variant: variantProp = 'standard',
     ...other
   } = props;
 
   const anchorOrigin = { vertical: 'top', horizontal: 'right' };
   const overlap = 'rectangular';
+  const variant = 'standard';
 
   const {
     badgeContent,
@@ -162,17 +152,15 @@ const Badge = React.forwardRef(function Badge(inProps, ref) {
 
   const prevProps = usePreviousProps({
     color: colorProp,
-    variant: variantProp,
     badgeContent: badgeContentProp,
   });
 
-  const invisible = invisibleFromHook || (badgeContent == null && variantProp !== 'dot');
+  const invisible = invisibleFromHook || badgeContent == null;
 
   const {
     color = colorProp,
-    variant = variantProp,
   } = invisible ? prevProps : props;
-  const displayValue = variant !== 'dot' ? displayValueFromHook : undefined;
+  const displayValue = displayValueFromHook;
 
   const ownerState = {
     ...props,
@@ -257,14 +245,6 @@ Badge.propTypes /* remove-proptypes */ = {
     PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
     PropTypes.func,
     PropTypes.object,
-  ]),
-  /**
-   * The variant to use.
-   * @default 'standard'
-   */
-  variant: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['dot', 'standard']),
-    PropTypes.string,
   ]),
 };
 
