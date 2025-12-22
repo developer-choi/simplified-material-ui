@@ -18,7 +18,6 @@ import useEventCallback from '../utils/useEventCallback';
 import useForkRef from '../utils/useForkRef';
 import useId from '../utils/useId';
 import useControlled from '../utils/useControlled';
-import useSlot from '../utils/useSlot';
 import tooltipClasses, { getTooltipUtilityClass } from './tooltipClasses';
 
 function round(value) {
@@ -315,8 +314,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     arrow = false,
     children: childrenProp,
     classes: classesProp,
-    components = {},
-    componentsProps = {},
     describeChild = false,
     disableFocusListener = false,
     disableHoverListener = false,
@@ -335,8 +332,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     placement = 'bottom',
     PopperComponent: PopperComponentProp,
     PopperProps = {},
-    slotProps = {},
-    slots = {},
     title,
     TransitionComponent: TransitionComponentProp,
     TransitionProps,
@@ -661,8 +656,6 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
     touch: ignoreNonTouchEvents.current,
   };
 
-  const resolvedPopperProps =
-    typeof slotProps.popper === 'function' ? slotProps.popper(ownerState) : slotProps.popper;
   const popperOptions = React.useMemo(() => {
     let tooltipModifiers = [
       {
@@ -679,74 +672,20 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
       tooltipModifiers = tooltipModifiers.concat(PopperProps.popperOptions.modifiers);
     }
 
-    if (resolvedPopperProps?.popperOptions?.modifiers) {
-      tooltipModifiers = tooltipModifiers.concat(resolvedPopperProps.popperOptions.modifiers);
-    }
-
     return {
       ...PopperProps.popperOptions,
-      ...resolvedPopperProps?.popperOptions,
       modifiers: tooltipModifiers,
     };
-  }, [arrowRef, PopperProps.popperOptions, resolvedPopperProps?.popperOptions]);
+  }, [arrowRef, PopperProps.popperOptions]);
 
   const classes = useUtilityClasses(ownerState);
-  const resolvedTransitionProps =
-    typeof slotProps.transition === 'function'
-      ? slotProps.transition(ownerState)
-      : slotProps.transition;
-  const externalForwardedProps = {
-    slots: {
-      popper: components.Popper,
-      transition: components.Transition ?? TransitionComponentProp,
-      tooltip: components.Tooltip,
-      arrow: components.Arrow,
-      ...slots,
-    },
-    slotProps: {
-      arrow: slotProps.arrow ?? componentsProps.arrow,
-      popper: { ...PopperProps, ...(resolvedPopperProps ?? componentsProps.popper) }, // resolvedPopperProps can be spread because it's already an object
-      tooltip: slotProps.tooltip ?? componentsProps.tooltip,
-      transition: {
-        ...TransitionProps,
-        ...(resolvedTransitionProps ?? componentsProps.transition),
-      },
-    },
-  };
-
-  const [PopperSlot, popperSlotProps] = useSlot('popper', {
-    elementType: TooltipPopper,
-    externalForwardedProps,
-    ownerState,
-    className: clsx(classes.popper, PopperProps?.className),
-  });
-
-  const [TransitionSlot, transitionSlotProps] = useSlot('transition', {
-    elementType: Grow,
-    externalForwardedProps,
-    ownerState,
-  });
-
-  const [TooltipSlot, tooltipSlotProps] = useSlot('tooltip', {
-    elementType: TooltipTooltip,
-    className: classes.tooltip,
-    externalForwardedProps,
-    ownerState,
-  });
-
-  const [ArrowSlot, arrowSlotProps] = useSlot('arrow', {
-    elementType: TooltipArrow,
-    className: classes.arrow,
-    externalForwardedProps,
-    ownerState,
-    ref: setArrowRef,
-  });
 
   return (
     <React.Fragment>
       {React.cloneElement(children, childrenProps)}
-      <PopperSlot
+      <TooltipPopper
         as={PopperComponentProp ?? Popper}
+        className={clsx(classes.popper, PopperProps?.className)}
         placement={placement}
         anchorEl={
           followCursor
@@ -764,25 +703,26 @@ const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {
         }
         popperRef={popperRef}
         open={childNode ? open : false}
+        ownerState={ownerState}
         id={id}
         transition
         {...interactiveWrapperListeners}
-        {...popperSlotProps}
+        {...PopperProps}
         popperOptions={popperOptions}
       >
         {({ TransitionProps: TransitionPropsInner }) => (
-          <TransitionSlot
+          <Grow
             timeout={theme.transitions.duration.shorter}
             {...TransitionPropsInner}
-            {...transitionSlotProps}
+            {...TransitionProps}
           >
-            <TooltipSlot {...tooltipSlotProps}>
+            <TooltipTooltip className={classes.tooltip} ownerState={ownerState}>
               {title}
-              {arrow ? <ArrowSlot {...arrowSlotProps} /> : null}
-            </TooltipSlot>
-          </TransitionSlot>
+              {arrow ? <TooltipArrow className={classes.arrow} ownerState={ownerState} ref={setArrowRef} /> : null}
+            </TooltipTooltip>
+          </Grow>
         )}
-      </PopperSlot>
+      </TooltipPopper>
     </React.Fragment>
   );
 });
