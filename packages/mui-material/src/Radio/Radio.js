@@ -17,10 +17,10 @@ import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, color, size } = ownerState;
+  const { classes, size } = ownerState;
 
   const slots = {
-    root: ['root', `color${capitalize(color)}`, size !== 'medium' && `size${capitalize(size)}`],
+    root: ['root', 'colorPrimary', size !== 'medium' && `size${capitalize(size)}`],
   };
 
   return {
@@ -39,7 +39,7 @@ const RadioRoot = styled(SwitchBase, {
     return [
       styles.root,
       ownerState.size !== 'medium' && styles[`size${capitalize(ownerState.size)}`],
-      styles[`color${capitalize(ownerState.color)}`],
+      styles.colorPrimary,
     ];
   },
 })(
