@@ -87,15 +87,10 @@ function areEqualValues(a, b) {
   return String(a) === String(b);
 }
 
-const defaultCheckedIcon = <RadioButtonIcon checked />;
-const defaultIcon = <RadioButtonIcon />;
-
 const Radio = React.forwardRef(function Radio(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiRadio' });
   const {
     checked: checkedProp,
-    checkedIcon = defaultCheckedIcon,
-    icon = defaultIcon,
     name: nameProp,
     onChange: onChangeProp,
     className,
@@ -107,6 +102,8 @@ const Radio = React.forwardRef(function Radio(inProps, ref) {
 
   const color = 'primary';
   const size = 'medium';
+  const icon = <RadioButtonIcon />;
+  const checkedIcon = <RadioButtonIcon checked />;
 
   const muiFormControl = useFormControl();
 
@@ -149,10 +146,8 @@ const Radio = React.forwardRef(function Radio(inProps, ref) {
       ref={ref}
       className={clsx(classes.root, className)}
       type="radio"
-      icon={React.cloneElement(icon, { fontSize: icon.props.fontSize ?? 'medium' })}
-      checkedIcon={React.cloneElement(checkedIcon, {
-        fontSize: checkedIcon.props.fontSize ?? 'medium',
-      })}
+      icon={<RadioButtonIcon fontSize="medium" />}
+      checkedIcon={<RadioButtonIcon checked fontSize="medium" />}
       disabled={disabled}
       name={name}
       checked={checked}
