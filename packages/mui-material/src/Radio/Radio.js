@@ -17,10 +17,10 @@ import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, size } = ownerState;
+  const { classes } = ownerState;
 
   const slots = {
-    root: ['root', 'colorPrimary', size !== 'medium' && `size${capitalize(size)}`],
+    root: ['root', 'colorPrimary'],
   };
 
   return {
@@ -34,13 +34,7 @@ const RadioRoot = styled(SwitchBase, {
   name: 'MuiRadio',
   slot: 'Root',
   overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.root,
-      ownerState.size !== 'medium' && styles[`size${capitalize(ownerState.size)}`],
-      styles.colorPrimary,
-    ];
+    return [styles.root, styles.colorPrimary];
   },
 })(
   memoTheme(({ theme }) => ({
@@ -104,7 +98,6 @@ const Radio = React.forwardRef(function Radio(inProps, ref) {
     icon = defaultIcon,
     name: nameProp,
     onChange: onChangeProp,
-    size = 'medium',
     className,
     disabled: disabledProp,
     disableRipple = false,
@@ -113,6 +106,7 @@ const Radio = React.forwardRef(function Radio(inProps, ref) {
   } = props;
 
   const color = 'primary';
+  const size = 'medium';
 
   const muiFormControl = useFormControl();
 
@@ -155,9 +149,9 @@ const Radio = React.forwardRef(function Radio(inProps, ref) {
       ref={ref}
       className={clsx(classes.root, className)}
       type="radio"
-      icon={React.cloneElement(icon, { fontSize: icon.props.fontSize ?? size })}
+      icon={React.cloneElement(icon, { fontSize: icon.props.fontSize ?? 'medium' })}
       checkedIcon={React.cloneElement(checkedIcon, {
-        fontSize: checkedIcon.props.fontSize ?? size,
+        fontSize: checkedIcon.props.fontSize ?? 'medium',
       })}
       disabled={disabled}
       name={name}
