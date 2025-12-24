@@ -15,7 +15,6 @@ import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
-import useSlot from '../utils/useSlot';
 import { useDefaultProps } from '../DefaultPropsProvider';
 
 const useUtilityClasses = (ownerState) => {
@@ -126,8 +125,6 @@ const Radio = React.forwardRef(function Radio(inProps, ref) {
     className,
     disabled: disabledProp,
     disableRipple = false,
-    slots = {},
-    slotProps = {},
     inputProps,
     ...other
   } = props;
@@ -168,47 +165,25 @@ const Radio = React.forwardRef(function Radio(inProps, ref) {
     }
   }
 
-  const externalInputProps = slotProps.input ?? inputProps;
-
-  const [RootSlot, rootSlotProps] = useSlot('root', {
-    ref,
-    elementType: RadioRoot,
-    className: clsx(classes.root, className),
-    shouldForwardComponentProp: true,
-    externalForwardedProps: {
-      slots,
-      slotProps,
-      ...other,
-    },
-    getSlotProps: (handlers) => ({
-      ...handlers,
-      onChange: (event, ...args) => {
-        handlers.onChange?.(event, ...args);
-        onChange(event, ...args);
-      },
-    }),
-    ownerState,
-    additionalProps: {
-      type: 'radio',
-      icon: React.cloneElement(icon, { fontSize: icon.props.fontSize ?? size }),
-      checkedIcon: React.cloneElement(checkedIcon, {
+  return (
+    <RadioRoot
+      ref={ref}
+      className={clsx(classes.root, className)}
+      type="radio"
+      icon={React.cloneElement(icon, { fontSize: icon.props.fontSize ?? size })}
+      checkedIcon={React.cloneElement(checkedIcon, {
         fontSize: checkedIcon.props.fontSize ?? size,
-      }),
-      disabled,
-      name,
-      checked,
-      slots,
-      slotProps: {
-        // Do not forward `slotProps.root` again because it's already handled by the `RootSlot` in this file.
-        input:
-          typeof externalInputProps === 'function'
-            ? externalInputProps(ownerState)
-            : externalInputProps,
-      },
-    },
-  });
-
-  return <RootSlot {...rootSlotProps} classes={classes} />;
+      })}
+      disabled={disabled}
+      name={name}
+      checked={checked}
+      onChange={onChange}
+      ownerState={ownerState}
+      classes={classes}
+      inputProps={inputProps}
+      {...other}
+    />
+  );
 });
 
 Radio.propTypes /* remove-proptypes */ = {
