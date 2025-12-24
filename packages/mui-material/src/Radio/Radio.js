@@ -7,46 +7,6 @@ import RadioButtonIcon from './RadioButtonIcon';
 import createChainedFunction from '../utils/createChainedFunction';
 import useFormControl from '../FormControl/useFormControl';
 import useRadioGroup from '../RadioGroup/useRadioGroup';
-import radioClasses from './radioClasses';
-import rootShouldForwardProp from '../styles/rootShouldForwardProp';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
-
-const RadioRoot = styled(SwitchBase, {
-  shouldForwardProp: (prop) => rootShouldForwardProp(prop) || prop === 'classes',
-  name: 'MuiRadio',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    return [styles.root, styles.colorPrimary];
-  },
-})(
-  memoTheme(({ theme }) => ({
-    color: (theme.vars || theme).palette.text.secondary,
-    [`&.${radioClasses.disabled}`]: {
-      color: (theme.vars || theme).palette.action.disabled,
-    },
-    variants: [
-      {
-        props: { disabled: false },
-        style: {
-          '&:hover': {
-            backgroundColor: theme.alpha(
-              (theme.vars || theme).palette.primary.main,
-              (theme.vars || theme).palette.action.hoverOpacity,
-            ),
-            // Reset on touch devices, it doesn't add specificity
-            '@media (hover: none)': {
-              backgroundColor: 'transparent',
-            },
-          },
-          [`&.${radioClasses.checked}`]: {
-            color: (theme.vars || theme).palette.primary.main,
-          },
-        },
-      },
-    ],
-  })),
-);
 
 function areEqualValues(a, b) {
   if (typeof b === 'object' && b !== null) {
@@ -68,11 +28,6 @@ const Radio = React.forwardRef(function Radio(props, ref) {
     ...other
   } = props;
 
-  const color = 'primary';
-  const size = 'medium';
-  const icon = <RadioButtonIcon />;
-  const checkedIcon = <RadioButtonIcon checked />;
-
   const muiFormControl = useFormControl();
 
   let disabled = disabledProp;
@@ -84,13 +39,6 @@ const Radio = React.forwardRef(function Radio(props, ref) {
   }
 
   disabled ??= false;
-
-  const ownerState = {
-    ...props,
-    disabled,
-    color,
-    size,
-  };
 
   const radioGroup = useRadioGroup();
 
@@ -108,7 +56,7 @@ const Radio = React.forwardRef(function Radio(props, ref) {
   }
 
   return (
-    <RadioRoot
+    <SwitchBase
       ref={ref}
       className={className}
       type="radio"
@@ -118,7 +66,6 @@ const Radio = React.forwardRef(function Radio(props, ref) {
       name={name}
       checked={checked}
       onChange={onChange}
-      ownerState={ownerState}
       inputProps={inputProps}
       {...other}
     />
