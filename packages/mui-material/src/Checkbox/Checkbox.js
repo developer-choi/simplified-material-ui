@@ -1,35 +1,13 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import SwitchBase from '../internal/SwitchBase';
 import CheckBoxOutlineBlankIcon from '../internal/svg-icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '../internal/svg-icons/CheckBox';
-import capitalize from '../utils/capitalize';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
-import checkboxClasses, { getCheckboxUtilityClass } from './checkboxClasses';
+import checkboxClasses from './checkboxClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      'colorPrimary',
-    ],
-  };
-
-  const composedClasses = composeClasses(slots, getCheckboxUtilityClass, classes);
-
-  return {
-    ...classes, // forward the disabled and checked classes to the SwitchBase
-    ...composedClasses,
-  };
-};
 
 const CheckboxRoot = styled(SwitchBase, {
   shouldForwardProp: (prop) => rootShouldForwardProp(prop) || prop === 'classes',
@@ -63,8 +41,7 @@ const CheckboxRoot = styled(SwitchBase, {
   })),
 );
 
-const Checkbox = React.forwardRef(function Checkbox(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiCheckbox' });
+const Checkbox = React.forwardRef(function Checkbox(props, ref) {
   const {
     inputProps,
     className,
@@ -80,17 +57,14 @@ const Checkbox = React.forwardRef(function Checkbox(inProps, ref) {
     size,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <CheckboxRoot
       ref={ref}
-      className={clsx(classes.root, className)}
+      className={className}
       type="checkbox"
       icon={<CheckBoxOutlineBlankIcon fontSize="medium" />}
       checkedIcon={<CheckBoxIcon fontSize="medium" />}
       ownerState={ownerState}
-      classes={classes}
       inputProps={inputProps}
       {...other}
     />
