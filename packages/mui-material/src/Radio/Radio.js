@@ -1,33 +1,16 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import refType from '@mui/utils/refType';
-import composeClasses from '@mui/utils/composeClasses';
 import SwitchBase from '../internal/SwitchBase';
 import RadioButtonIcon from './RadioButtonIcon';
-import capitalize from '../utils/capitalize';
 import createChainedFunction from '../utils/createChainedFunction';
 import useFormControl from '../FormControl/useFormControl';
 import useRadioGroup from '../RadioGroup/useRadioGroup';
-import radioClasses, { getRadioUtilityClass } from './radioClasses';
+import radioClasses from './radioClasses';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-
-  const slots = {
-    root: ['root', 'colorPrimary'],
-  };
-
-  return {
-    ...classes,
-    ...composeClasses(slots, getRadioUtilityClass, classes),
-  };
-};
 
 const RadioRoot = styled(SwitchBase, {
   shouldForwardProp: (prop) => rootShouldForwardProp(prop) || prop === 'classes',
@@ -74,8 +57,7 @@ function areEqualValues(a, b) {
   return String(a) === String(b);
 }
 
-const Radio = React.forwardRef(function Radio(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiRadio' });
+const Radio = React.forwardRef(function Radio(props, ref) {
   const {
     checked: checkedProp,
     name: nameProp,
@@ -110,7 +92,6 @@ const Radio = React.forwardRef(function Radio(inProps, ref) {
     size,
   };
 
-  const classes = useUtilityClasses(ownerState);
   const radioGroup = useRadioGroup();
 
   let checked = checkedProp;
@@ -129,7 +110,7 @@ const Radio = React.forwardRef(function Radio(inProps, ref) {
   return (
     <RadioRoot
       ref={ref}
-      className={clsx(classes.root, className)}
+      className={className}
       type="radio"
       icon={<RadioButtonIcon fontSize="medium" />}
       checkedIcon={<RadioButtonIcon checked fontSize="medium" />}
@@ -138,7 +119,6 @@ const Radio = React.forwardRef(function Radio(inProps, ref) {
       checked={checked}
       onChange={onChange}
       ownerState={ownerState}
-      classes={classes}
       inputProps={inputProps}
       {...other}
     />
