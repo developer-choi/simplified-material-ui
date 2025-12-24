@@ -6,7 +6,6 @@ import composeClasses from '@mui/utils/composeClasses';
 import SwitchBase from '../internal/SwitchBase';
 import CheckBoxOutlineBlankIcon from '../internal/svg-icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '../internal/svg-icons/CheckBox';
-import IndeterminateCheckBoxIcon from '../internal/svg-icons/IndeterminateCheckBox';
 import capitalize from '../utils/capitalize';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import checkboxClasses, { getCheckboxUtilityClass } from './checkboxClasses';
@@ -15,12 +14,11 @@ import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, indeterminate } = ownerState;
+  const { classes } = ownerState;
 
   const slots = {
     root: [
       'root',
-      indeterminate && 'indeterminate',
       'colorPrimary',
     ],
   };
@@ -38,18 +36,15 @@ const CheckboxRoot = styled(SwitchBase, {
   name: 'MuiCheckbox',
   slot: 'Root',
   overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
     return [
       styles.root,
-      ownerState.indeterminate && styles.indeterminate,
       styles.colorPrimary,
     ];
   },
 })(
   memoTheme(({ theme }) => ({
     color: (theme.vars || theme).palette.text.secondary,
-    [`&.${checkboxClasses.checked}, &.${checkboxClasses.indeterminate}`]: {
+    [`&.${checkboxClasses.checked}`]: {
       color: (theme.vars || theme).palette.primary.main,
     },
     [`&.${checkboxClasses.disabled}`]: {
@@ -77,15 +72,12 @@ const CheckboxRoot = styled(SwitchBase, {
 
 const defaultCheckedIcon = <CheckBoxIcon />;
 const defaultIcon = <CheckBoxOutlineBlankIcon />;
-const defaultIndeterminateIcon = <IndeterminateCheckBoxIcon />;
 
 const Checkbox = React.forwardRef(function Checkbox(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiCheckbox' });
   const {
     checkedIcon = defaultCheckedIcon,
-    icon: iconProp = defaultIcon,
-    indeterminate = false,
-    indeterminateIcon: indeterminateIconProp = defaultIndeterminateIcon,
+    icon = defaultIcon,
     inputProps,
     disableRipple = false,
     className,
@@ -95,14 +87,10 @@ const Checkbox = React.forwardRef(function Checkbox(inProps, ref) {
   const color = 'primary';
   const size = 'medium';
 
-  const icon = indeterminate ? indeterminateIconProp : iconProp;
-  const indeterminateIcon = indeterminate ? indeterminateIconProp : checkedIcon;
-
   const ownerState = {
     ...props,
     disableRipple,
     color,
-    indeterminate,
     size,
   };
 
@@ -116,16 +104,13 @@ const Checkbox = React.forwardRef(function Checkbox(inProps, ref) {
       icon={React.cloneElement(icon, {
         fontSize: icon.props.fontSize ?? size,
       })}
-      checkedIcon={React.cloneElement(indeterminateIcon, {
-        fontSize: indeterminateIcon.props.fontSize ?? size,
+      checkedIcon={React.cloneElement(checkedIcon, {
+        fontSize: checkedIcon.props.fontSize ?? size,
       })}
       disableRipple={disableRipple}
       ownerState={ownerState}
       classes={classes}
-      inputProps={{
-        ...inputProps,
-        'data-indeterminate': indeterminate,
-      }}
+      inputProps={inputProps}
       {...other}
     />
   );
