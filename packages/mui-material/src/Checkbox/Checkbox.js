@@ -15,14 +15,13 @@ import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, indeterminate, size } = ownerState;
+  const { classes, indeterminate } = ownerState;
 
   const slots = {
     root: [
       'root',
       indeterminate && 'indeterminate',
       'colorPrimary',
-      `size${capitalize(size)}`,
     ],
   };
 
@@ -44,7 +43,6 @@ const CheckboxRoot = styled(SwitchBase, {
     return [
       styles.root,
       ownerState.indeterminate && styles.indeterminate,
-      styles[`size${capitalize(ownerState.size)}`],
       styles.colorPrimary,
     ];
   },
@@ -89,13 +87,13 @@ const Checkbox = React.forwardRef(function Checkbox(inProps, ref) {
     indeterminate = false,
     indeterminateIcon: indeterminateIconProp = defaultIndeterminateIcon,
     inputProps,
-    size = 'medium',
     disableRipple = false,
     className,
     ...other
   } = props;
 
   const color = 'primary';
+  const size = 'medium';
 
   const icon = indeterminate ? indeterminateIconProp : iconProp;
   const indeterminateIcon = indeterminate ? indeterminateIconProp : checkedIcon;
