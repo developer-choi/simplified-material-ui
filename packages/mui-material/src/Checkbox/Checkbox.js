@@ -70,14 +70,9 @@ const CheckboxRoot = styled(SwitchBase, {
   })),
 );
 
-const defaultCheckedIcon = <CheckBoxIcon />;
-const defaultIcon = <CheckBoxOutlineBlankIcon />;
-
 const Checkbox = React.forwardRef(function Checkbox(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiCheckbox' });
   const {
-    checkedIcon = defaultCheckedIcon,
-    icon = defaultIcon,
     inputProps,
     disableRipple = false,
     className,
@@ -101,12 +96,8 @@ const Checkbox = React.forwardRef(function Checkbox(inProps, ref) {
       ref={ref}
       className={clsx(classes.root, className)}
       type="checkbox"
-      icon={React.cloneElement(icon, {
-        fontSize: icon.props.fontSize ?? size,
-      })}
-      checkedIcon={React.cloneElement(checkedIcon, {
-        fontSize: checkedIcon.props.fontSize ?? size,
-      })}
+      icon={<CheckBoxOutlineBlankIcon fontSize="medium" />}
+      checkedIcon={<CheckBoxIcon fontSize="medium" />}
       disableRipple={disableRipple}
       ownerState={ownerState}
       classes={classes}
