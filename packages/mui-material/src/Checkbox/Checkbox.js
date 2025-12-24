@@ -114,7 +114,6 @@ const Checkbox = React.forwardRef(function Checkbox(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiCheckbox' });
   const {
     checkedIcon = defaultCheckedIcon,
-    color = 'primary',
     icon: iconProp = defaultIcon,
     indeterminate = false,
     indeterminateIcon: indeterminateIconProp = defaultIndeterminateIcon,
@@ -124,6 +123,8 @@ const Checkbox = React.forwardRef(function Checkbox(inProps, ref) {
     className,
     ...other
   } = props;
+
+  const color = 'primary';
 
   const icon = indeterminate ? indeterminateIconProp : iconProp;
   const indeterminateIcon = indeterminate ? indeterminateIconProp : checkedIcon;
