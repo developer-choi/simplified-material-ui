@@ -4,42 +4,6 @@ import PropTypes from 'prop-types';
 import SwitchBase from '../internal/SwitchBase';
 import CheckBoxOutlineBlankIcon from '../internal/svg-icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '../internal/svg-icons/CheckBox';
-import rootShouldForwardProp from '../styles/rootShouldForwardProp';
-import checkboxClasses from './checkboxClasses';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
-
-const CheckboxRoot = styled(SwitchBase, {
-  shouldForwardProp: (prop) => rootShouldForwardProp(prop) || prop === 'classes',
-  name: 'MuiCheckbox',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    return [
-      styles.root,
-      styles.colorPrimary,
-    ];
-  },
-})(
-  memoTheme(({ theme }) => ({
-    color: (theme.vars || theme).palette.text.secondary,
-    [`&.${checkboxClasses.checked}`]: {
-      color: (theme.vars || theme).palette.primary.main,
-    },
-    [`&.${checkboxClasses.disabled}`]: {
-      color: (theme.vars || theme).palette.action.disabled,
-    },
-    '&:hover': {
-      backgroundColor: theme.alpha(
-        (theme.vars || theme).palette.primary.main,
-        (theme.vars || theme).palette.action.hoverOpacity,
-      ),
-      // Reset on touch devices, it doesn't add specificity
-      '@media (hover: none)': {
-        backgroundColor: 'transparent',
-      },
-    },
-  })),
-);
 
 const Checkbox = React.forwardRef(function Checkbox(props, ref) {
   const {
@@ -48,23 +12,13 @@ const Checkbox = React.forwardRef(function Checkbox(props, ref) {
     ...other
   } = props;
 
-  const color = 'primary';
-  const size = 'medium';
-
-  const ownerState = {
-    ...props,
-    color,
-    size,
-  };
-
   return (
-    <CheckboxRoot
+    <SwitchBase
       ref={ref}
       className={className}
       type="checkbox"
       icon={<CheckBoxOutlineBlankIcon fontSize="medium" />}
       checkedIcon={<CheckBoxIcon fontSize="medium" />}
-      ownerState={ownerState}
       inputProps={inputProps}
       {...other}
     />
