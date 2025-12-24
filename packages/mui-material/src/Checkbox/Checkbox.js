@@ -12,17 +12,16 @@ import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import checkboxClasses, { getCheckboxUtilityClass } from './checkboxClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
 import { useDefaultProps } from '../DefaultPropsProvider';
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, indeterminate, color, size } = ownerState;
+  const { classes, indeterminate, size } = ownerState;
 
   const slots = {
     root: [
       'root',
       indeterminate && 'indeterminate',
-      `color${capitalize(color)}`,
+      'colorPrimary',
       `size${capitalize(size)}`,
     ],
   };
@@ -46,56 +45,28 @@ const CheckboxRoot = styled(SwitchBase, {
       styles.root,
       ownerState.indeterminate && styles.indeterminate,
       styles[`size${capitalize(ownerState.size)}`],
-      ownerState.color !== 'default' && styles[`color${capitalize(ownerState.color)}`],
+      styles.colorPrimary,
     ];
   },
 })(
   memoTheme(({ theme }) => ({
     color: (theme.vars || theme).palette.text.secondary,
+    [`&.${checkboxClasses.checked}, &.${checkboxClasses.indeterminate}`]: {
+      color: (theme.vars || theme).palette.primary.main,
+    },
+    [`&.${checkboxClasses.disabled}`]: {
+      color: (theme.vars || theme).palette.action.disabled,
+    },
     variants: [
       {
-        props: { color: 'default', disableRipple: false },
+        props: { disableRipple: false },
         style: {
           '&:hover': {
             backgroundColor: theme.alpha(
-              (theme.vars || theme).palette.action.active,
+              (theme.vars || theme).palette.primary.main,
               (theme.vars || theme).palette.action.hoverOpacity,
             ),
-          },
-        },
-      },
-      ...Object.entries(theme.palette)
-        .filter(createSimplePaletteValueFilter())
-        .map(([color]) => ({
-          props: { color, disableRipple: false },
-          style: {
-            '&:hover': {
-              backgroundColor: theme.alpha(
-                (theme.vars || theme).palette[color].main,
-                (theme.vars || theme).palette.action.hoverOpacity,
-              ),
-            },
-          },
-        })),
-      ...Object.entries(theme.palette)
-        .filter(createSimplePaletteValueFilter())
-        .map(([color]) => ({
-          props: { color },
-          style: {
-            [`&.${checkboxClasses.checked}, &.${checkboxClasses.indeterminate}`]: {
-              color: (theme.vars || theme).palette[color].main,
-            },
-            [`&.${checkboxClasses.disabled}`]: {
-              color: (theme.vars || theme).palette.action.disabled,
-            },
-          },
-        })),
-      {
-        // Should be last to override other colors
-        props: { disableRipple: false },
-        style: {
-          // Reset on touch devices, it doesn't add specificity
-          '&:hover': {
+            // Reset on touch devices, it doesn't add specificity
             '@media (hover: none)': {
               backgroundColor: 'transparent',
             },
