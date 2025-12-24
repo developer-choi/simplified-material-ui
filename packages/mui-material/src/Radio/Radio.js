@@ -14,7 +14,6 @@ import radioClasses, { getRadioUtilityClass } from './radioClasses';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
 import { useDefaultProps } from '../DefaultPropsProvider';
 
 const useUtilityClasses = (ownerState) => {
@@ -51,39 +50,24 @@ const RadioRoot = styled(SwitchBase, {
     },
     variants: [
       {
-        props: { color: 'default', disabled: false, disableRipple: false },
+        props: { disabled: false, disableRipple: false },
         style: {
           '&:hover': {
             backgroundColor: theme.alpha(
-              (theme.vars || theme).palette.action.active,
+              (theme.vars || theme).palette.primary.main,
               (theme.vars || theme).palette.action.hoverOpacity,
             ),
           },
         },
       },
-      ...Object.entries(theme.palette)
-        .filter(createSimplePaletteValueFilter())
-        .map(([color]) => ({
-          props: { color, disabled: false, disableRipple: false },
-          style: {
-            '&:hover': {
-              backgroundColor: theme.alpha(
-                (theme.vars || theme).palette[color].main,
-                (theme.vars || theme).palette.action.hoverOpacity,
-              ),
-            },
+      {
+        props: { disabled: false },
+        style: {
+          [`&.${radioClasses.checked}`]: {
+            color: (theme.vars || theme).palette.primary.main,
           },
-        })),
-      ...Object.entries(theme.palette)
-        .filter(createSimplePaletteValueFilter())
-        .map(([color]) => ({
-          props: { color, disabled: false },
-          style: {
-            [`&.${radioClasses.checked}`]: {
-              color: (theme.vars || theme).palette[color].main,
-            },
-          },
-        })),
+        },
+      },
       {
         // Should be last to override other colors
         props: { disableRipple: false },
@@ -117,7 +101,6 @@ const Radio = React.forwardRef(function Radio(inProps, ref) {
   const {
     checked: checkedProp,
     checkedIcon = defaultCheckedIcon,
-    color = 'primary',
     icon = defaultIcon,
     name: nameProp,
     onChange: onChangeProp,
@@ -128,6 +111,8 @@ const Radio = React.forwardRef(function Radio(inProps, ref) {
     inputProps,
     ...other
   } = props;
+
+  const color = 'primary';
 
   const muiFormControl = useFormControl();
 
