@@ -50,23 +50,16 @@ const CheckboxRoot = styled(SwitchBase, {
     [`&.${checkboxClasses.disabled}`]: {
       color: (theme.vars || theme).palette.action.disabled,
     },
-    variants: [
-      {
-        props: { disableRipple: false },
-        style: {
-          '&:hover': {
-            backgroundColor: theme.alpha(
-              (theme.vars || theme).palette.primary.main,
-              (theme.vars || theme).palette.action.hoverOpacity,
-            ),
-            // Reset on touch devices, it doesn't add specificity
-            '@media (hover: none)': {
-              backgroundColor: 'transparent',
-            },
-          },
-        },
+    '&:hover': {
+      backgroundColor: theme.alpha(
+        (theme.vars || theme).palette.primary.main,
+        (theme.vars || theme).palette.action.hoverOpacity,
+      ),
+      // Reset on touch devices, it doesn't add specificity
+      '@media (hover: none)': {
+        backgroundColor: 'transparent',
       },
-    ],
+    },
   })),
 );
 
@@ -74,7 +67,6 @@ const Checkbox = React.forwardRef(function Checkbox(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiCheckbox' });
   const {
     inputProps,
-    disableRipple = false,
     className,
     ...other
   } = props;
@@ -84,7 +76,6 @@ const Checkbox = React.forwardRef(function Checkbox(inProps, ref) {
 
   const ownerState = {
     ...props,
-    disableRipple,
     color,
     size,
   };
@@ -98,7 +89,6 @@ const Checkbox = React.forwardRef(function Checkbox(inProps, ref) {
       type="checkbox"
       icon={<CheckBoxOutlineBlankIcon fontSize="medium" />}
       checkedIcon={<CheckBoxIcon fontSize="medium" />}
-      disableRipple={disableRipple}
       ownerState={ownerState}
       classes={classes}
       inputProps={inputProps}
