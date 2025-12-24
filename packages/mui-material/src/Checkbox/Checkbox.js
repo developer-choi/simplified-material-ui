@@ -14,8 +14,6 @@ import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import { mergeSlotProps } from '../utils';
-import useSlot from '../utils/useSlot';
 
 const useUtilityClasses = (ownerState) => {
   const { classes, indeterminate, color, size } = ownerState;
@@ -124,8 +122,6 @@ const Checkbox = React.forwardRef(function Checkbox(inProps, ref) {
     size = 'medium',
     disableRipple = false,
     className,
-    slots = {},
-    slotProps = {},
     ...other
   } = props;
 
@@ -142,43 +138,27 @@ const Checkbox = React.forwardRef(function Checkbox(inProps, ref) {
 
   const classes = useUtilityClasses(ownerState);
 
-  const externalInputProps = slotProps.input ?? inputProps;
-
-  const [RootSlot, rootSlotProps] = useSlot('root', {
-    ref,
-    elementType: CheckboxRoot,
-    className: clsx(classes.root, className),
-    shouldForwardComponentProp: true,
-    externalForwardedProps: {
-      slots,
-      slotProps,
-      ...other,
-    },
-    ownerState,
-    additionalProps: {
-      type: 'checkbox',
-      icon: React.cloneElement(icon, {
+  return (
+    <CheckboxRoot
+      ref={ref}
+      className={clsx(classes.root, className)}
+      type="checkbox"
+      icon={React.cloneElement(icon, {
         fontSize: icon.props.fontSize ?? size,
-      }),
-      checkedIcon: React.cloneElement(indeterminateIcon, {
+      })}
+      checkedIcon={React.cloneElement(indeterminateIcon, {
         fontSize: indeterminateIcon.props.fontSize ?? size,
-      }),
-      disableRipple,
-      slots,
-      slotProps: {
-        input: mergeSlotProps(
-          typeof externalInputProps === 'function'
-            ? externalInputProps(ownerState)
-            : externalInputProps,
-          {
-            'data-indeterminate': indeterminate,
-          },
-        ),
-      },
-    },
-  });
-
-  return <RootSlot {...rootSlotProps} classes={classes} />;
+      })}
+      disableRipple={disableRipple}
+      ownerState={ownerState}
+      classes={classes}
+      inputProps={{
+        ...inputProps,
+        'data-indeterminate': indeterminate,
+      }}
+      {...other}
+    />
+  );
 });
 
 Checkbox.propTypes /* remove-proptypes */ = {
