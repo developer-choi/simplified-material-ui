@@ -44,33 +44,20 @@ const RadioRoot = styled(SwitchBase, {
     },
     variants: [
       {
-        props: { disabled: false, disableRipple: false },
+        props: { disabled: false },
         style: {
           '&:hover': {
             backgroundColor: theme.alpha(
               (theme.vars || theme).palette.primary.main,
               (theme.vars || theme).palette.action.hoverOpacity,
             ),
-          },
-        },
-      },
-      {
-        props: { disabled: false },
-        style: {
-          [`&.${radioClasses.checked}`]: {
-            color: (theme.vars || theme).palette.primary.main,
-          },
-        },
-      },
-      {
-        // Should be last to override other colors
-        props: { disableRipple: false },
-        style: {
-          // Reset on touch devices, it doesn't add specificity
-          '&:hover': {
+            // Reset on touch devices, it doesn't add specificity
             '@media (hover: none)': {
               backgroundColor: 'transparent',
             },
+          },
+          [`&.${radioClasses.checked}`]: {
+            color: (theme.vars || theme).palette.primary.main,
           },
         },
       },
@@ -95,7 +82,6 @@ const Radio = React.forwardRef(function Radio(inProps, ref) {
     onChange: onChangeProp,
     className,
     disabled: disabledProp,
-    disableRipple = false,
     inputProps,
     ...other
   } = props;
@@ -120,7 +106,6 @@ const Radio = React.forwardRef(function Radio(inProps, ref) {
   const ownerState = {
     ...props,
     disabled,
-    disableRipple,
     color,
     size,
   };
