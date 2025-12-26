@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import ButtonBase from '../ButtonBase';
 import AccordionContext from '../../../surfaces/Accordion/AccordionContext';
@@ -28,68 +27,52 @@ const useUtilityClasses = (ownerState) => {
 const AccordionSummaryRoot = styled(ButtonBase, {
   name: 'MuiAccordionSummary',
   slot: 'Root',
-})(
-  memoTheme(({ theme }) => {
-    const transition = {
-      duration: theme.transitions.duration.shortest,
-    };
-
-    return {
-      display: 'flex',
-      width: '100%',
-      minHeight: 48,
-      padding: theme.spacing(0, 2),
-      transition: theme.transitions.create(['min-height', 'background-color'], transition),
-      [`&.${accordionSummaryClasses.focusVisible}`]: {
-        backgroundColor: (theme.vars || theme).palette.action.focus,
-      },
-      [`&.${accordionSummaryClasses.disabled}`]: {
-        opacity: (theme.vars || theme).palette.action.disabledOpacity,
-      },
-      [`&:hover:not(.${accordionSummaryClasses.disabled})`]: {
-        cursor: 'pointer',
-      },
-      [`&.${accordionSummaryClasses.expanded}`]: {
-        minHeight: 64,
-      },
-    };
-  }),
-);
+})({
+  display: 'flex',
+  width: '100%',
+  minHeight: 48,
+  padding: '0 16px',
+  transition: 'min-height 150ms, background-color 150ms',
+  [`&.${accordionSummaryClasses.focusVisible}`]: {
+    backgroundColor: 'rgba(0, 0, 0, 0.12)',
+  },
+  [`&.${accordionSummaryClasses.disabled}`]: {
+    opacity: 0.38,
+  },
+  [`&:hover:not(.${accordionSummaryClasses.disabled})`]: {
+    cursor: 'pointer',
+  },
+  [`&.${accordionSummaryClasses.expanded}`]: {
+    minHeight: 64,
+  },
+});
 
 const AccordionSummaryContent = styled('span', {
   name: 'MuiAccordionSummary',
   slot: 'Content',
-})(
-  memoTheme(({ theme }) => ({
-    display: 'flex',
-    textAlign: 'start',
-    flexGrow: 1,
-    margin: '12px 0',
-    transition: theme.transitions.create(['margin'], {
-      duration: theme.transitions.duration.shortest,
-    }),
-    [`&.${accordionSummaryClasses.expanded}`]: {
-      margin: '20px 0',
-    },
-  })),
-);
+})({
+  display: 'flex',
+  textAlign: 'start',
+  flexGrow: 1,
+  margin: '12px 0',
+  transition: 'margin 150ms',
+  [`&.${accordionSummaryClasses.expanded}`]: {
+    margin: '20px 0',
+  },
+});
 
 const AccordionSummaryExpandIconWrapper = styled('span', {
   name: 'MuiAccordionSummary',
   slot: 'ExpandIconWrapper',
-})(
-  memoTheme(({ theme }) => ({
-    display: 'flex',
-    color: (theme.vars || theme).palette.action.active,
-    transform: 'rotate(0deg)',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-    [`&.${accordionSummaryClasses.expanded}`]: {
-      transform: 'rotate(180deg)',
-    },
-  })),
-);
+})({
+  display: 'flex',
+  color: 'rgba(0, 0, 0, 0.54)',
+  transform: 'rotate(0deg)',
+  transition: 'transform 150ms',
+  [`&.${accordionSummaryClasses.expanded}`]: {
+    transform: 'rotate(180deg)',
+  },
+});
 
 const AccordionSummary = React.forwardRef(function AccordionSummary(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiAccordionSummary' });
