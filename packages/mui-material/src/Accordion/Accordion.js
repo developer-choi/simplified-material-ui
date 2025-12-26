@@ -8,7 +8,6 @@ import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import Collapse from '../Collapse';
 import Paper from '../Paper';
 import AccordionContext from './AccordionContext';
 import useControlled from '../utils/useControlled';
@@ -148,8 +147,6 @@ const Accordion = React.forwardRef(function Accordion(inProps, ref) {
     expanded: expandedProp,
     onChange,
     square = false,
-    TransitionComponent: TransitionComponentProp,
-    TransitionProps: TransitionPropsProp,
     ...other
   } = props;
 
@@ -187,8 +184,6 @@ const Accordion = React.forwardRef(function Accordion(inProps, ref) {
 
   const classes = useUtilityClasses(ownerState);
 
-  const TransitionComponent = TransitionComponentProp || Collapse;
-
   return (
     <AccordionRoot
       ref={ref}
@@ -200,7 +195,7 @@ const Accordion = React.forwardRef(function Accordion(inProps, ref) {
       <AccordionHeading className={classes.heading} ownerState={ownerState}>
         <AccordionContext.Provider value={contextValue}>{summary}</AccordionContext.Provider>
       </AccordionHeading>
-      <TransitionComponent in={expanded} timeout="auto" {...TransitionPropsProp}>
+      {expanded && (
         <AccordionRegion
           className={classes.region}
           ownerState={ownerState}
@@ -210,7 +205,7 @@ const Accordion = React.forwardRef(function Accordion(inProps, ref) {
         >
           {children}
         </AccordionRegion>
-      </TransitionComponent>
+      )}
     </AccordionRoot>
   );
 });
@@ -286,18 +281,6 @@ Accordion.propTypes /* remove-proptypes */ = {
     PropTypes.func,
     PropTypes.object,
   ]),
-  /**
-   * The component used for the transition.
-   * [Follow this guide](https://mui.com/material-ui/transitions/#transitioncomponent-prop) to learn more about the requirements for this component.
-   * @deprecated Use `slots.transition` instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   */
-  TransitionComponent: PropTypes.elementType,
-  /**
-   * Props applied to the transition element.
-   * By default, the element is based on this [`Transition`](https://reactcommunity.org/react-transition-group/transition/) component.
-   * @deprecated Use `slotProps.transition` instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   */
-  TransitionProps: PropTypes.object,
 };
 
 export default Accordion;
