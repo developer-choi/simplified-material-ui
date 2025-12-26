@@ -1,20 +1,7 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
-import { getAccordionActionsUtilityClass } from './accordionActionsClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-
-  const slots = {
-    root: ['root', 'spacing'],
-  };
-
-  return composeClasses(slots, getAccordionActionsUtilityClass, classes);
-};
 
 const AccordionActionsRoot = styled('div', {
   name: 'MuiAccordionActions',
@@ -36,11 +23,9 @@ const AccordionActions = React.forwardRef(function AccordionActions(props, ref) 
   const { className, ...other } = props;
   const ownerState = { ...props };
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <AccordionActionsRoot
-      className={clsx(classes.root, className)}
+      className={className}
       ref={ref}
       ownerState={ownerState}
       {...other}
