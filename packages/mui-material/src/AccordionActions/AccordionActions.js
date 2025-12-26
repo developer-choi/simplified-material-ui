@@ -1,35 +1,26 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { styled } from '../zero-styled';
-
-const AccordionActionsRoot = styled('div', {
-  name: 'MuiAccordionActions',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    return [styles.root, styles.spacing];
-  },
-})({
-  display: 'flex',
-  alignItems: 'center',
-  padding: 8,
-  justifyContent: 'flex-end',
-  '& > :not(style) ~ :not(style)': {
-    marginLeft: 8,
-  },
-});
 
 const AccordionActions = React.forwardRef(function AccordionActions(props, ref) {
-  const { className, ...other } = props;
-  const ownerState = { ...props };
+  const { className, children, style, ...other } = props;
 
   return (
-    <AccordionActionsRoot
-      className={className}
+    <div
       ref={ref}
-      ownerState={ownerState}
+      className={className}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        padding: 8,
+        justifyContent: 'flex-end',
+        gap: 8,
+        ...style,
+      }}
       {...other}
-    />
+    >
+      {children}
+    </div>
   );
 });
 
