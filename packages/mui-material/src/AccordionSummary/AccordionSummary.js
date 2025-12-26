@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import AccordionContext from '../../../surfaces/Accordion/AccordionContext';
 import accordionSummaryClasses, {
   getAccordionSummaryUtilityClass,
@@ -73,8 +72,7 @@ const AccordionSummaryExpandIconWrapper = styled('span', {
   },
 });
 
-const AccordionSummary = React.forwardRef(function AccordionSummary(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiAccordionSummary' });
+const AccordionSummary = React.forwardRef(function AccordionSummary(props, ref) {
   const {
     children,
     className,
