@@ -60,19 +60,7 @@ function ClickAwayListener(props: ClickAwayListenerProps): React.JSX.Element {
     onClickAway,
   } = props;
   const nodeRef = React.useRef<Element>(null);
-  const activatedRef = React.useRef(false);
   const syntheticEventRef = React.useRef(false);
-
-  React.useEffect(() => {
-    // Ensure that this component is not "activated" synchronously.
-    // https://github.com/facebook/react/issues/20074
-    setTimeout(() => {
-      activatedRef.current = true;
-    }, 0);
-    return () => {
-      activatedRef.current = false;
-    };
-  }, []);
 
   const handleRef = useForkRef(getReactElementRef(children), nodeRef);
 
@@ -92,8 +80,7 @@ function ClickAwayListener(props: ClickAwayListenerProps): React.JSX.Element {
 
     // 1. IE11 support, which trigger the handleClickAway even after the unbind
     // 2. The child might render null.
-    // 3. Behave like a blur listener.
-    if (!activatedRef.current || !nodeRef.current) {
+    if (!nodeRef.current) {
       return;
     }
 
