@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import AccordionContext from '../../../surfaces/Accordion/AccordionContext';
+import AccordionContext from '../Accordion/AccordionContext';
 
 const AccordionSummary = React.forwardRef(function AccordionSummary(props, ref) {
   const {

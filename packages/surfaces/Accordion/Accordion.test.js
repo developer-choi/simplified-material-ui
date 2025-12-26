@@ -10,7 +10,7 @@ import Fade from '@mui/material/Fade';
 import Slide from '@mui/material/Slide';
 import Grow from '@mui/material/Grow';
 import Zoom from '@mui/material/Zoom';
-import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionSummary from '../AccordionSummary';
 import describeSkipIf from '@mui/internal-test-utils/describeSkipIf';
 import describeConformance from '../../mui-material/test/describeConformance';
 

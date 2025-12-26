@@ -4,10 +4,10 @@ import { spy } from 'sinon';
 import { act, createRenderer, fireEvent, screen } from '@mui/internal-test-utils';
 import AccordionSummary, {
   accordionSummaryClasses as classes,
-} from '@mui/material/AccordionSummary';
-import Accordion from '../../../surfaces/Accordion';
+} from './index';
+import Accordion from '../Accordion';
 import ButtonBase from '@mui/material/ButtonBase';
-import describeConformance from '../../test/describeConformance';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 const CustomButtonBase = React.forwardRef(({ focusVisible, ...props }, ref) => (
   <ButtonBase ref={ref} {...props} />

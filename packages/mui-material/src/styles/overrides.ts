@@ -4,7 +4,7 @@ import { ComponentsPropsList } from './props';
 import { AccordionActionsClassKey } from '../../../surfaces/AccordionActions';
 import { AccordionClassKey } from '../../../surfaces/Accordion';
 import { AccordionDetailsClassKey } from '../../../surfaces/AccordionDetails';
-import { AccordionSummaryClassKey } from '../AccordionSummary';
+import { AccordionSummaryClassKey } from '../../../surfaces/AccordionSummary';
 import { AlertClassKey } from '../Alert';
 import { AlertTitleClassKey } from '../AlertTitle';
 import { AppBarClassKey } from '../../../surfaces/AppBar';

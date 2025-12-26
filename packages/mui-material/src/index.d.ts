@@ -16,8 +16,8 @@ export * from '../../surfaces/AccordionActions';
 export { default as AccordionDetails } from '../../surfaces/AccordionDetails';
 export * from '../../surfaces/AccordionDetails';
 
-export { default as AccordionSummary } from './AccordionSummary';
-export * from './AccordionSummary';
+export { default as AccordionSummary } from '../../surfaces/AccordionSummary';
+export * from '../../surfaces/AccordionSummary';
 
 export { default as Alert } from './Alert';
 export * from './Alert';
