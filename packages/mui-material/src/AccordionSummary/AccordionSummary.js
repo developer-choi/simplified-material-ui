@@ -13,12 +13,12 @@ import accordionSummaryClasses, {
 } from './accordionSummaryClasses';
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, expanded, disabled, disableGutters } = ownerState;
+  const { classes, expanded, disabled } = ownerState;
 
   const slots = {
-    root: ['root', expanded && 'expanded', disabled && 'disabled', !disableGutters && 'gutters'],
+    root: ['root', expanded && 'expanded', disabled && 'disabled', 'gutters'],
     focusVisible: ['focusVisible'],
-    content: ['content', expanded && 'expanded', !disableGutters && 'contentGutters'],
+    content: ['content', expanded && 'expanded', 'contentGutters'],
     expandIconWrapper: ['expandIconWrapper', expanded && 'expanded'],
   };
 
@@ -49,16 +49,9 @@ const AccordionSummaryRoot = styled(ButtonBase, {
       [`&:hover:not(.${accordionSummaryClasses.disabled})`]: {
         cursor: 'pointer',
       },
-      variants: [
-        {
-          props: (props) => !props.disableGutters,
-          style: {
-            [`&.${accordionSummaryClasses.expanded}`]: {
-              minHeight: 64,
-            },
-          },
-        },
-      ],
+      [`&.${accordionSummaryClasses.expanded}`]: {
+        minHeight: 64,
+      },
     };
   }),
 );
@@ -72,19 +65,12 @@ const AccordionSummaryContent = styled('span', {
     textAlign: 'start',
     flexGrow: 1,
     margin: '12px 0',
-    variants: [
-      {
-        props: (props) => !props.disableGutters,
-        style: {
-          transition: theme.transitions.create(['margin'], {
-            duration: theme.transitions.duration.shortest,
-          }),
-          [`&.${accordionSummaryClasses.expanded}`]: {
-            margin: '20px 0',
-          },
-        },
-      },
-    ],
+    transition: theme.transitions.create(['margin'], {
+      duration: theme.transitions.duration.shortest,
+    }),
+    [`&.${accordionSummaryClasses.expanded}`]: {
+      margin: '20px 0',
+    },
   })),
 );
 
@@ -116,7 +102,7 @@ const AccordionSummary = React.forwardRef(function AccordionSummary(inProps, ref
     ...other
   } = props;
 
-  const { disabled = false, disableGutters, expanded, toggle } = React.useContext(AccordionContext);
+  const { disabled = false, expanded, toggle } = React.useContext(AccordionContext);
   const handleChange = (event) => {
     if (toggle) {
       toggle(event);
@@ -130,7 +116,6 @@ const AccordionSummary = React.forwardRef(function AccordionSummary(inProps, ref
     ...props,
     expanded,
     disabled,
-    disableGutters,
   };
 
   const classes = useUtilityClasses(ownerState);
