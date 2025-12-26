@@ -1,10 +1,10 @@
 import { createRenderer } from '@mui/internal-test-utils';
 import AccordionActions, {
   accordionActionsClasses as classes,
-} from '@mui/material/AccordionActions';
+} from './index';
 import Button from '@mui/material/Button';
 import { expect } from 'chai';
-import describeConformance from '../../test/describeConformance';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<AccordionActions />', () => {
   const { render } = createRenderer();

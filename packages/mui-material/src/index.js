@@ -10,8 +10,8 @@ export * from './utils';
 export { default as Accordion } from '../../surfaces/Accordion';
 export * from '../../surfaces/Accordion';
 
-export { default as AccordionActions } from './AccordionActions';
-export * from './AccordionActions';
+export { default as AccordionActions } from '../../surfaces/AccordionActions';
+export * from '../../surfaces/AccordionActions';
 
 export { default as AccordionDetails } from './AccordionDetails';
 export * from './AccordionDetails';
