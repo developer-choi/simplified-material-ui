@@ -10,8 +10,8 @@ import getReactElementRef from '@mui/utils/getReactElementRef';
 
 // TODO: return `EventHandlerName extends `on${infer EventName}` ? Lowercase<EventName> : never` once generatePropTypes runs with TS 4.1
 function mapEventPropToEvent(
-  eventProp: ClickAwayMouseEventHandler | ClickAwayTouchEventHandler,
-): 'click' | 'mousedown' | 'mouseup' | 'touchstart' | 'touchend' | 'pointerdown' | 'pointerup' {
+  eventProp: ClickAwayMouseEventHandler,
+): 'click' | 'mousedown' | 'mouseup' | 'pointerdown' | 'pointerup' {
   return eventProp.substring(2).toLowerCase() as any;
 }
 
@@ -28,7 +28,6 @@ type ClickAwayMouseEventHandler =
   | 'onMouseUp'
   | 'onPointerDown'
   | 'onPointerUp';
-type ClickAwayTouchEventHandler = 'onTouchStart' | 'onTouchEnd';
 
 export interface ClickAwayListenerProps {
   /**
@@ -49,12 +48,7 @@ export interface ClickAwayListenerProps {
   /**
    * Callback fired when a "click away" event is detected.
    */
-  onClickAway: (event: MouseEvent | TouchEvent) => void;
-  /**
-   * The touch event to listen to. You can disable the listener by providing `false`.
-   * @default 'onTouchEnd'
-   */
-  touchEvent?: ClickAwayTouchEventHandler | false;
+  onClickAway: (event: MouseEvent) => void;
 }
 
 /**
@@ -76,9 +70,7 @@ function ClickAwayListener(props: ClickAwayListenerProps): React.JSX.Element {
     disableReactTree = false,
     mouseEvent = 'onClick',
     onClickAway,
-    touchEvent = 'onTouchEnd',
   } = props;
-  const movedRef = React.useRef(false);
   const nodeRef = React.useRef<Element>(null);
   const activatedRef = React.useRef(false);
   const syntheticEventRef = React.useRef(false);
@@ -102,7 +94,7 @@ function ClickAwayListener(props: ClickAwayListenerProps): React.JSX.Element {
   // clicking a checkbox to check it, hitting a button to submit a form,
   // and hitting left arrow to move the cursor in a text input etc.
   // Only special HTML elements have these default behaviors.
-  const handleClickAway = useEventCallback((event: MouseEvent | TouchEvent) => {
+  const handleClickAway = useEventCallback((event: MouseEvent) => {
     // Given developers can stop the propagation of the synthetic event,
     // we can only be confident with a positive value.
     const insideReactTree = syntheticEventRef.current;
@@ -118,12 +110,6 @@ function ClickAwayListener(props: ClickAwayListenerProps): React.JSX.Element {
       !nodeRef.current ||
       ('clientX' in event && clickedRootScrollbar(event, doc))
     ) {
-      return;
-    }
-
-    // Do not act if user performed touchmove
-    if (movedRef.current) {
-      movedRef.current = false;
       return;
     }
 
@@ -161,33 +147,8 @@ function ClickAwayListener(props: ClickAwayListenerProps): React.JSX.Element {
 
   const childrenProps: { ref: React.Ref<Element> } & Pick<
     React.DOMAttributes<Element>,
-    ClickAwayMouseEventHandler | ClickAwayTouchEventHandler
+    ClickAwayMouseEventHandler
   > = { ref: handleRef };
-
-  if (touchEvent !== false) {
-    childrenProps[touchEvent] = createHandleSynthetic(touchEvent);
-  }
-
-  React.useEffect(() => {
-    if (touchEvent !== false) {
-      const mappedTouchEvent = mapEventPropToEvent(touchEvent);
-      const doc = ownerDocument(nodeRef.current);
-
-      const handleTouchMove = () => {
-        movedRef.current = true;
-      };
-
-      doc.addEventListener(mappedTouchEvent, handleClickAway);
-      doc.addEventListener('touchmove', handleTouchMove);
-
-      return () => {
-        doc.removeEventListener(mappedTouchEvent, handleClickAway);
-        doc.removeEventListener('touchmove', handleTouchMove);
-      };
-    }
-
-    return undefined;
-  }, [handleClickAway, touchEvent]);
 
   if (mouseEvent !== false) {
     childrenProps[mouseEvent] = createHandleSynthetic(mouseEvent);
@@ -242,11 +203,6 @@ ClickAwayListener.propTypes /* remove-proptypes */ = {
    * Callback fired when a "click away" event is detected.
    */
   onClickAway: PropTypes.func.isRequired,
-  /**
-   * The touch event to listen to. You can disable the listener by providing `false`.
-   * @default 'onTouchEnd'
-   */
-  touchEvent: PropTypes.oneOf(['onTouchEnd', 'onTouchStart', false]),
 } as any;
 
 if (process.env.NODE_ENV !== 'production') {
