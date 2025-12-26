@@ -1,59 +1,6 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import { styled } from '../zero-styled';
 import AccordionContext from '../../../surfaces/Accordion/AccordionContext';
-import accordionSummaryClasses from './accordionSummaryClasses';
-
-const AccordionSummaryRoot = styled('button', {
-  name: 'MuiAccordionSummary',
-  slot: 'Root',
-})({
-  display: 'flex',
-  width: '100%',
-  minHeight: 48,
-  padding: '0 16px',
-  transition: 'min-height 150ms, background-color 150ms',
-  [`&.${accordionSummaryClasses.focusVisible}`]: {
-    backgroundColor: 'rgba(0, 0, 0, 0.12)',
-  },
-  [`&.${accordionSummaryClasses.disabled}`]: {
-    opacity: 0.38,
-  },
-  [`&:hover:not(.${accordionSummaryClasses.disabled})`]: {
-    cursor: 'pointer',
-  },
-  [`&.${accordionSummaryClasses.expanded}`]: {
-    minHeight: 64,
-  },
-});
-
-const AccordionSummaryContent = styled('span', {
-  name: 'MuiAccordionSummary',
-  slot: 'Content',
-})({
-  display: 'flex',
-  textAlign: 'start',
-  flexGrow: 1,
-  margin: '12px 0',
-  transition: 'margin 150ms',
-  [`&.${accordionSummaryClasses.expanded}`]: {
-    margin: '20px 0',
-  },
-});
-
-const AccordionSummaryExpandIconWrapper = styled('span', {
-  name: 'MuiAccordionSummary',
-  slot: 'ExpandIconWrapper',
-})({
-  display: 'flex',
-  color: 'rgba(0, 0, 0, 0.54)',
-  transform: 'rotate(0deg)',
-  transition: 'transform 150ms',
-  [`&.${accordionSummaryClasses.expanded}`]: {
-    transform: 'rotate(180deg)',
-  },
-});
 
 const AccordionSummary = React.forwardRef(function AccordionSummary(props, ref) {
   const {
@@ -61,6 +8,7 @@ const AccordionSummary = React.forwardRef(function AccordionSummary(props, ref) 
     className,
     expandIcon,
     onClick,
+    style,
     ...other
   } = props;
 
@@ -74,71 +22,52 @@ const AccordionSummary = React.forwardRef(function AccordionSummary(props, ref) 
     }
   };
 
-  const ownerState = {
-    ...props,
-    expanded,
-    disabled,
-  };
-
-  const rootClassName = `${accordionSummaryClasses.root} ${expanded ? accordionSummaryClasses.expanded : ''} ${disabled ? accordionSummaryClasses.disabled : ''} ${className || ''}`.trim();
-  const contentClassName = `${accordionSummaryClasses.content} ${expanded ? accordionSummaryClasses.expanded : ''}`.trim();
-  const expandIconWrapperClassName = `${accordionSummaryClasses.expandIconWrapper} ${expanded ? accordionSummaryClasses.expanded : ''}`.trim();
-
   return (
-    <AccordionSummaryRoot
+    <button
       ref={ref}
-      className={rootClassName}
-      ownerState={ownerState}
+      className={className}
       disabled={disabled}
       aria-expanded={expanded}
       onClick={handleChange}
+      style={{
+        display: 'flex',
+        width: '100%',
+        minHeight: expanded ? 64 : 48,
+        padding: '0 16px',
+        transition: 'min-height 150ms, background-color 150ms',
+        border: 'none',
+        background: 'none',
+        cursor: disabled ? 'default' : 'pointer',
+        opacity: disabled ? 0.38 : 1,
+        ...style,
+      }}
       {...other}
     >
-      <AccordionSummaryContent className={contentClassName} ownerState={ownerState}>
+      <span
+        style={{
+          display: 'flex',
+          textAlign: 'start',
+          flexGrow: 1,
+          margin: expanded ? '20px 0' : '12px 0',
+          transition: 'margin 150ms',
+        }}
+      >
         {children}
-      </AccordionSummaryContent>
+      </span>
       {expandIcon && (
-        <AccordionSummaryExpandIconWrapper className={expandIconWrapperClassName} ownerState={ownerState}>
+        <span
+          style={{
+            display: 'flex',
+            color: 'rgba(0, 0, 0, 0.54)',
+            transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+            transition: 'transform 150ms',
+          }}
+        >
           {expandIcon}
-        </AccordionSummaryExpandIconWrapper>
+        </span>
       )}
-    </AccordionSummaryRoot>
+    </button>
   );
 });
-
-AccordionSummary.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * The content of the component.
-   */
-  children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * The icon to display as the expand indicator.
-   */
-  expandIcon: PropTypes.node,
-  /**
-   * @ignore
-   */
-  onClick: PropTypes.func,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-};
 
 export default AccordionSummary;
