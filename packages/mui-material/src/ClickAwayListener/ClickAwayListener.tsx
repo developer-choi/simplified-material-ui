@@ -1,11 +1,8 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import ownerDocument from '@mui/utils/ownerDocument';
 import useForkRef from '@mui/utils/useForkRef';
 import useEventCallback from '@mui/utils/useEventCallback';
-import elementAcceptingRef from '@mui/utils/elementAcceptingRef';
-import exactProp from '@mui/utils/exactProp';
 import getReactElementRef from '@mui/utils/getReactElementRef';
 
 // TODO: return `EventHandlerName extends `on${infer EventName}` ? Lowercase<EventName> : never` once generatePropTypes runs with TS 4.1
@@ -127,37 +124,6 @@ function ClickAwayListener(props: ClickAwayListenerProps): React.JSX.Element {
   }, [handleClickAway, mouseEvent]);
 
   return React.cloneElement(children, childrenProps);
-}
-
-ClickAwayListener.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │ To update them, edit the TypeScript types and run `pnpm proptypes`. │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * The wrapped element.
-   */
-  children: elementAcceptingRef.isRequired,
-  /**
-   * If `true`, the React tree is ignored and only the DOM tree is considered.
-   * This prop changes how portaled elements are handled.
-   * @default false
-   */
-  disableReactTree: PropTypes.bool,
-  /**
-   * The mouse event to listen to. You can disable the listener by providing `false`.
-   * @default 'onClick'
-   */
-  mouseEvent: PropTypes.oneOf(['onClick', 'onMouseDown', 'onMouseUp', false]),
-  /**
-   * Callback fired when a "click away" event is detected.
-   */
-  onClickAway: PropTypes.func.isRequired,
-} as any;
-
-if (process.env.NODE_ENV !== 'production') {
-  // eslint-disable-next-line
-  (ClickAwayListener as any)['propTypes' + ''] = exactProp(ClickAwayListener.propTypes);
 }
 
 export { ClickAwayListener };
