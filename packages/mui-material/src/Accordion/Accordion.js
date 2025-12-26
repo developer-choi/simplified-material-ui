@@ -7,7 +7,6 @@ import chainPropTypes from '@mui/utils/chainPropTypes';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import Paper from '../Paper';
 import AccordionContext from './AccordionContext';
 import useControlled from '../utils/useControlled';
@@ -107,16 +106,17 @@ const AccordionRegion = styled('div', {
   slot: 'Region',
 })({});
 
-const Accordion = React.forwardRef(function Accordion(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiAccordion' });
-  const {
+const Accordion = React.forwardRef(function Accordion(
+  {
     children: childrenProp,
     className,
     defaultExpanded = false,
     expanded: expandedProp,
     onChange,
     ...other
-  } = props;
+  },
+  ref,
+) {
 
   const [expanded, setExpandedState] = useControlled({
     controlled: expandedProp,
@@ -143,7 +143,6 @@ const Accordion = React.forwardRef(function Accordion(inProps, ref) {
   );
 
   const ownerState = {
-    ...props,
     expanded,
   };
 
