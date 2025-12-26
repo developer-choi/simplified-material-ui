@@ -49,7 +49,7 @@ export const idID: Localization = {
     },
     // MuiPagination: {
     //   defaultProps: {
-    //     'aria-label': 'Pagination navigation',
+    //     'aria-label': 'Pagination surfaces',
     //     getItemAriaLabel: (type, page, selected) => {
     //       if (type === 'page') {
     //         return `${selected ? '' : 'Go to '}page ${page}`;

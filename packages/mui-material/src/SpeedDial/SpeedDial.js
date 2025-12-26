@@ -274,7 +274,7 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
   };
 
   React.useEffect(() => {
-    // actions were closed while navigation state was not reset
+    // actions were closed while surfaces state was not reset
     if (!open) {
       focusedAction.current = 0;
       nextItemArrowKey.current = undefined;

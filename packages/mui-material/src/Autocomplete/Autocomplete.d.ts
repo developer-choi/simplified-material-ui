@@ -339,7 +339,7 @@ export interface AutocompleteProps<
    *
    * **Note:** The `renderInput` prop must return a `TextField` component or a compatible custom component
    * that correctly forwards `InputProps.ref` and spreads `inputProps`. This ensures proper integration
-   * with the Autocomplete's internal logic (e.g., focus management and keyboard navigation).
+   * with the Autocomplete's internal logic (e.g., focus management and keyboard surfaces).
    *
    * Avoid using components like `DatePicker` or `Select` directly, as they may not forward the required props,
    * leading to runtime errors or unexpected behavior.

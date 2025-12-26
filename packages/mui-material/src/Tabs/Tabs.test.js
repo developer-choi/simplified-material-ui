@@ -917,7 +917,7 @@ describeSkipIf(isSafari)('<Tabs />', () => {
     });
   });
 
-  describe('keyboard navigation when focus is on a tab', () => {
+  describe('keyboard surfaces when focus is on a tab', () => {
     [
       ['horizontal', 'ltr', 'ArrowLeft', 'ArrowRight'],
       ['horizontal', 'rtl', 'ArrowRight', 'ArrowLeft'],
@@ -1436,7 +1436,7 @@ describeSkipIf(isSafari)('<Tabs />', () => {
     });
   });
 
-  describe('keyboard navigation in shadow DOM', () => {
+  describe('keyboard surfaces in shadow DOM', () => {
     it('should navigate between tabs using arrow keys when rendered in shadow DOM', async function test() {
       if (isJSDOM) {
         this.skip();

@@ -405,7 +405,7 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
     // Ignore events from children of `Chip`.
     if (event.currentTarget === event.target && isDeleteKeyboardEvent(event)) {
       // Will be handled in keyUp, otherwise some browsers
-      // might init navigation
+      // might init surfaces
       event.preventDefault();
     }
 

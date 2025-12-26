@@ -342,7 +342,7 @@ describe('<SpeedDial />', () => {
       expect(isActionFocused(0)).to.equal(true);
     });
 
-    describe('actions navigation', () => {
+    describe('actions surfaces', () => {
       /**
        * tests a combination of arrow keys on a focused SpeedDial
        */
@@ -378,7 +378,7 @@ describe('<SpeedDial />', () => {
         });
       };
 
-      describe('considers the first arrow key press as forward navigation', () => {
+      describe('considers the first arrow key press as forward surfaces', () => {
         itTestCombination('up', ['ArrowUp', 'ArrowUp', 'ArrowUp', 'ArrowDown'], [0, 1, 2, 1]);
         itTestCombination('up', ['ArrowDown', 'ArrowDown', 'ArrowDown', 'ArrowUp'], [0, 1, 2, 1]);
 
@@ -527,7 +527,7 @@ describe('<SpeedDial />', () => {
       expect(isActionFocused(0)).to.equal(true);
     });
 
-    describe('actions navigation', () => {
+    describe('actions surfaces', () => {
       /**
        * tests a combination of arrow keys on a focused SpeedDial
        */
@@ -561,7 +561,7 @@ describe('<SpeedDial />', () => {
         });
       };
 
-      describe('considers the first arrow key press as forward navigation', () => {
+      describe('considers the first arrow key press as forward surfaces', () => {
         itTestCombination('up', ['ArrowUp', 'ArrowUp', 'ArrowUp', 'ArrowDown'], [0, 1, 2, 1]);
         itTestCombination('up', ['ArrowDown', 'ArrowDown', 'ArrowDown', 'ArrowUp'], [0, 1, 2, 1]);
 

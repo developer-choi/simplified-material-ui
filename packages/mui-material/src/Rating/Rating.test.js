@@ -247,7 +247,7 @@ describe('<Rating />', () => {
   });
 
   // Internal test that only applies if Rating is implemented using `input[type"radio"]`
-  // It ensures that keyboard navigation for Arrow and TAB keys is handled by the browser
+  // It ensures that keyboard surfaces for Arrow and TAB keys is handled by the browser
   it('should ensure a `name`', () => {
     render(<Rating value={null} />);
 
@@ -333,7 +333,7 @@ describe('<Rating />', () => {
          */
         let data;
         const handleSubmit = spy((event) => {
-          // Prevent navigation
+          // Prevent surfaces
           event.preventDefault();
           // populate FormData with the submitted form
           data = new FormData(event.target);

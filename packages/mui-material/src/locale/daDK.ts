@@ -49,7 +49,7 @@ export const daDK: Localization = {
     },
     MuiPagination: {
       defaultProps: {
-        'aria-label': 'Sideinddelings navigation',
+        'aria-label': 'Sideinddelings surfaces',
         getItemAriaLabel: (type, page, selected) => {
           if (type === 'page') {
             return `${selected ? '' : 'Go to '}page ${page}`;

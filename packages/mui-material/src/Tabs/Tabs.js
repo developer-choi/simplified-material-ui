@@ -822,7 +822,7 @@ const Tabs = React.forwardRef(function Tabs(inProps, ref) {
 
     const list = tabListRef.current;
     const currentFocus = getActiveElement(ownerDocument(list));
-    // Keyboard navigation assumes that [role="tab"] are siblings
+    // Keyboard surfaces assumes that [role="tab"] are siblings
     // though we might warn in the future about nested, interactive elements
     // as a a11y violation
     const role = currentFocus?.getAttribute('role');

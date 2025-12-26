@@ -95,7 +95,7 @@ describe('<Menu /> integration', () => {
     expect(screen.getAllByRole('menuitem')[0]).toHaveFocus();
   });
 
-  it('changes focus according to keyboard navigation', async () => {
+  it('changes focus according to keyboard surfaces', async () => {
     render(<ButtonMenu />);
 
     const button = screen.getByRole('button', { name: 'open menu' });

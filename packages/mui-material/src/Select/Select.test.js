@@ -1911,7 +1911,7 @@ describe('<Select />', () => {
     expect(event.button).to.equal(0);
   });
 
-  describe('keyboard navigation in shadow DOM', () => {
+  describe('keyboard surfaces in shadow DOM', () => {
     it('should navigate between options using arrow keys', async function test() {
       // reset fake timers
       clock.restore();

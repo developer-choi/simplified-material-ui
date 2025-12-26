@@ -49,7 +49,7 @@ export const frFR: Localization = {
     },
     MuiPagination: {
       defaultProps: {
-        'aria-label': 'navigation de pagination',
+        'aria-label': 'surfaces de pagination',
         getItemAriaLabel: (type, page, selected) => {
           if (type === 'page') {
             return `${selected ? '' : 'Aller à la '}page ${page}`;

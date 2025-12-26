@@ -3669,7 +3669,7 @@ describe('<Autocomplete />', () => {
     });
 
     // https://github.com/mui/material-ui/issues/47244
-    it('should show input caret when focusing input after chip navigation', () => {
+    it('should show input caret when focusing input after chip surfaces', () => {
       const view = render(
         <Autocomplete
           defaultValue="two"
