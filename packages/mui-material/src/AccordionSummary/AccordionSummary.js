@@ -1,26 +1,9 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import AccordionContext from '../../../surfaces/Accordion/AccordionContext';
-import accordionSummaryClasses, {
-  getAccordionSummaryUtilityClass,
-} from './accordionSummaryClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, expanded, disabled } = ownerState;
-
-  const slots = {
-    root: ['root', expanded && 'expanded', disabled && 'disabled', 'gutters'],
-    focusVisible: ['focusVisible'],
-    content: ['content', expanded && 'expanded', 'contentGutters'],
-    expandIconWrapper: ['expandIconWrapper', expanded && 'expanded'],
-  };
-
-  return composeClasses(slots, getAccordionSummaryUtilityClass, classes);
-};
+import accordionSummaryClasses from './accordionSummaryClasses';
 
 const AccordionSummaryRoot = styled('button', {
   name: 'MuiAccordionSummary',
@@ -97,23 +80,25 @@ const AccordionSummary = React.forwardRef(function AccordionSummary(props, ref) 
     disabled,
   };
 
-  const classes = useUtilityClasses(ownerState);
+  const rootClassName = `${accordionSummaryClasses.root} ${expanded ? accordionSummaryClasses.expanded : ''} ${disabled ? accordionSummaryClasses.disabled : ''} ${className || ''}`.trim();
+  const contentClassName = `${accordionSummaryClasses.content} ${expanded ? accordionSummaryClasses.expanded : ''}`.trim();
+  const expandIconWrapperClassName = `${accordionSummaryClasses.expandIconWrapper} ${expanded ? accordionSummaryClasses.expanded : ''}`.trim();
 
   return (
     <AccordionSummaryRoot
       ref={ref}
-      className={clsx(classes.root, className)}
+      className={rootClassName}
       ownerState={ownerState}
       disabled={disabled}
       aria-expanded={expanded}
       onClick={handleChange}
       {...other}
     >
-      <AccordionSummaryContent className={classes.content} ownerState={ownerState}>
+      <AccordionSummaryContent className={contentClassName} ownerState={ownerState}>
         {children}
       </AccordionSummaryContent>
       {expandIcon && (
-        <AccordionSummaryExpandIconWrapper className={classes.expandIconWrapper} ownerState={ownerState}>
+        <AccordionSummaryExpandIconWrapper className={expandIconWrapperClassName} ownerState={ownerState}>
           {expandIcon}
         </AccordionSummaryExpandIconWrapper>
       )}
