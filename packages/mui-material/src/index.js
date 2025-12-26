@@ -13,8 +13,8 @@ export * from '../../surfaces/Accordion';
 export { default as AccordionActions } from '../../surfaces/AccordionActions';
 export * from '../../surfaces/AccordionActions';
 
-export { default as AccordionDetails } from './AccordionDetails';
-export * from './AccordionDetails';
+export { default as AccordionDetails } from '../../surfaces/AccordionDetails';
+export * from '../../surfaces/AccordionDetails';
 
 export { default as AccordionSummary } from './AccordionSummary';
 export * from './AccordionSummary';

@@ -32,7 +32,7 @@ import { DialogTitleProps } from '../DialogTitle';
 import { DividerProps } from '../Divider';
 import { DrawerProps } from '../Drawer';
 import { AccordionActionsProps } from '../../../surfaces/AccordionActions';
-import { AccordionDetailsProps } from '../AccordionDetails';
+import { AccordionDetailsProps } from '../../../surfaces/AccordionDetails';
 import { AccordionProps } from '../../../surfaces/Accordion';
 import { AccordionSummaryProps } from '../AccordionSummary';
 import { FabProps } from '../Fab';

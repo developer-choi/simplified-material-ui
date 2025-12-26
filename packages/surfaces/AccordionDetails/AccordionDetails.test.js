@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import { createRenderer, screen } from '@mui/internal-test-utils';
 import AccordionDetails, {
   accordionDetailsClasses as classes,
-} from '@mui/material/AccordionDetails';
-import describeConformance from '../../test/describeConformance';
+} from './index';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<AccordionDetails />', () => {
   const { render } = createRenderer();

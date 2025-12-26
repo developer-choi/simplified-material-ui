@@ -3,7 +3,7 @@ import { PopperClassKey } from '../Popper';
 import { ComponentsPropsList } from './props';
 import { AccordionActionsClassKey } from '../../../surfaces/AccordionActions';
 import { AccordionClassKey } from '../../../surfaces/Accordion';
-import { AccordionDetailsClassKey } from '../AccordionDetails';
+import { AccordionDetailsClassKey } from '../../../surfaces/AccordionDetails';
 import { AccordionSummaryClassKey } from '../AccordionSummary';
 import { AlertClassKey } from '../Alert';
 import { AlertTitleClassKey } from '../AlertTitle';
