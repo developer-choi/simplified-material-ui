@@ -14,7 +14,7 @@ import useControlled from '../utils/useControlled';
 import accordionClasses, { getAccordionUtilityClass } from './accordionClasses';
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, expanded, disabled, disableGutters } = ownerState;
+  const { classes, expanded, disabled } = ownerState;
 
   const slots = {
     root: [
@@ -22,7 +22,7 @@ const useUtilityClasses = (ownerState) => {
       'rounded',
       expanded && 'expanded',
       disabled && 'disabled',
-      !disableGutters && 'gutters',
+      'gutters',
     ],
     heading: ['heading'],
     region: ['region'],
@@ -35,13 +35,11 @@ const AccordionRoot = styled(Paper, {
   name: 'MuiAccordion',
   slot: 'Root',
   overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
     return [
       { [`& .${accordionClasses.region}`]: styles.region },
       styles.root,
       styles.rounded,
-      !ownerState.disableGutters && styles.gutters,
+      styles.gutters,
     ];
   },
 })(
@@ -78,6 +76,7 @@ const AccordionRoot = styled(Paper, {
         transition: theme.transitions.create(['opacity', 'background-color'], transition),
       },
       [`&.${accordionClasses.expanded}`]: {
+        margin: '16px 0',
         '&::before': {
           opacity: 0,
         },
@@ -98,18 +97,6 @@ const AccordionRoot = styled(Paper, {
       },
     };
   }),
-  memoTheme(({ theme }) => ({
-    variants: [
-      {
-        props: (props) => !props.disableGutters,
-        style: {
-          [`&.${accordionClasses.expanded}`]: {
-            margin: '16px 0',
-          },
-        },
-      },
-    ],
-  })),
 );
 
 const AccordionHeading = styled('h3', {
@@ -131,7 +118,6 @@ const Accordion = React.forwardRef(function Accordion(inProps, ref) {
     className,
     defaultExpanded = false,
     disabled = false,
-    disableGutters = false,
     expanded: expandedProp,
     onChange,
     ...other
@@ -157,14 +143,13 @@ const Accordion = React.forwardRef(function Accordion(inProps, ref) {
 
   const [summary, ...children] = React.Children.toArray(childrenProp);
   const contextValue = React.useMemo(
-    () => ({ expanded, disabled, disableGutters, toggle: handleChange }),
-    [expanded, disabled, disableGutters, handleChange],
+    () => ({ expanded, disabled, toggle: handleChange }),
+    [expanded, disabled, handleChange],
   );
 
   const ownerState = {
     ...props,
     disabled,
-    disableGutters,
     expanded,
   };
 
@@ -236,11 +221,6 @@ Accordion.propTypes /* remove-proptypes */ = {
    * @default false
    */
   disabled: PropTypes.bool,
-  /**
-   * If `true`, it removes the margin between two expanded accordion items and the increase of height.
-   * @default false
-   */
-  disableGutters: PropTypes.bool,
   /**
    * If `true`, expands the accordion, otherwise collapse it.
    * Setting this prop enables control over the accordion.
