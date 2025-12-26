@@ -8,10 +8,10 @@ import { useDefaultProps } from '../DefaultPropsProvider';
 import { getAccordionActionsUtilityClass } from './accordionActionsClasses';
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, disableSpacing } = ownerState;
+  const { classes } = ownerState;
 
   const slots = {
-    root: ['root', !disableSpacing && 'spacing'],
+    root: ['root', 'spacing'],
   };
 
   return composeClasses(slots, getAccordionActionsUtilityClass, classes);
@@ -21,31 +21,22 @@ const AccordionActionsRoot = styled('div', {
   name: 'MuiAccordionActions',
   slot: 'Root',
   overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [styles.root, !ownerState.disableSpacing && styles.spacing];
+    return [styles.root, styles.spacing];
   },
 })({
   display: 'flex',
   alignItems: 'center',
   padding: 8,
   justifyContent: 'flex-end',
-  variants: [
-    {
-      props: (props) => !props.disableSpacing,
-      style: {
-        '& > :not(style) ~ :not(style)': {
-          marginLeft: 8,
-        },
-      },
-    },
-  ],
+  '& > :not(style) ~ :not(style)': {
+    marginLeft: 8,
+  },
 });
 
 const AccordionActions = React.forwardRef(function AccordionActions(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiAccordionActions' });
-  const { className, disableSpacing = false, ...other } = props;
-  const ownerState = { ...props, disableSpacing };
+  const { className, ...other } = props;
+  const ownerState = { ...props };
 
   const classes = useUtilityClasses(ownerState);
 
@@ -76,11 +67,6 @@ AccordionActions.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   className: PropTypes.string,
-  /**
-   * If `true`, the actions do not have additional margin.
-   * @default false
-   */
-  disableSpacing: PropTypes.bool,
   /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
