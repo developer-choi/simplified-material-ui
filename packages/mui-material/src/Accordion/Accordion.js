@@ -12,7 +12,6 @@ import Collapse from '../Collapse';
 import Paper from '../Paper';
 import AccordionContext from './AccordionContext';
 import useControlled from '../utils/useControlled';
-import useSlot from '../utils/useSlot';
 import accordionClasses, { getAccordionUtilityClass } from './accordionClasses';
 
 const useUtilityClasses = (ownerState) => {
@@ -149,8 +148,6 @@ const Accordion = React.forwardRef(function Accordion(inProps, ref) {
     expanded: expandedProp,
     onChange,
     square = false,
-    slots = {},
-    slotProps = {},
     TransitionComponent: TransitionComponentProp,
     TransitionProps: TransitionPropsProp,
     ...other
@@ -190,63 +187,31 @@ const Accordion = React.forwardRef(function Accordion(inProps, ref) {
 
   const classes = useUtilityClasses(ownerState);
 
-  const backwardCompatibleSlots = { transition: TransitionComponentProp, ...slots };
-  const backwardCompatibleSlotProps = { transition: TransitionPropsProp, ...slotProps };
-
-  const externalForwardedProps = {
-    slots: backwardCompatibleSlots,
-    slotProps: backwardCompatibleSlotProps,
-  };
-
-  const [RootSlot, rootProps] = useSlot('root', {
-    elementType: AccordionRoot,
-    externalForwardedProps: {
-      ...externalForwardedProps,
-      ...other,
-    },
-    className: clsx(classes.root, className),
-    shouldForwardComponentProp: true,
-    ownerState,
-    ref,
-    additionalProps: {
-      square,
-    },
-  });
-
-  const [AccordionHeadingSlot, accordionProps] = useSlot('heading', {
-    elementType: AccordionHeading,
-    externalForwardedProps,
-    className: classes.heading,
-    ownerState,
-  });
-
-  const [TransitionSlot, transitionProps] = useSlot('transition', {
-    elementType: Collapse,
-    externalForwardedProps,
-    ownerState,
-  });
-
-  const [AccordionRegionSlot, accordionRegionProps] = useSlot('region', {
-    elementType: AccordionRegion,
-    externalForwardedProps,
-    ownerState,
-    className: classes.region,
-    additionalProps: {
-      'aria-labelledby': summary.props.id,
-      id: summary.props['aria-controls'],
-      role: 'region',
-    },
-  });
+  const TransitionComponent = TransitionComponentProp || Collapse;
 
   return (
-    <RootSlot {...rootProps}>
-      <AccordionHeadingSlot {...accordionProps}>
+    <AccordionRoot
+      ref={ref}
+      className={clsx(classes.root, className)}
+      square={square}
+      ownerState={ownerState}
+      {...other}
+    >
+      <AccordionHeading className={classes.heading} ownerState={ownerState}>
         <AccordionContext.Provider value={contextValue}>{summary}</AccordionContext.Provider>
-      </AccordionHeadingSlot>
-      <TransitionSlot in={expanded} timeout="auto" {...transitionProps}>
-        <AccordionRegionSlot {...accordionRegionProps}>{children}</AccordionRegionSlot>
-      </TransitionSlot>
-    </RootSlot>
+      </AccordionHeading>
+      <TransitionComponent in={expanded} timeout="auto" {...TransitionPropsProp}>
+        <AccordionRegion
+          className={classes.region}
+          ownerState={ownerState}
+          aria-labelledby={summary.props.id}
+          id={summary.props['aria-controls']}
+          role="region"
+        >
+          {children}
+        </AccordionRegion>
+      </TransitionComponent>
+    </AccordionRoot>
   );
 });
 
@@ -308,26 +273,6 @@ Accordion.propTypes /* remove-proptypes */ = {
    * @param {boolean} expanded The `expanded` state of the accordion.
    */
   onChange: PropTypes.func,
-  /**
-   * The props used for each slot inside.
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    heading: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    region: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    transition: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * The components used for each slot inside.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    heading: PropTypes.elementType,
-    region: PropTypes.elementType,
-    root: PropTypes.elementType,
-    transition: PropTypes.elementType,
-  }),
   /**
    * If `true`, rounded corners are disabled.
    * @default false
