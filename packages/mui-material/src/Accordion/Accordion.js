@@ -3,89 +3,9 @@ import * as React from 'react';
 import { isFragment } from 'react-is';
 import PropTypes from 'prop-types';
 import chainPropTypes from '@mui/utils/chainPropTypes';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import Paper from '../Paper';
 import AccordionContext from './AccordionContext';
 import useControlled from '../utils/useControlled';
-import accordionClasses from './accordionClasses';
-
-const AccordionRoot = styled(Paper, {
-  name: 'MuiAccordion',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    return [
-      { [`& .${accordionClasses.region}`]: styles.region },
-      styles.root,
-      styles.rounded,
-      styles.gutters,
-    ];
-  },
-})(
-  memoTheme(({ theme }) => {
-    const transition = {
-      duration: theme.transitions.duration.shortest,
-    };
-
-    return {
-      position: 'relative',
-      transition: theme.transitions.create(['margin'], transition),
-      overflowAnchor: 'none', // Keep the same scrolling position
-      borderRadius: 0,
-      '&:first-of-type': {
-        borderTopLeftRadius: (theme.vars || theme).shape.borderRadius,
-        borderTopRightRadius: (theme.vars || theme).shape.borderRadius,
-        '&::before': {
-          display: 'none',
-        },
-      },
-      '&:last-of-type': {
-        borderBottomLeftRadius: (theme.vars || theme).shape.borderRadius,
-        borderBottomRightRadius: (theme.vars || theme).shape.borderRadius,
-      },
-      '&::before': {
-        position: 'absolute',
-        left: 0,
-        top: -1,
-        right: 0,
-        height: 1,
-        content: '""',
-        opacity: 1,
-        backgroundColor: (theme.vars || theme).palette.divider,
-        transition: theme.transitions.create(['opacity', 'background-color'], transition),
-      },
-      [`&.${accordionClasses.expanded}`]: {
-        margin: '16px 0',
-        '&::before': {
-          opacity: 0,
-        },
-        '&:first-of-type': {
-          marginTop: 0,
-        },
-        '&:last-of-type': {
-          marginBottom: 0,
-        },
-        '& + &': {
-          '&::before': {
-            display: 'none',
-          },
-        },
-      },
-    };
-  }),
-);
-
-const AccordionHeading = styled('h3', {
-  name: 'MuiAccordion',
-  slot: 'Heading',
-})({
-  all: 'unset',
-});
-
-const AccordionRegion = styled('div', {
-  name: 'MuiAccordion',
-  slot: 'Region',
-})({});
 
 const Accordion = React.forwardRef(function Accordion(
   {
@@ -123,31 +43,30 @@ const Accordion = React.forwardRef(function Accordion(
     [expanded, handleChange],
   );
 
-  const ownerState = {
-    expanded,
-  };
-
   return (
-    <AccordionRoot
+    <Paper
       ref={ref}
       className={className}
-      ownerState={ownerState}
+      style={{
+        position: 'relative',
+        overflowAnchor: 'none',
+        margin: expanded ? '16px 0' : '0',
+      }}
       {...other}
     >
-      <AccordionHeading ownerState={ownerState}>
+      <h3 style={{ all: 'unset' }}>
         <AccordionContext.Provider value={contextValue}>{summary}</AccordionContext.Provider>
-      </AccordionHeading>
+      </h3>
       {expanded && (
-        <AccordionRegion
-          ownerState={ownerState}
+        <div
           aria-labelledby={summary.props.id}
           id={summary.props['aria-controls']}
           role="region"
         >
           {children}
-        </AccordionRegion>
+        </div>
       )}
-    </AccordionRoot>
+    </Paper>
   );
 });
 
