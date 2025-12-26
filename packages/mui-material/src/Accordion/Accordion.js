@@ -14,12 +14,12 @@ import useControlled from '../utils/useControlled';
 import accordionClasses, { getAccordionUtilityClass } from './accordionClasses';
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, square, expanded, disabled, disableGutters } = ownerState;
+  const { classes, expanded, disabled, disableGutters } = ownerState;
 
   const slots = {
     root: [
       'root',
-      !square && 'rounded',
+      'rounded',
       expanded && 'expanded',
       disabled && 'disabled',
       !disableGutters && 'gutters',
@@ -40,7 +40,7 @@ const AccordionRoot = styled(Paper, {
     return [
       { [`& .${accordionClasses.region}`]: styles.region },
       styles.root,
-      !ownerState.square && styles.rounded,
+      styles.rounded,
       !ownerState.disableGutters && styles.gutters,
     ];
   },
@@ -54,6 +54,18 @@ const AccordionRoot = styled(Paper, {
       position: 'relative',
       transition: theme.transitions.create(['margin'], transition),
       overflowAnchor: 'none', // Keep the same scrolling position
+      borderRadius: 0,
+      '&:first-of-type': {
+        borderTopLeftRadius: (theme.vars || theme).shape.borderRadius,
+        borderTopRightRadius: (theme.vars || theme).shape.borderRadius,
+        '&::before': {
+          display: 'none',
+        },
+      },
+      '&:last-of-type': {
+        borderBottomLeftRadius: (theme.vars || theme).shape.borderRadius,
+        borderBottomRightRadius: (theme.vars || theme).shape.borderRadius,
+      },
       '&::before': {
         position: 'absolute',
         left: 0,
@@ -64,11 +76,6 @@ const AccordionRoot = styled(Paper, {
         opacity: 1,
         backgroundColor: (theme.vars || theme).palette.divider,
         transition: theme.transitions.create(['opacity', 'background-color'], transition),
-      },
-      '&:first-of-type': {
-        '&::before': {
-          display: 'none',
-        },
       },
       [`&.${accordionClasses.expanded}`]: {
         '&::before': {
@@ -93,25 +100,6 @@ const AccordionRoot = styled(Paper, {
   }),
   memoTheme(({ theme }) => ({
     variants: [
-      {
-        props: (props) => !props.square,
-        style: {
-          borderRadius: 0,
-          '&:first-of-type': {
-            borderTopLeftRadius: (theme.vars || theme).shape.borderRadius,
-            borderTopRightRadius: (theme.vars || theme).shape.borderRadius,
-          },
-          '&:last-of-type': {
-            borderBottomLeftRadius: (theme.vars || theme).shape.borderRadius,
-            borderBottomRightRadius: (theme.vars || theme).shape.borderRadius,
-            // Fix a rendering issue on Edge
-            '@supports (-ms-ime-align: auto)': {
-              borderBottomLeftRadius: 0,
-              borderBottomRightRadius: 0,
-            },
-          },
-        },
-      },
       {
         props: (props) => !props.disableGutters,
         style: {
@@ -146,7 +134,6 @@ const Accordion = React.forwardRef(function Accordion(inProps, ref) {
     disableGutters = false,
     expanded: expandedProp,
     onChange,
-    square = false,
     ...other
   } = props;
 
@@ -176,7 +163,6 @@ const Accordion = React.forwardRef(function Accordion(inProps, ref) {
 
   const ownerState = {
     ...props,
-    square,
     disabled,
     disableGutters,
     expanded,
@@ -188,7 +174,6 @@ const Accordion = React.forwardRef(function Accordion(inProps, ref) {
     <AccordionRoot
       ref={ref}
       className={clsx(classes.root, className)}
-      square={square}
       ownerState={ownerState}
       {...other}
     >
@@ -268,11 +253,6 @@ Accordion.propTypes /* remove-proptypes */ = {
    * @param {boolean} expanded The `expanded` state of the accordion.
    */
   onChange: PropTypes.func,
-  /**
-   * If `true`, rounded corners are disabled.
-   * @default false
-   */
-  square: PropTypes.bool,
   /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
