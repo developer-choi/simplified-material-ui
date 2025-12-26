@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import { getAccordionDetailsUtilityClass } from './accordionDetailsClasses';
 
 const useUtilityClasses = (ownerState) => {
@@ -24,8 +23,7 @@ const AccordionDetailsRoot = styled('div', {
   padding: '8px 16px 16px',
 });
 
-const AccordionDetails = React.forwardRef(function AccordionDetails(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiAccordionDetails' });
+const AccordionDetails = React.forwardRef(function AccordionDetails(props, ref) {
   const { className, ...other } = props;
   const ownerState = props;
   const classes = useUtilityClasses(ownerState);
