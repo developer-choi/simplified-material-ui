@@ -5,7 +5,7 @@ import ToggleButtonGroup, {
   toggleButtonGroupClasses as classes,
 } from '@mui/material/ToggleButtonGroup';
 import ToggleButton, { toggleButtonClasses } from '@mui/material/ToggleButton';
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from '../../../data-display/Tooltip';
 import describeConformance from '../../test/describeConformance';
 
 describe('<ToggleButtonGroup />', () => {

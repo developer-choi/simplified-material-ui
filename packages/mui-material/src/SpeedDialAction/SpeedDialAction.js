@@ -9,7 +9,7 @@ import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import Fab from '../Fab';
-import Tooltip from '../Tooltip';
+import Tooltip from '../../../data-display/Tooltip';
 import capitalize from '../utils/capitalize';
 import speedDialActionClasses, { getSpeedDialActionUtilityClass } from './speedDialActionClasses';
 import useSlot from '../utils/useSlot';

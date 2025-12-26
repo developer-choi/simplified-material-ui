@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { SxProps } from '@mui/system';
 import { OverridableStringUnion } from '@mui/types';
-import { Theme } from '../styles';
-import { OverridableComponent, OverrideProps } from '../OverridableComponent';
+import { Theme } from '@mui/material/styles';
+import { OverridableComponent, OverrideProps } from '@mui/material/OverridableComponent';
 import { AvatarClasses } from './avatarClasses';
-import { CreateSlotsAndSlotProps, SlotProps } from '../utils/types';
-import { SvgIconProps } from '../SvgIcon';
+import { CreateSlotsAndSlotProps, SlotProps } from '@mui/material/utils/types';
+import { SvgIconProps } from '@mui/material/SvgIcon';
 
 export interface AvatarSlots {
   /**

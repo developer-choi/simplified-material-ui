@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { expect } from 'chai';
 import { createRenderer, screen } from '@mui/internal-test-utils';
-import Badge, { badgeClasses as classes } from '@mui/material/Badge';
-import describeConformance from '../../test/describeConformance';
+import Badge, { badgeClasses as classes } from './index';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 function findBadgeRoot(container) {
   return container.firstChild;

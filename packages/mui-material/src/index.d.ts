@@ -31,8 +31,8 @@ export * from './AppBar';
 export { default as Autocomplete } from './Autocomplete';
 export * from './Autocomplete';
 
-export { default as Avatar } from './Avatar';
-export * from './Avatar';
+export { default as Avatar } from '../../data-display/Avatar';
+export * from '../../data-display/Avatar';
 
 export { default as AvatarGroup } from './AvatarGroup';
 export * from './AvatarGroup';
@@ -40,8 +40,8 @@ export * from './AvatarGroup';
 export { default as Backdrop } from './Backdrop';
 export * from './Backdrop';
 
-export { default as Badge } from './Badge';
-export * from './Badge';
+export { default as Badge } from '../../data-display/Badge';
+export * from '../../data-display/Badge';
 
 export { default as BottomNavigation } from './BottomNavigation';
 export * from './BottomNavigation';
@@ -388,8 +388,8 @@ export * from './ToggleButtonGroup';
 export { default as Toolbar } from './Toolbar';
 export * from './Toolbar';
 
-export { default as Tooltip } from './Tooltip';
-export * from './Tooltip';
+export { default as Tooltip } from '../../data-display/Tooltip';
+export * from '../../data-display/Tooltip';
 
 export { default as Typography } from './Typography';
 export * from './Typography';

@@ -4,9 +4,9 @@ import * as ReactDOM from 'react-dom';
 import clsx from 'clsx';
 import useTimeout, { Timeout } from '@mui/utils/useTimeout';
 import isFocusVisible from '@mui/utils/isFocusVisible';
-import useEventCallback from '../utils/useEventCallback';
-import useId from '../utils/useId';
-import useControlled from '../utils/useControlled';
+import useEventCallback from '@mui/material/utils/useEventCallback';
+import useId from '@mui/material/utils/useId';
+import useControlled from '@mui/material/utils/useControlled';
 
 // TODO v6: Remove PopperComponent, PopperProps, TransitionComponent and TransitionProps.
 const Tooltip = React.forwardRef(function Tooltip(inProps, ref) {

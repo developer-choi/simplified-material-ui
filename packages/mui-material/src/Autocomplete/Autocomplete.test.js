@@ -20,7 +20,7 @@ import Autocomplete, {
 import { paperClasses } from '@mui/material/Paper';
 import { iconButtonClasses } from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from '../../../data-display/Tooltip';
 import describeConformance from '../../test/describeConformance';
 
 function checkHighlightIs(listbox, expected) {

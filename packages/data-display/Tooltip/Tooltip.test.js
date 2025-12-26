@@ -12,9 +12,9 @@ import {
 } from '@mui/internal-test-utils';
 import describeSkipIf from '@mui/internal-test-utils/describeSkipIf';
 import { camelCase } from 'es-toolkit/string';
-import Tooltip, { tooltipClasses as classes } from '@mui/material/Tooltip';
+import Tooltip, { tooltipClasses as classes } from './index';
 import { testReset } from './Tooltip';
-import describeConformance from '../../test/describeConformance';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 async function focusVisible(element) {
   await act(async () => {

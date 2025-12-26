@@ -11,7 +11,7 @@ import {
   screen,
 } from '@mui/internal-test-utils';
 import describeSkipIf from '@mui/internal-test-utils/describeSkipIf';
-import Avatar from '@mui/material/Avatar';
+import Avatar from '../../../data-display/Avatar';
 import Chip, { chipClasses as classes } from '@mui/material/Chip';
 import { ThemeProvider, createTheme, hexToRgb } from '@mui/material/styles';
 import CheckBox from '../internal/svg-icons/CheckBox';

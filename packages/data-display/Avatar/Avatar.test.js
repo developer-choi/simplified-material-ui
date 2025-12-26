@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import { createRenderer, fireEvent } from '@mui/internal-test-utils';
 import { spy } from 'sinon';
-import Avatar, { avatarClasses as classes } from '@mui/material/Avatar';
+import Avatar, { avatarClasses as classes } from './index';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CancelIcon from '../internal/svg-icons/Cancel';
-import describeConformance from '../../test/describeConformance';
+import CancelIcon from '@mui/material/internal/svg-icons/Cancel';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<Avatar />', () => {
   const { render } = createRenderer();

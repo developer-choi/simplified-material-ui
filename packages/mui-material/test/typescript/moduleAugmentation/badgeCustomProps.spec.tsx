@@ -1,9 +1,9 @@
 import * as React from 'react';
-import Badge from '@mui/material/Badge';
+import Badge from '../../../../data-display/Badge';
 import { createTheme } from '@mui/material/styles';
 
 // Update the Button's extendable props options
-declare module '@mui/material/Badge' {
+declare module '../../../../data-display/Badge' {
   interface BadgePropsVariantOverrides {
     action: true;
   }

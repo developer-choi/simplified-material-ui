@@ -10,7 +10,7 @@ import {
 import Icon from '@mui/material/Icon';
 import SpeedDial, { speedDialClasses as classes } from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
-import { tooltipClasses } from '@mui/material/Tooltip';
+import { tooltipClasses } from '../../../data-display/Tooltip';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import describeConformance from '../../test/describeConformance';
 

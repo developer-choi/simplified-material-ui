@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { expectType } from '@mui/types';
 import { mergeSlotProps } from '@mui/material/utils';
-import Tooltip, { TooltipProps } from '@mui/material/Tooltip';
+import Tooltip, { TooltipProps } from './index';
 
 <Tooltip title="Hello">
   <button type="button">Hover or touch me</button>

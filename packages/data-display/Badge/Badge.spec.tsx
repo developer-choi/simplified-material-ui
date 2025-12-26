@@ -1,4 +1,4 @@
-import Badge from '@mui/material/Badge';
+import Badge from './index';
 
 function classesTest() {
   return (

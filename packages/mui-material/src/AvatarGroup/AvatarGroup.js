@@ -8,7 +8,7 @@ import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import Avatar, { avatarClasses } from '../Avatar';
+import Avatar, { avatarClasses } from '../../../data-display/Avatar';
 import avatarGroupClasses, { getAvatarGroupUtilityClass } from './avatarGroupClasses';
 import useSlot from '../utils/useSlot';
 

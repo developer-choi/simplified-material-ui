@@ -8,7 +8,7 @@ import {
 import { SxProps } from '@mui/system';
 import { Theme } from '../styles';
 import { AvatarGroupClasses } from './avatarGroupClasses';
-import Avatar from '../Avatar';
+import Avatar from '../../../data-display/Avatar';
 import { CreateSlotsAndSlotProps, SlotProps } from '../utils/types';
 
 export interface AvatarGroupPropsVariantOverrides {}
