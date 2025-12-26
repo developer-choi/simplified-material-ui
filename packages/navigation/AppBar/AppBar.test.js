@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import { createRenderer, screen } from '@mui/internal-test-utils';
-import AppBar, { appBarClasses as classes } from '@mui/material/AppBar';
+import AppBar, { appBarClasses as classes } from './index';
 import Paper from '@mui/material/Paper';
 import { ThemeProvider, CssVarsProvider, hexToRgb } from '@mui/material/styles';
-import defaultTheme from '../styles/defaultTheme';
-import describeConformance from '../../test/describeConformance';
+import defaultTheme from '@mui/material/styles/defaultTheme';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<AppBar />', () => {
   const { render } = createRenderer();

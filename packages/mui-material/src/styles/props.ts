@@ -1,6 +1,6 @@
 import { AlertProps } from '../Alert';
 import { AlertTitleProps } from '../AlertTitle';
-import { AppBarProps } from '../AppBar';
+import { AppBarProps } from '../../../navigation/AppBar';
 import { AutocompleteProps } from '../Autocomplete';
 import { AvatarProps } from '../../../data-display/Avatar';
 import { AvatarGroupProps } from '../AvatarGroup';

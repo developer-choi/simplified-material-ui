@@ -25,8 +25,8 @@ export * from './Alert';
 export { default as AlertTitle } from './AlertTitle';
 export * from './AlertTitle';
 
-export { default as AppBar } from './AppBar';
-export * from './AppBar';
+export { default as AppBar } from '../../navigation/AppBar';
+export * from '../../navigation/AppBar';
 
 export { default as Autocomplete } from './Autocomplete';
 export * from './Autocomplete';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { AppBar } from '@mui/material';
 
-declare module '@mui/material/AppBar' {
+declare module '../../../../navigation/AppBar' {
   interface AppBarPropsColorOverrides {
     customAppBarColor: true;
   }
