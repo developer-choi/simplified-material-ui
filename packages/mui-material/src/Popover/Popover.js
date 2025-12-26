@@ -15,7 +15,7 @@ import debounce from '../utils/debounce';
 import ownerDocument from '../utils/ownerDocument';
 import ownerWindow from '../utils/ownerWindow';
 import Grow from '../Grow';
-import Modal from '../Modal';
+import Modal from '../../../modal/Modal';
 import PaperBase from '../Paper';
 import { getPopoverUtilityClass } from './popoverClasses';
 import useSlot from '../utils/useSlot';

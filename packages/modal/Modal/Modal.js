@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import FocusTrap from '../Unstable_TrapFocus';
+import FocusTrap from '../FocusTrap';
 import Portal from '../Portal';
 
 const ModalRoot = React.forwardRef(function ModalRoot(props, ref) {

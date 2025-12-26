@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import { spy } from 'sinon';
 import { createRenderer } from '@mui/internal-test-utils';
-import Backdrop, { backdropClasses as classes } from '@mui/material/Backdrop';
+import Backdrop, { backdropClasses as classes } from './index';
 import Fade from '@mui/material/Fade';
-import describeConformance from '../../test/describeConformance';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<Backdrop />', () => {
   const { clock, render } = createRenderer();

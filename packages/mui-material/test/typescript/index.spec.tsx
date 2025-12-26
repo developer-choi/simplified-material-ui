@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Dialog from '@mui/material/Dialog';
+import Dialog from '../../../modal/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';

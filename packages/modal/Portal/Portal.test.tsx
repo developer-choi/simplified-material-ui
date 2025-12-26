@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { spy } from 'sinon';
 import { createRenderer, reactMajor } from '@mui/internal-test-utils';
 import describeSkipIf from '@mui/internal-test-utils/describeSkipIf';
-import Portal, { PortalProps } from '@mui/material/Portal';
+import Portal, { PortalProps } from './index';
 
 describe('<Portal />', () => {
   const { render, renderToString } = createRenderer();

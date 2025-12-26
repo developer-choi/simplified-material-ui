@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { expectType } from '@mui/types';
-import Drawer, { DrawerProps } from '@mui/material/Drawer';
-import Grow from '@mui/material/Grow';
+import { mergeSlotProps } from '@mui/material/utils';
+import Dialog, { DialogProps } from './index';
 import { PaperProps } from '@mui/material/Paper';
 
 const paperProps: PaperProps<'span'> = {
@@ -13,49 +13,16 @@ const paperProps: PaperProps<'span'> = {
 function Test() {
   return (
     <React.Fragment>
-      <Drawer open />;
-      <Drawer open PaperProps={paperProps} />;
+      <Dialog open />;
+      <Dialog open PaperProps={paperProps} />;
     </React.Fragment>
   );
 }
 
-<Drawer
-  slotProps={{
-    root: {
-      disablePortal: true,
-    },
-    backdrop: {
-      transitionDuration: 1000,
-    },
-    paper: {
-      elevation: 4,
-    },
-    docked: {
-      'aria-hidden': true,
-    },
-    transition: {
-      timeout: 500,
-    },
-  }}
-/>;
-
-function Noop() {
-  return null;
-}
-<Drawer
-  slots={{
-    root: 'div',
-    backdrop: Noop,
-    docked: 'div',
-    paper: 'div',
-    transition: Grow,
-  }}
-/>;
-
-function Custom(props: DrawerProps) {
-  const { slotProps, ...dialogProps } = props;
+function Custom(props: DialogProps) {
+  const { slotProps, ...other } = props;
   return (
-    <Drawer
+    <Dialog
       slotProps={{
         ...slotProps,
         transition: (ownerState) => {
@@ -71,9 +38,28 @@ function Custom(props: DrawerProps) {
           };
         },
       }}
-      {...dialogProps}
+      {...other}
     >
       test
-    </Drawer>
+    </Dialog>
+  );
+}
+
+function Custom2(props: DialogProps) {
+  const { slotProps, ...other } = props;
+  return (
+    <Dialog
+      slotProps={{
+        ...slotProps,
+        transition: mergeSlotProps(slotProps?.transition, {
+          onExited: (node) => {
+            expectType<HTMLElement, typeof node>(node);
+          },
+        }),
+      }}
+      {...other}
+    >
+      test
+    </Dialog>
   );
 }

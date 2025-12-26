@@ -1,4 +1,4 @@
-import Modal, { ModalProps } from '@mui/material/Modal';
+import Modal, { ModalProps } from './index';
 
 const backdropProps: ModalProps['BackdropProps'] = {
   onEntered: () => console.log('entered'),

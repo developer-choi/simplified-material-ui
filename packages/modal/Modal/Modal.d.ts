@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { SxProps } from '@mui/system';
 import { OverrideProps } from '@mui/types';
-import { SlotComponentProps } from '../utils/types';
+import { SlotComponentProps } from '@mui/material/utils/types';
 import { PortalProps } from '../Portal';
-import { Theme } from '../styles';
+import { Theme } from '@mui/material/styles';
 import Backdrop, { BackdropProps } from '../Backdrop';
-import { OverridableComponent } from '../OverridableComponent';
+import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { ModalClasses } from './modalClasses';
 
 export interface ModalComponentsPropsOverrides {}

@@ -3,10 +3,10 @@ import { expect } from 'chai';
 import { spy } from 'sinon';
 import { createRenderer, screen } from '@mui/internal-test-utils';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import Drawer, { drawerClasses as classes } from '@mui/material/Drawer';
-import { modalClasses } from '@mui/material/Modal';
+import Drawer, { drawerClasses as classes } from './index';
+import { modalClasses } from '../Modal';
 import { getAnchor, isHorizontal } from './Drawer';
-import describeConformance from '../../test/describeConformance';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<Drawer />', () => {
   const { clock, render } = createRenderer({ clock: 'fake' });

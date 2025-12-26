@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { SxProps, Breakpoint } from '@mui/system';
-import { Theme } from '../styles';
-import { InternalStandardProps as StandardProps } from '../internal';
+import { Theme } from '@mui/material/styles';
+import { InternalStandardProps as StandardProps } from '@mui/material/internal';
 import { BackdropProps } from '../Backdrop';
-import { PaperProps } from '../Paper';
+import { PaperProps } from '@mui/material/Paper';
 import { ModalProps } from '../Modal';
-import { TransitionProps } from '../transitions/transition';
+import { TransitionProps } from '@mui/material/transitions/transition';
 import { DialogClasses } from './dialogClasses';
-import { CreateSlotsAndSlotProps, SlotComponentProps, SlotProps } from '../utils/types';
+import { CreateSlotsAndSlotProps, SlotComponentProps, SlotProps } from '@mui/material/utils/types';
 
 export interface DialogSlots {
   /**

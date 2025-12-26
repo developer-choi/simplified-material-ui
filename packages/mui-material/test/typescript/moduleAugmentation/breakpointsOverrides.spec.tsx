@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Container from '@mui/material/Container';
-import Dialog from '@mui/material/Dialog';
+import Dialog from '../../../../modal/Dialog';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 // testing docs/src/pages/customization/breakpoints/breakpoints.md

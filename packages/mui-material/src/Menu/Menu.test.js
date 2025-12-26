@@ -10,7 +10,7 @@ import {
 } from '@mui/internal-test-utils';
 import Menu, { menuClasses as classes } from '@mui/material/Menu';
 import Popover from '@mui/material/Popover';
-import { modalClasses } from '@mui/material/Modal';
+import { modalClasses } from '../../../modal/Modal';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import describeConformance from '../../test/describeConformance';
 import { paperClasses } from '../Paper';

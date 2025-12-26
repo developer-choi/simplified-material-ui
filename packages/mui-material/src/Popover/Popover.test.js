@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { spy, stub, match } from 'sinon';
 import { act, createRenderer, reactMajor, screen } from '@mui/internal-test-utils';
 import PropTypes from 'prop-types';
-import Modal, { modalClasses } from '@mui/material/Modal';
+import Modal, { modalClasses } from '../../../modal/Modal';
 import Paper, { paperClasses } from '@mui/material/Paper';
 import Popover, { popoverClasses as classes, PopoverPaper } from '@mui/material/Popover';
 import { ThemeProvider, createTheme } from '@mui/material/styles';

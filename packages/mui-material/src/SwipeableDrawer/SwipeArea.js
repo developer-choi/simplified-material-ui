@@ -6,7 +6,7 @@ import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import capitalize from '../utils/capitalize';
-import { isHorizontal } from '../Drawer/Drawer';
+import { isHorizontal } from '../../../modal/Drawer/Drawer';
 
 const SwipeAreaRoot = styled('div', {
   name: 'MuiSwipeArea',
