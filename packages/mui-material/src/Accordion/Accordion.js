@@ -2,32 +2,13 @@
 import * as React from 'react';
 import { isFragment } from 'react-is';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import chainPropTypes from '@mui/utils/chainPropTypes';
-import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import Paper from '../Paper';
 import AccordionContext from './AccordionContext';
 import useControlled from '../utils/useControlled';
-import accordionClasses, { getAccordionUtilityClass } from './accordionClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, expanded } = ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      'rounded',
-      expanded && 'expanded',
-      'gutters',
-    ],
-    heading: ['heading'],
-    region: ['region'],
-  };
-
-  return composeClasses(slots, getAccordionUtilityClass, classes);
-};
+import accordionClasses from './accordionClasses';
 
 const AccordionRoot = styled(Paper, {
   name: 'MuiAccordion',
@@ -146,21 +127,18 @@ const Accordion = React.forwardRef(function Accordion(
     expanded,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <AccordionRoot
       ref={ref}
-      className={clsx(classes.root, className)}
+      className={className}
       ownerState={ownerState}
       {...other}
     >
-      <AccordionHeading className={classes.heading} ownerState={ownerState}>
+      <AccordionHeading ownerState={ownerState}>
         <AccordionContext.Provider value={contextValue}>{summary}</AccordionContext.Provider>
       </AccordionHeading>
       {expanded && (
         <AccordionRegion
-          className={classes.region}
           ownerState={ownerState}
           aria-labelledby={summary.props.id}
           id={summary.props['aria-controls']}
