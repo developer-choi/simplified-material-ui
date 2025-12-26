@@ -1,4 +1,4 @@
-import Checkbox from '@mui/material/Checkbox';
+import Checkbox from './index';
 import { expectType } from '@mui/types';
 
 // deprecated props

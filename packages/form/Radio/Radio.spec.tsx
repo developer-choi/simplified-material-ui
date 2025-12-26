@@ -1,4 +1,4 @@
-import Radio from '@mui/material/Radio';
+import Radio from './index';
 import { expectType } from '@mui/types';
 
 // deprecated props

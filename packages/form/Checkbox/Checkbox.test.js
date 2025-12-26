@@ -2,12 +2,12 @@ import * as React from 'react';
 import { expect } from 'chai';
 import { spy } from 'sinon';
 import { act, createRenderer, screen } from '@mui/internal-test-utils';
-import Checkbox, { checkboxClasses as classes } from '@mui/material/Checkbox';
+import Checkbox, { checkboxClasses as classes } from './index';
 import FormControl from '@mui/material/FormControl';
 import ButtonBase from '@mui/material/ButtonBase';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import describeConformance from '../../test/describeConformance';
-import * as ripple from '../../test/ripple';
+import describeConformance from '../../mui-material/test/describeConformance';
+import * as ripple from '../../mui-material/test/ripple';
 
 describe('<Checkbox />', () => {
   const { render } = createRenderer();

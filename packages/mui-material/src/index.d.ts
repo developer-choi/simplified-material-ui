@@ -82,8 +82,8 @@ export * from './CardHeader';
 export { default as CardMedia } from './CardMedia';
 export * from './CardMedia';
 
-export { default as Checkbox } from './Checkbox';
-export * from './Checkbox';
+export { default as Checkbox } from '../../form/Checkbox';
+export * from '../../form/Checkbox';
 
 export { default as Chip } from './Chip';
 export * from './Chip';
@@ -262,8 +262,8 @@ export * from './Popper';
 export { default as Portal } from './Portal';
 export * from './Portal';
 
-export { default as Radio } from './Radio';
-export * from './Radio';
+export { default as Radio } from '../../form/Radio';
+export * from '../../form/Radio';
 
 export { default as RadioGroup } from './RadioGroup';
 export * from './RadioGroup';

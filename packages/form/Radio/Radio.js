@@ -1,10 +1,10 @@
 'use client';
 import * as React from 'react';
-import SwitchBase from '../internal/SwitchBase';
+import SwitchBase from '@mui/material/internal/SwitchBase';
 import RadioButtonIcon from './RadioButtonIcon';
-import createChainedFunction from '../utils/createChainedFunction';
-import useFormControl from '../FormControl/useFormControl';
-import useRadioGroup from '../RadioGroup/useRadioGroup';
+import createChainedFunction from '@mui/material/utils/createChainedFunction';
+import useFormControl from '@mui/material/FormControl/useFormControl';
+import useRadioGroup from '@mui/material/RadioGroup/useRadioGroup';
 
 function areEqualValues(a, b) {
   if (typeof b === 'object' && b !== null) {

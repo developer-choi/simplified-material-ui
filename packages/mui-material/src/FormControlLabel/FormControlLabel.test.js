@@ -4,7 +4,7 @@ import { createRenderer, screen } from '@mui/internal-test-utils';
 import FormControlLabel, {
   formControlLabelClasses as classes,
 } from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import Checkbox from '../../../form/Checkbox';
 import FormControl from '@mui/material/FormControl';
 import Typography from '@mui/material/Typography';
 import describeConformance from '../../test/describeConformance';

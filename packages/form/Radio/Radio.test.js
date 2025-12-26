@@ -1,11 +1,11 @@
 import { expect } from 'chai';
 import { createRenderer, screen } from '@mui/internal-test-utils';
-import Radio, { radioClasses as classes } from '@mui/material/Radio';
+import Radio, { radioClasses as classes } from './index';
 import FormControl from '@mui/material/FormControl';
 import ButtonBase from '@mui/material/ButtonBase';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import switchBaseClasses from '../internal/switchBaseClasses';
-import describeConformance from '../../test/describeConformance';
+import switchBaseClasses from '@mui/material/internal/switchBaseClasses';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<Radio />', () => {
   const { render } = createRenderer();

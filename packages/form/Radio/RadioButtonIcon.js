@@ -1,10 +1,10 @@
 'use client';
 import PropTypes from 'prop-types';
-import RadioButtonUncheckedIcon from '../internal/svg-icons/RadioButtonUnchecked';
-import RadioButtonCheckedIcon from '../internal/svg-icons/RadioButtonChecked';
-import rootShouldForwardProp from '../styles/rootShouldForwardProp';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
+import RadioButtonUncheckedIcon from '@mui/material/internal/svg-icons/RadioButtonUnchecked';
+import RadioButtonCheckedIcon from '@mui/material/internal/svg-icons/RadioButtonChecked';
+import rootShouldForwardProp from '@mui/material/styles/rootShouldForwardProp';
+import { styled } from '@mui/material/zero-styled';
+import memoTheme from '@mui/material/utils/memoTheme';
 
 const RadioButtonIconRoot = styled('span', {
   name: 'MuiRadioButtonIcon',
