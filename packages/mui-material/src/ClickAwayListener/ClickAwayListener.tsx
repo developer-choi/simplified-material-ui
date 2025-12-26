@@ -97,22 +97,8 @@ function ClickAwayListener(props: ClickAwayListenerProps): React.JSX.Element {
       return;
     }
 
-    let insideDOM;
-
     // If not enough, can use https://github.com/DieterHolvoet/event-propagation-path/blob/master/propagationPath.js
-    if (event.composedPath) {
-      insideDOM = event.composedPath().includes(nodeRef.current);
-    } else {
-      insideDOM =
-        !doc.documentElement.contains(
-          // @ts-expect-error returns `false` as intended when not dispatched from a Node
-          event.target,
-        ) ||
-        nodeRef.current.contains(
-          // @ts-expect-error returns `false` as intended when not dispatched from a Node
-          event.target,
-        );
-    }
+    const insideDOM = event.composedPath().includes(nodeRef.current);
 
     if (!insideDOM && (disableReactTree || !insideReactTree)) {
       onClickAway(event);
