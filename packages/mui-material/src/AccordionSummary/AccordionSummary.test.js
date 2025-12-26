@@ -5,7 +5,7 @@ import { act, createRenderer, fireEvent, screen } from '@mui/internal-test-utils
 import AccordionSummary, {
   accordionSummaryClasses as classes,
 } from '@mui/material/AccordionSummary';
-import Accordion from '@mui/material/Accordion';
+import Accordion from '../../../surfaces/Accordion';
 import ButtonBase from '@mui/material/ButtonBase';
 import describeConformance from '../../test/describeConformance';
 

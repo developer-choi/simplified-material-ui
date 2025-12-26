@@ -7,7 +7,7 @@ import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import ButtonBase from '../ButtonBase';
-import AccordionContext from '../Accordion/AccordionContext';
+import AccordionContext from '../../../surfaces/Accordion/AccordionContext';
 import accordionSummaryClasses, {
   getAccordionSummaryUtilityClass,
 } from './accordionSummaryClasses';

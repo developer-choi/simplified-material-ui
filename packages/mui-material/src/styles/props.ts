@@ -33,7 +33,7 @@ import { DividerProps } from '../Divider';
 import { DrawerProps } from '../Drawer';
 import { AccordionActionsProps } from '../AccordionActions';
 import { AccordionDetailsProps } from '../AccordionDetails';
-import { AccordionProps } from '../Accordion';
+import { AccordionProps } from '../../../surfaces/Accordion';
 import { AccordionSummaryProps } from '../AccordionSummary';
 import { FabProps } from '../Fab';
 import { FilledInputProps } from '../FilledInput';

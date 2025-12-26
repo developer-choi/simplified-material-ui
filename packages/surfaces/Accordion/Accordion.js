@@ -1,8 +1,8 @@
 'use client';
 import * as React from 'react';
-import Paper from '../Paper';
+import Paper from '@mui/material/Paper';
+import useControlled from '@mui/material/utils/useControlled';
 import AccordionContext from './AccordionContext';
-import useControlled from '../utils/useControlled';
 
 const Accordion = React.forwardRef(function Accordion(
   {

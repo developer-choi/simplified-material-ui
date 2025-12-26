@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { expect } from 'chai';
 import { spy } from 'sinon';
 import { createRenderer, fireEvent, reactMajor, screen } from '@mui/internal-test-utils';
-import Accordion, { accordionClasses as classes } from '@mui/material/Accordion';
+import Accordion, { accordionClasses as classes } from './index';
 import Paper from '@mui/material/Paper';
 import Collapse from '@mui/material/Collapse';
 import Fade from '@mui/material/Fade';
@@ -12,7 +12,7 @@ import Grow from '@mui/material/Grow';
 import Zoom from '@mui/material/Zoom';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import describeSkipIf from '@mui/internal-test-utils/describeSkipIf';
-import describeConformance from '../../test/describeConformance';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 function NoTransition(props) {
   const { children, in: inProp } = props;

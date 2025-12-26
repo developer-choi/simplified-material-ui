@@ -7,8 +7,8 @@ export * from './styles';
 
 export * from './utils';
 
-export { default as Accordion } from './Accordion';
-export * from './Accordion';
+export { default as Accordion } from '../../surfaces/Accordion';
+export * from '../../surfaces/Accordion';
 
 export { default as AccordionActions } from './AccordionActions';
 export * from './AccordionActions';
