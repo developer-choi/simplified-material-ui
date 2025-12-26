@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import { getAccordionActionsUtilityClass } from './accordionActionsClasses';
 
 const useUtilityClasses = (ownerState) => {
@@ -33,8 +32,7 @@ const AccordionActionsRoot = styled('div', {
   },
 });
 
-const AccordionActions = React.forwardRef(function AccordionActions(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiAccordionActions' });
+const AccordionActions = React.forwardRef(function AccordionActions(props, ref) {
   const { className, ...other } = props;
   const ownerState = { ...props };
 
