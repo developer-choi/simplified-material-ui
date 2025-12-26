@@ -5,7 +5,6 @@ import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import ButtonBase from '../ButtonBase';
 import AccordionContext from '../../../surfaces/Accordion/AccordionContext';
 import accordionSummaryClasses, {
   getAccordionSummaryUtilityClass,
@@ -24,7 +23,7 @@ const useUtilityClasses = (ownerState) => {
   return composeClasses(slots, getAccordionSummaryUtilityClass, classes);
 };
 
-const AccordionSummaryRoot = styled(ButtonBase, {
+const AccordionSummaryRoot = styled('button', {
   name: 'MuiAccordionSummary',
   slot: 'Root',
 })({
@@ -80,7 +79,6 @@ const AccordionSummary = React.forwardRef(function AccordionSummary(inProps, ref
     children,
     className,
     expandIcon,
-    focusVisibleClassName,
     onClick,
     ...other
   } = props;
@@ -108,11 +106,8 @@ const AccordionSummary = React.forwardRef(function AccordionSummary(inProps, ref
       ref={ref}
       className={clsx(classes.root, className)}
       ownerState={ownerState}
-      focusRipple={false}
-      disableRipple={true}
       disabled={disabled}
       aria-expanded={expanded}
-      focusVisibleClassName={clsx(classes.focusVisible, focusVisibleClassName)}
       onClick={handleChange}
       {...other}
     >
@@ -149,15 +144,6 @@ AccordionSummary.propTypes /* remove-proptypes */ = {
    * The icon to display as the expand indicator.
    */
   expandIcon: PropTypes.node,
-  /**
-   * This prop can help identify which element has keyboard focus.
-   * The class name will be applied when the element gains the focus through keyboard interaction.
-   * It's a polyfill for the [CSS :focus-visible selector](https://drafts.csswg.org/selectors-4/#the-focus-visible-pseudo).
-   * The rationale for using this feature [is explained here](https://github.com/WICG/focus-visible/blob/HEAD/explainer.md).
-   * A [polyfill can be used](https://github.com/WICG/focus-visible) to apply a `focus-visible` class to other components
-   * if needed.
-   */
-  focusVisibleClassName: PropTypes.string,
   /**
    * @ignore
    */
