@@ -1,9 +1,9 @@
 'use client';
 import * as React from 'react';
-import ownerDocument from '../utils/ownerDocument';
-import getActiveElement from '../utils/getActiveElement';
-import useForkRef from '../utils/useForkRef';
-import useEnhancedEffect from '../utils/useEnhancedEffect';
+import ownerDocument from '@mui/material/utils/ownerDocument';
+import getActiveElement from '@mui/material/utils/getActiveElement';
+import useForkRef from '@mui/material/utils/useForkRef';
+import useEnhancedEffect from '@mui/material/utils/useEnhancedEffect';
 
 function nextItem(list, item) {
   if (list === item) {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { expect } from 'chai';
 import { act, createRenderer, fireEvent, screen } from '@mui/internal-test-utils';
-import MenuItem from '@mui/material/MenuItem';
+import MenuItem from '../../../menu/MenuItem';
 import Select from '@mui/material/Select';
 import Dialog from '../../../modal/Dialog';
 import FormControl from '@mui/material/FormControl';

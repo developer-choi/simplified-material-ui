@@ -3,7 +3,7 @@ import { SxProps } from '@mui/system';
 import { Theme } from '../styles';
 import { InternalStandardProps as StandardProps } from '../internal';
 import { InputProps } from '../Input';
-import { MenuProps } from '../Menu';
+import { MenuProps } from '../../../menu/Menu';
 import { SelectChangeEvent, SelectInputProps } from './SelectInput';
 import { SelectClasses } from './selectClasses';
 import { OutlinedInputProps } from '../OutlinedInput';

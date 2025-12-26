@@ -1,4 +1,4 @@
-import MenuList from '@mui/material/MenuList';
+import MenuList from './index';
 
 // component prop works as expected
 <MenuList component="div" />;

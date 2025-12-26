@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
 import MenuList from '../MenuList';
-import Popover from '../Popover';
+import Popover from '@mui/material/Popover';
 
 const Menu = React.forwardRef(function Menu(props, ref) {
   const {

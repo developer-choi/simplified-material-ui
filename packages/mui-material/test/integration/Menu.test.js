@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { expect } from 'chai';
 import { act, createRenderer, fireEvent, screen } from '@mui/internal-test-utils';
 import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
+import MenuItem from '../../../menu/MenuItem';
+import Menu from '../../../menu/Menu';
 
 const options = [
   'Show some love to MUI',

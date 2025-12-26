@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SxProps } from '@mui/system';
 import { Theme } from '../styles';
-import { MenuProps } from '../Menu';
+import { MenuProps } from '../../../menu/Menu';
 
 /**
  * The change can be caused by different kind of events.

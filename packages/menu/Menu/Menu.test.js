@@ -8,12 +8,12 @@ import {
   strictModeDoubleLoggingSuppressed,
   reactMajor,
 } from '@mui/internal-test-utils';
-import Menu, { menuClasses as classes } from '@mui/material/Menu';
+import Menu, { menuClasses as classes } from './index';
 import Popover from '@mui/material/Popover';
-import { modalClasses } from '../../../modal/Modal';
+import { modalClasses } from '../../modal/Modal';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import describeConformance from '../../test/describeConformance';
-import { paperClasses } from '../Paper';
+import describeConformance from '../../mui-material/test/describeConformance';
+import { paperClasses } from '@mui/material/Paper';
 
 const CustomTransition = React.forwardRef(function CustomTransition(
   { in: inProp, appear, onEnter, onEntering, onExited, ownerState, ...props },

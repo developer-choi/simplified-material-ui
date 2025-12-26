@@ -220,14 +220,14 @@ export * from './ListItemText';
 export { default as ListSubheader } from './ListSubheader';
 export * from './ListSubheader';
 
-export { default as Menu } from './Menu';
-export * from './Menu';
+export { default as Menu } from '../../menu/Menu';
+export * from '../../menu/Menu';
 
-export { default as MenuItem } from './MenuItem';
-export * from './MenuItem';
+export { default as MenuItem } from '../../menu/MenuItem';
+export * from '../../menu/MenuItem';
 
-export { default as MenuList } from './MenuList';
-export * from './MenuList';
+export { default as MenuList } from '../../menu/MenuList';
+export * from '../../menu/MenuList';
 
 export { default as MobileStepper } from './MobileStepper';
 export * from './MobileStepper';

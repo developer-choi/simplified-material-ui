@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import ButtonBase from '../ButtonBase';
+import ButtonBase from '@mui/material/ButtonBase';
 
 const MenuItem = React.forwardRef(function MenuItem(props, ref) {
   const {

@@ -1,4 +1,4 @@
-import Menu, { MenuProps } from '@mui/material/Menu';
+import Menu, { MenuProps } from './index';
 
 <Menu
   open

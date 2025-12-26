@@ -3,11 +3,11 @@ import { expect } from 'chai';
 import { stub } from 'sinon';
 import { createRenderer, screen } from '@mui/internal-test-utils';
 import Divider from '@mui/material/Divider';
-import MenuList from '@mui/material/MenuList';
-import MenuItem from '@mui/material/MenuItem';
+import MenuList from './index';
+import MenuItem from '../MenuItem';
 import List from '@mui/material/List';
-import getScrollbarSize from '../utils/getScrollbarSize';
-import describeConformance from '../../test/describeConformance';
+import getScrollbarSize from '@mui/material/utils/getScrollbarSize';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 function setStyleWidthForJsdomOrBrowser(style, width) {
   style.width = '';

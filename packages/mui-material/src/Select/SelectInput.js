@@ -8,7 +8,7 @@ import useId from '@mui/utils/useId';
 import refType from '@mui/utils/refType';
 import ownerDocument from '../utils/ownerDocument';
 import capitalize from '../utils/capitalize';
-import Menu from '../Menu/Menu';
+import Menu from '../../../menu/Menu/Menu';
 import { StyledSelectSelect, StyledSelectIcon } from '../NativeSelect/NativeSelectInput';
 import { isFilled } from '../InputBase/utils';
 import { styled } from '../zero-styled';

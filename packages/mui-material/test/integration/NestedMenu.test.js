@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { expect } from 'chai';
 import { createRenderer, within, screen } from '@mui/internal-test-utils';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import Menu from '../../../menu/Menu';
+import MenuItem from '../../../menu/MenuItem';
 
 const NoTransition = React.forwardRef(function NoTransition(props, ref) {
   const { children, in: inProp } = props;

@@ -10,7 +10,7 @@ import {
   reactMajor,
 } from '@mui/internal-test-utils';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
+import MenuItem, { menuItemClasses } from '../../../menu/MenuItem';
 import ListSubheader from '@mui/material/ListSubheader';
 import InputBase from '@mui/material/InputBase';
 import OutlinedInput from '@mui/material/OutlinedInput';

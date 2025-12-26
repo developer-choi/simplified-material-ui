@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
+import MenuItem from '../../../menu/MenuItem';
 import { createTheme } from '@mui/material/styles';
 import { expectType } from '@mui/types';
 

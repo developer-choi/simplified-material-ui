@@ -1,11 +1,11 @@
 import { expect } from 'chai';
 import { spy } from 'sinon';
 import { act, createRenderer, fireEvent, screen, supportsTouch } from '@mui/internal-test-utils';
-import MenuItem, { menuItemClasses as classes } from '@mui/material/MenuItem';
+import MenuItem, { menuItemClasses as classes } from './index';
 import ButtonBase from '@mui/material/ButtonBase';
-import ListContext from '../List/ListContext';
-import describeConformance from '../../test/describeConformance';
-import * as ripple from '../../test/ripple';
+import ListContext from '@mui/material/List/ListContext';
+import describeConformance from '../../mui-material/test/describeConformance';
+import * as ripple from '../../mui-material/test/ripple';
 
 describe('<MenuItem />', () => {
   const { render } = createRenderer();

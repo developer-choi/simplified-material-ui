@@ -8,8 +8,8 @@ import {
   screen,
   programmaticFocusTriggersFocusVisible,
 } from '@mui/internal-test-utils';
-import MenuList from '@mui/material/MenuList';
-import MenuItem from '@mui/material/MenuItem';
+import MenuList from '../../../menu/MenuList';
+import MenuItem from '../../../menu/MenuItem';
 import Divider from '@mui/material/Divider';
 
 describe('<MenuList> integration', () => {

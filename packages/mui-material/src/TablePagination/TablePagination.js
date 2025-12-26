@@ -9,7 +9,7 @@ import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import InputBase from '../InputBase';
-import MenuItem from '../MenuItem';
+import MenuItem from '../../../menu/MenuItem';
 import Select from '../Select';
 import TableCell from '../TableCell';
 import Toolbar from '../Toolbar';

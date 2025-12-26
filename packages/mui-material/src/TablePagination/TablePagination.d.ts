@@ -12,7 +12,7 @@ import { SelectProps } from '../Select';
 import { TablePaginationClasses } from './tablePaginationClasses';
 import { CreateSlotsAndSlotProps, SlotProps } from '../utils/types';
 import { ToolbarProps } from '../Toolbar';
-import { MenuItemProps } from '../MenuItem';
+import { MenuItemProps } from '../../../menu/MenuItem';
 
 export interface LabelDisplayedRowsArgs {
   from: number;

@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { SxProps } from '@mui/system';
-import { Theme } from '../styles';
-import { InternalStandardProps as StandardProps } from '../internal';
-import { PaperProps } from '../Paper';
-import { PopoverProps } from '../Popover';
+import { Theme } from '@mui/material/styles';
+import { InternalStandardProps as StandardProps } from '@mui/material/internal';
+import { PaperProps } from '@mui/material/Paper';
+import { PopoverProps } from '@mui/material/Popover';
 import { MenuListProps } from '../MenuList';
-import { ModalProps } from '../../../modal/Modal';
-import { BackdropProps } from '../../../modal/Backdrop';
-import { TransitionProps } from '../transitions/transition';
+import { ModalProps } from '../../modal/Modal';
+import { BackdropProps } from '../../modal/Backdrop';
+import { TransitionProps } from '@mui/material/transitions/transition';
 import { MenuClasses } from './menuClasses';
-import { CreateSlotsAndSlotProps, SlotComponentProps, SlotProps } from '../utils/types';
+import { CreateSlotsAndSlotProps, SlotComponentProps, SlotProps } from '@mui/material/utils/types';
 
 export interface MenuRootSlotPropsOverrides {}
 
