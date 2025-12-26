@@ -15,13 +15,6 @@ function mapEventPropToEvent(
   return eventProp.substring(2).toLowerCase() as any;
 }
 
-function clickedRootScrollbar(event: MouseEvent, doc: Document) {
-  return (
-    doc.documentElement.clientWidth < event.clientX ||
-    doc.documentElement.clientHeight < event.clientY
-  );
-}
-
 type ClickAwayMouseEventHandler = 'onClick' | 'onMouseDown' | 'onMouseUp';
 
 export interface ClickAwayListenerProps {
@@ -100,11 +93,7 @@ function ClickAwayListener(props: ClickAwayListenerProps): React.JSX.Element {
     // 1. IE11 support, which trigger the handleClickAway even after the unbind
     // 2. The child might render null.
     // 3. Behave like a blur listener.
-    if (
-      !activatedRef.current ||
-      !nodeRef.current ||
-      ('clientX' in event && clickedRootScrollbar(event, doc))
-    ) {
+    if (!activatedRef.current || !nodeRef.current) {
       return;
     }
 
