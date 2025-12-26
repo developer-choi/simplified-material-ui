@@ -14,14 +14,13 @@ import useControlled from '../utils/useControlled';
 import accordionClasses, { getAccordionUtilityClass } from './accordionClasses';
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, expanded, disabled } = ownerState;
+  const { classes, expanded } = ownerState;
 
   const slots = {
     root: [
       'root',
       'rounded',
       expanded && 'expanded',
-      disabled && 'disabled',
       'gutters',
     ],
     heading: ['heading'],
@@ -92,9 +91,6 @@ const AccordionRoot = styled(Paper, {
           },
         },
       },
-      [`&.${accordionClasses.disabled}`]: {
-        backgroundColor: (theme.vars || theme).palette.action.disabledBackground,
-      },
     };
   }),
 );
@@ -117,7 +113,6 @@ const Accordion = React.forwardRef(function Accordion(inProps, ref) {
     children: childrenProp,
     className,
     defaultExpanded = false,
-    disabled = false,
     expanded: expandedProp,
     onChange,
     ...other
@@ -143,13 +138,12 @@ const Accordion = React.forwardRef(function Accordion(inProps, ref) {
 
   const [summary, ...children] = React.Children.toArray(childrenProp);
   const contextValue = React.useMemo(
-    () => ({ expanded, disabled, toggle: handleChange }),
-    [expanded, disabled, handleChange],
+    () => ({ expanded, toggle: handleChange }),
+    [expanded, handleChange],
   );
 
   const ownerState = {
     ...props,
-    disabled,
     expanded,
   };
 
@@ -216,11 +210,6 @@ Accordion.propTypes /* remove-proptypes */ = {
    * @default false
    */
   defaultExpanded: PropTypes.bool,
-  /**
-   * If `true`, the component is disabled.
-   * @default false
-   */
-  disabled: PropTypes.bool,
   /**
    * If `true`, expands the accordion, otherwise collapse it.
    * Setting this prop enables control over the accordion.
