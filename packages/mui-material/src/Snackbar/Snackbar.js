@@ -3,7 +3,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import composeClasses from '@mui/utils/composeClasses';
 import useSnackbar from './useSnackbar';
-import ClickAwayListener from '../ClickAwayListener';
+import ClickAwayListener from '../../../utils/ClickAwayListener';
 import { styled, useTheme } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';

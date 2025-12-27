@@ -9,8 +9,8 @@ import {
   fireDiscreteEvent,
   screen,
 } from '@mui/internal-test-utils';
-import Portal from '../../../modal/Portal';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Portal from '../../modal/Portal';
+import ClickAwayListener from './index';
 
 describe('<ClickAwayListener />', () => {
   const { render: clientRender, clock } = createRenderer({ clock: 'fake' });

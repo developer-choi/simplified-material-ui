@@ -91,8 +91,8 @@ export * from './Chip';
 export { default as CircularProgress } from './CircularProgress';
 export * from './CircularProgress';
 
-export { default as ClickAwayListener } from './ClickAwayListener';
-export * from './ClickAwayListener';
+export { default as ClickAwayListener } from '../../utils/ClickAwayListener';
+export * from '../../utils/ClickAwayListener';
 
 export { default as Collapse } from './Collapse';
 export * from './Collapse';
