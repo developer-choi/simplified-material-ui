@@ -2,71 +2,10 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
-import ButtonBase from '../ButtonBase';
 import unsupportedProp from '../utils/unsupportedProp';
 import bottomNavigationActionClasses, {
   getBottomNavigationActionUtilityClass,
 } from './bottomNavigationActionClasses';
-
-const BottomNavigationActionRoot = styled(ButtonBase, {
-  name: 'MuiBottomNavigationAction',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [styles.root, !ownerState.showLabel && !ownerState.selected && styles.iconOnly];
-  },
-})(
-  memoTheme(({ theme }) => ({
-    padding: '0px 12px',
-    minWidth: 80,
-    maxWidth: 168,
-    color: (theme.vars || theme).palette.text.secondary,
-    flexDirection: 'column',
-    flex: '1',
-    [`&.${bottomNavigationActionClasses.selected}`]: {
-      color: (theme.vars || theme).palette.primary.main,
-    },
-    variants: [
-      {
-        props: ({ showLabel, selected }) => !showLabel && !selected,
-        style: {
-          paddingTop: 14,
-        },
-      },
-      {
-        props: ({ showLabel, selected, label }) => !showLabel && !selected && !label,
-        style: {
-          paddingTop: 0,
-        },
-      },
-    ],
-  })),
-);
-
-const BottomNavigationActionLabel = styled('span', {
-  name: 'MuiBottomNavigationAction',
-  slot: 'Label',
-})(
-  memoTheme(({ theme }) => ({
-    fontFamily: theme.typography.fontFamily,
-    fontSize: theme.typography.pxToRem(12),
-    opacity: 1,
-    [`&.${bottomNavigationActionClasses.selected}`]: {
-      fontSize: theme.typography.pxToRem(14),
-    },
-    variants: [
-      {
-        props: ({ showLabel, selected }) => !showLabel && !selected,
-        style: {
-          opacity: 0,
-        },
-      },
-    ],
-  })),
-);
 
 const BottomNavigationAction = React.forwardRef(function BottomNavigationAction(
   {
@@ -83,8 +22,6 @@ const BottomNavigationAction = React.forwardRef(function BottomNavigationAction(
   },
   ref,
 ) {
-  const ownerState = { selected, showLabel, label };
-
   const handleChange = (event) => {
     if (onChange) {
       onChange(event, value);
@@ -108,20 +45,41 @@ const BottomNavigationAction = React.forwardRef(function BottomNavigationAction(
     selected && getBottomNavigationActionUtilityClass('selected'),
   );
 
+  // Determine padding based on showLabel and selected states
+  const paddingTop = !showLabel && !selected ? (!label ? 0 : 14) : 6;
+
   return (
-    <BottomNavigationActionRoot
+    <button
       ref={ref}
       className={rootClasses}
-      focusRipple
       onClick={handleChange}
-      ownerState={ownerState}
+      style={{
+        padding: `${paddingTop}px 12px 8px`,
+        minWidth: 80,
+        maxWidth: 168,
+        color: selected ? '#1976d2' : 'rgba(0, 0, 0, 0.6)',
+        display: 'flex',
+        flexDirection: 'column',
+        flex: '1',
+        border: 'none',
+        background: 'none',
+        cursor: 'pointer',
+        alignItems: 'center',
+      }}
       {...other}
     >
       {icon}
-      <BottomNavigationActionLabel className={labelClasses} ownerState={ownerState}>
+      <span
+        className={labelClasses}
+        style={{
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+          fontSize: selected ? 14 : 12,
+          opacity: showLabel || selected ? 1 : 0,
+        }}
+      >
         {label}
-      </BottomNavigationActionLabel>
-    </BottomNavigationActionRoot>
+      </span>
+    </button>
   );
 });
 
