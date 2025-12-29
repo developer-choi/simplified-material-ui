@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { SxProps } from '@mui/system';
-import { CreateSlotsAndSlotProps, SlotProps } from '../utils/types';
 import { Theme } from '../styles';
 import {
   ButtonBaseProps,
@@ -11,36 +10,7 @@ import {
 import { OverrideProps } from '../OverridableComponent';
 import { BottomNavigationActionClasses } from './bottomNavigationActionClasses';
 
-export interface BottomNavigationActionSlots {
-  /**
-   * The component that renders the root.
-   * @default ButtonBase
-   */
-  root: React.ElementType;
-  /**
-   * The component that renders the label.
-   * @default span
-   */
-  label: React.ElementType;
-}
-
-export type BottomNavigationActionSlotsAndSlotProps = CreateSlotsAndSlotProps<
-  BottomNavigationActionSlots,
-  {
-    /**
-     * Props forwarded to the root slot.
-     * By default, the available props are based on the ButtonBase element.
-     */
-    root: SlotProps<React.ElementType<ButtonBaseProps>, {}, BottomNavigationActionOwnerState>;
-    /**
-     * Props forwarded to the label slot.
-     * By default, the available props are based on the span element.
-     */
-    label: SlotProps<'span', {}, BottomNavigationActionOwnerState>;
-  }
->;
-
-export interface BottomNavigationActionOwnProps extends BottomNavigationActionSlotsAndSlotProps {
+export interface BottomNavigationActionOwnProps {
   /**
    * This prop isn't supported.
    * Use the `component` prop if you need to change the children structure.
@@ -106,7 +76,6 @@ export type BottomNavigationActionProps<
   component?: React.ElementType;
 };
 
-export interface BottomNavigationActionOwnerState
-  extends Omit<BottomNavigationActionProps, 'slots' | 'slotProps'> {}
+export interface BottomNavigationActionOwnerState extends BottomNavigationActionProps {}
 
 export default BottomNavigationAction;
