@@ -134,18 +134,11 @@ const CollapseWrapperInner = styled('div', {
 const Collapse = React.forwardRef(function Collapse(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiCollapse' });
   const {
-    addEndListener,
     children,
     className,
     collapsedSize: collapsedSizeProp = '0px',
     easing,
     in: inProp,
-    onEnter,
-    onEntered,
-    onEntering,
-    onExit,
-    onExited,
-    onExiting,
     orientation = 'vertical',
     style,
     timeout = duration.standard,
@@ -174,35 +167,18 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
   const nodeRef = React.useRef(null);
   const handleRef = useForkRef(ref, nodeRef);
 
-  const normalizedTransitionCallback = (callback) => (maybeIsAppearing) => {
-    if (callback) {
-      const node = nodeRef.current;
-
-      // onEnterXxx and onExitXxx callbacks have a different arguments.length value.
-      if (maybeIsAppearing === undefined) {
-        callback(node);
-      } else {
-        callback(node, maybeIsAppearing);
-      }
-    }
-  };
-
   const getWrapperSize = () =>
     wrapperRef.current ? wrapperRef.current[isHorizontal ? 'clientWidth' : 'clientHeight'] : 0;
 
-  const handleEnter = normalizedTransitionCallback((node, isAppearing) => {
+  const handleEnter = (node, isAppearing) => {
     if (wrapperRef.current && isHorizontal) {
       // Set absolute position to get the size of collapsed content
       wrapperRef.current.style.position = 'absolute';
     }
     node.style[size] = collapsedSize;
+  };
 
-    if (onEnter) {
-      onEnter(node, isAppearing);
-    }
-  });
-
-  const handleEntering = normalizedTransitionCallback((node, isAppearing) => {
+  const handleEntering = (node, isAppearing) => {
     const wrapperSize = getWrapperSize();
 
     if (wrapperRef.current && isHorizontal) {
@@ -228,31 +204,19 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
 
     node.style[size] = `${wrapperSize}px`;
     node.style.transitionTimingFunction = transitionTimingFunction;
+  };
 
-    if (onEntering) {
-      onEntering(node, isAppearing);
-    }
-  });
-
-  const handleEntered = normalizedTransitionCallback((node, isAppearing) => {
+  const handleEntered = (node, isAppearing) => {
     node.style[size] = 'auto';
+  };
 
-    if (onEntered) {
-      onEntered(node, isAppearing);
-    }
-  });
-
-  const handleExit = normalizedTransitionCallback((node) => {
+  const handleExit = (node) => {
     node.style[size] = `${getWrapperSize()}px`;
+  };
 
-    if (onExit) {
-      onExit(node);
-    }
-  });
+  const handleExited = () => {};
 
-  const handleExited = normalizedTransitionCallback(onExited);
-
-  const handleExiting = normalizedTransitionCallback((node) => {
+  const handleExiting = (node) => {
     const wrapperSize = getWrapperSize();
     const { duration: transitionDuration, easing: transitionTimingFunction } = getTransitionProps(
       { style, timeout, easing },
@@ -274,19 +238,11 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
 
     node.style[size] = collapsedSize;
     node.style.transitionTimingFunction = transitionTimingFunction;
-
-    if (onExiting) {
-      onExiting(node);
-    }
-  });
+  };
 
   const handleAddEndListener = (next) => {
     if (timeout === 'auto') {
       timer.start(autoTransitionDuration.current || 0, next);
-    }
-    if (addEndListener) {
-      // Old call signature before `react-transition-group` implemented `nodeRef`
-      addEndListener(nodeRef.current, next);
     }
   };
 
@@ -340,12 +296,6 @@ Collapse.propTypes /* remove-proptypes */ = {
   // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
   // └─────────────────────────────────────────────────────────────────────┘
   /**
-   * Add a custom transition end trigger. Called with the transitioning DOM
-   * node and a done callback. Allows for more fine grained transition end
-   * logic. Note: Timeouts are still used as a fallback if provided.
-   */
-  addEndListener: PropTypes.func,
-  /**
    * The content node to be collapsed.
    */
   children: PropTypes.node,
@@ -377,30 +327,6 @@ Collapse.propTypes /* remove-proptypes */ = {
    * If `true`, the component will transition in.
    */
   in: PropTypes.bool,
-  /**
-   * @ignore
-   */
-  onEnter: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onEntered: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onEntering: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onExit: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onExited: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onExiting: PropTypes.func,
   /**
    * The transition orientation.
    * @default 'vertical'
