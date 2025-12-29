@@ -35,7 +35,6 @@ const BottomNavigation = React.forwardRef(function BottomNavigation(inProps, ref
   const {
     children,
     className,
-    component = 'div',
     onChange,
     showLabels = false,
     value,
@@ -44,7 +43,6 @@ const BottomNavigation = React.forwardRef(function BottomNavigation(inProps, ref
 
   const ownerState = {
     ...props,
-    component,
     showLabels,
   };
 
@@ -52,7 +50,6 @@ const BottomNavigation = React.forwardRef(function BottomNavigation(inProps, ref
 
   return (
     <BottomNavigationRoot
-      as={component}
       className={clsx(classes.root, className)}
       ref={ref}
       ownerState={ownerState}
@@ -93,11 +90,6 @@ BottomNavigation.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   className: PropTypes.string,
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
   /**
    * Callback fired when the value changes.
    *
