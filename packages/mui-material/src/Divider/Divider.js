@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
 
 const Divider = React.forwardRef(function Divider(props, ref) {
   const {
@@ -122,52 +121,8 @@ const Divider = React.forwardRef(function Divider(props, ref) {
   });
 });
 
-/**
- * The following flag is used to ensure that this component isn't tabbable i.e.
- * does not get highlight/focus inside of MUI List.
- */
 if (Divider) {
   Divider.muiSkipListHighlight = true;
 }
-
-Divider.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * The content of the component.
-   */
-  children: PropTypes.node,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * The component orientation.
-   * @default 'horizontal'
-   */
-  orientation: PropTypes.oneOf(['horizontal', 'vertical']),
-  /**
-   * @ignore
-   */
-  role: PropTypes.string,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-  /**
-   * The variant to use.
-   * @default 'fullWidth'
-   */
-  variant: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['fullWidth', 'inset', 'middle']),
-    PropTypes.string,
-  ]),
-};
 
 export default Divider;
