@@ -2,35 +2,22 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import { getBottomNavigationUtilityClass } from './bottomNavigationClasses';
-
-const BottomNavigationRoot = styled('div', {
-  name: 'MuiBottomNavigation',
-  slot: 'Root',
-})(
-  memoTheme(({ theme }) => ({
-    display: 'flex',
-    justifyContent: 'center',
-    height: 56,
-    backgroundColor: (theme.vars || theme).palette.background.paper,
-  })),
-);
 
 const BottomNavigation = React.forwardRef(function BottomNavigation(
   { children, className, onChange, showLabels = false, value, ...other },
   ref,
 ) {
-  const ownerState = {
-    showLabels,
-  };
-
   return (
-    <BottomNavigationRoot
+    <div
       className={clsx(getBottomNavigationUtilityClass('root'), className)}
       ref={ref}
-      ownerState={ownerState}
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        height: 56,
+        backgroundColor: '#fff',
+      }}
       {...other}
     >
       {React.Children.map(children, (child, childIndex) => {
@@ -47,7 +34,7 @@ const BottomNavigation = React.forwardRef(function BottomNavigation(
           onChange,
         });
       })}
-    </BottomNavigationRoot>
+    </div>
   );
 });
 
