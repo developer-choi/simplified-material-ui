@@ -2,21 +2,9 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import { getBottomNavigationUtilityClass } from './bottomNavigationClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-
-  const slots = {
-    root: ['root'],
-  };
-
-  return composeClasses(slots, getBottomNavigationUtilityClass, classes);
-};
 
 const BottomNavigationRoot = styled('div', {
   name: 'MuiBottomNavigation',
@@ -30,27 +18,17 @@ const BottomNavigationRoot = styled('div', {
   })),
 );
 
-const BottomNavigation = React.forwardRef(function BottomNavigation(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiBottomNavigation' });
-  const {
-    children,
-    className,
-    onChange,
-    showLabels = false,
-    value,
-    ...other
-  } = props;
-
+const BottomNavigation = React.forwardRef(function BottomNavigation(
+  { children, className, onChange, showLabels = false, value, ...other },
+  ref,
+) {
   const ownerState = {
-    ...props,
     showLabels,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <BottomNavigationRoot
-      className={clsx(classes.root, className)}
+      className={clsx(getBottomNavigationUtilityClass('root'), className)}
       ref={ref}
       ownerState={ownerState}
       {...other}
