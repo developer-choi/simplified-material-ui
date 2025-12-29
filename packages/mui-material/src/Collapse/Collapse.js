@@ -2,14 +2,11 @@
 import * as React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { Transition } from 'react-transition-group';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled, useTheme } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import { duration } from '../styles/createTransitions';
-import { getTransitionProps } from '../transitions/utils';
-import { useForkRef } from '../utils';
 import { getCollapseUtilityClass } from './collapseClasses';
 
 const useUtilityClasses = (ownerState) => {
@@ -138,8 +135,6 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
     in: inProp,
     style,
     timeout = duration.standard,
-    // eslint-disable-next-line react/prop-types
-    TransitionComponent = Transition,
     ...other
   } = props;
 
@@ -153,105 +148,49 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
 
   const theme = useTheme();
   const wrapperRef = React.useRef(null);
-  const collapsedSize = '0px';
-  const size = 'height';
+  const [wrapperHeight, setWrapperHeight] = React.useState(0);
+  const [isEntered, setIsEntered] = React.useState(inProp);
 
-  const nodeRef = React.useRef(null);
-  const handleRef = useForkRef(ref, nodeRef);
+  React.useEffect(() => {
+    if (wrapperRef.current) {
+      setWrapperHeight(wrapperRef.current.clientHeight);
+    }
+  }, [children]);
 
-  const getWrapperSize = () =>
-    wrapperRef.current ? wrapperRef.current.clientHeight : 0;
+  React.useEffect(() => {
+    if (inProp) {
+      setIsEntered(true);
+    } else {
+      const timer = setTimeout(() => setIsEntered(false), timeout);
+      return () => clearTimeout(timer);
+    }
+  }, [inProp, timeout]);
 
-  const handleEnter = (node, isAppearing) => {
-    node.style[size] = collapsedSize;
-  };
-
-  const handleEntering = (node, isAppearing) => {
-    const wrapperSize = getWrapperSize();
-
-    const { duration: transitionDuration } = getTransitionProps(
-      { style, timeout },
-      {
-        mode: 'enter',
-      },
-    );
-
-    node.style.transitionDuration =
-      typeof transitionDuration === 'string' ? transitionDuration : `${transitionDuration}ms`;
-
-    node.style[size] = `${wrapperSize}px`;
-    node.style.transitionTimingFunction = 'ease-in-out';
-  };
-
-  const handleEntered = (node, isAppearing) => {
-    node.style[size] = 'auto';
-  };
-
-  const handleExit = (node) => {
-    node.style[size] = `${getWrapperSize()}px`;
-  };
-
-  const handleExited = () => {};
-
-  const handleExiting = (node) => {
-    const wrapperSize = getWrapperSize();
-    const { duration: transitionDuration } = getTransitionProps(
-      { style, timeout },
-      {
-        mode: 'exit',
-      },
-    );
-
-    node.style.transitionDuration =
-      typeof transitionDuration === 'string' ? transitionDuration : `${transitionDuration}ms`;
-
-    node.style[size] = collapsedSize;
-    node.style.transitionTimingFunction = 'ease-in-out';
-  };
-
-  const handleAddEndListener = () => {};
-
+  const stateOwnerState = { ...ownerState, state: isEntered ? 'entered' : 'exited' };
 
   return (
-    <TransitionComponent
-      in={inProp}
-      onEnter={handleEnter}
-      onEntered={handleEntered}
-      onEntering={handleEntering}
-      onExit={handleExit}
-      onExited={handleExited}
-      onExiting={handleExiting}
-      addEndListener={handleAddEndListener}
-      nodeRef={nodeRef}
-      timeout={timeout}
+    <CollapseRoot
+      ref={ref}
+      className={clsx(classes.root, className, {
+        [classes.entered]: isEntered,
+        [classes.hidden]: !isEntered && !inProp,
+      })}
+      style={{
+        minHeight: '0px',
+        height: inProp ? wrapperHeight : 0,
+        transition: `height ${timeout}ms ease-in-out`,
+        overflow: 'hidden',
+        ...style,
+      }}
+      ownerState={stateOwnerState}
       {...other}
     >
-      {/* Destructure child props to prevent the component's "ownerState" from being overridden by incomingOwnerState. */}
-      {(state, { ownerState: incomingOwnerState, ...restChildProps }) => {
-        const stateOwnerState = { ...ownerState, state };
-        return (
-          <CollapseRoot
-            ref={handleRef}
-            className={clsx(classes.root, className, {
-              [classes.entered]: state === 'entered',
-              [classes.hidden]: state === 'exited' && !inProp,
-            })}
-            style={{
-              minHeight: '0px',
-              ...style,
-            }}
-            ownerState={stateOwnerState}
-            {...restChildProps}
-          >
-            <CollapseWrapper ref={wrapperRef} className={classes.wrapper} ownerState={stateOwnerState}>
-              <CollapseWrapperInner className={classes.wrapperInner} ownerState={stateOwnerState}>
-                {children}
-              </CollapseWrapperInner>
-            </CollapseWrapper>
-          </CollapseRoot>
-        );
-      }}
-    </TransitionComponent>
+      <CollapseWrapper ref={wrapperRef} className={classes.wrapper} ownerState={stateOwnerState}>
+        <CollapseWrapperInner className={classes.wrapperInner} ownerState={stateOwnerState}>
+          {children}
+        </CollapseWrapperInner>
+      </CollapseWrapper>
+    </CollapseRoot>
   );
 });
 
