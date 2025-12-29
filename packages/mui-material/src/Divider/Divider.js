@@ -5,7 +5,6 @@ import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import { getDividerUtilityClass } from './dividerClasses';
 
 const useUtilityClasses = (ownerState) => {
@@ -154,8 +153,7 @@ const DividerWrapper = styled('span', {
   })),
 );
 
-const Divider = React.forwardRef(function Divider(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiDivider' });
+const Divider = React.forwardRef(function Divider(props, ref) {
   const {
     children,
     className,
