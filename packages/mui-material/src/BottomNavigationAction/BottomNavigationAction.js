@@ -2,26 +2,13 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import ButtonBase from '../ButtonBase';
 import unsupportedProp from '../utils/unsupportedProp';
 import bottomNavigationActionClasses, {
   getBottomNavigationActionUtilityClass,
 } from './bottomNavigationActionClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, showLabel, selected } = ownerState;
-
-  const slots = {
-    root: ['root', !showLabel && !selected && 'iconOnly', selected && 'selected'],
-    label: ['label', !showLabel && !selected && 'iconOnly', selected && 'selected'],
-  };
-
-  return composeClasses(slots, getBottomNavigationActionUtilityClass, classes);
-};
 
 const BottomNavigationActionRoot = styled(ButtonBase, {
   name: 'MuiBottomNavigationAction',
@@ -81,9 +68,8 @@ const BottomNavigationActionLabel = styled('span', {
   })),
 );
 
-const BottomNavigationAction = React.forwardRef(function BottomNavigationAction(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiBottomNavigationAction' });
-  const {
+const BottomNavigationAction = React.forwardRef(function BottomNavigationAction(
+  {
     className,
     icon,
     label,
@@ -94,10 +80,10 @@ const BottomNavigationAction = React.forwardRef(function BottomNavigationAction(
     showLabel,
     value,
     ...other
-  } = props;
-
-  const ownerState = props;
-  const classes = useUtilityClasses(ownerState);
+  },
+  ref,
+) {
+  const ownerState = { selected, showLabel, label };
 
   const handleChange = (event) => {
     if (onChange) {
@@ -109,17 +95,30 @@ const BottomNavigationAction = React.forwardRef(function BottomNavigationAction(
     }
   };
 
+  const rootClasses = clsx(
+    getBottomNavigationActionUtilityClass('root'),
+    !showLabel && !selected && getBottomNavigationActionUtilityClass('iconOnly'),
+    selected && getBottomNavigationActionUtilityClass('selected'),
+    className,
+  );
+
+  const labelClasses = clsx(
+    getBottomNavigationActionUtilityClass('label'),
+    !showLabel && !selected && getBottomNavigationActionUtilityClass('iconOnly'),
+    selected && getBottomNavigationActionUtilityClass('selected'),
+  );
+
   return (
     <BottomNavigationActionRoot
       ref={ref}
-      className={clsx(classes.root, className)}
+      className={rootClasses}
       focusRipple
       onClick={handleChange}
       ownerState={ownerState}
       {...other}
     >
       {icon}
-      <BottomNavigationActionLabel className={classes.label} ownerState={ownerState}>
+      <BottomNavigationActionLabel className={labelClasses} ownerState={ownerState}>
         {label}
       </BottomNavigationActionLabel>
     </BottomNavigationActionRoot>
