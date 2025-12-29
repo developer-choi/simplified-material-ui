@@ -137,7 +137,6 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
     className,
     collapsedSize: collapsedSizeProp = '0px',
     in: inProp,
-    orientation = 'vertical',
     style,
     timeout = duration.standard,
     // eslint-disable-next-line react/prop-types
@@ -147,7 +146,7 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
 
   const ownerState = {
     ...props,
-    orientation,
+    orientation: 'vertical',
     collapsedSize: collapsedSizeProp,
   };
 
@@ -157,30 +156,20 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
   const wrapperRef = React.useRef(null);
   const collapsedSize =
     typeof collapsedSizeProp === 'number' ? `${collapsedSizeProp}px` : collapsedSizeProp;
-  const isHorizontal = orientation === 'horizontal';
-  const size = isHorizontal ? 'width' : 'height';
+  const size = 'height';
 
   const nodeRef = React.useRef(null);
   const handleRef = useForkRef(ref, nodeRef);
 
   const getWrapperSize = () =>
-    wrapperRef.current ? wrapperRef.current[isHorizontal ? 'clientWidth' : 'clientHeight'] : 0;
+    wrapperRef.current ? wrapperRef.current.clientHeight : 0;
 
   const handleEnter = (node, isAppearing) => {
-    if (wrapperRef.current && isHorizontal) {
-      // Set absolute position to get the size of collapsed content
-      wrapperRef.current.style.position = 'absolute';
-    }
     node.style[size] = collapsedSize;
   };
 
   const handleEntering = (node, isAppearing) => {
     const wrapperSize = getWrapperSize();
-
-    if (wrapperRef.current && isHorizontal) {
-      // After the size is read reset the position back to default
-      wrapperRef.current.style.position = '';
-    }
 
     const { duration: transitionDuration } = getTransitionProps(
       { style, timeout },
@@ -250,7 +239,7 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
               [classes.hidden]: state === 'exited' && !inProp && collapsedSize === '0px',
             })}
             style={{
-              [isHorizontal ? 'minWidth' : 'minHeight']: collapsedSize,
+              minHeight: collapsedSize,
               ...style,
             }}
             ownerState={stateOwnerState}
@@ -294,11 +283,6 @@ Collapse.propTypes /* remove-proptypes */ = {
    * If `true`, the component will transition in.
    */
   in: PropTypes.bool,
-  /**
-   * The transition orientation.
-   * @default 'vertical'
-   */
-  orientation: PropTypes.oneOf(['horizontal', 'vertical']),
   /**
    * @ignore
    */
