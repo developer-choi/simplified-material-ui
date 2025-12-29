@@ -2,7 +2,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 
 const DividerRoot = styled('div', {
   name: 'MuiDivider',
@@ -18,15 +17,14 @@ const DividerRoot = styled('div', {
       ownerState.children && ownerState.orientation === 'vertical' && styles.withChildrenVertical,
     ];
   },
-})(
-  memoTheme(({ theme }) => ({
-    margin: 0, // Reset browser default style.
-    flexShrink: 0,
-    borderWidth: 0,
-    borderStyle: 'solid',
-    borderColor: (theme.vars || theme).palette.divider,
-    borderBottomWidth: 'thin',
-    variants: [
+})({
+  margin: 0, // Reset browser default style.
+  flexShrink: 0,
+  borderWidth: 0,
+  borderStyle: 'solid',
+  borderColor: 'rgba(0, 0, 0, 0.12)',
+  borderBottomWidth: 'thin',
+  variants: [
       {
         props: {
           variant: 'inset',
@@ -41,8 +39,8 @@ const DividerRoot = styled('div', {
           orientation: 'horizontal',
         },
         style: {
-          marginLeft: theme.spacing(2),
-          marginRight: theme.spacing(2),
+          marginLeft: '16px',
+          marginRight: '16px',
         },
       },
       {
@@ -51,8 +49,8 @@ const DividerRoot = styled('div', {
           orientation: 'vertical',
         },
         style: {
-          marginTop: theme.spacing(1),
-          marginBottom: theme.spacing(1),
+          marginTop: '8px',
+          marginBottom: '8px',
         },
       },
       {
@@ -84,7 +82,7 @@ const DividerRoot = styled('div', {
         style: {
           '&::before, &::after': {
             width: '100%',
-            borderTop: `thin solid ${(theme.vars || theme).palette.divider}`,
+            borderTop: 'thin solid rgba(0, 0, 0, 0.12)',
             borderTopStyle: 'inherit',
           },
         },
@@ -95,13 +93,13 @@ const DividerRoot = styled('div', {
           flexDirection: 'column',
           '&::before, &::after': {
             height: '100%',
-            borderLeft: `thin solid ${(theme.vars || theme).palette.divider}`,
+            borderLeft: 'thin solid rgba(0, 0, 0, 0.12)',
             borderLeftStyle: 'inherit',
           },
         },
       },
     ],
-  })),
+  },
 );
 
 const DividerWrapper = styled('span', {
@@ -112,25 +110,23 @@ const DividerWrapper = styled('span', {
 
     return [styles.wrapper, ownerState.orientation === 'vertical' && styles.wrapperVertical];
   },
-})(
-  memoTheme(({ theme }) => ({
-    display: 'inline-block',
-    paddingLeft: `calc(${theme.spacing(1)} * 1.2)`,
-    paddingRight: `calc(${theme.spacing(1)} * 1.2)`,
-    whiteSpace: 'nowrap',
-    variants: [
-      {
-        props: {
-          orientation: 'vertical',
-        },
-        style: {
-          paddingTop: `calc(${theme.spacing(1)} * 1.2)`,
-          paddingBottom: `calc(${theme.spacing(1)} * 1.2)`,
-        },
+})({
+  display: 'inline-block',
+  paddingLeft: '9.6px', // 8px * 1.2
+  paddingRight: '9.6px',
+  whiteSpace: 'nowrap',
+  variants: [
+    {
+      props: {
+        orientation: 'vertical',
       },
-    ],
-  })),
-);
+      style: {
+        paddingTop: '9.6px',
+        paddingBottom: '9.6px',
+      },
+    },
+  ],
+});
 
 const Divider = React.forwardRef(function Divider(props, ref) {
   const {
