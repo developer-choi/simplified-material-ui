@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import { isFragment } from 'react-is';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
@@ -62,17 +61,6 @@ const BottomNavigation = React.forwardRef(function BottomNavigation(inProps, ref
       {React.Children.map(children, (child, childIndex) => {
         if (!React.isValidElement(child)) {
           return null;
-        }
-
-        if (process.env.NODE_ENV !== 'production') {
-          if (isFragment(child)) {
-            console.error(
-              [
-                "MUI: The BottomNavigation component doesn't accept a Fragment as a child.",
-                'Consider providing an array instead.',
-              ].join('\n'),
-            );
-          }
         }
 
         const childValue = child.props.value === undefined ? childIndex : child.props.value;
