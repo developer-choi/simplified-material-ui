@@ -9,7 +9,7 @@ import { useDefaultProps } from '../DefaultPropsProvider';
 import { getDividerUtilityClass } from './dividerClasses';
 
 const useUtilityClasses = (ownerState) => {
-  const { children, classes, orientation, textAlign, variant } =
+  const { children, classes, orientation, variant } =
     ownerState;
 
   const slots = {
@@ -19,8 +19,6 @@ const useUtilityClasses = (ownerState) => {
       orientation === 'vertical' && 'vertical',
       children && 'withChildren',
       children && orientation === 'vertical' && 'withChildrenVertical',
-      textAlign === 'right' && orientation !== 'vertical' && 'textAlignRight',
-      textAlign === 'left' && orientation !== 'vertical' && 'textAlignLeft',
     ],
     wrapper: ['wrapper', orientation === 'vertical' && 'wrapperVertical'],
   };
@@ -40,12 +38,6 @@ const DividerRoot = styled('div', {
       ownerState.orientation === 'vertical' && styles.vertical,
       ownerState.children && styles.withChildren,
       ownerState.children && ownerState.orientation === 'vertical' && styles.withChildrenVertical,
-      ownerState.textAlign === 'right' &&
-        ownerState.orientation !== 'vertical' &&
-        styles.textAlignRight,
-      ownerState.textAlign === 'left' &&
-        ownerState.orientation !== 'vertical' &&
-        styles.textAlignLeft,
     ];
   },
 })(
@@ -130,30 +122,6 @@ const DividerRoot = styled('div', {
           },
         },
       },
-      {
-        props: ({ ownerState }) =>
-          ownerState.textAlign === 'right' && ownerState.orientation !== 'vertical',
-        style: {
-          '&::before': {
-            width: '90%',
-          },
-          '&::after': {
-            width: '10%',
-          },
-        },
-      },
-      {
-        props: ({ ownerState }) =>
-          ownerState.textAlign === 'left' && ownerState.orientation !== 'vertical',
-        style: {
-          '&::before': {
-            width: '10%',
-          },
-          '&::after': {
-            width: '90%',
-          },
-        },
-      },
     ],
   })),
 );
@@ -192,7 +160,6 @@ const Divider = React.forwardRef(function Divider(inProps, ref) {
     children,
     className,
     orientation = 'horizontal',
-    textAlign = 'center',
     variant = 'fullWidth',
     ...other
   } = props;
@@ -204,7 +171,6 @@ const Divider = React.forwardRef(function Divider(inProps, ref) {
     ...props,
     orientation,
     role,
-    textAlign,
     variant,
   };
 
@@ -275,11 +241,6 @@ Divider.propTypes /* remove-proptypes */ = {
     PropTypes.func,
     PropTypes.object,
   ]),
-  /**
-   * The text alignment.
-   * @default 'center'
-   */
-  textAlign: PropTypes.oneOf(['center', 'left', 'right']),
   /**
    * The variant to use.
    * @default 'fullWidth'
