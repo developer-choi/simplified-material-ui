@@ -9,13 +9,12 @@ import { useDefaultProps } from '../DefaultPropsProvider';
 import { getDividerUtilityClass } from './dividerClasses';
 
 const useUtilityClasses = (ownerState) => {
-  const { absolute, children, classes, flexItem, orientation, textAlign, variant } =
+  const { children, classes, flexItem, orientation, textAlign, variant } =
     ownerState;
 
   const slots = {
     root: [
       'root',
-      absolute && 'absolute',
       variant,
       orientation === 'vertical' && 'vertical',
       flexItem && 'flexItem',
@@ -38,7 +37,6 @@ const DividerRoot = styled('div', {
 
     return [
       styles.root,
-      ownerState.absolute && styles.absolute,
       styles[ownerState.variant],
       ownerState.orientation === 'vertical' && styles.vertical,
       ownerState.flexItem && styles.flexItem,
@@ -61,17 +59,6 @@ const DividerRoot = styled('div', {
     borderColor: (theme.vars || theme).palette.divider,
     borderBottomWidth: 'thin',
     variants: [
-      {
-        props: {
-          absolute: true,
-        },
-        style: {
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          width: '100%',
-        },
-      },
       {
         props: {
           variant: 'inset',
@@ -213,7 +200,6 @@ const DividerWrapper = styled('span', {
 const Divider = React.forwardRef(function Divider(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiDivider' });
   const {
-    absolute = false,
     children,
     className,
     orientation = 'horizontal',
@@ -227,7 +213,6 @@ const Divider = React.forwardRef(function Divider(inProps, ref) {
 
   const ownerState = {
     ...props,
-    absolute,
     component,
     flexItem,
     orientation,
@@ -274,11 +259,6 @@ Divider.propTypes /* remove-proptypes */ = {
   // │ These PropTypes are generated from the TypeScript type definitions. │
   // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
   // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * Absolutely position the element.
-   * @default false
-   */
-  absolute: PropTypes.bool,
   /**
    * The content of the component.
    */
