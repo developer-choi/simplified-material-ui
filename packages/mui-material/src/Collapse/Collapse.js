@@ -3,7 +3,6 @@ import * as React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { Transition } from 'react-transition-group';
-import useTimeout from '@mui/utils/useTimeout';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled, useTheme } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
@@ -156,9 +155,7 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
   const classes = useUtilityClasses(ownerState);
 
   const theme = useTheme();
-  const timer = useTimeout();
   const wrapperRef = React.useRef(null);
-  const autoTransitionDuration = React.useRef();
   const collapsedSize =
     typeof collapsedSizeProp === 'number' ? `${collapsedSizeProp}px` : collapsedSizeProp;
   const isHorizontal = orientation === 'horizontal';
@@ -193,14 +190,8 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
       },
     );
 
-    if (timeout === 'auto') {
-      const duration2 = theme.transitions.getAutoHeightDuration(wrapperSize);
-      node.style.transitionDuration = `${duration2}ms`;
-      autoTransitionDuration.current = duration2;
-    } else {
-      node.style.transitionDuration =
-        typeof transitionDuration === 'string' ? transitionDuration : `${transitionDuration}ms`;
-    }
+    node.style.transitionDuration =
+      typeof transitionDuration === 'string' ? transitionDuration : `${transitionDuration}ms`;
 
     node.style[size] = `${wrapperSize}px`;
     node.style.transitionTimingFunction = transitionTimingFunction;
@@ -225,26 +216,14 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
       },
     );
 
-    if (timeout === 'auto') {
-      // TODO: rename getAutoHeightDuration to something more generic (width support)
-      // Actually it just calculates animation duration based on size
-      const duration2 = theme.transitions.getAutoHeightDuration(wrapperSize);
-      node.style.transitionDuration = `${duration2}ms`;
-      autoTransitionDuration.current = duration2;
-    } else {
-      node.style.transitionDuration =
-        typeof transitionDuration === 'string' ? transitionDuration : `${transitionDuration}ms`;
-    }
+    node.style.transitionDuration =
+      typeof transitionDuration === 'string' ? transitionDuration : `${transitionDuration}ms`;
 
     node.style[size] = collapsedSize;
     node.style.transitionTimingFunction = transitionTimingFunction;
   };
 
-  const handleAddEndListener = (next) => {
-    if (timeout === 'auto') {
-      timer.start(autoTransitionDuration.current || 0, next);
-    }
-  };
+  const handleAddEndListener = () => {};
 
 
   return (
@@ -258,7 +237,7 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
       onExiting={handleExiting}
       addEndListener={handleAddEndListener}
       nodeRef={nodeRef}
-      timeout={timeout === 'auto' ? null : timeout}
+      timeout={timeout}
       {...other}
     >
       {/* Destructure child props to prevent the component's "ownerState" from being overridden by incomingOwnerState. */}
@@ -347,12 +326,9 @@ Collapse.propTypes /* remove-proptypes */ = {
   /**
    * The duration for the transition, in milliseconds.
    * You may specify a single timeout for all transitions, or individually with an object.
-   *
-   * Set to 'auto' to automatically calculate transition time based on height.
    * @default duration.standard
    */
   timeout: PropTypes.oneOfType([
-    PropTypes.oneOf(['auto']),
     PropTypes.number,
     PropTypes.shape({
       appear: PropTypes.number,
@@ -361,9 +337,5 @@ Collapse.propTypes /* remove-proptypes */ = {
     }),
   ]),
 };
-
-if (Collapse) {
-  Collapse.muiSupportAuto = true;
-}
 
 export default Collapse;
