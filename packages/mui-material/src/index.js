@@ -46,8 +46,8 @@ export * from '../../data-display/Badge';
 export { default as BottomNavigation } from '../../navigation/BottomNavigation';
 export * from '../../navigation/BottomNavigation';
 
-export { default as BottomNavigationAction } from './BottomNavigationAction';
-export * from './BottomNavigationAction';
+export { default as BottomNavigationAction } from '../../navigation/BottomNavigationAction';
+export * from '../../navigation/BottomNavigationAction';
 
 export { default as Box } from './Box';
 export * from './Box';

@@ -13,7 +13,7 @@ import { AvatarClassKey } from '../../../data-display/Avatar';
 import { AvatarGroupClassKey } from '../AvatarGroup';
 import { BackdropClassKey } from '../Backdrop';
 import { BadgeClassKey } from '../../../data-display/Badge';
-import { BottomNavigationActionClassKey } from '../BottomNavigationAction';
+import { BottomNavigationActionClassKey } from '../../../navigation/BottomNavigationAction';
 import { BottomNavigationClassKey } from '../../../navigation/BottomNavigation';
 import { BreadcrumbsClassKey } from '../Breadcrumbs';
 import { ButtonBaseClassKey } from '../ButtonBase';
