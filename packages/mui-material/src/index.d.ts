@@ -124,8 +124,8 @@ export * from './DialogContentText';
 export { default as DialogTitle } from './DialogTitle';
 export * from './DialogTitle';
 
-export { default as Divider } from './Divider';
-export * from './Divider';
+export { default as Divider } from '../../data-display/Divider';
+export * from '../../data-display/Divider';
 
 export { default as Drawer } from './Drawer';
 export * from './Drawer';

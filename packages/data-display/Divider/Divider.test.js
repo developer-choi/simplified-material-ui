@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import { createRenderer, screen } from '@mui/internal-test-utils';
 import describeSkipIf from '@mui/internal-test-utils/describeSkipIf';
 import { styled } from '@mui/material/styles';
-import Divider, { dividerClasses as classes } from '@mui/material/Divider';
-import describeConformance from '../../test/describeConformance';
+import Divider, { dividerClasses as classes } from './index';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<Divider />', () => {
   const { render } = createRenderer();

@@ -35,7 +35,7 @@ import { DialogClassKey } from '../Dialog';
 import { DialogContentClassKey } from '../DialogContent';
 import { DialogContentTextClassKey } from '../DialogContentText';
 import { DialogTitleClassKey } from '../DialogTitle';
-import { DividerClassKey } from '../Divider';
+import { DividerClassKey } from '../../../data-display/Divider';
 import { DrawerClassKey } from '../Drawer';
 import { FabClassKey } from '../Fab';
 import { FilledInputClassKey } from '../FilledInput';

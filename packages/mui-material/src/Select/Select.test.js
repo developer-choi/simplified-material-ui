@@ -16,7 +16,7 @@ import InputBase from '@mui/material/InputBase';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
-import Divider from '@mui/material/Divider';
+import Divider from '../../../data-display/Divider';
 import { listClasses } from '@mui/material/List';
 import classes from './selectClasses';
 import { nativeSelectClasses } from '../NativeSelect';

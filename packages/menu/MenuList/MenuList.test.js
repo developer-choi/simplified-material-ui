@@ -2,7 +2,7 @@ import * as React from 'react';
 import { expect } from 'chai';
 import { stub } from 'sinon';
 import { createRenderer, screen } from '@mui/internal-test-utils';
-import Divider from '@mui/material/Divider';
+import Divider from '../../data-display/Divider';
 import MenuList from './index';
 import MenuItem from '../MenuItem';
 import List from '@mui/material/List';

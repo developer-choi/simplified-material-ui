@@ -29,7 +29,7 @@ import { DialogContentProps } from '../DialogContent';
 import { DialogContentTextProps } from '../DialogContentText';
 import { DialogProps } from '../Dialog';
 import { DialogTitleProps } from '../DialogTitle';
-import { DividerProps } from '../Divider';
+import { DividerProps } from '../../../data-display/Divider';
 import { DrawerProps } from '../Drawer';
 import { AccordionActionsProps } from '../../../surfaces/AccordionActions';
 import { AccordionDetailsProps } from '../../../surfaces/AccordionDetails';

@@ -10,7 +10,7 @@ import {
 } from '@mui/internal-test-utils';
 import MenuList from '../../../menu/MenuList';
 import MenuItem from '../../../menu/MenuItem';
-import Divider from '@mui/material/Divider';
+import Divider from '../../../data-display/Divider';
 
 describe('<MenuList> integration', () => {
   const { clock, render } = createRenderer();

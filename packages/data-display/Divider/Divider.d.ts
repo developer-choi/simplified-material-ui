@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { OverridableStringUnion } from '@mui/types';
 import { SxProps } from '@mui/system';
-import { Theme } from '../styles';
-import { OverridableComponent, OverrideProps } from '../OverridableComponent';
+import { Theme } from '@mui/material/styles';
+import { OverridableComponent, OverrideProps } from '@mui/material/OverridableComponent';
 import { DividerClasses } from './dividerClasses';
 
 export interface DividerPropsVariantOverrides {}
