@@ -1,24 +1,7 @@
 'use client';
 import * as React from 'react';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import composeClasses from '@mui/utils/composeClasses';
 import { duration } from '../styles/createTransitions';
-import { getCollapseUtilityClass } from './collapseClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { orientation, classes } = ownerState;
-
-  const slots = {
-    root: ['root', `${orientation}`],
-    entered: ['entered'],
-    hidden: ['hidden'],
-    wrapper: ['wrapper', `${orientation}`],
-    wrapperInner: ['wrapperInner', `${orientation}`],
-  };
-
-  return composeClasses(slots, getCollapseUtilityClass, classes);
-};
 
 
 /**
@@ -35,14 +18,6 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
     timeout = duration.standard,
     ...other
   } = inProps;
-
-  const ownerState = {
-    ...inProps,
-    orientation: 'vertical',
-    collapsedSize: '0px',
-  };
-
-  const classes = useUtilityClasses(ownerState);
 
   const wrapperRef = React.useRef(null);
   const [wrapperHeight, setWrapperHeight] = React.useState(0);
@@ -66,10 +41,7 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
   return (
     <div
       ref={ref}
-      className={clsx(classes.root, className, {
-        [classes.entered]: isEntered,
-        [classes.hidden]: !isEntered && !inProp,
-      })}
+      className={className}
       style={{
         minHeight: '0px',
         height: inProp ? wrapperHeight : 0,
@@ -82,14 +54,12 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
     >
       <div
         ref={wrapperRef}
-        className={classes.wrapper}
         style={{
           display: 'flex',
           width: '100%',
         }}
       >
         <div
-          className={classes.wrapperInner}
           style={{
             width: '100%',
           }}
@@ -111,10 +81,6 @@ Collapse.propTypes /* remove-proptypes */ = {
    */
   children: PropTypes.node,
   /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
-  /**
    * @ignore
    */
   className: PropTypes.string,
@@ -126,14 +92,6 @@ Collapse.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   style: PropTypes.object,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
   /**
    * The duration for the transition, in milliseconds.
    * You may specify a single timeout for all transitions, or individually with an object.
