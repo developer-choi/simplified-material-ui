@@ -2,7 +2,7 @@ import * as React from 'react';
 import { SxProps } from '@mui/system';
 import { Theme } from '../styles';
 import { InternalStandardProps as StandardProps } from '../internal';
-import { CollapseProps } from '../Collapse';
+import { CollapseProps } from '../../../utils/Collapse';
 import { TransitionProps } from '../transitions/transition';
 import { StepContentClasses } from './stepContentClasses';
 import { CreateSlotsAndSlotProps, SlotComponentProps } from '../utils/types';

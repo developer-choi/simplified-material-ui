@@ -4,8 +4,8 @@ import { spy, stub } from 'sinon';
 import { act, createRenderer } from '@mui/internal-test-utils';
 import { Transition } from 'react-transition-group';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import Collapse, { collapseClasses as classes } from '@mui/material/Collapse';
-import describeConformance from '../../test/describeConformance';
+import Collapse, { collapseClasses as classes } from './index';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 const CustomCollapse = React.forwardRef(({ ownerState, ...props }, ref) => (
   <div ref={ref} {...props} />

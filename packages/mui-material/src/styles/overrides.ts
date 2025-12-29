@@ -28,7 +28,7 @@ import { CardMediaClassKey } from '../CardMedia';
 import { CheckboxClassKey } from '../../../form/Checkbox';
 import { ChipClassKey } from '../Chip';
 import { CircularProgressClassKey } from '../CircularProgress';
-import { CollapseClassKey } from '../Collapse';
+import { CollapseClassKey } from '../../../utils/Collapse';
 import { ContainerClassKey } from '../Container';
 import { DialogActionsClassKey } from '../DialogActions';
 import { DialogClassKey } from '../Dialog';

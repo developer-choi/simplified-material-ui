@@ -6,7 +6,7 @@ import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import Collapse from '../Collapse';
+import Collapse from '../../../utils/Collapse';
 import StepperContext from '../Stepper/StepperContext';
 import StepContext from '../Step/StepContext';
 import { getStepContentUtilityClass } from './stepContentClasses';

@@ -94,8 +94,8 @@ export * from './CircularProgress';
 export { default as ClickAwayListener } from '../../utils/ClickAwayListener';
 export * from '../../utils/ClickAwayListener';
 
-export { default as Collapse } from './Collapse';
-export * from './Collapse';
+export { default as Collapse } from '../../utils/Collapse';
+export * from '../../utils/Collapse';
 
 export { default as Container } from './Container';
 export * from './Container';

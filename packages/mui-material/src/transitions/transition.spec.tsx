@@ -1,4 +1,4 @@
-import Collapse from '@mui/material/Collapse';
+import Collapse from '../../../utils/Collapse';
 
 const transition = (
   <Collapse in id="my-id" style={{ margin: 2 }}>

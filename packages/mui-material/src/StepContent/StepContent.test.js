@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { createRenderer, screen } from '@mui/internal-test-utils';
-import { collapseClasses } from '@mui/material/Collapse';
+import { collapseClasses } from '../../../utils/Collapse';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepContent, { stepContentClasses as classes } from '@mui/material/StepContent';

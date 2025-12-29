@@ -21,7 +21,7 @@ import { CardProps } from '../Card';
 import { CheckboxProps } from '../../../form/Checkbox';
 import { ChipProps } from '../Chip';
 import { CircularProgressProps } from '../CircularProgress';
-import { CollapseProps } from '../Collapse';
+import { CollapseProps } from '../../../utils/Collapse';
 import { ContainerProps } from '../Container';
 import { CssBaselineProps } from '../CssBaseline';
 import { DialogActionsProps } from '../DialogActions';
