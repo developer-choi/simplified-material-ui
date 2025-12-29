@@ -136,7 +136,6 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
     children,
     className,
     collapsedSize: collapsedSizeProp = '0px',
-    easing,
     in: inProp,
     orientation = 'vertical',
     style,
@@ -183,8 +182,8 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
       wrapperRef.current.style.position = '';
     }
 
-    const { duration: transitionDuration, easing: transitionTimingFunction } = getTransitionProps(
-      { style, timeout, easing },
+    const { duration: transitionDuration } = getTransitionProps(
+      { style, timeout },
       {
         mode: 'enter',
       },
@@ -194,7 +193,7 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
       typeof transitionDuration === 'string' ? transitionDuration : `${transitionDuration}ms`;
 
     node.style[size] = `${wrapperSize}px`;
-    node.style.transitionTimingFunction = transitionTimingFunction;
+    node.style.transitionTimingFunction = 'ease-in-out';
   };
 
   const handleEntered = (node, isAppearing) => {
@@ -209,8 +208,8 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
 
   const handleExiting = (node) => {
     const wrapperSize = getWrapperSize();
-    const { duration: transitionDuration, easing: transitionTimingFunction } = getTransitionProps(
-      { style, timeout, easing },
+    const { duration: transitionDuration } = getTransitionProps(
+      { style, timeout },
       {
         mode: 'exit',
       },
@@ -220,7 +219,7 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
       typeof transitionDuration === 'string' ? transitionDuration : `${transitionDuration}ms`;
 
     node.style[size] = collapsedSize;
-    node.style.transitionTimingFunction = transitionTimingFunction;
+    node.style.transitionTimingFunction = 'ease-in-out';
   };
 
   const handleAddEndListener = () => {};
@@ -291,17 +290,6 @@ Collapse.propTypes /* remove-proptypes */ = {
    * @default '0px'
    */
   collapsedSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  /**
-   * The transition timing function.
-   * You may specify a single easing or a object containing enter and exit values.
-   */
-  easing: PropTypes.oneOfType([
-    PropTypes.shape({
-      enter: PropTypes.string,
-      exit: PropTypes.string,
-    }),
-    PropTypes.string,
-  ]),
   /**
    * If `true`, the component will transition in.
    */
