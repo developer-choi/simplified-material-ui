@@ -3,9 +3,7 @@ import * as React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import composeClasses from '@mui/utils/composeClasses';
-import { styled, useTheme } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
+import { styled } from '../zero-styled';
 import { duration } from '../styles/createTransitions';
 import { getCollapseUtilityClass } from './collapseClasses';
 
@@ -128,7 +126,6 @@ const CollapseWrapperInner = styled('div', {
  * It uses [react-transition-group](https://github.com/reactjs/react-transition-group) internally.
  */
 const Collapse = React.forwardRef(function Collapse(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiCollapse' });
   const {
     children,
     className,
@@ -136,17 +133,16 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
     style,
     timeout = duration.standard,
     ...other
-  } = props;
+  } = inProps;
 
   const ownerState = {
-    ...props,
+    ...inProps,
     orientation: 'vertical',
     collapsedSize: '0px',
   };
 
   const classes = useUtilityClasses(ownerState);
 
-  const theme = useTheme();
   const wrapperRef = React.useRef(null);
   const [wrapperHeight, setWrapperHeight] = React.useState(0);
   const [isEntered, setIsEntered] = React.useState(inProp);
