@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
 
 const BottomNavigation = React.forwardRef(function BottomNavigation(
   { children, onChange, showLabels = false, value, ...other },
@@ -34,41 +33,5 @@ const BottomNavigation = React.forwardRef(function BottomNavigation(
     </div>
   );
 });
-
-BottomNavigation.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * The content of the component.
-   */
-  children: PropTypes.node,
-  /**
-   * Callback fired when the value changes.
-   *
-   * @param {React.SyntheticEvent} event The event source of the callback. **Warning**: This is a generic event not a change event.
-   * @param {any} value We default to the index of the child.
-   */
-  onChange: PropTypes.func,
-  /**
-   * If `true`, all `BottomNavigationAction`s will show their labels.
-   * By default, only the selected `BottomNavigationAction` will show its label.
-   * @default false
-   */
-  showLabels: PropTypes.bool,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-  /**
-   * The value of the currently selected `BottomNavigationAction`.
-   */
-  value: PropTypes.any,
-};
 
 export default BottomNavigation;
