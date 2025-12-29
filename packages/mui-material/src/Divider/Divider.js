@@ -192,16 +192,16 @@ const Divider = React.forwardRef(function Divider(inProps, ref) {
     children,
     className,
     orientation = 'horizontal',
-    component = children || orientation === 'vertical' ? 'div' : 'hr',
-    role = component !== 'hr' ? 'separator' : undefined,
     textAlign = 'center',
     variant = 'fullWidth',
     ...other
   } = props;
 
+  const component = children || orientation === 'vertical' ? 'div' : 'hr';
+  const role = component !== 'hr' ? 'separator' : undefined;
+
   const ownerState = {
     ...props,
-    component,
     orientation,
     role,
     textAlign,
@@ -258,11 +258,6 @@ Divider.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   className: PropTypes.string,
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
   /**
    * The component orientation.
    * @default 'horizontal'
