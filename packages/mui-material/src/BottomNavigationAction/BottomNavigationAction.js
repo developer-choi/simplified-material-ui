@@ -1,15 +1,10 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import unsupportedProp from '../utils/unsupportedProp';
-import bottomNavigationActionClasses, {
-  getBottomNavigationActionUtilityClass,
-} from './bottomNavigationActionClasses';
 
 const BottomNavigationAction = React.forwardRef(function BottomNavigationAction(
   {
-    className,
     icon,
     label,
     onChange,
@@ -32,26 +27,12 @@ const BottomNavigationAction = React.forwardRef(function BottomNavigationAction(
     }
   };
 
-  const rootClasses = clsx(
-    getBottomNavigationActionUtilityClass('root'),
-    !showLabel && !selected && getBottomNavigationActionUtilityClass('iconOnly'),
-    selected && getBottomNavigationActionUtilityClass('selected'),
-    className,
-  );
-
-  const labelClasses = clsx(
-    getBottomNavigationActionUtilityClass('label'),
-    !showLabel && !selected && getBottomNavigationActionUtilityClass('iconOnly'),
-    selected && getBottomNavigationActionUtilityClass('selected'),
-  );
-
   // Determine padding based on showLabel and selected states
   const paddingTop = !showLabel && !selected ? (!label ? 0 : 14) : 6;
 
   return (
     <button
       ref={ref}
-      className={rootClasses}
       onClick={handleChange}
       style={{
         padding: `${paddingTop}px 12px 8px`,
@@ -70,7 +51,6 @@ const BottomNavigationAction = React.forwardRef(function BottomNavigationAction(
     >
       {icon}
       <span
-        className={labelClasses}
         style={{
           fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
           fontSize: selected ? 14 : 12,
@@ -93,14 +73,6 @@ BottomNavigationAction.propTypes /* remove-proptypes */ = {
    * Use the `component` prop if you need to change the children structure.
    */
   children: unsupportedProp,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
   /**
    * The icon to display.
    */

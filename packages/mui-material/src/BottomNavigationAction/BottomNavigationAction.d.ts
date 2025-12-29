@@ -17,10 +17,6 @@ export interface BottomNavigationActionOwnProps {
    */
   children?: React.ReactNode;
   /**
-   * Override or extend the styles applied to the component.
-   */
-  classes?: Partial<BottomNavigationActionClasses>;
-  /**
    * The icon to display.
    */
   icon?: React.ReactNode;
@@ -36,10 +32,6 @@ export interface BottomNavigationActionOwnProps {
    * The prop defaults to the value (`false`) inherited from the parent BottomNavigation component.
    */
   showLabel?: boolean;
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx?: SxProps<Theme>;
   /**
    * You can provide your own value. Otherwise, we fallback to the child position index.
    */

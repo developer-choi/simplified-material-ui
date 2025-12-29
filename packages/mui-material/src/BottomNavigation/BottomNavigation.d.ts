@@ -10,10 +10,6 @@ export interface BottomNavigationOwnProps {
    */
   children?: React.ReactNode;
   /**
-   * Override or extend the styles applied to the component.
-   */
-  classes?: Partial<BottomNavigationClasses>;
-  /**
    * Callback fired when the value changes.
    *
    * @param {React.SyntheticEvent} event The event source of the callback. **Warning**: This is a generic event not a change event.
@@ -26,10 +22,6 @@ export interface BottomNavigationOwnProps {
    * @default false
    */
   showLabels?: boolean;
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx?: SxProps<Theme>;
   /**
    * The value of the currently selected `BottomNavigationAction`.
    */

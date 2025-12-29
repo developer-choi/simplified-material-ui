@@ -1,16 +1,13 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { getBottomNavigationUtilityClass } from './bottomNavigationClasses';
 
 const BottomNavigation = React.forwardRef(function BottomNavigation(
-  { children, className, onChange, showLabels = false, value, ...other },
+  { children, onChange, showLabels = false, value, ...other },
   ref,
 ) {
   return (
     <div
-      className={clsx(getBottomNavigationUtilityClass('root'), className)}
       ref={ref}
       style={{
         display: 'flex',
@@ -47,14 +44,6 @@ BottomNavigation.propTypes /* remove-proptypes */ = {
    * The content of the component.
    */
   children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
   /**
    * Callback fired when the value changes.
    *
