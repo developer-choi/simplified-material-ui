@@ -9,7 +9,7 @@ import { useDefaultProps } from '../DefaultPropsProvider';
 import { getDividerUtilityClass } from './dividerClasses';
 
 const useUtilityClasses = (ownerState) => {
-  const { children, classes, flexItem, orientation, textAlign, variant } =
+  const { children, classes, orientation, textAlign, variant } =
     ownerState;
 
   const slots = {
@@ -17,7 +17,6 @@ const useUtilityClasses = (ownerState) => {
       'root',
       variant,
       orientation === 'vertical' && 'vertical',
-      flexItem && 'flexItem',
       children && 'withChildren',
       children && orientation === 'vertical' && 'withChildrenVertical',
       textAlign === 'right' && orientation !== 'vertical' && 'textAlignRight',
@@ -39,7 +38,6 @@ const DividerRoot = styled('div', {
       styles.root,
       styles[ownerState.variant],
       ownerState.orientation === 'vertical' && styles.vertical,
-      ownerState.flexItem && styles.flexItem,
       ownerState.children && styles.withChildren,
       ownerState.children && ownerState.orientation === 'vertical' && styles.withChildrenVertical,
       ownerState.textAlign === 'right' &&
@@ -95,15 +93,6 @@ const DividerRoot = styled('div', {
           height: '100%',
           borderBottomWidth: 0,
           borderRightWidth: 'thin',
-        },
-      },
-      {
-        props: {
-          flexItem: true,
-        },
-        style: {
-          alignSelf: 'stretch',
-          height: 'auto',
         },
       },
       {
@@ -204,7 +193,6 @@ const Divider = React.forwardRef(function Divider(inProps, ref) {
     className,
     orientation = 'horizontal',
     component = children || orientation === 'vertical' ? 'div' : 'hr',
-    flexItem = false,
     role = component !== 'hr' ? 'separator' : undefined,
     textAlign = 'center',
     variant = 'fullWidth',
@@ -214,7 +202,6 @@ const Divider = React.forwardRef(function Divider(inProps, ref) {
   const ownerState = {
     ...props,
     component,
-    flexItem,
     orientation,
     role,
     textAlign,
@@ -276,12 +263,6 @@ Divider.propTypes /* remove-proptypes */ = {
    * Either a string to use a HTML element or a component.
    */
   component: PropTypes.elementType,
-  /**
-   * If `true`, a vertical divider will have the correct height when used in flex container.
-   * (By default, a vertical divider will have a calculated height of `0px` if it is the child of a flex container.)
-   * @default false
-   */
-  flexItem: PropTypes.bool,
   /**
    * The component orientation.
    * @default 'horizontal'
