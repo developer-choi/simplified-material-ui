@@ -4,7 +4,6 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { Transition } from 'react-transition-group';
 import useTimeout from '@mui/utils/useTimeout';
-import elementTypeAcceptingRef from '@mui/utils/elementTypeAcceptingRef';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled, useTheme } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
@@ -12,7 +11,6 @@ import { useDefaultProps } from '../DefaultPropsProvider';
 import { duration } from '../styles/createTransitions';
 import { getTransitionProps } from '../transitions/utils';
 import { useForkRef } from '../utils';
-import useSlot from '../utils/useSlot';
 import { getCollapseUtilityClass } from './collapseClasses';
 
 const useUtilityClasses = (ownerState) => {
@@ -140,7 +138,6 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
     children,
     className,
     collapsedSize: collapsedSizeProp = '0px',
-    component,
     easing,
     in: inProp,
     onEnter,
@@ -150,8 +147,6 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
     onExited,
     onExiting,
     orientation = 'vertical',
-    slots = {},
-    slotProps = {},
     style,
     timeout = duration.standard,
     // eslint-disable-next-line react/prop-types
@@ -295,40 +290,6 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
     }
   };
 
-  const externalForwardedProps = {
-    slots,
-    slotProps,
-    component,
-  };
-
-  const [RootSlot, rootSlotProps] = useSlot('root', {
-    ref: handleRef,
-    className: clsx(classes.root, className),
-    elementType: CollapseRoot,
-    externalForwardedProps,
-    ownerState,
-    additionalProps: {
-      style: {
-        [isHorizontal ? 'minWidth' : 'minHeight']: collapsedSize,
-        ...style,
-      },
-    },
-  });
-
-  const [WrapperSlot, wrapperSlotProps] = useSlot('wrapper', {
-    ref: wrapperRef,
-    className: classes.wrapper,
-    elementType: CollapseWrapper,
-    externalForwardedProps,
-    ownerState,
-  });
-
-  const [WrapperInnerSlot, wrapperInnerSlotProps] = useSlot('wrapperInner', {
-    className: classes.wrapperInner,
-    elementType: CollapseWrapperInner,
-    externalForwardedProps,
-    ownerState,
-  });
 
   return (
     <TransitionComponent
@@ -348,21 +309,25 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
       {(state, { ownerState: incomingOwnerState, ...restChildProps }) => {
         const stateOwnerState = { ...ownerState, state };
         return (
-          <RootSlot
-            {...rootSlotProps}
-            className={clsx(rootSlotProps.className, {
+          <CollapseRoot
+            ref={handleRef}
+            className={clsx(classes.root, className, {
               [classes.entered]: state === 'entered',
               [classes.hidden]: state === 'exited' && !inProp && collapsedSize === '0px',
             })}
+            style={{
+              [isHorizontal ? 'minWidth' : 'minHeight']: collapsedSize,
+              ...style,
+            }}
             ownerState={stateOwnerState}
             {...restChildProps}
           >
-            <WrapperSlot {...wrapperSlotProps} ownerState={stateOwnerState}>
-              <WrapperInnerSlot {...wrapperInnerSlotProps} ownerState={stateOwnerState}>
+            <CollapseWrapper ref={wrapperRef} className={classes.wrapper} ownerState={stateOwnerState}>
+              <CollapseWrapperInner className={classes.wrapperInner} ownerState={stateOwnerState}>
                 {children}
-              </WrapperInnerSlot>
-            </WrapperSlot>
-          </RootSlot>
+              </CollapseWrapperInner>
+            </CollapseWrapper>
+          </CollapseRoot>
         );
       }}
     </TransitionComponent>
@@ -397,11 +362,6 @@ Collapse.propTypes /* remove-proptypes */ = {
    * @default '0px'
    */
   collapsedSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: elementTypeAcceptingRef,
   /**
    * The transition timing function.
    * You may specify a single easing or a object containing enter and exit values.
@@ -446,24 +406,6 @@ Collapse.propTypes /* remove-proptypes */ = {
    * @default 'vertical'
    */
   orientation: PropTypes.oneOf(['horizontal', 'vertical']),
-  /**
-   * The props used for each slot inside.
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    wrapper: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    wrapperInner: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * The components used for each slot inside.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    root: PropTypes.elementType,
-    wrapper: PropTypes.elementType,
-    wrapperInner: PropTypes.elementType,
-  }),
   /**
    * @ignore
    */
