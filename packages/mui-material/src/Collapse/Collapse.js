@@ -3,7 +3,6 @@ import * as React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import composeClasses from '@mui/utils/composeClasses';
-import { styled } from '../zero-styled';
 import { duration } from '../styles/createTransitions';
 import { getCollapseUtilityClass } from './collapseClasses';
 
@@ -21,104 +20,6 @@ const useUtilityClasses = (ownerState) => {
   return composeClasses(slots, getCollapseUtilityClass, classes);
 };
 
-const CollapseRoot = styled('div', {
-  name: 'MuiCollapse',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.root,
-      styles[ownerState.orientation],
-      ownerState.state === 'entered' && styles.entered,
-      ownerState.state === 'exited' &&
-        !ownerState.in &&
-        ownerState.collapsedSize === '0px' &&
-        styles.hidden,
-    ];
-  },
-})(
-  memoTheme(({ theme }) => ({
-    height: 0,
-    overflow: 'hidden',
-    transition: theme.transitions.create('height'),
-    variants: [
-      {
-        props: {
-          orientation: 'horizontal',
-        },
-        style: {
-          height: 'auto',
-          width: 0,
-          transition: theme.transitions.create('width'),
-        },
-      },
-      {
-        props: {
-          state: 'entered',
-        },
-        style: {
-          height: 'auto',
-          overflow: 'visible',
-        },
-      },
-      {
-        props: {
-          state: 'entered',
-          orientation: 'horizontal',
-        },
-        style: {
-          width: 'auto',
-        },
-      },
-      {
-        props: ({ ownerState }) =>
-          ownerState.state === 'exited' && !ownerState.in && ownerState.collapsedSize === '0px',
-        style: {
-          visibility: 'hidden',
-        },
-      },
-    ],
-  })),
-);
-
-const CollapseWrapper = styled('div', {
-  name: 'MuiCollapse',
-  slot: 'Wrapper',
-})({
-  // Hack to get children with a negative margin to not falsify the height computation.
-  display: 'flex',
-  width: '100%',
-  variants: [
-    {
-      props: {
-        orientation: 'horizontal',
-      },
-      style: {
-        width: 'auto',
-        height: '100%',
-      },
-    },
-  ],
-});
-
-const CollapseWrapperInner = styled('div', {
-  name: 'MuiCollapse',
-  slot: 'WrapperInner',
-})({
-  width: '100%',
-  variants: [
-    {
-      props: {
-        orientation: 'horizontal',
-      },
-      style: {
-        width: 'auto',
-        height: '100%',
-      },
-    },
-  ],
-});
 
 /**
  * The Collapse transition is used by the
@@ -162,10 +63,8 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
     }
   }, [inProp, timeout]);
 
-  const stateOwnerState = { ...ownerState, state: isEntered ? 'entered' : 'exited' };
-
   return (
-    <CollapseRoot
+    <div
       ref={ref}
       className={clsx(classes.root, className, {
         [classes.entered]: isEntered,
@@ -175,18 +74,30 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
         minHeight: '0px',
         height: inProp ? wrapperHeight : 0,
         transition: `height ${timeout}ms ease-in-out`,
-        overflow: 'hidden',
+        overflow: isEntered ? 'visible' : 'hidden',
+        visibility: !isEntered && !inProp ? 'hidden' : 'visible',
         ...style,
       }}
-      ownerState={stateOwnerState}
       {...other}
     >
-      <CollapseWrapper ref={wrapperRef} className={classes.wrapper} ownerState={stateOwnerState}>
-        <CollapseWrapperInner className={classes.wrapperInner} ownerState={stateOwnerState}>
+      <div
+        ref={wrapperRef}
+        className={classes.wrapper}
+        style={{
+          display: 'flex',
+          width: '100%',
+        }}
+      >
+        <div
+          className={classes.wrapperInner}
+          style={{
+            width: '100%',
+          }}
+        >
           {children}
-        </CollapseWrapperInner>
-      </CollapseWrapper>
-    </CollapseRoot>
+        </div>
+      </div>
+    </div>
   );
 });
 
