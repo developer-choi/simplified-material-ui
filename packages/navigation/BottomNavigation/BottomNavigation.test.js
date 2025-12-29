@@ -3,12 +3,12 @@ import { spy } from 'sinon';
 import { createRenderer, fireEvent, screen } from '@mui/internal-test-utils';
 import BottomNavigation, {
   bottomNavigationClasses as classes,
-} from '@mui/material/BottomNavigation';
+} from './index';
 import BottomNavigationAction, {
   bottomNavigationActionClasses as actionClasses,
 } from '@mui/material/BottomNavigationAction';
 import Icon from '@mui/material/Icon';
-import describeConformance from '../../test/describeConformance';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<BottomNavigation />', () => {
   const { render } = createRenderer();

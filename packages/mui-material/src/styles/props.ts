@@ -7,7 +7,7 @@ import { AvatarGroupProps } from '../AvatarGroup';
 import { BackdropProps } from '../Backdrop';
 import { BadgeProps } from '../../../data-display/Badge';
 import { BottomNavigationActionProps } from '../BottomNavigationAction';
-import { BottomNavigationProps } from '../BottomNavigation';
+import { BottomNavigationProps } from '../../../navigation/BottomNavigation';
 import { BreadcrumbsProps } from '../Breadcrumbs';
 import { ButtonBaseProps } from '../ButtonBase';
 import { ButtonGroupProps } from '../ButtonGroup';

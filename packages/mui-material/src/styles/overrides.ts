@@ -14,7 +14,7 @@ import { AvatarGroupClassKey } from '../AvatarGroup';
 import { BackdropClassKey } from '../Backdrop';
 import { BadgeClassKey } from '../../../data-display/Badge';
 import { BottomNavigationActionClassKey } from '../BottomNavigationAction';
-import { BottomNavigationClassKey } from '../BottomNavigation';
+import { BottomNavigationClassKey } from '../../../navigation/BottomNavigation';
 import { BreadcrumbsClassKey } from '../Breadcrumbs';
 import { ButtonBaseClassKey } from '../ButtonBase';
 import { ButtonClassKey } from '../Button';

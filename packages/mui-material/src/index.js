@@ -43,8 +43,8 @@ export * from './Backdrop';
 export { default as Badge } from '../../data-display/Badge';
 export * from '../../data-display/Badge';
 
-export { default as BottomNavigation } from './BottomNavigation';
-export * from './BottomNavigation';
+export { default as BottomNavigation } from '../../navigation/BottomNavigation';
+export * from '../../navigation/BottomNavigation';
 
 export { default as BottomNavigationAction } from './BottomNavigationAction';
 export * from './BottomNavigationAction';

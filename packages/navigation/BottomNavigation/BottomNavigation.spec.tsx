@@ -1,5 +1,5 @@
 import * as React from 'react';
-import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigation from './index';
 
 function testOnChange() {
   function handleBottomNavigationChange(event: React.SyntheticEvent, tabsValue: unknown) {}
