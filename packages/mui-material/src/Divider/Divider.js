@@ -1,29 +1,8 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { getDividerUtilityClass } from './dividerClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { children, classes, orientation, variant } =
-    ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      variant,
-      orientation === 'vertical' && 'vertical',
-      children && 'withChildren',
-      children && orientation === 'vertical' && 'withChildrenVertical',
-    ],
-    wrapper: ['wrapper', orientation === 'vertical' && 'wrapperVertical'],
-  };
-
-  return composeClasses(slots, getDividerUtilityClass, classes);
-};
 
 const DividerRoot = styled('div', {
   name: 'MuiDivider',
@@ -172,12 +151,10 @@ const Divider = React.forwardRef(function Divider(props, ref) {
     variant,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <DividerRoot
       as={component}
-      className={clsx(classes.root, className)}
+      className={className}
       role={role}
       ref={ref}
       ownerState={ownerState}
@@ -189,7 +166,7 @@ const Divider = React.forwardRef(function Divider(props, ref) {
       {...other}
     >
       {children ? (
-        <DividerWrapper className={classes.wrapper} ownerState={ownerState}>
+        <DividerWrapper ownerState={ownerState}>
           {children}
         </DividerWrapper>
       ) : null}
@@ -214,10 +191,6 @@ Divider.propTypes /* remove-proptypes */ = {
    * The content of the component.
    */
   children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
   /**
    * @ignore
    */
