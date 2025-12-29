@@ -135,7 +135,6 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
   const {
     children,
     className,
-    collapsedSize: collapsedSizeProp = '0px',
     in: inProp,
     style,
     timeout = duration.standard,
@@ -147,15 +146,14 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
   const ownerState = {
     ...props,
     orientation: 'vertical',
-    collapsedSize: collapsedSizeProp,
+    collapsedSize: '0px',
   };
 
   const classes = useUtilityClasses(ownerState);
 
   const theme = useTheme();
   const wrapperRef = React.useRef(null);
-  const collapsedSize =
-    typeof collapsedSizeProp === 'number' ? `${collapsedSizeProp}px` : collapsedSizeProp;
+  const collapsedSize = '0px';
   const size = 'height';
 
   const nodeRef = React.useRef(null);
@@ -236,10 +234,10 @@ const Collapse = React.forwardRef(function Collapse(inProps, ref) {
             ref={handleRef}
             className={clsx(classes.root, className, {
               [classes.entered]: state === 'entered',
-              [classes.hidden]: state === 'exited' && !inProp && collapsedSize === '0px',
+              [classes.hidden]: state === 'exited' && !inProp,
             })}
             style={{
-              minHeight: collapsedSize,
+              minHeight: '0px',
               ...style,
             }}
             ownerState={stateOwnerState}
@@ -274,11 +272,6 @@ Collapse.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   className: PropTypes.string,
-  /**
-   * The width (horizontal) or height (vertical) of the container when collapsed.
-   * @default '0px'
-   */
-  collapsedSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   /**
    * If `true`, the component will transition in.
    */
