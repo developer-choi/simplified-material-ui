@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import CancelIcon from '../internal/svg-icons/Cancel';
-import useForkRef from '../utils/useForkRef';
 import unsupportedProp from '../utils/unsupportedProp';
 import capitalize from '../utils/capitalize';
 import ButtonBase from '../ButtonBase';
@@ -217,9 +216,6 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
     ...other
   } = props;
 
-  const chipRef = React.useRef(null);
-  const handleRef = useForkRef(chipRef, ref);
-
   const handleDeleteIconClick = (event) => {
     // Stop the event from bubbling up to the `Chip`
     event.stopPropagation();
@@ -303,7 +299,7 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
   return (
     <ChipRoot
       as={component}
-      ref={handleRef}
+      ref={ref}
       className={clsx(classes.root, className)}
       onClick={onClick}
       onKeyDown={handleKeyDown}
