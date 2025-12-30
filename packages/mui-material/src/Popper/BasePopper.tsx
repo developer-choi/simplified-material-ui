@@ -76,7 +76,6 @@ const PopperTooltip = React.forwardRef<HTMLDivElement, PopperTooltipProps>(funct
     anchorEl,
     children,
     direction,
-    disablePortal,
     modifiers,
     open,
     placement: initialPlacement,
@@ -158,15 +157,9 @@ const PopperTooltip = React.forwardRef<HTMLDivElement, PopperTooltipProps>(funct
     let popperModifiers: Partial<Modifier<any, any>>[] = [
       {
         name: 'preventOverflow',
-        options: {
-          altBoundary: disablePortal,
-        },
       },
       {
         name: 'flip',
-        options: {
-          altBoundary: disablePortal,
-        },
       },
       {
         name: 'onUpdate',
@@ -225,9 +218,7 @@ const Popper = React.forwardRef<HTMLDivElement, PopperProps>(function Popper(
   const {
     anchorEl,
     children,
-    container: containerProp,
     direction = 'ltr',
-    disablePortal = false,
     modifiers,
     open,
     placement = 'bottom',
@@ -241,26 +232,11 @@ const Popper = React.forwardRef<HTMLDivElement, PopperProps>(function Popper(
     return null;
   }
 
-  // If the container prop is provided, use that
-  // If the anchorEl prop is provided, use its parent body element as the container
-  // If neither are provided let the Modal take care of choosing the container
-  let container;
-  if (containerProp) {
-    container = containerProp;
-  } else if (anchorEl) {
-    const resolvedAnchorEl = resolveAnchorEl(anchorEl);
-    container =
-      resolvedAnchorEl && isHTMLElement(resolvedAnchorEl)
-        ? ownerDocument(resolvedAnchorEl).body
-        : ownerDocument(null).body;
-  }
-
   return (
-    <Portal disablePortal={disablePortal} container={container}>
+    <Portal>
       <PopperTooltip
         anchorEl={anchorEl}
         direction={direction}
-        disablePortal={disablePortal}
         modifiers={modifiers}
         ref={forwardedRef}
         open={open}
@@ -350,29 +326,10 @@ Popper.propTypes /* remove-proptypes */ = {
     PropTypes.func,
   ]),
   /**
-   * An HTML element or function that returns one.
-   * The `container` will have the portal children appended to it.
-   *
-   * You can also provide a callback, which is called in a React layout effect.
-   * This lets you set the container from a ref, and also makes server-side rendering possible.
-   *
-   * By default, it uses the body of the top-level document object,
-   * so it's simply `document.body` most of the time.
-   */
-  container: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    HTMLElementType,
-    PropTypes.func,
-  ]),
-  /**
    * Direction of the text.
    * @default 'ltr'
    */
   direction: PropTypes.oneOf(['ltr', 'rtl']),
-  /**
-   * The `children` will be under the DOM hierarchy of the parent component.
-   * @default false
-   */
-  disablePortal: PropTypes.bool,
   /**
    * Popper.js is based on a "plugin-like" architecture,
    * most of its features are fully encapsulated "modifiers".
