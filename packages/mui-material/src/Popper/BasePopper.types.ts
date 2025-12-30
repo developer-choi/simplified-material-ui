@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Instance, Options, OptionsGeneric, VirtualElement } from '@popperjs/core';
+import { Instance, Options, OptionsGeneric } from '@popperjs/core';
 
 export type PopperPlacementType = Options['placement'];
 
@@ -9,12 +9,10 @@ export interface PopperChildrenProps {
 
 export interface PopperOwnProps {
   /**
-   * An HTML element, [virtualElement](https://popper.js.org/docs/v2/virtual-elements/),
-   * or a function that returns either.
+   * An HTML element or a function that returns one.
    * It's used to set the position of the popper.
-   * The return value will passed as the reference object of the Popper instance.
    */
-  anchorEl?: null | VirtualElement | HTMLElement | (() => HTMLElement) | (() => VirtualElement);
+  anchorEl?: null | HTMLElement | (() => HTMLElement);
   /**
    * Popper render function or node.
    */

@@ -3,10 +3,9 @@ import * as React from 'react';
 import ownerDocument from '@mui/utils/ownerDocument';
 import useEnhancedEffect from '@mui/utils/useEnhancedEffect';
 import useForkRef from '@mui/utils/useForkRef';
-import chainPropTypes from '@mui/utils/chainPropTypes';
 import HTMLElementType from '@mui/utils/HTMLElementType';
 import refType from '@mui/utils/refType';
-import { createPopper, Instance, Modifier, Placement, State, VirtualElement } from '@popperjs/core';
+import { createPopper, Instance, Modifier, Placement, State } from '@popperjs/core';
 import PropTypes from 'prop-types';
 import composeClasses from '@mui/utils/composeClasses';
 import Portal from '../../../modal/Portal';
@@ -19,23 +18,9 @@ import {
 } from './BasePopper.types';
 
 function resolveAnchorEl(
-  anchorEl:
-    | VirtualElement
-    | (() => VirtualElement)
-    | HTMLElement
-    | (() => HTMLElement)
-    | null
-    | undefined,
-): HTMLElement | VirtualElement | null | undefined {
+  anchorEl: HTMLElement | (() => HTMLElement) | null | undefined,
+): HTMLElement | null | undefined {
   return typeof anchorEl === 'function' ? anchorEl() : anchorEl;
-}
-
-function isHTMLElement(element: HTMLElement | VirtualElement): element is HTMLElement {
-  return (element as HTMLElement).nodeType !== undefined;
-}
-
-function isVirtualElement(element: HTMLElement | VirtualElement): element is VirtualElement {
-  return !isHTMLElement(element);
 }
 
 const useUtilityClasses = (ownerState: any) => {
@@ -83,7 +68,7 @@ const PopperTooltip = React.forwardRef<HTMLDivElement, PopperTooltipProps>(funct
    */
   const [placement, setPlacement] = React.useState<Placement | undefined>(initialPlacement);
   const [resolvedAnchorElement, setResolvedAnchorElement] = React.useState<
-    HTMLElement | VirtualElement | null | undefined
+    HTMLElement | null | undefined
   >(resolveAnchorEl(anchorEl));
 
   React.useEffect(() => {
@@ -106,32 +91,6 @@ const PopperTooltip = React.forwardRef<HTMLDivElement, PopperTooltipProps>(funct
     const handlePopperUpdate = (data: State) => {
       setPlacement(data.placement);
     };
-
-    if (process.env.NODE_ENV !== 'production') {
-      if (
-        resolvedAnchorElement &&
-        isHTMLElement(resolvedAnchorElement) &&
-        resolvedAnchorElement.nodeType === 1
-      ) {
-        const box = resolvedAnchorElement.getBoundingClientRect();
-
-        if (
-          process.env.NODE_ENV !== 'test' &&
-          box.top === 0 &&
-          box.left === 0 &&
-          box.right === 0 &&
-          box.bottom === 0
-        ) {
-          console.warn(
-            [
-              'MUI: The `anchorEl` prop provided to the component is invalid.',
-              'The anchor element should be part of the document layout.',
-              "Make sure the element is present in the document or that it's not display none.",
-            ].join('\n'),
-          );
-        }
-      }
-    }
 
     let popperModifiers: Partial<Modifier<any, any>>[] = [
       {
@@ -242,59 +201,10 @@ Popper.propTypes /* remove-proptypes */ = {
   // │ To update them, edit the TypeScript types and run `pnpm proptypes`. │
   // └─────────────────────────────────────────────────────────────────────┘
   /**
-   * An HTML element, [virtualElement](https://popper.js.org/docs/v2/virtual-elements/),
-   * or a function that returns either.
+   * An HTML element or a function that returns one.
    * It's used to set the position of the popper.
-   * The return value will passed as the reference object of the Popper instance.
    */
-  anchorEl: chainPropTypes(
-    PropTypes.oneOfType([HTMLElementType, PropTypes.object, PropTypes.func]),
-    (props) => {
-      if (props.open) {
-        const resolvedAnchorEl = resolveAnchorEl(props.anchorEl);
-
-        if (
-          resolvedAnchorEl &&
-          isHTMLElement(resolvedAnchorEl) &&
-          resolvedAnchorEl.nodeType === 1
-        ) {
-          const box = resolvedAnchorEl.getBoundingClientRect();
-
-          if (
-            process.env.NODE_ENV !== 'test' &&
-            box.top === 0 &&
-            box.left === 0 &&
-            box.right === 0 &&
-            box.bottom === 0
-          ) {
-            return new Error(
-              [
-                'MUI: The `anchorEl` prop provided to the component is invalid.',
-                'The anchor element should be part of the document layout.',
-                "Make sure the element is present in the document or that it's not display none.",
-              ].join('\n'),
-            );
-          }
-        } else if (
-          !resolvedAnchorEl ||
-          typeof resolvedAnchorEl.getBoundingClientRect !== 'function' ||
-          (isVirtualElement(resolvedAnchorEl) &&
-            resolvedAnchorEl.contextElement != null &&
-            resolvedAnchorEl.contextElement.nodeType !== 1)
-        ) {
-          return new Error(
-            [
-              'MUI: The `anchorEl` prop provided to the component is invalid.',
-              'It should be an HTML element instance or a virtualElement ',
-              '(https://popper.js.org/docs/v2/virtual-elements/).',
-            ].join('\n'),
-          );
-        }
-      }
-
-      return null;
-    },
-  ),
+  anchorEl: PropTypes.oneOfType([HTMLElementType, PropTypes.func]),
   /**
    * Popper render function or node.
    */
