@@ -211,7 +211,6 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
     avatar: avatarProp,
     className,
     clickable: clickableProp,
-    deleteIcon: deleteIconProp,
     disabled = false,
     icon: iconProp,
     label,
@@ -290,15 +289,7 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
 
   let deleteIcon = null;
   if (onDelete) {
-    deleteIcon =
-      deleteIconProp && React.isValidElement(deleteIconProp) ? (
-        React.cloneElement(deleteIconProp, {
-          className: clsx(deleteIconProp.props.className, classes.deleteIcon),
-          onClick: handleDeleteIconClick,
-        })
-      ) : (
-        <CancelIcon className={classes.deleteIcon} onClick={handleDeleteIconClick} />
-      );
+    deleteIcon = <CancelIcon className={classes.deleteIcon} onClick={handleDeleteIconClick} />;
   }
 
   let avatar = null;
@@ -378,10 +369,6 @@ Chip.propTypes /* remove-proptypes */ = {
    * Note: this controls the UI and does not affect the onClick event.
    */
   clickable: PropTypes.bool,
-  /**
-   * Override the default delete icon element. Shown only if `onDelete` is set.
-   */
-  deleteIcon: PropTypes.element,
   /**
    * If `true`, the component is disabled.
    * @default false
