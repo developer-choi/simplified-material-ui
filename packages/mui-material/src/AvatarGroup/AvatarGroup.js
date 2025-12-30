@@ -1,35 +1,13 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import chainPropTypes from '@mui/utils/chainPropTypes';
-import { styled } from '../zero-styled';
-import Avatar, { avatarClasses } from '../../../data-display/Avatar';
-import avatarGroupClasses from './avatarGroupClasses';
+import Avatar from '../../../data-display/Avatar';
 
 const SPACINGS = {
   small: -16,
   medium: -8,
 };
-
-const AvatarGroupRoot = styled('div', {
-  name: 'MuiAvatarGroup',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    return [{ [`& .${avatarGroupClasses.avatar}`]: styles.avatar }, styles.root];
-  },
-})({
-  display: 'flex',
-  flexDirection: 'row-reverse',
-  [`& .${avatarClasses.root}`]: {
-    border: '2px solid #ffffff',
-    boxSizing: 'content-box',
-    marginLeft: 'var(--AvatarGroup-spacing, -8px)',
-    '&:last-child': {
-      marginLeft: 0,
-    },
-  },
-});
 
 const AvatarGroup = React.forwardRef(function AvatarGroup(props, ref) {
   const {
@@ -42,13 +20,6 @@ const AvatarGroup = React.forwardRef(function AvatarGroup(props, ref) {
     ...other
   } = props;
   let clampedMax = max < 2 ? 2 : max;
-
-  const ownerState = {
-    ...props,
-    max,
-    spacing,
-    variant,
-  };
 
   const children = React.Children.toArray(childrenProp).filter((child) => {
     return React.isValidElement(child);
@@ -68,35 +39,47 @@ const AvatarGroup = React.forwardRef(function AvatarGroup(props, ref) {
 
   let marginValue;
 
-  if (ownerState.spacing && SPACINGS[ownerState.spacing] !== undefined) {
-    marginValue = SPACINGS[ownerState.spacing];
-  } else if (ownerState.spacing === 0) {
+  if (spacing && SPACINGS[spacing] !== undefined) {
+    marginValue = SPACINGS[spacing];
+  } else if (spacing === 0) {
     marginValue = 0;
   } else {
-    marginValue = -ownerState.spacing || SPACINGS.medium;
+    marginValue = -spacing || SPACINGS.medium;
   }
 
+  const rootStyle = {
+    display: 'flex',
+    flexDirection: 'row-reverse',
+    ...other.style,
+  };
+
+  const avatarStyle = {
+    border: '2px solid #ffffff',
+    boxSizing: 'content-box',
+    marginLeft: `${marginValue}px`,
+  };
+
   return (
-    <AvatarGroupRoot
-      ownerState={ownerState}
-      className={className}
-      ref={ref}
-      {...other}
-      style={{
-        '--AvatarGroup-spacing': `${marginValue}px`, // marginValue is always defined
-        ...other.style,
-      }}
-    >
-      {extraAvatars ? <Avatar variant={variant}>{extraAvatarsElement}</Avatar> : null}
+    <div ref={ref} className={className} style={rootStyle} {...other}>
+      {extraAvatars ? (
+        <Avatar variant={variant} style={avatarStyle}>
+          {extraAvatarsElement}
+        </Avatar>
+      ) : null}
       {children
         .slice(0, maxAvatars)
         .reverse()
-        .map((child) => {
+        .map((child, index) => {
           return React.cloneElement(child, {
             variant: child.props.variant || variant,
+            style: {
+              ...avatarStyle,
+              ...(index === children.length - 1 ? { marginLeft: 0 } : {}),
+              ...child.props.style,
+            },
           });
         })}
-    </AvatarGroupRoot>
+    </div>
   );
 });
 
