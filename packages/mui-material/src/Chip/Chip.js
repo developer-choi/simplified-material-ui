@@ -13,7 +13,6 @@ import memoTheme from '../utils/memoTheme';
 import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import chipClasses, { getChipUtilityClass } from './chipClasses';
-import useSlot from '../utils/useSlot';
 
 const useUtilityClasses = (ownerState) => {
   const { classes, disabled, size, color, iconColor, onDelete, clickable, variant } = ownerState;
@@ -385,8 +384,6 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
     variant = 'filled',
     tabIndex,
     skipFocusWhenDisabled = false, // TODO v6: Rename to `focusableWhenDisabled`.
-    slots = {},
-    slotProps = {},
     ...other
   } = props;
 
@@ -490,57 +487,26 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
     }
   }
 
-  const externalForwardedProps = {
-    slots,
-    slotProps,
-  };
-
-  const [RootSlot, rootProps] = useSlot('root', {
-    elementType: ChipRoot,
-    externalForwardedProps: {
-      ...externalForwardedProps,
-      ...other,
-    },
-    ownerState,
-    // The `component` prop is preserved because `Chip` relies on it for internal logic. If `shouldForwardComponentProp` were `false`, `useSlot` would remove the `component` prop, potentially breaking the component's behavior.
-    shouldForwardComponentProp: true,
-    ref: handleRef,
-    className: clsx(classes.root, className),
-    additionalProps: {
-      disabled: clickable && disabled ? true : undefined,
-      tabIndex: skipFocusWhenDisabled && disabled ? -1 : tabIndex,
-      ...moreProps,
-    },
-    getSlotProps: (handlers) => ({
-      ...handlers,
-      onClick: (event) => {
-        handlers.onClick?.(event);
-        onClick?.(event);
-      },
-      onKeyDown: (event) => {
-        handlers.onKeyDown?.(event);
-        handleKeyDown(event);
-      },
-      onKeyUp: (event) => {
-        handlers.onKeyUp?.(event);
-        handleKeyUp(event);
-      },
-    }),
-  });
-
-  const [LabelSlot, labelProps] = useSlot('label', {
-    elementType: ChipLabel,
-    externalForwardedProps,
-    ownerState,
-    className: classes.label,
-  });
-
   return (
-    <RootSlot as={component} {...rootProps}>
+    <ChipRoot
+      as={component}
+      ref={handleRef}
+      className={clsx(classes.root, className)}
+      disabled={clickable && disabled ? true : undefined}
+      tabIndex={skipFocusWhenDisabled && disabled ? -1 : tabIndex}
+      onClick={onClick}
+      onKeyDown={handleKeyDown}
+      onKeyUp={handleKeyUp}
+      ownerState={ownerState}
+      {...moreProps}
+      {...other}
+    >
       {avatar || icon}
-      <LabelSlot {...labelProps}>{label}</LabelSlot>
+      <ChipLabel className={classes.label} ownerState={ownerState}>
+        {label}
+      </ChipLabel>
       {deleteIcon}
-    </RootSlot>
+    </ChipRoot>
   );
 });
 
@@ -638,22 +604,6 @@ Chip.propTypes /* remove-proptypes */ = {
    * @default false
    */
   skipFocusWhenDisabled: PropTypes.bool,
-  /**
-   * The props used for each slot inside.
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    label: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * The components used for each slot inside.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    label: PropTypes.elementType,
-    root: PropTypes.elementType,
-  }),
   /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
