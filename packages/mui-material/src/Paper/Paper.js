@@ -3,7 +3,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import integerPropType from '@mui/utils/integerPropType';
 import chainPropTypes from '@mui/utils/chainPropTypes';
-import { styled } from '../zero-styled';
 
 // Hardcoded shadows for elevation 0-8
 const SHADOWS = [
@@ -18,52 +17,30 @@ const SHADOWS = [
   '0px 5px 5px -3px rgba(0,0,0,0.2),0px 8px 10px 1px rgba(0,0,0,0.14),0px 3px 14px 2px rgba(0,0,0,0.12)',
 ];
 
-const PaperRoot = styled('div', {
-  name: 'MuiPaper',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.root,
-      styles.elevation,
-      styles.rounded,
-      styles[`elevation${ownerState.elevation}`],
-    ];
-  },
-})({
-  backgroundColor: '#fff',
-  color: 'rgba(0, 0, 0, 0.87)',
-  borderRadius: 4,
-  boxShadow: 'var(--Paper-shadow)',
-});
-
 const Paper = React.forwardRef(function Paper(props, ref) {
   const {
+    children,
     className,
     elevation = 1,
+    style,
     ...other
   } = props;
 
   // Limit elevation to 0-8
   const validElevation = Math.min(Math.max(0, elevation), 8);
 
-  const ownerState = {
-    ...props,
-    elevation: validElevation,
+  const rootStyle = {
+    backgroundColor: '#fff',
+    color: 'rgba(0, 0, 0, 0.87)',
+    borderRadius: 4,
+    boxShadow: SHADOWS[validElevation],
+    ...style,
   };
 
   return (
-    <PaperRoot
-      ownerState={ownerState}
-      className={className}
-      ref={ref}
-      {...other}
-      style={{
-        '--Paper-shadow': SHADOWS[validElevation],
-        ...other.style,
-      }}
-    />
+    <div ref={ref} className={className} style={rootStyle} {...other}>
+      {children}
+    </div>
   );
 });
 
