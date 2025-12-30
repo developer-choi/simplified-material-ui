@@ -1,8 +1,5 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import integerPropType from '@mui/utils/integerPropType';
-import chainPropTypes from '@mui/utils/chainPropTypes';
 
 // Hardcoded shadows for elevation 0-8
 const SHADOWS = [
@@ -43,69 +40,5 @@ const Paper = React.forwardRef(function Paper(props, ref) {
     </div>
   );
 });
-
-Paper.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * The content of the component.
-   */
-  children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
-  /**
-   * Shadow depth, corresponds to `dp` in the spec.
-   * It accepts values between 0 and 24 inclusive.
-   * @default 1
-   */
-  elevation: chainPropTypes(integerPropType, (props) => {
-    const { elevation, variant } = props;
-    if (elevation > 0 && variant === 'outlined') {
-      return new Error(
-        `MUI: Combining \`elevation={${elevation}}\` with \`variant="${variant}"\` has no effect. Either use \`elevation={0}\` or use a different \`variant\`.`,
-      );
-    }
-
-    return null;
-  }),
-  /**
-   * If `true`, rounded corners are disabled.
-   * @default false
-   */
-  square: PropTypes.bool,
-  /**
-   * @ignore
-   */
-  style: PropTypes.object,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-  /**
-   * The variant to use.
-   * @default 'elevation'
-   */
-  variant: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['elevation', 'outlined']),
-    PropTypes.string,
-  ]),
-};
 
 export default Paper;
