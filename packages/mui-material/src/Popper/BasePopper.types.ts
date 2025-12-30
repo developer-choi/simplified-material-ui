@@ -42,13 +42,6 @@ export interface PopperOwnProps {
    */
   disablePortal?: PortalProps['disablePortal'];
   /**
-   * Always keep the children in the DOM.
-   * This prop can be useful in SEO situation or
-   * when you want to maximize the responsiveness of the Popper.
-   * @default false
-   */
-  keepMounted?: boolean;
-  /**
    * Popper.js is based on a "plugin-like" architecture,
    * most of its features are fully encapsulated "modifiers".
    *
@@ -82,9 +75,6 @@ export type PopperOwnerState = PopperOwnProps;
 
 export type PopperProps = PopperOwnProps;
 
-export type PopperTooltipOwnProps = Omit<
-  PopperOwnProps,
-  'container' | 'keepMounted' | 'transition'
->;
+export type PopperTooltipOwnProps = Omit<PopperOwnProps, 'container'>;
 
 export type PopperTooltipProps = PopperTooltipOwnProps;

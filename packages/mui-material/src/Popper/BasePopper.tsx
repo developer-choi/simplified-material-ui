@@ -228,7 +228,6 @@ const Popper = React.forwardRef<HTMLDivElement, PopperProps>(function Popper(
     container: containerProp,
     direction = 'ltr',
     disablePortal = false,
-    keepMounted = false,
     modifiers,
     open,
     placement = 'bottom',
@@ -238,7 +237,7 @@ const Popper = React.forwardRef<HTMLDivElement, PopperProps>(function Popper(
     ...other
   } = props;
 
-  if (!keepMounted && !open) {
+  if (!open) {
     return null;
   }
 
@@ -255,7 +254,6 @@ const Popper = React.forwardRef<HTMLDivElement, PopperProps>(function Popper(
         ? ownerDocument(resolvedAnchorEl).body
         : ownerDocument(null).body;
   }
-  const display = !open && keepMounted ? 'none' : undefined;
 
   return (
     <Portal disablePortal={disablePortal} container={container}>
@@ -276,7 +274,6 @@ const Popper = React.forwardRef<HTMLDivElement, PopperProps>(function Popper(
           // Fix Popper.js display issue
           top: 0,
           left: 0,
-          display,
           ...style,
         }}
       >
@@ -376,13 +373,6 @@ Popper.propTypes /* remove-proptypes */ = {
    * @default false
    */
   disablePortal: PropTypes.bool,
-  /**
-   * Always keep the children in the DOM.
-   * This prop can be useful in SEO situation or
-   * when you want to maximize the responsiveness of the Popper.
-   * @default false
-   */
-  keepMounted: PropTypes.bool,
   /**
    * Popper.js is based on a "plugin-like" architecture,
    * most of its features are fully encapsulated "modifiers".

@@ -49,7 +49,6 @@ const Popper = React.forwardRef(function Popper(
     anchorEl,
     container,
     disablePortal,
-    keepMounted,
     modifiers,
     open,
     placement,
@@ -62,7 +61,6 @@ const Popper = React.forwardRef(function Popper(
     anchorEl,
     container,
     disablePortal,
-    keepMounted,
     modifiers,
     open,
     placement,
@@ -121,13 +119,6 @@ Popper.propTypes /* remove-proptypes */ = {
    * @default false
    */
   disablePortal: PropTypes.bool,
-  /**
-   * Always keep the children in the DOM.
-   * This prop can be useful in SEO situation or
-   * when you want to maximize the responsiveness of the Popper.
-   * @default false
-   */
-  keepMounted: PropTypes.bool,
   /**
    * Popper.js is based on a "plugin-like" architecture,
    * most of its features are fully encapsulated "modifiers".
