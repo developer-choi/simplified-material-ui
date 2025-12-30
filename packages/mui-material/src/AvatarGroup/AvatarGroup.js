@@ -9,7 +9,6 @@ import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import Avatar, { avatarClasses } from '../../../data-display/Avatar';
 import avatarGroupClasses, { getAvatarGroupUtilityClass } from './avatarGroupClasses';
-import useSlot from '../utils/useSlot';
 
 const SPACINGS = {
   small: -16,
@@ -58,8 +57,6 @@ const AvatarGroup = React.forwardRef(function AvatarGroup(inProps, ref) {
     children: childrenProp,
     className,
     max = 5,
-    slotProps = {},
-    slots = {},
     spacing = 'medium',
     total,
     variant = 'circular',
@@ -102,24 +99,6 @@ const AvatarGroup = React.forwardRef(function AvatarGroup(inProps, ref) {
     marginValue = -ownerState.spacing || SPACINGS.medium;
   }
 
-  const externalForwardedProps = {
-    slots,
-    slotProps: {
-      surplus: slotProps.additionalAvatar,
-      ...slotProps,
-    },
-  };
-
-  const [SurplusSlot, surplusProps] = useSlot('surplus', {
-    elementType: Avatar,
-    externalForwardedProps,
-    className: classes.avatar,
-    ownerState,
-    additionalProps: {
-      variant,
-    },
-  });
-
   return (
     <AvatarGroupRoot
       ownerState={ownerState}
@@ -131,7 +110,7 @@ const AvatarGroup = React.forwardRef(function AvatarGroup(inProps, ref) {
         ...other.style,
       }}
     >
-      {extraAvatars ? <SurplusSlot {...surplusProps}>{extraAvatarsElement}</SurplusSlot> : null}
+      {extraAvatars ? <Avatar variant={variant} className={classes.avatar}>{extraAvatarsElement}</Avatar> : null}
       {children
         .slice(0, maxAvatars)
         .reverse()
@@ -177,21 +156,6 @@ AvatarGroup.propTypes /* remove-proptypes */ = {
     }
 
     return null;
-  }),
-  /**
-   * The props used for each slot inside.
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    additionalAvatar: PropTypes.object,
-    surplus: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * The components used for each slot inside.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    surplus: PropTypes.elementType,
   }),
   /**
    * Spacing between avatars.
