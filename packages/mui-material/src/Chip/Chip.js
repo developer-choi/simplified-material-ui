@@ -1,17 +1,12 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import CancelIcon from '../internal/svg-icons/Cancel';
-import unsupportedProp from '../utils/unsupportedProp';
 import ButtonBase from '../ButtonBase';
 
 function isDeleteKeyboardEvent(keyboardEvent) {
   return keyboardEvent.key === 'Backspace' || keyboardEvent.key === 'Delete';
 }
 
-/**
- * Chips represent complex entities in small blocks, such as a contact.
- */
 const Chip = React.forwardRef(function Chip(props, ref) {
   const {
     avatar: avatarProp,
@@ -159,54 +154,5 @@ const Chip = React.forwardRef(function Chip(props, ref) {
     </Component>
   );
 });
-
-Chip.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * The Avatar element to display.
-   */
-  avatar: PropTypes.element,
-  /**
-   * This prop isn't supported.
-   * Use the `component` prop if you need to change the children structure.
-   */
-  children: unsupportedProp,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * Icon element.
-   */
-  icon: PropTypes.element,
-  /**
-   * The content of the component.
-   */
-  label: PropTypes.node,
-  /**
-   * @ignore
-   */
-  onClick: PropTypes.func,
-  /**
-   * Callback fired when the delete icon is clicked.
-   * If set, the delete icon will be shown.
-   */
-  onDelete: PropTypes.func,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-};
 
 export default Chip;
