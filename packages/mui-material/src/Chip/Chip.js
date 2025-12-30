@@ -2,44 +2,12 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import CancelIcon from '../internal/svg-icons/Cancel';
 import unsupportedProp from '../utils/unsupportedProp';
-import capitalize from '../utils/capitalize';
 import ButtonBase from '../ButtonBase';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import chipClasses, { getChipUtilityClass } from './chipClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, disabled, size, color, iconColor, onDelete, clickable, variant } = ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      variant,
-      disabled && 'disabled',
-      `size${capitalize(size)}`,
-      `color${capitalize(color)}`,
-      clickable && 'clickable',
-      clickable && `clickableColor${capitalize(color)}`,
-      onDelete && 'deletable',
-      onDelete && `deletableColor${capitalize(color)}`,
-      `${variant}${capitalize(color)}`,
-    ],
-    label: ['label', `label${capitalize(size)}`],
-    avatar: ['avatar', `avatar${capitalize(size)}`, `avatarColor${capitalize(color)}`],
-    icon: ['icon', `icon${capitalize(size)}`, `iconColor${capitalize(iconColor)}`],
-    deleteIcon: [
-      'deleteIcon',
-      `deleteIcon${capitalize(size)}`,
-      `deleteIconColor${capitalize(color)}`,
-      `deleteIcon${capitalize(variant)}Color${capitalize(color)}`,
-    ],
-  };
-
-  return composeClasses(slots, getChipUtilityClass, classes);
-};
+import chipClasses from './chipClasses';
 
 const ChipRoot = styled('div', {
   name: 'MuiChip',
@@ -255,33 +223,30 @@ const Chip = React.forwardRef(function Chip(props, ref) {
     variant: 'filled',
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   const moreProps =
     component === ButtonBase
       ? {
           component: 'div',
-          focusVisibleClassName: classes.focusVisible,
           ...(onDelete && { disableRipple: true }),
         }
       : {};
 
   let deleteIcon = null;
   if (onDelete) {
-    deleteIcon = <CancelIcon className={classes.deleteIcon} onClick={handleDeleteIconClick} />;
+    deleteIcon = <CancelIcon onClick={handleDeleteIconClick} />;
   }
 
   let avatar = null;
   if (avatarProp && React.isValidElement(avatarProp)) {
     avatar = React.cloneElement(avatarProp, {
-      className: clsx(classes.avatar, avatarProp.props.className),
+      className: avatarProp.props.className,
     });
   }
 
   let icon = null;
   if (iconProp && React.isValidElement(iconProp)) {
     icon = React.cloneElement(iconProp, {
-      className: clsx(classes.icon, iconProp.props.className),
+      className: iconProp.props.className,
     });
   }
 
@@ -298,7 +263,7 @@ const Chip = React.forwardRef(function Chip(props, ref) {
     <ChipRoot
       as={component}
       ref={ref}
-      className={clsx(classes.root, className)}
+      className={className}
       onClick={onClick}
       onKeyDown={handleKeyDown}
       onKeyUp={handleKeyUp}
@@ -307,7 +272,7 @@ const Chip = React.forwardRef(function Chip(props, ref) {
       {...other}
     >
       {avatar || icon}
-      <ChipLabel className={classes.label} ownerState={ownerState}>
+      <ChipLabel ownerState={ownerState}>
         {label}
       </ChipLabel>
       {deleteIcon}
