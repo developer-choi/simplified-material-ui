@@ -371,7 +371,6 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
     className,
     clickable: clickableProp,
     color = 'default',
-    component: ComponentProp,
     deleteIcon: deleteIconProp,
     disabled = false,
     icon: iconProp,
@@ -426,7 +425,7 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
 
   const clickable = clickableProp !== false && onClick ? true : clickableProp;
 
-  const component = clickable || onDelete ? ButtonBase : ComponentProp || 'div';
+  const component = clickable || onDelete ? ButtonBase : 'div';
 
   const ownerState = {
     ...props,
@@ -445,7 +444,7 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
   const moreProps =
     component === ButtonBase
       ? {
-          component: ComponentProp || 'div',
+          component: 'div',
           focusVisibleClassName: classes.focusVisible,
           ...(onDelete && { disableRipple: true }),
         }
@@ -551,11 +550,6 @@ Chip.propTypes /* remove-proptypes */ = {
     PropTypes.oneOf(['default', 'primary', 'secondary', 'error', 'info', 'success', 'warning']),
     PropTypes.string,
   ]),
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
   /**
    * Override the default delete icon element. Shown only if `onDelete` is set.
    */
