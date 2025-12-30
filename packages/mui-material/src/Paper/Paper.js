@@ -13,13 +13,13 @@ import getOverlayAlpha from '../styles/getOverlayAlpha';
 import { getPaperUtilityClass } from './paperClasses';
 
 const useUtilityClasses = (ownerState) => {
-  const { square, elevation, variant, classes } = ownerState;
+  const { elevation, variant, classes } = ownerState;
 
   const slots = {
     root: [
       'root',
       variant,
-      !square && 'rounded',
+      'rounded',
       variant === 'elevation' && `elevation${elevation}`,
     ],
   };
@@ -36,7 +36,7 @@ const PaperRoot = styled('div', {
     return [
       styles.root,
       styles[ownerState.variant],
-      !ownerState.square && styles.rounded,
+      styles.rounded,
       ownerState.variant === 'elevation' && styles[`elevation${ownerState.elevation}`],
     ];
   },
@@ -45,13 +45,8 @@ const PaperRoot = styled('div', {
     backgroundColor: (theme.vars || theme).palette.background.paper,
     color: (theme.vars || theme).palette.text.primary,
     transition: theme.transitions.create('box-shadow'),
+    borderRadius: theme.shape.borderRadius,
     variants: [
-      {
-        props: ({ ownerState }) => !ownerState.square,
-        style: {
-          borderRadius: theme.shape.borderRadius,
-        },
-      },
       {
         props: {
           variant: 'outlined',
@@ -80,7 +75,6 @@ const Paper = React.forwardRef(function Paper(inProps, ref) {
   const {
     className,
     elevation = 1,
-    square = false,
     variant = 'elevation',
     ...other
   } = props;
@@ -88,7 +82,6 @@ const Paper = React.forwardRef(function Paper(inProps, ref) {
   const ownerState = {
     ...props,
     elevation,
-    square,
     variant,
   };
 
