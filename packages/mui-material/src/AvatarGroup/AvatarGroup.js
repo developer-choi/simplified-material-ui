@@ -6,7 +6,6 @@ import chainPropTypes from '@mui/utils/chainPropTypes';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import Avatar, { avatarClasses } from '../../../data-display/Avatar';
 import avatarGroupClasses, { getAvatarGroupUtilityClass } from './avatarGroupClasses';
 
@@ -47,12 +46,7 @@ const AvatarGroupRoot = styled('div', {
   })),
 );
 
-const AvatarGroup = React.forwardRef(function AvatarGroup(inProps, ref) {
-  const props = useDefaultProps({
-    props: inProps,
-    name: 'MuiAvatarGroup',
-  });
-
+const AvatarGroup = React.forwardRef(function AvatarGroup(props, ref) {
   const {
     children: childrenProp,
     className,
