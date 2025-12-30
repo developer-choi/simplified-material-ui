@@ -7,7 +7,6 @@ import chainPropTypes from '@mui/utils/chainPropTypes';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled, useTheme } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import { getPaperUtilityClass } from './paperClasses';
 
 const useUtilityClasses = (ownerState) => {
@@ -48,8 +47,7 @@ const PaperRoot = styled('div', {
   })),
 );
 
-const Paper = React.forwardRef(function Paper(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiPaper' });
+const Paper = React.forwardRef(function Paper(props, ref) {
   const theme = useTheme();
 
   const {
