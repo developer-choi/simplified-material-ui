@@ -145,22 +145,6 @@ const ChipRoot = styled('div', {
         },
       },
       variants: [
-        {
-          props: { size: 'small' },
-          style: {
-            height: 24,
-            [`& .${chipClasses.icon}`]: {
-              fontSize: 18,
-              marginLeft: 4,
-              marginRight: -4,
-            },
-            [`& .${chipClasses.deleteIcon}`]: {
-              fontSize: 16,
-              marginRight: 4,
-              marginLeft: -4,
-            },
-          },
-        },
         ...Object.entries(theme.palette)
           .filter(createSimplePaletteValueFilter(['contrastText']))
           .map(([color]) => {
@@ -340,20 +324,6 @@ const ChipLabel = styled('span', {
         paddingRight: 11,
       },
     },
-    {
-      props: { size: 'small' },
-      style: {
-        paddingLeft: 8,
-        paddingRight: 8,
-      },
-    },
-    {
-      props: { size: 'small', variant: 'outlined' },
-      style: {
-        paddingLeft: 7,
-        paddingRight: 7,
-      },
-    },
   ],
 });
 
@@ -379,7 +349,6 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
     onDelete,
     onKeyDown,
     onKeyUp,
-    size = 'medium',
     variant = 'filled',
     tabIndex,
     skipFocusWhenDisabled = false, // TODO v6: Rename to `focusableWhenDisabled`.
@@ -431,7 +400,7 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
     ...props,
     component,
     disabled,
-    size,
+    size: 'medium',
     color,
     iconColor: React.isValidElement(iconProp) ? iconProp.props.color || color : color,
     onDelete: !!onDelete,
@@ -584,14 +553,6 @@ Chip.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   onKeyUp: PropTypes.func,
-  /**
-   * The size of the component.
-   * @default 'medium'
-   */
-  size: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['medium', 'small']),
-    PropTypes.string,
-  ]),
   /**
    * If `true`, allows the disabled chip to escape focus.
    * If `false`, allows the disabled chip to receive focus.
