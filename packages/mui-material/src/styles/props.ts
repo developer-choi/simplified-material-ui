@@ -3,7 +3,7 @@ import { AlertTitleProps } from '../AlertTitle';
 import { AppBarProps } from '../../../surfaces/AppBar';
 import { AutocompleteProps } from '../Autocomplete';
 import { AvatarProps } from '../../../data-display/Avatar';
-import { AvatarGroupProps } from '../AvatarGroup';
+import { AvatarGroupProps } from '../../../data-display/AvatarGroup';
 import { BackdropProps } from '../Backdrop';
 import { BadgeProps } from '../../../data-display/Badge';
 import { BottomNavigationActionProps } from '../../../navigation/BottomNavigationAction';

@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import Avatar from '../../../data-display/Avatar';
+import Avatar from '../Avatar';
 
 const SPACINGS = {
   small: -16,

@@ -34,8 +34,8 @@ export * from './Autocomplete';
 export { default as Avatar } from '../../data-display/Avatar';
 export * from '../../data-display/Avatar';
 
-export { default as AvatarGroup } from './AvatarGroup';
-export * from './AvatarGroup';
+export { default as AvatarGroup } from '../../data-display/AvatarGroup';
+export * from '../../data-display/AvatarGroup';
 
 export { default as Backdrop } from './Backdrop';
 export * from './Backdrop';

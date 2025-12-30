@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import { createRenderer } from '@mui/internal-test-utils';
-import Avatar from '../../../data-display/Avatar';
-import AvatarGroup, { avatarGroupClasses as classes } from '@mui/material/AvatarGroup';
-import describeConformance from '../../test/describeConformance';
+import Avatar from '../Avatar';
+import AvatarGroup, { avatarGroupClasses as classes } from './index';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<AvatarGroup />', () => {
   const { render } = createRenderer();

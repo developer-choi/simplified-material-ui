@@ -1,5 +1,5 @@
 import { expectType } from '@mui/types';
-import AvatarGroup from '@mui/material/AvatarGroup';
+import AvatarGroup from './index';
 
 <AvatarGroup component="ul" />;
 <AvatarGroup variant="circular" />;

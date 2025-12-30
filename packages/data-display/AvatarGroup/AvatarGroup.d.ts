@@ -6,10 +6,10 @@ import {
   PartiallyRequired,
 } from '@mui/types';
 import { SxProps } from '@mui/system';
-import { Theme } from '../styles';
+import { Theme } from '@mui/material/styles';
 import { AvatarGroupClasses } from './avatarGroupClasses';
-import Avatar from '../../../data-display/Avatar';
-import { CreateSlotsAndSlotProps, SlotProps } from '../utils/types';
+import Avatar from '../Avatar';
+import { CreateSlotsAndSlotProps, SlotProps } from '@mui/material/utils/types';
 
 export interface AvatarGroupPropsVariantOverrides {}
 

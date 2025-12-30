@@ -10,7 +10,7 @@ import { AlertTitleClassKey } from '../AlertTitle';
 import { AppBarClassKey } from '../../../surfaces/AppBar';
 import { AutocompleteClassKey } from '../Autocomplete';
 import { AvatarClassKey } from '../../../data-display/Avatar';
-import { AvatarGroupClassKey } from '../AvatarGroup';
+import { AvatarGroupClassKey } from '../../../data-display/AvatarGroup';
 import { BackdropClassKey } from '../Backdrop';
 import { BadgeClassKey } from '../../../data-display/Badge';
 import { BottomNavigationActionClassKey } from '../../../navigation/BottomNavigationAction';
