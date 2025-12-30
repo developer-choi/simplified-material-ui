@@ -79,7 +79,6 @@ const Paper = React.forwardRef(function Paper(inProps, ref) {
 
   const {
     className,
-    component = 'div',
     elevation = 1,
     square = false,
     variant = 'elevation',
@@ -88,7 +87,6 @@ const Paper = React.forwardRef(function Paper(inProps, ref) {
 
   const ownerState = {
     ...props,
-    component,
     elevation,
     square,
     variant,
@@ -109,7 +107,6 @@ const Paper = React.forwardRef(function Paper(inProps, ref) {
 
   return (
     <PaperRoot
-      as={component}
       ownerState={ownerState}
       className={clsx(classes.root, className)}
       ref={ref}
