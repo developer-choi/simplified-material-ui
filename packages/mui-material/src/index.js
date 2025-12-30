@@ -246,8 +246,8 @@ export * from './Pagination';
 export { default as PaginationItem } from './PaginationItem';
 export * from './PaginationItem';
 
-export { default as Paper } from './Paper';
-export * from './Paper';
+export { default as Paper } from '../../surfaces/Paper';
+export * from '../../surfaces/Paper';
 
 export { default as Popover } from './Popover';
 export * from './Popover';

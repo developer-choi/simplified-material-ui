@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { expectType } from '@mui/types';
-import Paper from '@mui/material/Paper';
+import Paper from '../../../surfaces/Paper';
 import GridLegacy, { GridLegacyProps } from '@mui/material/GridLegacy';
 
 const CustomComponent: React.FC<{ stringProp: string; numberProp: number }> =

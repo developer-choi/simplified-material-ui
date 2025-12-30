@@ -74,7 +74,7 @@ import { NativeSelectClassKey } from '../NativeSelect';
 import { OutlinedInputClassKey } from '../OutlinedInput';
 import { PaginationClassKey } from '../Pagination';
 import { PaginationItemClassKey } from '../PaginationItem';
-import { PaperClassKey } from '../Paper';
+import { PaperClassKey } from '../../../surfaces/Paper';
 import { PopoverClassKey } from '../Popover';
 import { RadioClassKey } from '../../../form/Radio';
 import { RadioGroupClassKey } from '../RadioGroup';

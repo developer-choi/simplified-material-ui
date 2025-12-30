@@ -6,7 +6,7 @@ import { CreateSlotsAndSlotProps, SlotProps } from '@mui/material/utils/types';
 import { ModalProps } from '../Modal';
 import { BackdropProps } from '../Backdrop';
 import { SlideProps } from '@mui/material/Slide';
-import { PaperProps } from '@mui/material/Paper';
+import { PaperProps } from '../../surfaces/Paper';
 import { TransitionProps } from '@mui/material/transitions/transition';
 import { DrawerClasses } from './drawerClasses';
 

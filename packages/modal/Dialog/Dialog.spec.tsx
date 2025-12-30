@@ -2,7 +2,7 @@ import * as React from 'react';
 import { expectType } from '@mui/types';
 import { mergeSlotProps } from '@mui/material/utils';
 import Dialog, { DialogProps } from './index';
-import { PaperProps } from '@mui/material/Paper';
+import { PaperProps } from '../../surfaces/Paper';
 
 const paperProps: PaperProps<'span'> = {
   component: 'span',

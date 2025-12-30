@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { SxProps } from '@mui/system';
 import { OverridableStringUnion } from '@mui/types';
-import { Theme } from '../styles';
-import { OverrideProps, OverridableComponent, OverridableTypeMap } from '../OverridableComponent';
+import { Theme } from '@mui/material/styles';
+import { OverrideProps, OverridableComponent, OverridableTypeMap } from '@mui/material/OverridableComponent';
 import { PaperClasses } from './paperClasses';
 
 export interface PaperPropsVariantOverrides {}

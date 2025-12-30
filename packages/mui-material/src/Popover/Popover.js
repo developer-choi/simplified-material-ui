@@ -16,7 +16,7 @@ import ownerDocument from '../utils/ownerDocument';
 import ownerWindow from '../utils/ownerWindow';
 import Grow from '../Grow';
 import Modal from '../../../modal/Modal';
-import PaperBase from '../Paper';
+import PaperBase from '../../../surfaces/Paper';
 import { getPopoverUtilityClass } from './popoverClasses';
 import useSlot from '../utils/useSlot';
 import { mergeSlotProps } from '../utils';

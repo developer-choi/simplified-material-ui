@@ -6,7 +6,7 @@ import chainPropTypes from '@mui/utils/chainPropTypes';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import Paper from '../Paper';
+import Paper from '../../../surfaces/Paper';
 import { getCardUtilityClass } from './cardClasses';
 
 const useUtilityClasses = (ownerState) => {

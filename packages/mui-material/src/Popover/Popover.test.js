@@ -4,7 +4,7 @@ import { spy, stub, match } from 'sinon';
 import { act, createRenderer, reactMajor, screen } from '@mui/internal-test-utils';
 import PropTypes from 'prop-types';
 import Modal, { modalClasses } from '../../../modal/Modal';
-import Paper, { paperClasses } from '@mui/material/Paper';
+import Paper, { paperClasses } from '../../../surfaces/Paper';
 import Popover, { popoverClasses as classes, PopoverPaper } from '@mui/material/Popover';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { getOffsetLeft, getOffsetTop } from './Popover';

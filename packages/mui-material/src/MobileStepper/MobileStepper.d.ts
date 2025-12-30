@@ -2,7 +2,7 @@ import * as React from 'react';
 import { SxProps } from '@mui/system';
 import { Theme } from '../styles';
 import { InternalStandardProps as StandardProps } from '../internal';
-import { PaperProps } from '../Paper';
+import { PaperProps } from '../../../surfaces/Paper';
 import { LinearProgressProps } from '../LinearProgress';
 import { MobileStepperClasses } from './mobileStepperClasses';
 import { CreateSlotsAndSlotProps, SlotProps } from '../utils/types';

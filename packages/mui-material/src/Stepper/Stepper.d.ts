@@ -2,7 +2,7 @@ import * as React from 'react';
 import { SxProps } from '@mui/system';
 import { OverridableComponent, OverrideProps } from '../OverridableComponent';
 import { Theme } from '../styles';
-import { PaperProps } from '../Paper';
+import { PaperProps } from '../../../surfaces/Paper';
 import { StepperClasses } from './stepperClasses';
 
 export type Orientation = 'horizontal' | 'vertical';

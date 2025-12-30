@@ -17,7 +17,7 @@ import Autocomplete, {
   autocompleteClasses as classes,
   createFilterOptions,
 } from '@mui/material/Autocomplete';
-import { paperClasses } from '@mui/material/Paper';
+import { paperClasses } from '../../../surfaces/Paper';
 import { iconButtonClasses } from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Tooltip from '../../../data-display/Tooltip';

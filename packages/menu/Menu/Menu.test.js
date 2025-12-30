@@ -13,7 +13,7 @@ import Popover from '@mui/material/Popover';
 import { modalClasses } from '../../modal/Modal';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import describeConformance from '../../mui-material/test/describeConformance';
-import { paperClasses } from '@mui/material/Paper';
+import { paperClasses } from '../../surfaces/Paper';
 
 const CustomTransition = React.forwardRef(function CustomTransition(
   { in: inProp, appear, onEnter, onEntering, onExited, ownerState, ...props },

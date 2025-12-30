@@ -2,7 +2,7 @@ import * as React from 'react';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
 import { InternalStandardProps as StandardProps } from '@mui/material/internal';
-import { PaperProps } from '@mui/material/Paper';
+import { PaperProps } from '../../surfaces/Paper';
 import { PopoverProps } from '@mui/material/Popover';
 import { MenuListProps } from '../MenuList';
 import { ModalProps } from '../../modal/Modal';

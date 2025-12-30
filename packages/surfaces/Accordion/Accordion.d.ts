@@ -4,7 +4,7 @@ import { Theme } from '@mui/material/styles';
 import { TransitionProps } from '@mui/material/transitions/transition';
 import { AccordionClasses } from './accordionClasses';
 import { OverridableComponent, OverrideProps } from '@mui/material/OverridableComponent';
-import { ExtendPaperTypeMap, PaperProps } from '@mui/material/Paper/Paper';
+import { ExtendPaperTypeMap, PaperProps } from '../Paper/Paper';
 import { CreateSlotsAndSlotProps, SlotComponentProps, SlotProps } from '@mui/material/utils/types';
 
 export interface AccordionSlots {

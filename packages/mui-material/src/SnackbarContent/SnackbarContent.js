@@ -7,7 +7,7 @@ import { emphasize } from '@mui/system/colorManipulator';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import Paper from '../Paper';
+import Paper from '../../../surfaces/Paper';
 import { getSnackbarContentUtilityClass } from './snackbarContentClasses';
 
 const useUtilityClasses = (ownerState) => {

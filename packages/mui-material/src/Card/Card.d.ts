@@ -3,7 +3,7 @@ import { SxProps } from '@mui/system';
 import { DistributiveOmit } from '@mui/types';
 import { OverridableComponent, OverrideProps } from '../OverridableComponent';
 import { Theme } from '../styles';
-import { PaperOwnProps } from '../Paper';
+import { PaperOwnProps } from '../../../surfaces/Paper';
 import { CardClasses } from './cardClasses';
 
 // TODO: v6 remove this interface, it is not used

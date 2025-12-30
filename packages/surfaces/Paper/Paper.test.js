@@ -5,9 +5,9 @@ import {
   strictModeDoubleLoggingSuppressed,
   screen,
 } from '@mui/internal-test-utils';
-import Paper, { paperClasses as classes } from '@mui/material/Paper';
+import Paper, { paperClasses as classes } from './index';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import describeConformance from '../../test/describeConformance';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<Paper />', () => {
   const { render } = createRenderer();

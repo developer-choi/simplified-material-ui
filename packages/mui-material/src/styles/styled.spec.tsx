@@ -1,6 +1,6 @@
 /* eslint-disable material-ui/no-empty-box */
 import * as React from 'react';
-import MuiPaper from '@mui/material/Paper';
+import MuiPaper from '../../../surfaces/Paper';
 import { styled, css, ThemeProvider, createTheme } from '@mui/material/styles';
 
 const Box = styled('div')(({ theme }) => ({

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import integerPropType from '@mui/utils/integerPropType';
 import composeClasses from '@mui/utils/composeClasses';
-import Paper from '../Paper';
+import Paper from '../../../surfaces/Paper';
 import capitalize from '../utils/capitalize';
 import LinearProgress from '../LinearProgress';
 import { styled } from '../zero-styled';

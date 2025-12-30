@@ -3,7 +3,7 @@ import { SxProps, Breakpoint } from '@mui/system';
 import { Theme } from '@mui/material/styles';
 import { InternalStandardProps as StandardProps } from '@mui/material/internal';
 import { BackdropProps } from '../Backdrop';
-import { PaperProps } from '@mui/material/Paper';
+import { PaperProps } from '../../surfaces/Paper';
 import { ModalProps } from '../Modal';
 import { TransitionProps } from '@mui/material/transitions/transition';
 import { DialogClasses } from './dialogClasses';

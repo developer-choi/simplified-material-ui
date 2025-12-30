@@ -4,7 +4,7 @@ import { OverridableStringUnion } from '@mui/types';
 import { OverridableComponent, OverrideProps } from '@mui/material/OverridableComponent';
 import { PropTypes, Theme } from '@mui/material/styles';
 import { AppBarClasses } from './appBarClasses';
-import { ExtendPaperTypeMap } from '@mui/material/Paper/Paper';
+import { ExtendPaperTypeMap } from '../Paper/Paper';
 
 export interface AppBarPropsColorOverrides {}
 

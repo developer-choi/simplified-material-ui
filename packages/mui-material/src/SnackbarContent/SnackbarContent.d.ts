@@ -2,7 +2,7 @@ import * as React from 'react';
 import { SxProps } from '@mui/system';
 import { Theme } from '../styles';
 import { InternalStandardProps as StandardProps } from '../internal';
-import { PaperProps } from '../Paper';
+import { PaperProps } from '../../../surfaces/Paper';
 import { SnackbarContentClasses } from './snackbarContentClasses';
 
 export interface SnackbarContentProps extends StandardProps<PaperProps, 'children'> {

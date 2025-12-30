@@ -5,7 +5,7 @@ import { Theme } from '../styles';
 import { InternalStandardProps as StandardProps } from '../internal';
 import { IconButtonProps } from '../IconButton';
 import { ChipProps, ChipTypeMap } from '../../../data-display/Chip';
-import { PaperProps } from '../Paper';
+import { PaperProps } from '../../../surfaces/Paper';
 import { PopperProps } from '../Popper';
 import useAutocomplete, {
   AutocompleteChangeDetails,

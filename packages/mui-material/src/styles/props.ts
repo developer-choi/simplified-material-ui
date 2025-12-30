@@ -73,7 +73,7 @@ import { UseMediaQueryOptions } from '../useMediaQuery';
 import { OutlinedInputProps } from '../OutlinedInput';
 import { PaginationProps } from '../Pagination';
 import { PaginationItemProps } from '../PaginationItem';
-import { PaperProps } from '../Paper';
+import { PaperProps } from '../../../surfaces/Paper';
 import { PopoverProps } from '../Popover';
 import { RadioGroupProps } from '../RadioGroup';
 import { RadioProps } from '../../../form/Radio';

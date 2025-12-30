@@ -8,7 +8,7 @@ import composeClasses from '@mui/utils/composeClasses';
 import useAutocomplete, { createFilterOptions } from '../useAutocomplete';
 import Popper from '../Popper';
 import ListSubheader from '../ListSubheader';
-import Paper from '../Paper';
+import Paper from '../../../surfaces/Paper';
 import IconButton from '../IconButton';
 import Chip from '../../../data-display/Chip';
 import inputClasses from '../Input/inputClasses';

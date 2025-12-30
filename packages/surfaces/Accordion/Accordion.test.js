@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { spy } from 'sinon';
 import { createRenderer, fireEvent, reactMajor, screen } from '@mui/internal-test-utils';
 import Accordion, { accordionClasses as classes } from './index';
-import Paper from '@mui/material/Paper';
+import Paper from '../Paper';
 import Collapse from '../../utils/Collapse';
 import Fade from '@mui/material/Fade';
 import Slide from '@mui/material/Slide';

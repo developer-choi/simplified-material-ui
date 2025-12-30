@@ -4,7 +4,7 @@ import { SlotComponentProps } from '@mui/utils/types';
 import { BackdropProps } from '../../../modal/Backdrop';
 import { Theme } from '../styles';
 import { InternalStandardProps as StandardProps } from '../internal';
-import Paper, { PaperProps } from '../Paper';
+import Paper, { PaperProps } from '../../../surfaces/Paper';
 import Modal, { ModalProps } from '../../../modal/Modal';
 import { TransitionProps } from '../transitions/transition';
 import { PopoverClasses } from './popoverClasses';

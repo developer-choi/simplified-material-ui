@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
 import Modal from '../Modal';
-import Paper from '@mui/material/Paper';
+import Paper from '../../surfaces/Paper';
 
 const Drawer = React.forwardRef(function Drawer(inProps, ref) {
   const {
