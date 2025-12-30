@@ -214,8 +214,6 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
     label,
     onClick,
     onDelete,
-    onKeyDown,
-    onKeyUp,
     ...other
   } = props;
 
@@ -237,10 +235,6 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
       // might init surfaces
       event.preventDefault();
     }
-
-    if (onKeyDown) {
-      onKeyDown(event);
-    }
   };
 
   const handleKeyUp = (event) => {
@@ -249,10 +243,6 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
       if (onDelete && isDeleteKeyboardEvent(event)) {
         onDelete(event);
       }
-    }
-
-    if (onKeyUp) {
-      onKeyUp(event);
     }
   };
 
@@ -370,14 +360,6 @@ Chip.propTypes /* remove-proptypes */ = {
    * If set, the delete icon will be shown.
    */
   onDelete: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onKeyDown: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onKeyUp: PropTypes.func,
   /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
