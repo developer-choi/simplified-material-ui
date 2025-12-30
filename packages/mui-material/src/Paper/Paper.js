@@ -1,28 +1,10 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import integerPropType from '@mui/utils/integerPropType';
 import chainPropTypes from '@mui/utils/chainPropTypes';
-import composeClasses from '@mui/utils/composeClasses';
 import { styled, useTheme } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { getPaperUtilityClass } from './paperClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { elevation, classes } = ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      'elevation',
-      'rounded',
-      `elevation${elevation}`,
-    ],
-  };
-
-  return composeClasses(slots, getPaperUtilityClass, classes);
-};
 
 const PaperRoot = styled('div', {
   name: 'MuiPaper',
@@ -61,8 +43,6 @@ const Paper = React.forwardRef(function Paper(props, ref) {
     elevation,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   if (process.env.NODE_ENV !== 'production') {
     if (theme.shadows[elevation] === undefined) {
       console.error(
@@ -77,7 +57,7 @@ const Paper = React.forwardRef(function Paper(props, ref) {
   return (
     <PaperRoot
       ownerState={ownerState}
-      className={clsx(classes.root, className)}
+      className={className}
       ref={ref}
       {...other}
       style={{
