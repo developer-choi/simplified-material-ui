@@ -57,7 +57,6 @@ const AvatarGroup = React.forwardRef(function AvatarGroup(inProps, ref) {
   const {
     children: childrenProp,
     className,
-    component = 'div',
     max = 5,
     slotProps = {},
     slots = {},
@@ -72,7 +71,6 @@ const AvatarGroup = React.forwardRef(function AvatarGroup(inProps, ref) {
     ...props,
     max,
     spacing,
-    component,
     variant,
   };
 
@@ -124,7 +122,6 @@ const AvatarGroup = React.forwardRef(function AvatarGroup(inProps, ref) {
 
   return (
     <AvatarGroupRoot
-      as={component}
       ownerState={ownerState}
       className={clsx(classes.root, className)}
       ref={ref}
@@ -165,11 +162,6 @@ AvatarGroup.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   className: PropTypes.string,
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
   /**
    * Max avatars to show before +x.
    * @default 5
