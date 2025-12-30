@@ -1,6 +1,5 @@
 'use client';
 import { SxProps } from '@mui/system';
-import { useRtl } from '@mui/system/RtlProvider';
 import refType from '@mui/utils/refType';
 import HTMLElementType from '@mui/utils/HTMLElementType';
 import PropTypes from 'prop-types';
@@ -11,7 +10,7 @@ import { Theme } from '../styles';
 import { styled } from '../zero-styled';
 import { useDefaultProps } from '../DefaultPropsProvider';
 
-export interface PopperProps extends Omit<BasePopperProps, 'direction'> {
+export interface PopperProps extends BasePopperProps {
   /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
@@ -39,7 +38,6 @@ const Popper = React.forwardRef(function Popper(
   inProps: PopperProps,
   ref: React.ForwardedRef<HTMLDivElement>,
 ) {
-  const isRtl = useRtl();
   const props = useDefaultProps({
     props: inProps,
     name: 'MuiPopper',
@@ -64,13 +62,7 @@ const Popper = React.forwardRef(function Popper(
     popperRef,
     ...other,
   };
-  return (
-    <PopperRoot
-      direction={isRtl ? 'rtl' : 'ltr'}
-      {...otherProps}
-      ref={ref}
-    />
-  );
+  return <PopperRoot {...otherProps} ref={ref} />;
 }) as React.ForwardRefExoticComponent<PopperProps & React.RefAttributes<HTMLDivElement>>;
 
 Popper.propTypes /* remove-proptypes */ = {

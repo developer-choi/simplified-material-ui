@@ -20,11 +20,6 @@ export interface PopperOwnProps {
    */
   children?: React.ReactNode | ((props: PopperChildrenProps) => React.ReactNode);
   /**
-   * Direction of the text.
-   * @default 'ltr'
-   */
-  direction?: 'ltr' | 'rtl';
-  /**
    * Popper.js is based on a "plugin-like" architecture,
    * most of its features are fully encapsulated "modifiers".
    *

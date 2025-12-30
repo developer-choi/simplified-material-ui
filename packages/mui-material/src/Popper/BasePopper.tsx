@@ -18,25 +18,6 @@ import {
   PopperProps,
 } from './BasePopper.types';
 
-function flipPlacement(placement?: PopperPlacementType, direction?: 'ltr' | 'rtl') {
-  if (direction === 'ltr') {
-    return placement;
-  }
-
-  switch (placement) {
-    case 'bottom-end':
-      return 'bottom-start';
-    case 'bottom-start':
-      return 'bottom-end';
-    case 'top-end':
-      return 'top-start';
-    case 'top-start':
-      return 'top-end';
-    default:
-      return placement;
-  }
-}
-
 function resolveAnchorEl(
   anchorEl:
     | VirtualElement
@@ -75,7 +56,6 @@ const PopperTooltip = React.forwardRef<HTMLDivElement, PopperTooltipProps>(funct
   const {
     anchorEl,
     children,
-    direction,
     modifiers,
     open,
     placement: initialPlacement,
@@ -97,12 +77,11 @@ const PopperTooltip = React.forwardRef<HTMLDivElement, PopperTooltipProps>(funct
   }, [handlePopperRef]);
   React.useImperativeHandle(popperRefProp, () => popperRef.current!, []);
 
-  const rtlPlacement = flipPlacement(initialPlacement, direction);
   /**
    * placement initialized from prop but can change during lifetime if modifiers.flip.
    * modifiers.flip is essentially a flip for controlled/uncontrolled behavior
    */
-  const [placement, setPlacement] = React.useState<Placement | undefined>(rtlPlacement);
+  const [placement, setPlacement] = React.useState<Placement | undefined>(initialPlacement);
   const [resolvedAnchorElement, setResolvedAnchorElement] = React.useState<
     HTMLElement | VirtualElement | null | undefined
   >(resolveAnchorEl(anchorEl));
@@ -179,7 +158,7 @@ const PopperTooltip = React.forwardRef<HTMLDivElement, PopperTooltipProps>(funct
     }
 
     const popper = createPopper(resolvedAnchorElement, tooltipRef.current!, {
-      placement: rtlPlacement,
+      placement: initialPlacement,
       ...popperOptions,
       modifiers: popperModifiers,
     });
@@ -190,7 +169,7 @@ const PopperTooltip = React.forwardRef<HTMLDivElement, PopperTooltipProps>(funct
       popper.destroy();
       handlePopperRefRef.current!(null);
     };
-  }, [resolvedAnchorElement, disablePortal, modifiers, open, popperOptions, rtlPlacement]);
+  }, [resolvedAnchorElement, modifiers, open, popperOptions, initialPlacement]);
 
   const childProps: PopperChildrenProps = { placement: placement! };
 
@@ -218,7 +197,6 @@ const Popper = React.forwardRef<HTMLDivElement, PopperProps>(function Popper(
   const {
     anchorEl,
     children,
-    direction = 'ltr',
     modifiers,
     open,
     placement = 'bottom',
@@ -236,7 +214,6 @@ const Popper = React.forwardRef<HTMLDivElement, PopperProps>(function Popper(
     <Portal>
       <PopperTooltip
         anchorEl={anchorEl}
-        direction={direction}
         modifiers={modifiers}
         ref={forwardedRef}
         open={open}
@@ -325,11 +302,6 @@ Popper.propTypes /* remove-proptypes */ = {
     PropTypes.node,
     PropTypes.func,
   ]),
-  /**
-   * Direction of the text.
-   * @default 'ltr'
-   */
-  direction: PropTypes.oneOf(['ltr', 'rtl']),
   /**
    * Popper.js is based on a "plugin-like" architecture,
    * most of its features are fully encapsulated "modifiers".
