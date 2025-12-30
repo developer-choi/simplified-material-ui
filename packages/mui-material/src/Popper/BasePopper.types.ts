@@ -4,15 +4,8 @@ import { PortalProps } from '../../../modal/Portal';
 
 export type PopperPlacementType = Options['placement'];
 
-export interface PopperTransitionProps {
-  in: boolean;
-  onEnter: () => void;
-  onExited: () => void;
-}
-
 export interface PopperChildrenProps {
   placement: PopperPlacementType;
-  TransitionProps?: PopperTransitionProps;
 }
 
 export interface PopperOwnProps {
@@ -83,11 +76,6 @@ export interface PopperOwnProps {
    * A ref that points to the used popper instance.
    */
   popperRef?: React.Ref<Instance>;
-  /**
-   * Help supporting a react-transition-group/Transition component.
-   * @default false
-   */
-  transition?: boolean;
 }
 
 export type PopperOwnerState = PopperOwnProps;
@@ -97,8 +85,6 @@ export type PopperProps = PopperOwnProps;
 export type PopperTooltipOwnProps = Omit<
   PopperOwnProps,
   'container' | 'keepMounted' | 'transition'
-> & {
-  TransitionProps?: PopperTransitionProps;
-};
+>;
 
 export type PopperTooltipProps = PopperTooltipOwnProps;

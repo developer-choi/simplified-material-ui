@@ -16,7 +16,6 @@ import {
   PopperTooltipProps,
   PopperChildrenProps,
   PopperProps,
-  PopperTransitionProps,
 } from './BasePopper.types';
 
 function flipPlacement(placement?: PopperPlacementType, direction?: 'ltr' | 'rtl') {
@@ -83,7 +82,6 @@ const PopperTooltip = React.forwardRef<HTMLDivElement, PopperTooltipProps>(funct
     placement: initialPlacement,
     popperOptions,
     popperRef: popperRefProp,
-    TransitionProps,
     // @ts-ignore internal logic
     ownerState: ownerStateProp, // prevent from spreading to DOM, it can come from the parent component e.g. Select.
     ...other
@@ -203,10 +201,6 @@ const PopperTooltip = React.forwardRef<HTMLDivElement, PopperTooltipProps>(funct
 
   const childProps: PopperChildrenProps = { placement: placement! };
 
-  if (TransitionProps !== null) {
-    childProps.TransitionProps = TransitionProps;
-  }
-
   const classes = useUtilityClasses(props);
 
   return (
@@ -241,21 +235,10 @@ const Popper = React.forwardRef<HTMLDivElement, PopperProps>(function Popper(
     popperOptions = defaultPopperOptions,
     popperRef,
     style,
-    transition = false,
     ...other
   } = props;
 
-  const [exited, setExited] = React.useState(true);
-
-  const handleEnter = () => {
-    setExited(false);
-  };
-
-  const handleExited = () => {
-    setExited(true);
-  };
-
-  if (!keepMounted && !open && (!transition || exited)) {
+  if (!keepMounted && !open) {
     return null;
   }
 
@@ -272,14 +255,7 @@ const Popper = React.forwardRef<HTMLDivElement, PopperProps>(function Popper(
         ? ownerDocument(resolvedAnchorEl).body
         : ownerDocument(null).body;
   }
-  const display = !open && keepMounted && (!transition || exited) ? 'none' : undefined;
-  const transitionProps: PopperTransitionProps | undefined = transition
-    ? {
-        in: open,
-        onEnter: handleEnter,
-        onExited: handleExited,
-      }
-    : undefined;
+  const display = !open && keepMounted ? 'none' : undefined;
 
   return (
     <Portal disablePortal={disablePortal} container={container}>
@@ -289,7 +265,7 @@ const Popper = React.forwardRef<HTMLDivElement, PopperProps>(function Popper(
         disablePortal={disablePortal}
         modifiers={modifiers}
         ref={forwardedRef}
-        open={transition ? !exited : open}
+        open={open}
         placement={placement}
         popperOptions={popperOptions}
         popperRef={popperRef}
@@ -303,7 +279,6 @@ const Popper = React.forwardRef<HTMLDivElement, PopperProps>(function Popper(
           display,
           ...style,
         }}
-        TransitionProps={transitionProps}
       >
         {children}
       </PopperTooltip>
@@ -495,11 +470,6 @@ Popper.propTypes /* remove-proptypes */ = {
    * A ref that points to the used popper instance.
    */
   popperRef: refType,
-  /**
-   * Help supporting a react-transition-group/Transition component.
-   * @default false
-   */
-  transition: PropTypes.bool,
 } as any;
 
 export default Popper;

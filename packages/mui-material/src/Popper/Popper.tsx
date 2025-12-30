@@ -55,7 +55,6 @@ const Popper = React.forwardRef(function Popper(
     placement,
     popperOptions,
     popperRef,
-    transition,
     ...other
   } = props;
 
@@ -69,7 +68,6 @@ const Popper = React.forwardRef(function Popper(
     placement,
     popperOptions,
     popperRef,
-    transition,
     ...other,
   };
   return (
@@ -225,11 +223,6 @@ Popper.propTypes /* remove-proptypes */ = {
     PropTypes.func,
     PropTypes.object,
   ]),
-  /**
-   * Help supporting a react-transition-group/Transition component.
-   * @default false
-   */
-  transition: PropTypes.bool,
 } as any;
 
 export default Popper;
