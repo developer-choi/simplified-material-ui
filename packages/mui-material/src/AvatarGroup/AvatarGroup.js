@@ -58,7 +58,6 @@ const AvatarGroup = React.forwardRef(function AvatarGroup(inProps, ref) {
     children: childrenProp,
     className,
     component = 'div',
-    componentsProps,
     max = 5,
     renderSurplus,
     slotProps = {},
@@ -109,8 +108,7 @@ const AvatarGroup = React.forwardRef(function AvatarGroup(inProps, ref) {
   const externalForwardedProps = {
     slots,
     slotProps: {
-      surplus: slotProps.additionalAvatar ?? componentsProps?.additionalAvatar,
-      ...componentsProps,
+      surplus: slotProps.additionalAvatar,
       ...slotProps,
     },
   };
@@ -173,17 +171,6 @@ AvatarGroup.propTypes /* remove-proptypes */ = {
    * Either a string to use a HTML element or a component.
    */
   component: PropTypes.elementType,
-  /**
-   * The extra props for the slot components.
-   * You can override the existing props or add new ones.
-   *
-   * This prop is an alias for the `slotProps` prop.
-   *
-   * @deprecated use the `slotProps` prop instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   */
-  componentsProps: PropTypes.shape({
-    additionalAvatar: PropTypes.object,
-  }),
   /**
    * Max avatars to show before +x.
    * @default 5
