@@ -1,137 +1,9 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import CancelIcon from '../internal/svg-icons/Cancel';
 import unsupportedProp from '../utils/unsupportedProp';
 import ButtonBase from '../ButtonBase';
-import { styled } from '../zero-styled';
-import chipClasses from './chipClasses';
-
-const ChipRoot = styled('div', {
-  name: 'MuiChip',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-    const { color, iconColor, clickable, onDelete, size, variant } = ownerState;
-
-    return [
-      { [`& .${chipClasses.avatar}`]: styles.avatar },
-      { [`& .${chipClasses.avatar}`]: styles[`avatar${capitalize(size)}`] },
-      { [`& .${chipClasses.avatar}`]: styles[`avatarColor${capitalize(color)}`] },
-      { [`& .${chipClasses.icon}`]: styles.icon },
-      { [`& .${chipClasses.icon}`]: styles[`icon${capitalize(size)}`] },
-      { [`& .${chipClasses.icon}`]: styles[`iconColor${capitalize(iconColor)}`] },
-      { [`& .${chipClasses.deleteIcon}`]: styles.deleteIcon },
-      { [`& .${chipClasses.deleteIcon}`]: styles[`deleteIcon${capitalize(size)}`] },
-      { [`& .${chipClasses.deleteIcon}`]: styles[`deleteIconColor${capitalize(color)}`] },
-      {
-        [`& .${chipClasses.deleteIcon}`]:
-          styles[`deleteIcon${capitalize(variant)}Color${capitalize(color)}`],
-      },
-      styles.root,
-      styles[`size${capitalize(size)}`],
-      styles[`color${capitalize(color)}`],
-      clickable && styles.clickable,
-      clickable && color !== 'default' && styles[`clickableColor${capitalize(color)}`],
-      onDelete && styles.deletable,
-      onDelete && color !== 'default' && styles[`deletableColor${capitalize(color)}`],
-      styles[variant],
-      styles[`${variant}${capitalize(color)}`],
-    ];
-  },
-)({
-  maxWidth: '100%',
-  fontFamily: 'Roboto, "Helvetica Neue", Arial, sans-serif',
-  fontSize: '0.8125rem',
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: 32,
-  lineHeight: 1.5,
-  backgroundColor: '#1976d2',
-  color: '#fff',
-  borderRadius: 16,
-  whiteSpace: 'nowrap',
-  cursor: 'unset',
-  outline: 0,
-  textDecoration: 'none',
-  border: 0,
-  padding: 0,
-  verticalAlign: 'middle',
-  boxSizing: 'border-box',
-  [`& .${chipClasses.avatar}`]: {
-    marginLeft: 5,
-    marginRight: -6,
-    width: 24,
-    height: 24,
-    color: '#fff',
-    fontSize: '0.75rem',
-  },
-  [`& .${chipClasses.avatarColorPrimary}`]: {
-    color: '#fff',
-    backgroundColor: '#1565c0',
-  },
-  [`& .${chipClasses.icon}`]: {
-    marginLeft: 5,
-    marginRight: -6,
-    color: 'inherit',
-  },
-  [`& .${chipClasses.deleteIcon}`]: {
-    WebkitTapHighlightColor: 'transparent',
-    color: 'rgba(255, 255, 255, 0.7)',
-    fontSize: 22,
-    cursor: 'pointer',
-    margin: '0 5px 0 -6px',
-    '&:hover, &:active': {
-      color: '#fff',
-    },
-  },
-  variants: [
-    {
-      props: { onDelete: true },
-      style: {
-        [`&.${chipClasses.focusVisible}`]: {
-          background: '#1565c0',
-        },
-      },
-    },
-    {
-      props: { clickable: true },
-      style: {
-        userSelect: 'none',
-        WebkitTapHighlightColor: 'transparent',
-        cursor: 'pointer',
-        '&:hover': {
-          backgroundColor: '#1565c0',
-        },
-        [`&.${chipClasses.focusVisible}`]: {
-          backgroundColor: '#1565c0',
-        },
-        '&:active': {
-          boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)',
-        },
-      },
-    },
-  ],
-});
-
-const ChipLabel = styled('span', {
-  name: 'MuiChip',
-  slot: 'Label',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-    const { size } = ownerState;
-
-    return [styles.label, styles[`label${capitalize(size)}`]];
-  },
-})({
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  paddingLeft: 12,
-  paddingRight: 12,
-  whiteSpace: 'nowrap',
-});
 
 function isDeleteKeyboardEvent(keyboardEvent) {
   return keyboardEvent.key === 'Backspace' || keyboardEvent.key === 'Delete';
@@ -148,6 +20,7 @@ const Chip = React.forwardRef(function Chip(props, ref) {
     label,
     onClick,
     onDelete,
+    style,
     ...other
   } = props;
 
@@ -178,44 +51,44 @@ const Chip = React.forwardRef(function Chip(props, ref) {
   };
 
   const clickable = !!onClick;
-
-  const component = clickable || onDelete ? ButtonBase : 'div';
-
-  const ownerState = {
-    ...props,
-    component,
-    size: 'medium',
-    color: 'primary',
-    iconColor: 'primary',
-    onDelete: !!onDelete,
-    clickable,
-    variant: 'filled',
-  };
-
-  const moreProps =
-    component === ButtonBase
-      ? {
-          component: 'div',
-          ...(onDelete && { disableRipple: true }),
-        }
-      : {};
+  const Component = clickable || onDelete ? ButtonBase : 'div';
 
   let deleteIcon = null;
   if (onDelete) {
-    deleteIcon = <CancelIcon onClick={handleDeleteIconClick} />;
+    const deleteIconStyle = {
+      WebkitTapHighlightColor: 'transparent',
+      color: 'rgba(255, 255, 255, 0.7)',
+      fontSize: 22,
+      cursor: 'pointer',
+      margin: '0 5px 0 -6px',
+    };
+    deleteIcon = <CancelIcon onClick={handleDeleteIconClick} style={deleteIconStyle} />;
   }
 
   let avatar = null;
   if (avatarProp && React.isValidElement(avatarProp)) {
+    const avatarStyle = {
+      marginLeft: 5,
+      marginRight: -6,
+      width: 24,
+      height: 24,
+      color: '#fff',
+      fontSize: '0.75rem',
+    };
     avatar = React.cloneElement(avatarProp, {
-      className: avatarProp.props.className,
+      style: { ...avatarStyle, ...avatarProp.props.style },
     });
   }
 
   let icon = null;
   if (iconProp && React.isValidElement(iconProp)) {
+    const iconStyle = {
+      marginLeft: 5,
+      marginRight: -6,
+      color: 'inherit',
+    };
     icon = React.cloneElement(iconProp, {
-      className: iconProp.props.className,
+      style: { ...iconStyle, ...iconProp.props.style },
     });
   }
 
@@ -228,24 +101,62 @@ const Chip = React.forwardRef(function Chip(props, ref) {
     }
   }
 
+  const rootStyle = {
+    maxWidth: '100%',
+    fontFamily: 'Roboto, "Helvetica Neue", Arial, sans-serif',
+    fontSize: '0.8125rem',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 32,
+    lineHeight: 1.5,
+    backgroundColor: '#1976d2',
+    color: '#fff',
+    borderRadius: 16,
+    whiteSpace: 'nowrap',
+    cursor: clickable ? 'pointer' : 'unset',
+    outline: 0,
+    textDecoration: 'none',
+    border: 0,
+    padding: 0,
+    verticalAlign: 'middle',
+    boxSizing: 'border-box',
+    userSelect: clickable ? 'none' : 'auto',
+    WebkitTapHighlightColor: clickable ? 'transparent' : 'auto',
+    ...style,
+  };
+
+  const labelStyle = {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    paddingLeft: 12,
+    paddingRight: 12,
+    whiteSpace: 'nowrap',
+  };
+
+  const componentProps = {
+    ref,
+    className,
+    style: rootStyle,
+    onClick,
+    onKeyDown: handleKeyDown,
+    onKeyUp: handleKeyUp,
+    ...other,
+  };
+
+  if (Component === ButtonBase) {
+    componentProps.component = 'div';
+    if (onDelete) {
+      componentProps.disableRipple = true;
+    }
+  }
+
   return (
-    <ChipRoot
-      as={component}
-      ref={ref}
-      className={className}
-      onClick={onClick}
-      onKeyDown={handleKeyDown}
-      onKeyUp={handleKeyUp}
-      ownerState={ownerState}
-      {...moreProps}
-      {...other}
-    >
+    <Component {...componentProps}>
       {avatar || icon}
-      <ChipLabel ownerState={ownerState}>
-        {label}
-      </ChipLabel>
+      <span style={labelStyle}>{label}</span>
       {deleteIcon}
-    </ChipRoot>
+    </Component>
   );
 });
 
