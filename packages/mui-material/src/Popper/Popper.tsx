@@ -1,21 +1,13 @@
 'use client';
-import { SxProps } from '@mui/system';
 import refType from '@mui/utils/refType';
 import HTMLElementType from '@mui/utils/HTMLElementType';
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import BasePopper from './BasePopper';
 import { PopperProps as BasePopperProps } from './BasePopper.types';
-import { Theme } from '../styles';
 import { styled } from '../zero-styled';
-import { useDefaultProps } from '../DefaultPropsProvider';
 
-export interface PopperProps extends BasePopperProps {
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx?: SxProps<Theme>;
-}
+export interface PopperProps extends BasePopperProps {}
 
 const PopperRoot = styled(BasePopper, {
   name: 'MuiPopper',
@@ -35,14 +27,9 @@ const PopperRoot = styled(BasePopper, {
  * - [Popper API](https://mui.com/material-ui/api/popper/)
  */
 const Popper = React.forwardRef(function Popper(
-  inProps: PopperProps,
+  props: PopperProps,
   ref: React.ForwardedRef<HTMLDivElement>,
 ) {
-  const props = useDefaultProps({
-    props: inProps,
-    name: 'MuiPopper',
-  });
-
   const {
     anchorEl,
     modifiers,
@@ -175,14 +162,6 @@ Popper.propTypes /* remove-proptypes */ = {
    * A ref that points to the used popper instance.
    */
   popperRef: refType,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
 } as any;
 
 export default Popper;

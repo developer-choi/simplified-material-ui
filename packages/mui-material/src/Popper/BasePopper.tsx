@@ -7,9 +7,7 @@ import HTMLElementType from '@mui/utils/HTMLElementType';
 import refType from '@mui/utils/refType';
 import { createPopper, Instance, Modifier, Placement, State } from '@popperjs/core';
 import PropTypes from 'prop-types';
-import composeClasses from '@mui/utils/composeClasses';
 import Portal from '../../../modal/Portal';
-import { getPopperUtilityClass } from './popperClasses';
 import {
   PopperPlacementType,
   PopperTooltipProps,
@@ -22,15 +20,6 @@ function resolveAnchorEl(
 ): HTMLElement | null | undefined {
   return typeof anchorEl === 'function' ? anchorEl() : anchorEl;
 }
-
-const useUtilityClasses = (ownerState: any) => {
-  const { classes } = ownerState;
-  const slots = {
-    root: ['root'],
-  };
-
-  return composeClasses(slots, getPopperUtilityClass, classes);
-};
 
 const defaultPopperOptions = {};
 
@@ -46,8 +35,6 @@ const PopperTooltip = React.forwardRef<HTMLDivElement, PopperTooltipProps>(funct
     placement: initialPlacement,
     popperOptions,
     popperRef: popperRefProp,
-    // @ts-ignore internal logic
-    ownerState: ownerStateProp, // prevent from spreading to DOM, it can come from the parent component e.g. Select.
     ...other
   } = props;
 
@@ -132,15 +119,8 @@ const PopperTooltip = React.forwardRef<HTMLDivElement, PopperTooltipProps>(funct
 
   const childProps: PopperChildrenProps = { placement: placement! };
 
-  const classes = useUtilityClasses(props);
-
   return (
-    <div
-      role="tooltip"
-      ref={ownRef}
-      className={classes.root}
-      {...other}
-    >
+    <div role="tooltip" ref={ownRef} {...other}>
       {typeof children === 'function' ? children(childProps) : children}
     </div>
   );

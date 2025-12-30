@@ -47,8 +47,6 @@ export interface PopperOwnProps {
   popperRef?: React.Ref<Instance>;
 }
 
-export type PopperOwnerState = PopperOwnProps;
-
 export type PopperProps = PopperOwnProps;
 
 export type PopperTooltipProps = PopperOwnProps;
