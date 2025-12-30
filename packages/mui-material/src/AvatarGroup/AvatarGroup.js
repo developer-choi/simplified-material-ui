@@ -1,7 +1,6 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { isFragment } from 'react-is';
 import clsx from 'clsx';
 import chainPropTypes from '@mui/utils/chainPropTypes';
 import composeClasses from '@mui/utils/composeClasses';
@@ -82,17 +81,6 @@ const AvatarGroup = React.forwardRef(function AvatarGroup(inProps, ref) {
   const classes = useUtilityClasses(ownerState);
 
   const children = React.Children.toArray(childrenProp).filter((child) => {
-    if (process.env.NODE_ENV !== 'production') {
-      if (isFragment(child)) {
-        console.error(
-          [
-            "MUI: The AvatarGroup component doesn't accept a Fragment as a child.",
-            'Consider providing an array instead.',
-          ].join('\n'),
-        );
-      }
-    }
-
     return React.isValidElement(child);
   });
 
