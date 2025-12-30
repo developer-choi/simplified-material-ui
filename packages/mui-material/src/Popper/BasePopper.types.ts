@@ -1,12 +1,9 @@
 import * as React from 'react';
 import { Instance, Options, OptionsGeneric, VirtualElement } from '@popperjs/core';
 import { PortalProps } from '../../../modal/Portal';
-import { SlotComponentProps } from '../utils/types';
 import { PolymorphicProps } from '../utils/PolymorphicComponent';
 
 export type PopperPlacementType = Options['placement'];
-
-export interface PopperRootSlotPropsOverrides {}
 
 export interface PopperTransitionProps {
   in: boolean;
@@ -88,31 +85,10 @@ export interface PopperOwnProps {
    */
   popperRef?: React.Ref<Instance>;
   /**
-   * The props used for each slot inside the Popper.
-   * @default {}
-   */
-  slotProps?: {
-    root?: SlotComponentProps<'div', PopperRootSlotPropsOverrides, PopperOwnerState>;
-  };
-  /**
-   * The components used for each slot inside the Popper.
-   * Either a string to use a HTML element or a component.
-   * @default {}
-   */
-  slots?: PopperSlots;
-  /**
    * Help supporting a react-transition-group/Transition component.
    * @default false
    */
   transition?: boolean;
-}
-
-export interface PopperSlots {
-  /**
-   * The component that renders the root.
-   * @default 'div'
-   */
-  root?: React.ElementType;
 }
 
 export type PopperOwnerState = PopperOwnProps;
@@ -147,9 +123,3 @@ export interface PopperTooltipTypeMap<
 export type PopperTooltipProps<
   RootComponentType extends React.ElementType = PopperTooltipTypeMap['defaultComponent'],
 > = PolymorphicProps<PopperTooltipTypeMap<{}, RootComponentType>, RootComponentType>;
-
-export interface PopperRootSlotProps {
-  className?: string;
-  ref: React.Ref<any>;
-  ownerState: PopperOwnerState;
-}

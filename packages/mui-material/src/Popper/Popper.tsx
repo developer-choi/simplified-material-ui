@@ -81,12 +81,10 @@ const Popper = React.forwardRef(function Popper(
     popperOptions,
     popperRef,
     transition,
-    slots,
-    slotProps,
     ...other
   } = props;
 
-  const RootComponent = slots?.root ?? components?.Root;
+  const RootComponent = components?.Root;
   const otherProps = {
     anchorEl,
     container,
@@ -104,8 +102,6 @@ const Popper = React.forwardRef(function Popper(
     <PopperRoot
       as={component}
       direction={isRtl ? 'rtl' : 'ltr'}
-      slots={{ root: RootComponent }}
-      slotProps={slotProps ?? componentsProps}
       {...otherProps}
       ref={ref}
     />
@@ -272,21 +268,6 @@ Popper.propTypes /* remove-proptypes */ = {
    * A ref that points to the used popper instance.
    */
   popperRef: refType,
-  /**
-   * The props used for each slot inside the Popper.
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * The components used for each slot inside the Popper.
-   * Either a string to use a HTML element or a component.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    root: PropTypes.elementType,
-  }),
   /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */

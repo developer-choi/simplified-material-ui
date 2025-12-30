@@ -9,10 +9,8 @@ import refType from '@mui/utils/refType';
 import { createPopper, Instance, Modifier, Placement, State, VirtualElement } from '@popperjs/core';
 import PropTypes from 'prop-types';
 import composeClasses from '@mui/utils/composeClasses';
-import useSlotProps from '@mui/utils/useSlotProps';
 import Portal from '../../../modal/Portal';
 import { getPopperUtilityClass } from './popperClasses';
-import { WithOptionalOwnerState } from '../utils/types';
 import { PolymorphicComponent } from '../utils/PolymorphicComponent';
 import {
   PopperPlacementType,
@@ -20,7 +18,6 @@ import {
   PopperTooltipTypeMap,
   PopperChildrenProps,
   PopperProps,
-  PopperRootSlotProps,
   PopperTransitionProps,
   PopperTypeMap,
 } from './BasePopper.types';
@@ -88,8 +85,6 @@ const PopperTooltip = React.forwardRef<HTMLDivElement, PopperTooltipProps>(funct
     placement: initialPlacement,
     popperOptions,
     popperRef: popperRefProp,
-    slotProps = {},
-    slots = {},
     TransitionProps,
     // @ts-ignore internal logic
     ownerState: ownerStateProp, // prevent from spreading to DOM, it can come from the parent component e.g. Select.
@@ -215,22 +210,16 @@ const PopperTooltip = React.forwardRef<HTMLDivElement, PopperTooltipProps>(funct
   }
 
   const classes = useUtilityClasses(props);
-  const Root = slots.root ?? 'div';
-
-  const rootProps: WithOptionalOwnerState<PopperRootSlotProps> = useSlotProps({
-    elementType: Root,
-    externalSlotProps: slotProps.root,
-    externalForwardedProps: other,
-    additionalProps: {
-      role: 'tooltip',
-      ref: ownRef,
-    },
-    ownerState: props,
-    className: classes.root,
-  });
 
   return (
-    <Root {...rootProps}>{typeof children === 'function' ? children(childProps) : children}</Root>
+    <div
+      role="tooltip"
+      ref={ownRef}
+      className={classes.root}
+      {...other}
+    >
+      {typeof children === 'function' ? children(childProps) : children}
+    </div>
   );
 }) as PolymorphicComponent<PopperTooltipTypeMap>;
 
@@ -254,8 +243,6 @@ const Popper = React.forwardRef<HTMLDivElement, PopperProps>(function Popper<
     popperRef,
     style,
     transition = false,
-    slotProps = {},
-    slots = {},
     ...other
   } = props;
 
@@ -307,8 +294,6 @@ const Popper = React.forwardRef<HTMLDivElement, PopperProps>(function Popper<
         placement={placement}
         popperOptions={popperOptions}
         popperRef={popperRef}
-        slotProps={slotProps}
-        slots={slots}
         {...other}
         style={{
           // Prevents scroll issue, waiting for Popper.js to add this style once initiated.
@@ -511,21 +496,6 @@ Popper.propTypes /* remove-proptypes */ = {
    * A ref that points to the used popper instance.
    */
   popperRef: refType,
-  /**
-   * The props used for each slot inside the Popper.
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * The components used for each slot inside the Popper.
-   * Either a string to use a HTML element or a component.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    root: PropTypes.elementType,
-  }),
   /**
    * Help supporting a react-transition-group/Transition component.
    * @default false
