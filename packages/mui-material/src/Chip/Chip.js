@@ -210,15 +210,12 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
   const {
     avatar: avatarProp,
     className,
-    disabled = false,
     icon: iconProp,
     label,
     onClick,
     onDelete,
     onKeyDown,
     onKeyUp,
-    tabIndex,
-    skipFocusWhenDisabled = false, // TODO v6: Rename to `focusableWhenDisabled`.
     ...other
   } = props;
 
@@ -266,7 +263,6 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
   const ownerState = {
     ...props,
     component,
-    disabled,
     size: 'medium',
     color: 'primary',
     iconColor: 'primary',
@@ -319,8 +315,6 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
       as={component}
       ref={handleRef}
       className={clsx(classes.root, className)}
-      disabled={clickable && disabled ? true : undefined}
-      tabIndex={skipFocusWhenDisabled && disabled ? -1 : tabIndex}
       onClick={onClick}
       onKeyDown={handleKeyDown}
       onKeyUp={handleKeyUp}
@@ -360,11 +354,6 @@ Chip.propTypes /* remove-proptypes */ = {
    */
   className: PropTypes.string,
   /**
-   * If `true`, the component is disabled.
-   * @default false
-   */
-  disabled: PropTypes.bool,
-  /**
    * Icon element.
    */
   icon: PropTypes.element,
@@ -390,12 +379,6 @@ Chip.propTypes /* remove-proptypes */ = {
    */
   onKeyUp: PropTypes.func,
   /**
-   * If `true`, allows the disabled chip to escape focus.
-   * If `false`, allows the disabled chip to receive focus.
-   * @default false
-   */
-  skipFocusWhenDisabled: PropTypes.bool,
-  /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
   sx: PropTypes.oneOfType([
@@ -403,10 +386,6 @@ Chip.propTypes /* remove-proptypes */ = {
     PropTypes.func,
     PropTypes.object,
   ]),
-  /**
-   * @ignore
-   */
-  tabIndex: PropTypes.number,
 };
 
 export default Chip;
