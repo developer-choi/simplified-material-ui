@@ -9,7 +9,6 @@ import capitalize from '../utils/capitalize';
 import ButtonBase from '../ButtonBase';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import chipClasses, { getChipUtilityClass } from './chipClasses';
 
 const useUtilityClasses = (ownerState) => {
@@ -204,8 +203,7 @@ function isDeleteKeyboardEvent(keyboardEvent) {
 /**
  * Chips represent complex entities in small blocks, such as a contact.
  */
-const Chip = React.forwardRef(function Chip(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiChip' });
+const Chip = React.forwardRef(function Chip(props, ref) {
   const {
     avatar: avatarProp,
     className,
