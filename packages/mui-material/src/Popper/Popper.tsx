@@ -13,11 +13,6 @@ import { useDefaultProps } from '../DefaultPropsProvider';
 
 export interface PopperProps extends Omit<BasePopperProps, 'direction'> {
   /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component?: React.ElementType;
-  /**
    * The components used for each slot inside the Popper.
    * Either a string to use a HTML element or a component.
    *
@@ -69,7 +64,6 @@ const Popper = React.forwardRef(function Popper(
 
   const {
     anchorEl,
-    component,
     components,
     componentsProps,
     container,
@@ -100,7 +94,6 @@ const Popper = React.forwardRef(function Popper(
   };
   return (
     <PopperRoot
-      as={component}
       direction={isRtl ? 'rtl' : 'ltr'}
       {...otherProps}
       ref={ref}
@@ -131,11 +124,6 @@ Popper.propTypes /* remove-proptypes */ = {
     PropTypes.node,
     PropTypes.func,
   ]),
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
   /**
    * The components used for each slot inside the Popper.
    * Either a string to use a HTML element or a component.

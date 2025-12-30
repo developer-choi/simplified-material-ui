@@ -11,15 +11,12 @@ import PropTypes from 'prop-types';
 import composeClasses from '@mui/utils/composeClasses';
 import Portal from '../../../modal/Portal';
 import { getPopperUtilityClass } from './popperClasses';
-import { PolymorphicComponent } from '../utils/PolymorphicComponent';
 import {
   PopperPlacementType,
   PopperTooltipProps,
-  PopperTooltipTypeMap,
   PopperChildrenProps,
   PopperProps,
   PopperTransitionProps,
-  PopperTypeMap,
 } from './BasePopper.types';
 
 function flipPlacement(placement?: PopperPlacementType, direction?: 'ltr' | 'rtl') {
@@ -72,9 +69,10 @@ const useUtilityClasses = (ownerState: any) => {
 
 const defaultPopperOptions = {};
 
-const PopperTooltip = React.forwardRef<HTMLDivElement, PopperTooltipProps>(function PopperTooltip<
-  RootComponentType extends React.ElementType,
->(props: PopperTooltipProps<RootComponentType>, forwardedRef: React.ForwardedRef<HTMLDivElement>) {
+const PopperTooltip = React.forwardRef<HTMLDivElement, PopperTooltipProps>(function PopperTooltip(
+  props: PopperTooltipProps,
+  forwardedRef: React.ForwardedRef<HTMLDivElement>,
+) {
   const {
     anchorEl,
     children,
@@ -221,14 +219,15 @@ const PopperTooltip = React.forwardRef<HTMLDivElement, PopperTooltipProps>(funct
       {typeof children === 'function' ? children(childProps) : children}
     </div>
   );
-}) as PolymorphicComponent<PopperTooltipTypeMap>;
+});
 
 /**
  * @ignore - internal component.
  */
-const Popper = React.forwardRef<HTMLDivElement, PopperProps>(function Popper<
-  RootComponentType extends React.ElementType,
->(props: PopperProps<RootComponentType>, forwardedRef: React.ForwardedRef<HTMLDivElement>) {
+const Popper = React.forwardRef<HTMLDivElement, PopperProps>(function Popper(
+  props: PopperProps,
+  forwardedRef: React.ForwardedRef<HTMLDivElement>,
+) {
   const {
     anchorEl,
     children,
@@ -310,7 +309,7 @@ const Popper = React.forwardRef<HTMLDivElement, PopperProps>(function Popper<
       </PopperTooltip>
     </Portal>
   );
-}) as PolymorphicComponent<PopperTypeMap>;
+});
 
 Popper.propTypes /* remove-proptypes */ = {
   // ┌────────────────────────────── Warning ──────────────────────────────┐

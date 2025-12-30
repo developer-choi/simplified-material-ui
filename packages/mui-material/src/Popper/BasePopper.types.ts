@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Instance, Options, OptionsGeneric, VirtualElement } from '@popperjs/core';
 import { PortalProps } from '../../../modal/Portal';
-import { PolymorphicProps } from '../utils/PolymorphicComponent';
 
 export type PopperPlacementType = Options['placement'];
 
@@ -93,17 +92,7 @@ export interface PopperOwnProps {
 
 export type PopperOwnerState = PopperOwnProps;
 
-export interface PopperTypeMap<
-  AdditionalProps = {},
-  RootComponentType extends React.ElementType = 'div',
-> {
-  props: PopperOwnProps & AdditionalProps;
-  defaultComponent: RootComponentType;
-}
-
-export type PopperProps<
-  RootComponentType extends React.ElementType = PopperTypeMap['defaultComponent'],
-> = PolymorphicProps<PopperTypeMap<{}, RootComponentType>, RootComponentType>;
+export type PopperProps = PopperOwnProps;
 
 export type PopperTooltipOwnProps = Omit<
   PopperOwnProps,
@@ -112,14 +101,4 @@ export type PopperTooltipOwnProps = Omit<
   TransitionProps?: PopperTransitionProps;
 };
 
-export interface PopperTooltipTypeMap<
-  AdditionalProps = {},
-  RootComponentType extends React.ElementType = 'div',
-> {
-  props: PopperTooltipOwnProps & AdditionalProps;
-  defaultComponent: RootComponentType;
-}
-
-export type PopperTooltipProps<
-  RootComponentType extends React.ElementType = PopperTooltipTypeMap['defaultComponent'],
-> = PolymorphicProps<PopperTooltipTypeMap<{}, RootComponentType>, RootComponentType>;
+export type PopperTooltipProps = PopperTooltipOwnProps;
