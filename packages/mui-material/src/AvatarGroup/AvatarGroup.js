@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import chainPropTypes from '@mui/utils/chainPropTypes';
 import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import Avatar, { avatarClasses } from '../../../data-display/Avatar';
 import avatarGroupClasses from './avatarGroupClasses';
 
@@ -19,20 +18,18 @@ const AvatarGroupRoot = styled('div', {
   overridesResolver: (props, styles) => {
     return [{ [`& .${avatarGroupClasses.avatar}`]: styles.avatar }, styles.root];
   },
-})(
-  memoTheme(({ theme }) => ({
-    display: 'flex',
-    flexDirection: 'row-reverse',
-    [`& .${avatarClasses.root}`]: {
-      border: `2px solid ${(theme.vars || theme).palette.background.default}`,
-      boxSizing: 'content-box',
-      marginLeft: 'var(--AvatarGroup-spacing, -8px)',
-      '&:last-child': {
-        marginLeft: 0,
-      },
+})({
+  display: 'flex',
+  flexDirection: 'row-reverse',
+  [`& .${avatarClasses.root}`]: {
+    border: '2px solid #ffffff',
+    boxSizing: 'content-box',
+    marginLeft: 'var(--AvatarGroup-spacing, -8px)',
+    '&:last-child': {
+      marginLeft: 0,
     },
-  })),
-);
+  },
+});
 
 const AvatarGroup = React.forwardRef(function AvatarGroup(props, ref) {
   const {
