@@ -210,7 +210,6 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
   const {
     avatar: avatarProp,
     className,
-    clickable: clickableProp,
     disabled = false,
     icon: iconProp,
     label,
@@ -260,7 +259,7 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
     }
   };
 
-  const clickable = clickableProp !== false && onClick ? true : clickableProp;
+  const clickable = !!onClick;
 
   const component = clickable || onDelete ? ButtonBase : 'div';
 
@@ -360,15 +359,6 @@ Chip.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   className: PropTypes.string,
-  /**
-   * If `true`, the chip will appear clickable, and will raise when pressed,
-   * even if the onClick prop is not defined.
-   * If `false`, the chip will not appear clickable, even if onClick prop is defined.
-   * This can be used, for example,
-   * along with the component prop to indicate an anchor Chip is clickable.
-   * Note: this controls the UI and does not affect the onClick event.
-   */
-  clickable: PropTypes.bool,
   /**
    * If `true`, the component is disabled.
    * @default false
