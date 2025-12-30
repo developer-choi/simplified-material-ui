@@ -5,14 +5,8 @@ import PropTypes from 'prop-types';
 import * as React from 'react';
 import BasePopper from './BasePopper';
 import { PopperProps as BasePopperProps } from './BasePopper.types';
-import { styled } from '../zero-styled';
 
-export interface PopperProps extends BasePopperProps {}
-
-const PopperRoot = styled(BasePopper, {
-  name: 'MuiPopper',
-  slot: 'Root',
-})({});
+export type PopperProps = BasePopperProps;
 
 /**
  *
@@ -26,31 +20,7 @@ const PopperRoot = styled(BasePopper, {
  *
  * - [Popper API](https://mui.com/material-ui/api/popper/)
  */
-const Popper = React.forwardRef(function Popper(
-  props: PopperProps,
-  ref: React.ForwardedRef<HTMLDivElement>,
-) {
-  const {
-    anchorEl,
-    modifiers,
-    open,
-    placement,
-    popperOptions,
-    popperRef,
-    ...other
-  } = props;
-
-  const otherProps = {
-    anchorEl,
-    modifiers,
-    open,
-    placement,
-    popperOptions,
-    popperRef,
-    ...other,
-  };
-  return <PopperRoot {...otherProps} ref={ref} />;
-}) as React.ForwardRefExoticComponent<PopperProps & React.RefAttributes<HTMLDivElement>>;
+const Popper = BasePopper;
 
 Popper.propTypes /* remove-proptypes */ = {
   // ┌────────────────────────────── Warning ──────────────────────────────┐
