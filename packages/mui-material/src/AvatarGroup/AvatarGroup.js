@@ -3,26 +3,14 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import chainPropTypes from '@mui/utils/chainPropTypes';
-import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import Avatar, { avatarClasses } from '../../../data-display/Avatar';
-import avatarGroupClasses, { getAvatarGroupUtilityClass } from './avatarGroupClasses';
+import avatarGroupClasses from './avatarGroupClasses';
 
 const SPACINGS = {
   small: -16,
   medium: -8,
-};
-
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-
-  const slots = {
-    root: ['root'],
-    avatar: ['avatar'],
-  };
-
-  return composeClasses(slots, getAvatarGroupUtilityClass, classes);
 };
 
 const AvatarGroupRoot = styled('div', {
@@ -65,8 +53,6 @@ const AvatarGroup = React.forwardRef(function AvatarGroup(props, ref) {
     variant,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   const children = React.Children.toArray(childrenProp).filter((child) => {
     return React.isValidElement(child);
   });
@@ -96,7 +82,7 @@ const AvatarGroup = React.forwardRef(function AvatarGroup(props, ref) {
   return (
     <AvatarGroupRoot
       ownerState={ownerState}
-      className={clsx(classes.root, className)}
+      className={className}
       ref={ref}
       {...other}
       style={{
@@ -104,13 +90,12 @@ const AvatarGroup = React.forwardRef(function AvatarGroup(props, ref) {
         ...other.style,
       }}
     >
-      {extraAvatars ? <Avatar variant={variant} className={classes.avatar}>{extraAvatarsElement}</Avatar> : null}
+      {extraAvatars ? <Avatar variant={variant}>{extraAvatarsElement}</Avatar> : null}
       {children
         .slice(0, maxAvatars)
         .reverse()
         .map((child) => {
           return React.cloneElement(child, {
-            className: clsx(child.props.className, classes.avatar),
             variant: child.props.variant || variant,
           });
         })}
