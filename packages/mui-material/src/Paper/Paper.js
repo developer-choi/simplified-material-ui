@@ -13,14 +13,14 @@ import getOverlayAlpha from '../styles/getOverlayAlpha';
 import { getPaperUtilityClass } from './paperClasses';
 
 const useUtilityClasses = (ownerState) => {
-  const { elevation, variant, classes } = ownerState;
+  const { elevation, classes } = ownerState;
 
   const slots = {
     root: [
       'root',
-      variant,
+      'elevation',
       'rounded',
-      variant === 'elevation' && `elevation${elevation}`,
+      `elevation${elevation}`,
     ],
   };
 
@@ -35,9 +35,9 @@ const PaperRoot = styled('div', {
 
     return [
       styles.root,
-      styles[ownerState.variant],
+      styles.elevation,
       styles.rounded,
-      ownerState.variant === 'elevation' && styles[`elevation${ownerState.elevation}`],
+      styles[`elevation${ownerState.elevation}`],
     ];
   },
 })(
@@ -46,25 +46,8 @@ const PaperRoot = styled('div', {
     color: (theme.vars || theme).palette.text.primary,
     transition: theme.transitions.create('box-shadow'),
     borderRadius: theme.shape.borderRadius,
-    variants: [
-      {
-        props: {
-          variant: 'outlined',
-        },
-        style: {
-          border: `1px solid ${(theme.vars || theme).palette.divider}`,
-        },
-      },
-      {
-        props: {
-          variant: 'elevation',
-        },
-        style: {
-          boxShadow: 'var(--Paper-shadow)',
-          backgroundImage: 'var(--Paper-overlay)',
-        },
-      },
-    ],
+    boxShadow: 'var(--Paper-shadow)',
+    backgroundImage: 'var(--Paper-overlay)',
   })),
 );
 
@@ -75,14 +58,12 @@ const Paper = React.forwardRef(function Paper(inProps, ref) {
   const {
     className,
     elevation = 1,
-    variant = 'elevation',
     ...other
   } = props;
 
   const ownerState = {
     ...props,
     elevation,
-    variant,
   };
 
   const classes = useUtilityClasses(ownerState);
@@ -105,19 +86,17 @@ const Paper = React.forwardRef(function Paper(inProps, ref) {
       ref={ref}
       {...other}
       style={{
-        ...(variant === 'elevation' && {
-          '--Paper-shadow': (theme.vars || theme).shadows[elevation],
-          ...(theme.vars && {
-            '--Paper-overlay': theme.vars.overlays?.[elevation],
-          }),
-          ...(!theme.vars &&
-            theme.palette.mode === 'dark' && {
-              '--Paper-overlay': `linear-gradient(${alpha(
-                '#fff',
-                getOverlayAlpha(elevation),
-              )}, ${alpha('#fff', getOverlayAlpha(elevation))})`,
-            }),
+        '--Paper-shadow': (theme.vars || theme).shadows[elevation],
+        ...(theme.vars && {
+          '--Paper-overlay': theme.vars.overlays?.[elevation],
         }),
+        ...(!theme.vars &&
+          theme.palette.mode === 'dark' && {
+            '--Paper-overlay': `linear-gradient(${alpha(
+              '#fff',
+              getOverlayAlpha(elevation),
+            )}, ${alpha('#fff', getOverlayAlpha(elevation))})`,
+          }),
         ...other.style,
       }}
     />
