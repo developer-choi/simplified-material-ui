@@ -234,68 +234,6 @@ const ChipRoot = styled('div', {
               },
             },
           })),
-        {
-          props: { variant: 'outlined' },
-          style: {
-            backgroundColor: 'transparent',
-            border: theme.vars
-              ? `1px solid ${theme.vars.palette.Chip.defaultBorder}`
-              : `1px solid ${
-                  theme.palette.mode === 'light' ? theme.palette.grey[400] : theme.palette.grey[700]
-                }`,
-            [`&.${chipClasses.clickable}:hover`]: {
-              backgroundColor: (theme.vars || theme).palette.action.hover,
-            },
-            [`&.${chipClasses.focusVisible}`]: {
-              backgroundColor: (theme.vars || theme).palette.action.focus,
-            },
-            [`& .${chipClasses.avatar}`]: {
-              marginLeft: 4,
-            },
-            [`& .${chipClasses.avatarSmall}`]: {
-              marginLeft: 2,
-            },
-            [`& .${chipClasses.icon}`]: {
-              marginLeft: 4,
-            },
-            [`& .${chipClasses.iconSmall}`]: {
-              marginLeft: 2,
-            },
-            [`& .${chipClasses.deleteIcon}`]: {
-              marginRight: 5,
-            },
-            [`& .${chipClasses.deleteIconSmall}`]: {
-              marginRight: 3,
-            },
-          },
-        },
-        ...Object.entries(theme.palette)
-          .filter(createSimplePaletteValueFilter()) // no need to check for mainChannel as it's calculated from main
-          .map(([color]) => ({
-            props: { variant: 'outlined', color },
-            style: {
-              color: (theme.vars || theme).palette[color].main,
-              border: `1px solid ${theme.alpha((theme.vars || theme).palette[color].main, 0.7)}`,
-              [`&.${chipClasses.clickable}:hover`]: {
-                backgroundColor: theme.alpha(
-                  (theme.vars || theme).palette[color].main,
-                  (theme.vars || theme).palette.action.hoverOpacity,
-                ),
-              },
-              [`&.${chipClasses.focusVisible}`]: {
-                backgroundColor: theme.alpha(
-                  (theme.vars || theme).palette[color].main,
-                  (theme.vars || theme).palette.action.focusOpacity,
-                ),
-              },
-              [`& .${chipClasses.deleteIcon}`]: {
-                color: theme.alpha((theme.vars || theme).palette[color].main, 0.7),
-                '&:hover, &:active': {
-                  color: (theme.vars || theme).palette[color].main,
-                },
-              },
-            },
-          })),
       ],
     };
   }),
@@ -316,15 +254,6 @@ const ChipLabel = styled('span', {
   paddingLeft: 12,
   paddingRight: 12,
   whiteSpace: 'nowrap',
-  variants: [
-    {
-      props: { variant: 'outlined' },
-      style: {
-        paddingLeft: 11,
-        paddingRight: 11,
-      },
-    },
-  ],
 });
 
 function isDeleteKeyboardEvent(keyboardEvent) {
@@ -349,7 +278,6 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
     onDelete,
     onKeyDown,
     onKeyUp,
-    variant = 'filled',
     tabIndex,
     skipFocusWhenDisabled = false, // TODO v6: Rename to `focusableWhenDisabled`.
     ...other
@@ -405,7 +333,7 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
     iconColor: React.isValidElement(iconProp) ? iconProp.props.color || color : color,
     onDelete: !!onDelete,
     clickable,
-    variant,
+    variant: 'filled',
   };
 
   const classes = useUtilityClasses(ownerState);
@@ -571,14 +499,6 @@ Chip.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   tabIndex: PropTypes.number,
-  /**
-   * The variant to use.
-   * @default 'filled'
-   */
-  variant: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['filled', 'outlined']),
-    PropTypes.string,
-  ]),
 };
 
 export default Chip;
