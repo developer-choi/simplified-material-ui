@@ -1,9 +1,9 @@
 import * as React from 'react';
-import Chip from '@mui/material/Chip';
+import Chip from '../../../../data-display/Chip';
 import { createTheme } from '@mui/material/styles';
 
 // Update the Chip's extendable props options
-declare module '@mui/material/Chip' {
+declare module '../../../../data-display/Chip' {
   interface ChipPropsVariantOverrides {
     dashed: true;
     outlined: false;

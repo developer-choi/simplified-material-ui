@@ -19,7 +19,7 @@ import { CardHeaderProps } from '../CardHeader';
 import { CardMediaProps } from '../CardMedia';
 import { CardProps } from '../Card';
 import { CheckboxProps } from '../../../form/Checkbox';
-import { ChipProps } from '../Chip';
+import { ChipProps } from '../../../data-display/Chip';
 import { CircularProgressProps } from '../CircularProgress';
 import { CollapseProps } from '../../../utils/Collapse';
 import { ContainerProps } from '../Container';

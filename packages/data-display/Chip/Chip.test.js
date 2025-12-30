@@ -11,12 +11,12 @@ import {
   screen,
 } from '@mui/internal-test-utils';
 import describeSkipIf from '@mui/internal-test-utils/describeSkipIf';
-import Avatar from '../../../data-display/Avatar';
-import Chip, { chipClasses as classes } from '@mui/material/Chip';
+import Avatar from '../Avatar';
+import Chip, { chipClasses as classes } from './index';
 import { ThemeProvider, createTheme, hexToRgb } from '@mui/material/styles';
-import CheckBox from '../internal/svg-icons/CheckBox';
-import defaultTheme from '../styles/defaultTheme';
-import describeConformance from '../../test/describeConformance';
+import CheckBox from '@mui/material/internal/svg-icons/CheckBox';
+import defaultTheme from '@mui/material/styles/defaultTheme';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<Chip />', () => {
   const { render } = createRenderer();

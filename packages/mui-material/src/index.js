@@ -85,8 +85,8 @@ export * from './CardMedia';
 export { default as Checkbox } from '../../form/Checkbox';
 export * from '../../form/Checkbox';
 
-export { default as Chip } from './Chip';
-export * from './Chip';
+export { default as Chip } from '../../data-display/Chip';
+export * from '../../data-display/Chip';
 
 export { default as CircularProgress } from './CircularProgress';
 export * from './CircularProgress';

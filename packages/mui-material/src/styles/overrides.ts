@@ -26,7 +26,7 @@ import { CardContentClassKey } from '../CardContent';
 import { CardHeaderClassKey } from '../CardHeader';
 import { CardMediaClassKey } from '../CardMedia';
 import { CheckboxClassKey } from '../../../form/Checkbox';
-import { ChipClassKey } from '../Chip';
+import { ChipClassKey } from '../../../data-display/Chip';
 import { CircularProgressClassKey } from '../CircularProgress';
 import { CollapseClassKey } from '../../../utils/Collapse';
 import { ContainerClassKey } from '../Container';

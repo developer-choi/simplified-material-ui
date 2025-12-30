@@ -12,7 +12,7 @@ import { spy } from 'sinon';
 import Box from '@mui/system/Box';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
-import Chip, { chipClasses } from '@mui/material/Chip';
+import Chip, { chipClasses } from '../../../data-display/Chip';
 import Autocomplete, {
   autocompleteClasses as classes,
   createFilterOptions,

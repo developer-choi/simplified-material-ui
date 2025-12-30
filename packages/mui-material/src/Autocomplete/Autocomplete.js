@@ -10,7 +10,7 @@ import Popper from '../Popper';
 import ListSubheader from '../ListSubheader';
 import Paper from '../Paper';
 import IconButton from '../IconButton';
-import Chip from '../Chip';
+import Chip from '../../../data-display/Chip';
 import inputClasses from '../Input/inputClasses';
 import inputBaseClasses from '../InputBase/inputBaseClasses';
 import outlinedInputClasses from '../OutlinedInput/outlinedInputClasses';
