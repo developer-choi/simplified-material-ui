@@ -3,8 +3,20 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import integerPropType from '@mui/utils/integerPropType';
 import chainPropTypes from '@mui/utils/chainPropTypes';
-import { styled, useTheme } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
+import { styled } from '../zero-styled';
+
+// Hardcoded shadows for elevation 0-8
+const SHADOWS = [
+  'none',
+  '0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)',
+  '0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12)',
+  '0px 3px 3px -2px rgba(0,0,0,0.2),0px 3px 4px 0px rgba(0,0,0,0.14),0px 1px 8px 0px rgba(0,0,0,0.12)',
+  '0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12)',
+  '0px 3px 5px -1px rgba(0,0,0,0.2),0px 5px 8px 0px rgba(0,0,0,0.14),0px 1px 14px 0px rgba(0,0,0,0.12)',
+  '0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12)',
+  '0px 4px 5px -2px rgba(0,0,0,0.2),0px 7px 10px 1px rgba(0,0,0,0.14),0px 2px 16px 1px rgba(0,0,0,0.12)',
+  '0px 5px 5px -3px rgba(0,0,0,0.2),0px 8px 10px 1px rgba(0,0,0,0.14),0px 3px 14px 2px rgba(0,0,0,0.12)',
+];
 
 const PaperRoot = styled('div', {
   name: 'MuiPaper',
@@ -19,40 +31,27 @@ const PaperRoot = styled('div', {
       styles[`elevation${ownerState.elevation}`],
     ];
   },
-})(
-  memoTheme(({ theme }) => ({
-    backgroundColor: (theme.vars || theme).palette.background.paper,
-    color: (theme.vars || theme).palette.text.primary,
-    transition: theme.transitions.create('box-shadow'),
-    borderRadius: theme.shape.borderRadius,
-    boxShadow: 'var(--Paper-shadow)',
-  })),
-);
+})({
+  backgroundColor: '#fff',
+  color: 'rgba(0, 0, 0, 0.87)',
+  borderRadius: 4,
+  boxShadow: 'var(--Paper-shadow)',
+});
 
 const Paper = React.forwardRef(function Paper(props, ref) {
-  const theme = useTheme();
-
   const {
     className,
     elevation = 1,
     ...other
   } = props;
 
+  // Limit elevation to 0-8
+  const validElevation = Math.min(Math.max(0, elevation), 8);
+
   const ownerState = {
     ...props,
-    elevation,
+    elevation: validElevation,
   };
-
-  if (process.env.NODE_ENV !== 'production') {
-    if (theme.shadows[elevation] === undefined) {
-      console.error(
-        [
-          `MUI: The elevation provided <Paper elevation={${elevation}}> is not available in the theme.`,
-          `Please make sure that \`theme.shadows[${elevation}]\` is defined.`,
-        ].join('\n'),
-      );
-    }
-  }
 
   return (
     <PaperRoot
@@ -61,7 +60,7 @@ const Paper = React.forwardRef(function Paper(props, ref) {
       ref={ref}
       {...other}
       style={{
-        '--Paper-shadow': (theme.vars || theme).shadows[elevation],
+        '--Paper-shadow': SHADOWS[validElevation],
         ...other.style,
       }}
     />
