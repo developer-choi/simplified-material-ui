@@ -6,7 +6,6 @@ import CancelIcon from '../internal/svg-icons/Cancel';
 import unsupportedProp from '../utils/unsupportedProp';
 import ButtonBase from '../ButtonBase';
 import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import chipClasses from './chipClasses';
 
 const ChipRoot = styled('div', {
@@ -41,111 +40,81 @@ const ChipRoot = styled('div', {
       styles[`${variant}${capitalize(color)}`],
     ];
   },
-})(
-  memoTheme(({ theme }) => {
-    const textColor =
-      theme.palette.mode === 'light' ? theme.palette.grey[700] : theme.palette.grey[300];
-    return {
-      maxWidth: '100%',
-      fontFamily: theme.typography.fontFamily,
-      fontSize: theme.typography.pxToRem(13),
-      display: 'inline-flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: 32,
-      lineHeight: 1.5,
-      color: (theme.vars || theme).palette.text.primary,
-      backgroundColor: (theme.vars || theme).palette.action.selected,
-      borderRadius: 32 / 2,
-      whiteSpace: 'nowrap',
-      transition: theme.transitions.create(['background-color', 'box-shadow']),
-      // reset cursor explicitly in case ButtonBase is used
-      cursor: 'unset',
-      // We disable the focus ring for mouse, touch and keyboard users.
-      outline: 0,
-      textDecoration: 'none',
-      border: 0, // Remove `button` border
-      padding: 0, // Remove `button` padding
-      verticalAlign: 'middle',
-      boxSizing: 'border-box',
-      [`&.${chipClasses.disabled}`]: {
-        opacity: (theme.vars || theme).palette.action.disabledOpacity,
-        pointerEvents: 'none',
+)({
+  maxWidth: '100%',
+  fontFamily: 'Roboto, "Helvetica Neue", Arial, sans-serif',
+  fontSize: '0.8125rem',
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: 32,
+  lineHeight: 1.5,
+  backgroundColor: '#1976d2',
+  color: '#fff',
+  borderRadius: 16,
+  whiteSpace: 'nowrap',
+  cursor: 'unset',
+  outline: 0,
+  textDecoration: 'none',
+  border: 0,
+  padding: 0,
+  verticalAlign: 'middle',
+  boxSizing: 'border-box',
+  [`& .${chipClasses.avatar}`]: {
+    marginLeft: 5,
+    marginRight: -6,
+    width: 24,
+    height: 24,
+    color: '#fff',
+    fontSize: '0.75rem',
+  },
+  [`& .${chipClasses.avatarColorPrimary}`]: {
+    color: '#fff',
+    backgroundColor: '#1565c0',
+  },
+  [`& .${chipClasses.icon}`]: {
+    marginLeft: 5,
+    marginRight: -6,
+    color: 'inherit',
+  },
+  [`& .${chipClasses.deleteIcon}`]: {
+    WebkitTapHighlightColor: 'transparent',
+    color: 'rgba(255, 255, 255, 0.7)',
+    fontSize: 22,
+    cursor: 'pointer',
+    margin: '0 5px 0 -6px',
+    '&:hover, &:active': {
+      color: '#fff',
+    },
+  },
+  variants: [
+    {
+      props: { onDelete: true },
+      style: {
+        [`&.${chipClasses.focusVisible}`]: {
+          background: '#1565c0',
+        },
       },
-      [`& .${chipClasses.avatar}`]: {
-        marginLeft: 5,
-        marginRight: -6,
-        width: 24,
-        height: 24,
-        color: theme.vars ? theme.vars.palette.Chip.defaultAvatarColor : textColor,
-        fontSize: theme.typography.pxToRem(12),
-      },
-      [`& .${chipClasses.avatarColorPrimary}`]: {
-        color: (theme.vars || theme).palette.primary.contrastText,
-        backgroundColor: (theme.vars || theme).palette.primary.dark,
-      },
-      [`& .${chipClasses.avatarSmall}`]: {
-        marginLeft: 4,
-        marginRight: -4,
-        width: 18,
-        height: 18,
-        fontSize: theme.typography.pxToRem(10),
-      },
-      [`& .${chipClasses.icon}`]: {
-        marginLeft: 5,
-        marginRight: -6,
-      },
-      [`& .${chipClasses.deleteIcon}`]: {
+    },
+    {
+      props: { clickable: true },
+      style: {
+        userSelect: 'none',
         WebkitTapHighlightColor: 'transparent',
-        color: theme.alpha((theme.vars || theme).palette.text.primary, 0.26),
-        fontSize: 22,
         cursor: 'pointer',
-        margin: '0 5px 0 -6px',
         '&:hover': {
-          color: theme.alpha((theme.vars || theme).palette.text.primary, 0.4),
+          backgroundColor: '#1565c0',
+        },
+        [`&.${chipClasses.focusVisible}`]: {
+          backgroundColor: '#1565c0',
+        },
+        '&:active': {
+          boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)',
         },
       },
-      backgroundColor: (theme.vars || theme).palette.primary.main,
-      color: (theme.vars || theme).palette.primary.contrastText,
-      [`& .${chipClasses.icon}`]: {
-        color: 'inherit',
-      },
-      [`& .${chipClasses.deleteIcon}`]: {
-        color: theme.alpha((theme.vars || theme).palette.primary.contrastText, 0.7),
-        '&:hover, &:active': {
-          color: (theme.vars || theme).palette.primary.contrastText,
-        },
-      },
-      variants: [
-        {
-          props: { onDelete: true },
-          style: {
-            [`&.${chipClasses.focusVisible}`]: {
-              background: (theme.vars || theme).palette.primary.dark,
-            },
-          },
-        },
-        {
-          props: { clickable: true },
-          style: {
-            userSelect: 'none',
-            WebkitTapHighlightColor: 'transparent',
-            cursor: 'pointer',
-            '&:hover': {
-              backgroundColor: (theme.vars || theme).palette.primary.dark,
-            },
-            [`&.${chipClasses.focusVisible}`]: {
-              backgroundColor: (theme.vars || theme).palette.primary.dark,
-            },
-            '&:active': {
-              boxShadow: (theme.vars || theme).shadows[1],
-            },
-          },
-        },
-      ],
-    };
-  }),
-);
+    },
+  ],
+});
 
 const ChipLabel = styled('span', {
   name: 'MuiChip',
