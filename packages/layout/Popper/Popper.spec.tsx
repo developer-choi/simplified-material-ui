@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Instance } from '@popperjs/core';
-import Tooltip from '../../../data-display/Tooltip';
+import Tooltip from '../../data-display/Tooltip';
 
 interface Props {
   children: React.ReactElement<unknown>;

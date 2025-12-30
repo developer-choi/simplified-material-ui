@@ -1,5 +1,5 @@
 import { CSSObject, CSSInterpolation, Interpolation } from '@mui/system';
-import { PopperClassKey } from '../Popper';
+import { PopperClassKey } from '../../../layout/Popper';
 import { ComponentsPropsList } from './props';
 import { AccordionActionsClassKey } from '../../../surfaces/AccordionActions';
 import { AccordionClassKey } from '../../../surfaces/Accordion';

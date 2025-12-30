@@ -4,7 +4,7 @@ import ownerDocument from '@mui/utils/ownerDocument';
 import useEnhancedEffect from '@mui/utils/useEnhancedEffect';
 import useForkRef from '@mui/utils/useForkRef';
 import { createPopper, Instance, Modifier, Placement, State } from '@popperjs/core';
-import Portal from '../../../modal/Portal';
+import Portal from '../../modal/Portal';
 import {
   PopperPlacementType,
   PopperTooltipProps,

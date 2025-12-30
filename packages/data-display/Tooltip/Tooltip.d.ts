@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MUIStyledCommonProps, SxProps } from '@mui/system';
-import { PopperProps } from '@mui/material/Popper';
+import { PopperProps } from '../../layout/Popper';
 import { Theme } from '@mui/material/styles';
 import { InternalStandardProps as StandardProps } from '@mui/material/internal';
 import { CreateSlotsAndSlotProps, SlotProps } from '@mui/material/utils/types';

@@ -6,7 +6,7 @@ import integerPropType from '@mui/utils/integerPropType';
 import chainPropTypes from '@mui/utils/chainPropTypes';
 import composeClasses from '@mui/utils/composeClasses';
 import useAutocomplete, { createFilterOptions } from '../useAutocomplete';
-import Popper from '../Popper';
+import Popper from '../../../layout/Popper';
 import ListSubheader from '../ListSubheader';
 import Paper from '../../../surfaces/Paper';
 import IconButton from '../IconButton';

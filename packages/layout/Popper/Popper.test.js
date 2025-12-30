@@ -4,8 +4,8 @@ import { createRenderer, fireEvent, screen } from '@mui/internal-test-utils';
 import { ThemeProvider } from '@mui/system';
 import createTheme from '@mui/system/createTheme';
 import Grow from '@mui/material/Grow';
-import Popper from '@mui/material/Popper';
-import describeConformance from '../../test/describeConformance';
+import Popper from './index';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<Popper />', () => {
   let rtlTheme;

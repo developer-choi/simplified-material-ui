@@ -6,7 +6,7 @@ import { InternalStandardProps as StandardProps } from '../internal';
 import { IconButtonProps } from '../IconButton';
 import { ChipProps, ChipTypeMap } from '../../../data-display/Chip';
 import { PaperProps } from '../../../surfaces/Paper';
-import { PopperProps } from '../Popper';
+import { PopperProps } from '../../../layout/Popper';
 import useAutocomplete, {
   AutocompleteChangeDetails,
   AutocompleteChangeReason,

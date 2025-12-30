@@ -117,7 +117,7 @@ import { ToolbarProps } from '../Toolbar';
 import { TooltipProps } from '../../../data-display/Tooltip';
 import { TouchRippleProps } from '../ButtonBase/TouchRipple';
 import { TypographyProps } from '../Typography';
-import { PopperProps } from '../Popper';
+import { PopperProps } from '../../../layout/Popper';
 
 export type ComponentsProps = {
   [Name in keyof ComponentsPropsList]?: Partial<ComponentsPropsList[Name]>;
