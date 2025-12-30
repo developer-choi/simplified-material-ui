@@ -10,7 +10,6 @@ import capitalize from '../utils/capitalize';
 import ButtonBase from '../ButtonBase';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import chipClasses, { getChipUtilityClass } from './chipClasses';
 
@@ -119,10 +118,6 @@ const ChipRoot = styled('div', {
         color: (theme.vars || theme).palette.primary.contrastText,
         backgroundColor: (theme.vars || theme).palette.primary.dark,
       },
-      [`& .${chipClasses.avatarColorSecondary}`]: {
-        color: (theme.vars || theme).palette.secondary.contrastText,
-        backgroundColor: (theme.vars || theme).palette.secondary.dark,
-      },
       [`& .${chipClasses.avatarSmall}`]: {
         marginLeft: 4,
         marginRight: -4,
@@ -144,63 +139,26 @@ const ChipRoot = styled('div', {
           color: theme.alpha((theme.vars || theme).palette.text.primary, 0.4),
         },
       },
+      backgroundColor: (theme.vars || theme).palette.primary.main,
+      color: (theme.vars || theme).palette.primary.contrastText,
+      [`& .${chipClasses.icon}`]: {
+        color: 'inherit',
+      },
+      [`& .${chipClasses.deleteIcon}`]: {
+        color: theme.alpha((theme.vars || theme).palette.primary.contrastText, 0.7),
+        '&:hover, &:active': {
+          color: (theme.vars || theme).palette.primary.contrastText,
+        },
+      },
       variants: [
-        ...Object.entries(theme.palette)
-          .filter(createSimplePaletteValueFilter(['contrastText']))
-          .map(([color]) => {
-            return {
-              props: { color },
-              style: {
-                backgroundColor: (theme.vars || theme).palette[color].main,
-                color: (theme.vars || theme).palette[color].contrastText,
-                [`& .${chipClasses.deleteIcon}`]: {
-                  color: theme.alpha((theme.vars || theme).palette[color].contrastText, 0.7),
-                  '&:hover, &:active': {
-                    color: (theme.vars || theme).palette[color].contrastText,
-                  },
-                },
-              },
-            };
-          }),
-        {
-          props: (props) => props.iconColor === props.color,
-          style: {
-            [`& .${chipClasses.icon}`]: {
-              color: theme.vars ? theme.vars.palette.Chip.defaultIconColor : textColor,
-            },
-          },
-        },
-        {
-          props: (props) => props.iconColor === props.color && props.color !== 'default',
-          style: {
-            [`& .${chipClasses.icon}`]: {
-              color: 'inherit',
-            },
-          },
-        },
         {
           props: { onDelete: true },
           style: {
             [`&.${chipClasses.focusVisible}`]: {
-              backgroundColor: theme.alpha(
-                (theme.vars || theme).palette.action.selected,
-                `${(theme.vars || theme).palette.action.selectedOpacity} + ${(theme.vars || theme).palette.action.focusOpacity}`,
-              ),
+              background: (theme.vars || theme).palette.primary.dark,
             },
           },
         },
-        ...Object.entries(theme.palette)
-          .filter(createSimplePaletteValueFilter(['dark']))
-          .map(([color]) => {
-            return {
-              props: { color, onDelete: true },
-              style: {
-                [`&.${chipClasses.focusVisible}`]: {
-                  background: (theme.vars || theme).palette[color].dark,
-                },
-              },
-            };
-          }),
         {
           props: { clickable: true },
           style: {
@@ -208,32 +166,16 @@ const ChipRoot = styled('div', {
             WebkitTapHighlightColor: 'transparent',
             cursor: 'pointer',
             '&:hover': {
-              backgroundColor: theme.alpha(
-                (theme.vars || theme).palette.action.selected,
-                `${(theme.vars || theme).palette.action.selectedOpacity} + ${(theme.vars || theme).palette.action.hoverOpacity}`,
-              ),
+              backgroundColor: (theme.vars || theme).palette.primary.dark,
             },
             [`&.${chipClasses.focusVisible}`]: {
-              backgroundColor: theme.alpha(
-                (theme.vars || theme).palette.action.selected,
-                `${(theme.vars || theme).palette.action.selectedOpacity} + ${(theme.vars || theme).palette.action.focusOpacity}`,
-              ),
+              backgroundColor: (theme.vars || theme).palette.primary.dark,
             },
             '&:active': {
               boxShadow: (theme.vars || theme).shadows[1],
             },
           },
         },
-        ...Object.entries(theme.palette)
-          .filter(createSimplePaletteValueFilter(['dark']))
-          .map(([color]) => ({
-            props: { color, clickable: true },
-            style: {
-              [`&:hover, &.${chipClasses.focusVisible}`]: {
-                backgroundColor: (theme.vars || theme).palette[color].dark,
-              },
-            },
-          })),
       ],
     };
   }),
@@ -269,7 +211,6 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
     avatar: avatarProp,
     className,
     clickable: clickableProp,
-    color = 'default',
     deleteIcon: deleteIconProp,
     disabled = false,
     icon: iconProp,
@@ -329,8 +270,8 @@ const Chip = React.forwardRef(function Chip(inProps, ref) {
     component,
     disabled,
     size: 'medium',
-    color,
-    iconColor: React.isValidElement(iconProp) ? iconProp.props.color || color : color,
+    color: 'primary',
+    iconColor: 'primary',
     onDelete: !!onDelete,
     clickable,
     variant: 'filled',
@@ -437,16 +378,6 @@ Chip.propTypes /* remove-proptypes */ = {
    * Note: this controls the UI and does not affect the onClick event.
    */
   clickable: PropTypes.bool,
-  /**
-   * The color of the component.
-   * It supports both default and custom theme colors, which can be added as shown in the
-   * [palette customization guide](https://mui.com/material-ui/customization/palette/#custom-colors).
-   * @default 'default'
-   */
-  color: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['default', 'primary', 'secondary', 'error', 'info', 'success', 'warning']),
-    PropTypes.string,
-  ]),
   /**
    * Override the default delete icon element. Shown only if `onDelete` is set.
    */
