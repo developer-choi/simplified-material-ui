@@ -5,11 +5,9 @@ import clsx from 'clsx';
 import integerPropType from '@mui/utils/integerPropType';
 import chainPropTypes from '@mui/utils/chainPropTypes';
 import composeClasses from '@mui/utils/composeClasses';
-import { alpha } from '@mui/system/colorManipulator';
 import { styled, useTheme } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import getOverlayAlpha from '../styles/getOverlayAlpha';
 import { getPaperUtilityClass } from './paperClasses';
 
 const useUtilityClasses = (ownerState) => {
@@ -47,7 +45,6 @@ const PaperRoot = styled('div', {
     transition: theme.transitions.create('box-shadow'),
     borderRadius: theme.shape.borderRadius,
     boxShadow: 'var(--Paper-shadow)',
-    backgroundImage: 'var(--Paper-overlay)',
   })),
 );
 
@@ -87,16 +84,6 @@ const Paper = React.forwardRef(function Paper(inProps, ref) {
       {...other}
       style={{
         '--Paper-shadow': (theme.vars || theme).shadows[elevation],
-        ...(theme.vars && {
-          '--Paper-overlay': theme.vars.overlays?.[elevation],
-        }),
-        ...(!theme.vars &&
-          theme.palette.mode === 'dark' && {
-            '--Paper-overlay': `linear-gradient(${alpha(
-              '#fff',
-              getOverlayAlpha(elevation),
-            )}, ${alpha('#fff', getOverlayAlpha(elevation))})`,
-          }),
         ...other.style,
       }}
     />
