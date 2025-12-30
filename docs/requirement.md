@@ -68,14 +68,10 @@ Material-UI의 복잡한 컴포넌트들을 **최소한의 기능만 남기고 �
 - **파일경로:** docs/[카테고리]/[ComponentName]-simplified.md
 - **양식:** docs/format/simplified.md
 
-### 6. 아이디어 제안
-위에서 작성한 *-original.md외 *-simplified.md 문서에서
-
-아래의 양식에는 없지만, 포함되면 좋을것 같은 내용이 있으면 사용자에게 제안해주세요.
-- 양식: docs/format/original.md
-- 양식: docs/format/simplified.md
-
-예시로, 이것도 사용자가 알아가면 좋을것같다 가 있을 수 있습니다.
+**양식 외 추가 내용**:
+- 양식(docs/format/simplified.md)에는 없지만 사용자가 알아가면 좋을 것 같은 내용이 있다면 문서 작성 시 함께 추가하세요.
+- 예: 특정 개념에 대한 추가 설명, 유용한 패턴, 주의사항, 실전 팁 등
+- 이러한 내용을 발견하면 별도로 제안하지 말고 문서에 바로 포함시키세요.
 ---
 
 ## 삭제 대상 참고
