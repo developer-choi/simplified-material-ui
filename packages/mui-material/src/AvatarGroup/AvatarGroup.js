@@ -59,7 +59,6 @@ const AvatarGroup = React.forwardRef(function AvatarGroup(inProps, ref) {
     className,
     component = 'div',
     max = 5,
-    renderSurplus,
     slotProps = {},
     slots = {},
     spacing = 'medium',
@@ -93,7 +92,7 @@ const AvatarGroup = React.forwardRef(function AvatarGroup(inProps, ref) {
 
   const maxAvatars = Math.min(children.length, clampedMax - 1);
   const extraAvatars = Math.max(totalAvatars - clampedMax, totalAvatars - maxAvatars, 0);
-  const extraAvatarsElement = renderSurplus ? renderSurplus(extraAvatars) : `+${extraAvatars}`;
+  const extraAvatarsElement = `+${extraAvatars}`;
 
   let marginValue;
 
@@ -187,12 +186,6 @@ AvatarGroup.propTypes /* remove-proptypes */ = {
 
     return null;
   }),
-  /**
-   * custom renderer of extraAvatars
-   * @param {number} surplus number of extra avatars
-   * @returns {React.ReactNode} custom element to display
-   */
-  renderSurplus: PropTypes.func,
   /**
    * The props used for each slot inside.
    * @default {}
