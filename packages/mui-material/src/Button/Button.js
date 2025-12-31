@@ -405,7 +405,6 @@ const Button = React.forwardRef(function Button(inProps, ref) {
     component = 'button',
     className,
     disabled = false,
-    disableFocusRipple = false,
     endIcon: endIconProp,
     focusVisibleClassName,
     id: idProp,
@@ -424,7 +423,6 @@ const Button = React.forwardRef(function Button(inProps, ref) {
     color,
     component,
     disabled,
-    disableFocusRipple,
     loading,
     size,
     type,
@@ -465,7 +463,6 @@ const Button = React.forwardRef(function Button(inProps, ref) {
       className={clsx(contextProps.className, classes.root, className, positionClassName)}
       component={component}
       disabled={disabled || loading}
-      focusRipple={!disableFocusRipple}
       focusVisibleClassName={clsx(classes.focusVisible, focusVisibleClassName)}
       ref={ref}
       type={type}
@@ -518,11 +515,6 @@ Button.propTypes /* remove-proptypes */ = {
    * @default false
    */
   disabled: PropTypes.bool,
-  /**
-   * If `true`, the  keyboard focus ripple is disabled.
-   * @default false
-   */
-  disableFocusRipple: PropTypes.bool,
   /**
    * Element placed after the children.
    */
