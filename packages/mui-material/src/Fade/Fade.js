@@ -31,12 +31,6 @@ const Fade = React.forwardRef(function Fade(props, ref) {
   const {
     children,
     in: inProp,
-    onEnter,
-    onEntered,
-    onEntering,
-    onExit,
-    onExited,
-    onExiting,
     style,
     timeout = defaultTimeout,
     ...other
@@ -46,22 +40,7 @@ const Fade = React.forwardRef(function Fade(props, ref) {
   const nodeRef = React.useRef(null);
   const handleRef = useForkRef(nodeRef, getReactElementRef(children), ref);
 
-  const normalizedTransitionCallback = (callback) => (maybeIsAppearing) => {
-    if (callback) {
-      const node = nodeRef.current;
-
-      // onEnterXxx and onExitXxx callbacks have a different arguments.length value.
-      if (maybeIsAppearing === undefined) {
-        callback(node);
-      } else {
-        callback(node, maybeIsAppearing);
-      }
-    }
-  };
-
-  const handleEntering = normalizedTransitionCallback(onEntering);
-
-  const handleEnter = normalizedTransitionCallback((node, isAppearing) => {
+  const handleEnter = (node, isAppearing) => {
     reflow(node); // So the animation always start from the start.
 
     const transitionProps = getTransitionProps(
@@ -73,17 +52,9 @@ const Fade = React.forwardRef(function Fade(props, ref) {
 
     node.style.webkitTransition = theme.transitions.create('opacity', transitionProps);
     node.style.transition = theme.transitions.create('opacity', transitionProps);
+  };
 
-    if (onEnter) {
-      onEnter(node, isAppearing);
-    }
-  });
-
-  const handleEntered = normalizedTransitionCallback(onEntered);
-
-  const handleExiting = normalizedTransitionCallback(onExiting);
-
-  const handleExit = normalizedTransitionCallback((node) => {
+  const handleExit = (node) => {
     const transitionProps = getTransitionProps(
       { style, timeout },
       {
@@ -93,13 +64,7 @@ const Fade = React.forwardRef(function Fade(props, ref) {
 
     node.style.webkitTransition = theme.transitions.create('opacity', transitionProps);
     node.style.transition = theme.transitions.create('opacity', transitionProps);
-
-    if (onExit) {
-      onExit(node);
-    }
-  });
-
-  const handleExited = normalizedTransitionCallback(onExited);
+  };
 
   return (
     <Transition
@@ -107,11 +72,7 @@ const Fade = React.forwardRef(function Fade(props, ref) {
       in={inProp}
       nodeRef={enableStrictModeCompat ? nodeRef : undefined}
       onEnter={handleEnter}
-      onEntered={handleEntered}
-      onEntering={handleEntering}
       onExit={handleExit}
-      onExited={handleExited}
-      onExiting={handleExiting}
       timeout={timeout}
       {...other}
     >
@@ -146,30 +107,6 @@ Fade.propTypes /* remove-proptypes */ = {
    * If `true`, the component will transition in.
    */
   in: PropTypes.bool,
-  /**
-   * @ignore
-   */
-  onEnter: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onEntered: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onEntering: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onExit: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onExited: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onExiting: PropTypes.func,
   /**
    * @ignore
    */
