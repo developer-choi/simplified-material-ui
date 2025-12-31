@@ -4,15 +4,76 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import resolveProps from '@mui/utils/resolveProps';
 import { unstable_useId as useId } from '../utils';
-import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import ButtonBase from '../ButtonBase';
 import CircularProgress from '../CircularProgress';
 import capitalize from '../utils/capitalize';
-import buttonClasses from './buttonClasses';
 import ButtonGroupContext from '../ButtonGroup/ButtonGroupContext';
 import ButtonGroupButtonContext from '../ButtonGroup/ButtonGroupButtonContext';
+
+// 스타일 계산 함수
+const getButtonStyles = (variant, color, size, loading) => {
+  const styles = {
+    minWidth: 64,
+    padding: '6px 16px',
+    border: 0,
+    borderRadius: 4,
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontWeight: 500,
+    fontSize: '0.875rem',
+    lineHeight: 1.75,
+    letterSpacing: '0.02857em',
+    textTransform: 'uppercase',
+  };
+
+  // variant별 기본 스타일
+  if (variant === 'text') {
+    styles.padding = '6px 8px';
+  } else if (variant === 'outlined') {
+    styles.padding = '5px 15px';
+    styles.border = '1px solid';
+  } else if (variant === 'contained') {
+    styles.boxShadow = '0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)';
+  }
+
+  // size별 스타일
+  if (size === 'small') {
+    styles.fontSize = '0.8125rem';
+    if (variant === 'text') styles.padding = '4px 5px';
+    else if (variant === 'outlined') styles.padding = '3px 9px';
+    else if (variant === 'contained') styles.padding = '4px 10px';
+  } else if (size === 'large') {
+    styles.fontSize = '0.9375rem';
+    if (variant === 'text') styles.padding = '8px 11px';
+    else if (variant === 'outlined') styles.padding = '7px 21px';
+    else if (variant === 'contained') styles.padding = '8px 22px';
+  }
+
+  // color별 스타일
+  const colorMap = {
+    primary: { main: '#1976d2', contrastText: '#fff' },
+    secondary: { main: '#9c27b0', contrastText: '#fff' },
+    error: { main: '#d32f2f', contrastText: '#fff' },
+  };
+
+  const selectedColor = colorMap[color];
+  if (variant === 'text') {
+    styles.color = selectedColor.main;
+  } else if (variant === 'outlined') {
+    styles.color = selectedColor.main;
+    styles.borderColor = selectedColor.main;
+  } else if (variant === 'contained') {
+    styles.color = selectedColor.contrastText;
+    styles.backgroundColor = selectedColor.main;
+  }
+
+  // loading 상태
+  if (loading) {
+    styles.color = 'transparent';
+  }
+
+  return styles;
+};
 
 const commonIconStyles = [
   {
@@ -40,250 +101,6 @@ const commonIconStyles = [
     },
   },
 ];
-
-const ButtonRoot = styled(ButtonBase, {
-  shouldForwardProp: (prop) => rootShouldForwardProp(prop) || prop === 'classes',
-  name: 'MuiButton',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.root,
-      styles[ownerState.variant],
-      styles[`${ownerState.variant}${capitalize(ownerState.color)}`],
-      styles[`size${capitalize(ownerState.size)}`],
-      styles[`${ownerState.variant}Size${capitalize(ownerState.size)}`],
-      ownerState.loading && styles.loading,
-    ];
-  },
-})(
-  memoTheme(({ theme }) => {
-    return {
-      ...theme.typography.button,
-      minWidth: 64,
-      padding: '6px 16px',
-      border: 0,
-      borderRadius: (theme.vars || theme).shape.borderRadius,
-      transition: theme.transitions.create(
-        ['background-color', 'box-shadow', 'border-color', 'color'],
-        {
-          duration: theme.transitions.duration.short,
-        },
-      ),
-      '&:hover': {
-        textDecoration: 'none',
-      },
-      [`&.${buttonClasses.disabled}`]: {
-        color: (theme.vars || theme).palette.action.disabled,
-      },
-      variants: [
-        {
-          props: { variant: 'contained' },
-          style: {
-            color: `var(--variant-containedColor)`,
-            backgroundColor: `var(--variant-containedBg)`,
-            boxShadow: (theme.vars || theme).shadows[2],
-            '&:hover': {
-              boxShadow: (theme.vars || theme).shadows[4],
-              // Reset on touch devices, it doesn't add specificity
-              '@media (hover: none)': {
-                boxShadow: (theme.vars || theme).shadows[2],
-              },
-            },
-            '&:active': {
-              boxShadow: (theme.vars || theme).shadows[8],
-            },
-            [`&.${buttonClasses.focusVisible}`]: {
-              boxShadow: (theme.vars || theme).shadows[6],
-            },
-            [`&.${buttonClasses.disabled}`]: {
-              color: (theme.vars || theme).palette.action.disabled,
-              boxShadow: (theme.vars || theme).shadows[0],
-              backgroundColor: (theme.vars || theme).palette.action.disabledBackground,
-            },
-          },
-        },
-        {
-          props: { variant: 'outlined' },
-          style: {
-            padding: '5px 15px',
-            border: '1px solid currentColor',
-            borderColor: `var(--variant-outlinedBorder, currentColor)`,
-            backgroundColor: `var(--variant-outlinedBg)`,
-            color: `var(--variant-outlinedColor)`,
-            [`&.${buttonClasses.disabled}`]: {
-              border: `1px solid ${(theme.vars || theme).palette.action.disabledBackground}`,
-            },
-          },
-        },
-        {
-          props: { variant: 'text' },
-          style: {
-            padding: '6px 8px',
-            color: `var(--variant-textColor)`,
-            backgroundColor: `var(--variant-textBg)`,
-          },
-        },
-        {
-          props: { color: 'primary' },
-          style: {
-            '--variant-textColor': (theme.vars || theme).palette.primary.main,
-            '--variant-outlinedColor': (theme.vars || theme).palette.primary.main,
-            '--variant-outlinedBorder': theme.alpha(
-              (theme.vars || theme).palette.primary.main,
-              0.5,
-            ),
-            '--variant-containedColor': (theme.vars || theme).palette.primary.contrastText,
-            '--variant-containedBg': (theme.vars || theme).palette.primary.main,
-            '@media (hover: hover)': {
-              '&:hover': {
-                '--variant-containedBg': (theme.vars || theme).palette.primary.dark,
-                '--variant-textBg': theme.alpha(
-                  (theme.vars || theme).palette.primary.main,
-                  (theme.vars || theme).palette.action.hoverOpacity,
-                ),
-                '--variant-outlinedBorder': (theme.vars || theme).palette.primary.main,
-                '--variant-outlinedBg': theme.alpha(
-                  (theme.vars || theme).palette.primary.main,
-                  (theme.vars || theme).palette.action.hoverOpacity,
-                ),
-              },
-            },
-          },
-        },
-        {
-          props: { color: 'secondary' },
-          style: {
-            '--variant-textColor': (theme.vars || theme).palette.secondary.main,
-            '--variant-outlinedColor': (theme.vars || theme).palette.secondary.main,
-            '--variant-outlinedBorder': theme.alpha(
-              (theme.vars || theme).palette.secondary.main,
-              0.5,
-            ),
-            '--variant-containedColor': (theme.vars || theme).palette.secondary.contrastText,
-            '--variant-containedBg': (theme.vars || theme).palette.secondary.main,
-            '@media (hover: hover)': {
-              '&:hover': {
-                '--variant-containedBg': (theme.vars || theme).palette.secondary.dark,
-                '--variant-textBg': theme.alpha(
-                  (theme.vars || theme).palette.secondary.main,
-                  (theme.vars || theme).palette.action.hoverOpacity,
-                ),
-                '--variant-outlinedBorder': (theme.vars || theme).palette.secondary.main,
-                '--variant-outlinedBg': theme.alpha(
-                  (theme.vars || theme).palette.secondary.main,
-                  (theme.vars || theme).palette.action.hoverOpacity,
-                ),
-              },
-            },
-          },
-        },
-        {
-          props: { color: 'error' },
-          style: {
-            '--variant-textColor': (theme.vars || theme).palette.error.main,
-            '--variant-outlinedColor': (theme.vars || theme).palette.error.main,
-            '--variant-outlinedBorder': theme.alpha(
-              (theme.vars || theme).palette.error.main,
-              0.5,
-            ),
-            '--variant-containedColor': (theme.vars || theme).palette.error.contrastText,
-            '--variant-containedBg': (theme.vars || theme).palette.error.main,
-            '@media (hover: hover)': {
-              '&:hover': {
-                '--variant-containedBg': (theme.vars || theme).palette.error.dark,
-                '--variant-textBg': theme.alpha(
-                  (theme.vars || theme).palette.error.main,
-                  (theme.vars || theme).palette.action.hoverOpacity,
-                ),
-                '--variant-outlinedBorder': (theme.vars || theme).palette.error.main,
-                '--variant-outlinedBg': theme.alpha(
-                  (theme.vars || theme).palette.error.main,
-                  (theme.vars || theme).palette.action.hoverOpacity,
-                ),
-              },
-            },
-          },
-        },
-        {
-          props: {
-            size: 'small',
-            variant: 'text',
-          },
-          style: {
-            padding: '4px 5px',
-            fontSize: theme.typography.pxToRem(13),
-          },
-        },
-        {
-          props: {
-            size: 'large',
-            variant: 'text',
-          },
-          style: {
-            padding: '8px 11px',
-            fontSize: theme.typography.pxToRem(15),
-          },
-        },
-        {
-          props: {
-            size: 'small',
-            variant: 'outlined',
-          },
-          style: {
-            padding: '3px 9px',
-            fontSize: theme.typography.pxToRem(13),
-          },
-        },
-        {
-          props: {
-            size: 'large',
-            variant: 'outlined',
-          },
-          style: {
-            padding: '7px 21px',
-            fontSize: theme.typography.pxToRem(15),
-          },
-        },
-        {
-          props: {
-            size: 'small',
-            variant: 'contained',
-          },
-          style: {
-            padding: '4px 10px',
-            fontSize: theme.typography.pxToRem(13),
-          },
-        },
-        {
-          props: {
-            size: 'large',
-            variant: 'contained',
-          },
-          style: {
-            padding: '8px 22px',
-            fontSize: theme.typography.pxToRem(15),
-          },
-        },
-        {
-          props: { loading: true },
-          style: {
-            transition: theme.transitions.create(
-              ['background-color', 'box-shadow', 'border-color'],
-              {
-                duration: theme.transitions.duration.short,
-              },
-            ),
-            [`&.${buttonClasses.loading}`]: {
-              color: 'transparent',
-            },
-          },
-        },
-      ],
-    };
-  }),
-);
 
 const ButtonStartIcon = styled('span', {
   name: 'MuiButton',
@@ -387,14 +204,11 @@ const Button = React.forwardRef(function Button(inProps, ref) {
   const loadingId = useId(idProp);
 
   const ownerState = {
-    ...props,
-    color,
-    disabled,
-    loading,
     size,
-    type,
-    variant,
+    loading,
   };
+
+  const buttonStyles = getButtonStyles(variant, color, size, loading);
 
   const startIcon = startIconProp && (
     <ButtonStartIcon ownerState={ownerState}>
@@ -423,14 +237,14 @@ const Button = React.forwardRef(function Button(inProps, ref) {
     ) : null;
 
   return (
-    <ButtonRoot
-      ownerState={ownerState}
+    <ButtonBase
       className={clsx(contextProps.className, className, positionClassName)}
       disabled={disabled || loading}
       focusVisibleClassName={focusVisibleClassName}
       ref={ref}
       type={type}
       id={loading ? loadingId : idProp}
+      style={buttonStyles}
       {...other}
     >
       {startIcon}
