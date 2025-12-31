@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { spy } from 'sinon';
 import { createRenderer } from '@mui/internal-test-utils';
 import Backdrop, { backdropClasses as classes } from './index';
-import Fade from '@mui/material/Fade';
+import Fade from '../../utils/Fade';
 import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<Backdrop />', () => {

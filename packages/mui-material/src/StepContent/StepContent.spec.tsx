@@ -1,7 +1,7 @@
 import { expectType } from '@mui/types';
 import { mergeSlotProps } from '@mui/material/utils';
 import StepContent, { StepContentProps } from '@mui/material/StepContent';
-import Fade from '@mui/material/Fade';
+import Fade from '../../../utils/Fade';
 import Collapse from '../../../utils/Collapse';
 import Grow from '@mui/material/Grow';
 import Slide from '@mui/material/Slide';

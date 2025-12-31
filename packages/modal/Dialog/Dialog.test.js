@@ -5,7 +5,7 @@ import { act, createRenderer, fireEvent, screen } from '@mui/internal-test-utils
 import Modal from '../Modal';
 import Dialog, { dialogClasses as classes } from './index';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import Fade from '@mui/material/Fade';
+import Fade from '../../utils/Fade';
 import describeConformance from '../../mui-material/test/describeConformance';
 
 /**

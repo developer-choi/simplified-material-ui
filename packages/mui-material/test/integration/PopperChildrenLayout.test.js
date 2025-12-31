@@ -4,7 +4,7 @@ import { spy } from 'sinon';
 import { createRenderer } from '@mui/internal-test-utils';
 import describeSkipIf from '@mui/internal-test-utils/describeSkipIf';
 import Collapse from '../../../utils/Collapse';
-import Fade from '@mui/material/Fade';
+import Fade from '../../../utils/Fade';
 import Grow from '@mui/material/Grow';
 import Slide from '@mui/material/Slide';
 import Zoom from '@mui/material/Zoom';

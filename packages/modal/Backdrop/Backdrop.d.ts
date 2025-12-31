@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SxProps } from '@mui/system';
-import { FadeProps } from '@mui/material/Fade';
+import { FadeProps } from '../../utils/Fade';
 import { TransitionProps } from '@mui/material/transitions/transition';
 import { Theme } from '@mui/material/styles';
 import { BackdropClasses } from './backdropClasses';

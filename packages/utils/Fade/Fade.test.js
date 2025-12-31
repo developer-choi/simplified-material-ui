@@ -2,9 +2,9 @@ import { expect } from 'chai';
 import { spy } from 'sinon';
 import { createRenderer, screen } from '@mui/internal-test-utils';
 import { Transition } from 'react-transition-group';
-import Fade from '@mui/material/Fade';
+import Fade from './index';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import describeConformance from '../../test/describeConformance';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<Fade />', () => {
   const { clock, render } = createRenderer();

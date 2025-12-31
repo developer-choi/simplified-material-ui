@@ -130,8 +130,8 @@ export * from './Drawer';
 export { default as Fab } from './Fab';
 export * from './Fab';
 
-export { default as Fade } from './Fade';
-export * from './Fade';
+export { default as Fade } from '../../utils/Fade';
+export * from '../../utils/Fade';
 
 export { default as FilledInput } from './FilledInput';
 export * from './FilledInput';

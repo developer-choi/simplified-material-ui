@@ -5,7 +5,7 @@ import { spy } from 'sinon';
 import PropTypes from 'prop-types';
 import { act, createRenderer, fireEvent, within, screen } from '@mui/internal-test-utils';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Fade from '@mui/material/Fade';
+import Fade from '../../utils/Fade';
 import Modal, { modalClasses as classes } from './index';
 import describeConformance from '../../mui-material/test/describeConformance';
 

@@ -6,7 +6,7 @@ import { createRenderer, fireEvent, reactMajor, screen } from '@mui/internal-tes
 import Accordion, { accordionClasses as classes } from './index';
 import Paper from '../Paper';
 import Collapse from '../../utils/Collapse';
-import Fade from '@mui/material/Fade';
+import Fade from '../../utils/Fade';
 import Slide from '@mui/material/Slide';
 import Grow from '@mui/material/Grow';
 import Zoom from '@mui/material/Zoom';
