@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import resolveProps from '@mui/utils/resolveProps';
 import { unstable_useId as useId } from '../utils';
@@ -251,94 +250,8 @@ const Button = React.forwardRef(function Button(inProps, ref) {
       {loader}
       {children}
       {endIcon}
-    </ButtonRoot>
+    </ButtonBase>
   );
 });
-
-Button.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * The content of the component.
-   */
-  children: PropTypes.node,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * The color of the component.
-   * It supports both default and custom theme colors, which can be added as shown in the
-   * [palette customization guide](https://mui.com/material-ui/customization/palette/#custom-colors).
-   * @default 'primary'
-   */
-  color: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['primary', 'secondary', 'error']),
-    PropTypes.string,
-  ]),
-  /**
-   * If `true`, the component is disabled.
-   * @default false
-   */
-  disabled: PropTypes.bool,
-  /**
-   * Element placed after the children.
-   */
-  endIcon: PropTypes.node,
-  /**
-   * @ignore
-   */
-  focusVisibleClassName: PropTypes.string,
-  /**
-   * The URL to link to when the button is clicked.
-   * If defined, an `a` element will be used as the root node.
-   */
-  href: PropTypes.string,
-  /**
-   * @ignore
-   */
-  id: PropTypes.string,
-  /**
-   * If `true`, the loading indicator is visible and the button is disabled.
-   * If `true | false`, the loading wrapper is always rendered before the children to prevent [Google Translation Crash](https://github.com/mui/material-ui/issues/27853).
-   * @default null
-   */
-  loading: PropTypes.bool,
-  /**
-   * The size of the component.
-   * `small` is equivalent to the dense button styling.
-   * @default 'medium'
-   */
-  size: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['small', 'medium', 'large']),
-    PropTypes.string,
-  ]),
-  /**
-   * Element placed before the children.
-   */
-  startIcon: PropTypes.node,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-  /**
-   * @ignore
-   */
-  type: PropTypes.oneOfType([PropTypes.oneOf(['button', 'reset', 'submit']), PropTypes.string]),
-  /**
-   * The variant to use.
-   * @default 'text'
-   */
-  variant: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['contained', 'outlined', 'text']),
-    PropTypes.string,
-  ]),
-};
 
 export default Button;
