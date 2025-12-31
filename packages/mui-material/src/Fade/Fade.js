@@ -1,8 +1,6 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import { Transition } from 'react-transition-group';
-import elementAcceptingRef from '@mui/utils/elementAcceptingRef';
 
 const styles = {
   entering: {
@@ -77,24 +75,5 @@ const Fade = React.forwardRef(function Fade(props, ref) {
     </Transition>
   );
 });
-
-Fade.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * A single child content element.
-   */
-  children: elementAcceptingRef.isRequired,
-  /**
-   * If `true`, the component will transition in.
-   */
-  in: PropTypes.bool,
-  /**
-   * @ignore
-   */
-  style: PropTypes.object,
-};
 
 export default Fade;
