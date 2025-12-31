@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { Transition } from 'react-transition-group';
 import elementAcceptingRef from '@mui/utils/elementAcceptingRef';
 import getReactElementRef from '@mui/utils/getReactElementRef';
-import { useTheme } from '../zero-styled';
 import { reflow, getTransitionProps } from '../transitions/utils';
 import useForkRef from '../utils/useForkRef';
 
@@ -22,8 +21,6 @@ const styles = {
  * It uses [react-transition-group](https://github.com/reactjs/react-transition-group) internally.
  */
 const Fade = React.forwardRef(function Fade(props, ref) {
-  const theme = useTheme();
-
   const {
     children,
     in: inProp,
@@ -45,8 +42,13 @@ const Fade = React.forwardRef(function Fade(props, ref) {
       },
     );
 
-    node.style.webkitTransition = theme.transitions.create('opacity', transitionProps);
-    node.style.transition = theme.transitions.create('opacity', transitionProps);
+    const duration = transitionProps.duration || 225;
+    const easing = transitionProps.easing || 'cubic-bezier(0.4, 0, 0.2, 1)';
+    const delay = transitionProps.delay || 0;
+    const transition = `opacity ${duration}ms ${easing} ${delay}ms`;
+
+    node.style.webkitTransition = transition;
+    node.style.transition = transition;
   };
 
   const handleExit = (node) => {
@@ -57,8 +59,13 @@ const Fade = React.forwardRef(function Fade(props, ref) {
       },
     );
 
-    node.style.webkitTransition = theme.transitions.create('opacity', transitionProps);
-    node.style.transition = theme.transitions.create('opacity', transitionProps);
+    const duration = transitionProps.duration || 195;
+    const easing = transitionProps.easing || 'cubic-bezier(0.4, 0, 0.2, 1)';
+    const delay = transitionProps.delay || 0;
+    const transition = `opacity ${duration}ms ${easing} ${delay}ms`;
+
+    node.style.webkitTransition = transition;
+    node.style.transition = transition;
   };
 
   return (
