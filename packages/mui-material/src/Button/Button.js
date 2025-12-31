@@ -422,7 +422,6 @@ const Button = React.forwardRef(function Button(inProps, ref) {
     fullWidth = false,
     id: idProp,
     loading = null,
-    loadingIndicator: loadingIndicatorProp,
     size = 'medium',
     startIcon: startIconProp,
     type,
@@ -431,9 +430,6 @@ const Button = React.forwardRef(function Button(inProps, ref) {
   } = props;
 
   const loadingId = useId(idProp);
-  const loadingIndicator = loadingIndicatorProp ?? (
-    <CircularProgress aria-labelledby={loadingId} color="inherit" size={16} />
-  );
 
   const ownerState = {
     ...props,
@@ -444,7 +440,6 @@ const Button = React.forwardRef(function Button(inProps, ref) {
     disableFocusRipple,
     fullWidth,
     loading,
-    loadingIndicator,
     size,
     type,
     variant,
@@ -472,7 +467,7 @@ const Button = React.forwardRef(function Button(inProps, ref) {
       <span className={classes.loadingWrapper} style={{ display: 'contents' }}>
         {loading && (
           <ButtonLoadingIndicator className={classes.loadingIndicator} ownerState={ownerState}>
-            {loadingIndicator}
+            <CircularProgress aria-labelledby={loadingId} color="inherit" size={16} />
           </ButtonLoadingIndicator>
         )}
       </span>
@@ -583,13 +578,6 @@ Button.propTypes /* remove-proptypes */ = {
    * @default null
    */
   loading: PropTypes.bool,
-  /**
-   * Element placed before the children if the button is in loading state.
-   * The node should contain an element with `role="progressbar"` with an accessible name.
-   * By default, it renders a `CircularProgress` that is labeled by the button itself.
-   * @default <CircularProgress color="inherit" size={16} />
-   */
-  loadingIndicator: PropTypes.node,
   /**
    * The size of the component.
    * `small` is equivalent to the dense button styling.
