@@ -30,7 +30,6 @@ const Fade = React.forwardRef(function Fade(props, ref) {
 
   const {
     children,
-    easing,
     in: inProp,
     onEnter,
     onEntered,
@@ -68,7 +67,7 @@ const Fade = React.forwardRef(function Fade(props, ref) {
     reflow(node); // So the animation always start from the start.
 
     const transitionProps = getTransitionProps(
-      { style, timeout, easing },
+      { style, timeout },
       {
         mode: 'enter',
       },
@@ -88,7 +87,7 @@ const Fade = React.forwardRef(function Fade(props, ref) {
 
   const handleExit = normalizedTransitionCallback((node) => {
     const transitionProps = getTransitionProps(
-      { style, timeout, easing },
+      { style, timeout },
       {
         mode: 'exit',
       },
@@ -145,17 +144,6 @@ Fade.propTypes /* remove-proptypes */ = {
    * A single child content element.
    */
   children: elementAcceptingRef.isRequired,
-  /**
-   * The transition timing function.
-   * You may specify a single easing or a object containing enter and exit values.
-   */
-  easing: PropTypes.oneOfType([
-    PropTypes.shape({
-      enter: PropTypes.string,
-      exit: PropTypes.string,
-    }),
-    PropTypes.string,
-  ]),
   /**
    * If `true`, the component will transition in.
    */
