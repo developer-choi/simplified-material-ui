@@ -12,7 +12,6 @@ import { useDefaultProps } from '../DefaultPropsProvider';
 import ButtonBase from '../ButtonBase';
 import CircularProgress from '../CircularProgress';
 import capitalize from '../utils/capitalize';
-import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
 import buttonClasses, { getButtonUtilityClass } from './buttonClasses';
 import ButtonGroupContext from '../ButtonGroup/ButtonGroupContext';
 import ButtonGroupButtonContext from '../ButtonGroup/ButtonGroupButtonContext';
@@ -87,7 +86,6 @@ const ButtonRoot = styled(ButtonBase, {
       styles[`${ownerState.variant}${capitalize(ownerState.color)}`],
       styles[`size${capitalize(ownerState.size)}`],
       styles[`${ownerState.variant}Size${capitalize(ownerState.size)}`],
-      ownerState.color === 'inherit' && styles.colorInherit,
       ownerState.disableElevation && styles.disableElevation,
       ownerState.fullWidth && styles.fullWidth,
       ownerState.loading && styles.loading,
@@ -95,11 +93,6 @@ const ButtonRoot = styled(ButtonBase, {
   },
 })(
   memoTheme(({ theme }) => {
-    const inheritContainedBackgroundColor =
-      theme.palette.mode === 'light' ? theme.palette.grey[300] : theme.palette.grey[800];
-
-    const inheritContainedHoverBackgroundColor =
-      theme.palette.mode === 'light' ? theme.palette.grey.A100 : theme.palette.grey[700];
     return {
       ...theme.typography.button,
       minWidth: 64,
@@ -166,56 +159,81 @@ const ButtonRoot = styled(ButtonBase, {
             backgroundColor: `var(--variant-textBg)`,
           },
         },
-        ...Object.entries(theme.palette)
-          .filter(createSimplePaletteValueFilter())
-          .map(([color]) => ({
-            props: { color },
-            style: {
-              '--variant-textColor': (theme.vars || theme).palette[color].main,
-              '--variant-outlinedColor': (theme.vars || theme).palette[color].main,
-              '--variant-outlinedBorder': theme.alpha(
-                (theme.vars || theme).palette[color].main,
-                0.5,
-              ),
-              '--variant-containedColor': (theme.vars || theme).palette[color].contrastText,
-              '--variant-containedBg': (theme.vars || theme).palette[color].main,
-              '@media (hover: hover)': {
-                '&:hover': {
-                  '--variant-containedBg': (theme.vars || theme).palette[color].dark,
-                  '--variant-textBg': theme.alpha(
-                    (theme.vars || theme).palette[color].main,
-                    (theme.vars || theme).palette.action.hoverOpacity,
-                  ),
-                  '--variant-outlinedBorder': (theme.vars || theme).palette[color].main,
-                  '--variant-outlinedBg': theme.alpha(
-                    (theme.vars || theme).palette[color].main,
-                    (theme.vars || theme).palette.action.hoverOpacity,
-                  ),
-                },
-              },
-            },
-          })),
         {
-          props: {
-            color: 'inherit',
-          },
+          props: { color: 'primary' },
           style: {
-            color: 'inherit',
-            borderColor: 'currentColor',
-            '--variant-containedBg': theme.vars
-              ? theme.vars.palette.Button.inheritContainedBg
-              : inheritContainedBackgroundColor,
+            '--variant-textColor': (theme.vars || theme).palette.primary.main,
+            '--variant-outlinedColor': (theme.vars || theme).palette.primary.main,
+            '--variant-outlinedBorder': theme.alpha(
+              (theme.vars || theme).palette.primary.main,
+              0.5,
+            ),
+            '--variant-containedColor': (theme.vars || theme).palette.primary.contrastText,
+            '--variant-containedBg': (theme.vars || theme).palette.primary.main,
             '@media (hover: hover)': {
               '&:hover': {
-                '--variant-containedBg': theme.vars
-                  ? theme.vars.palette.Button.inheritContainedHoverBg
-                  : inheritContainedHoverBackgroundColor,
+                '--variant-containedBg': (theme.vars || theme).palette.primary.dark,
                 '--variant-textBg': theme.alpha(
-                  (theme.vars || theme).palette.text.primary,
+                  (theme.vars || theme).palette.primary.main,
                   (theme.vars || theme).palette.action.hoverOpacity,
                 ),
+                '--variant-outlinedBorder': (theme.vars || theme).palette.primary.main,
                 '--variant-outlinedBg': theme.alpha(
-                  (theme.vars || theme).palette.text.primary,
+                  (theme.vars || theme).palette.primary.main,
+                  (theme.vars || theme).palette.action.hoverOpacity,
+                ),
+              },
+            },
+          },
+        },
+        {
+          props: { color: 'secondary' },
+          style: {
+            '--variant-textColor': (theme.vars || theme).palette.secondary.main,
+            '--variant-outlinedColor': (theme.vars || theme).palette.secondary.main,
+            '--variant-outlinedBorder': theme.alpha(
+              (theme.vars || theme).palette.secondary.main,
+              0.5,
+            ),
+            '--variant-containedColor': (theme.vars || theme).palette.secondary.contrastText,
+            '--variant-containedBg': (theme.vars || theme).palette.secondary.main,
+            '@media (hover: hover)': {
+              '&:hover': {
+                '--variant-containedBg': (theme.vars || theme).palette.secondary.dark,
+                '--variant-textBg': theme.alpha(
+                  (theme.vars || theme).palette.secondary.main,
+                  (theme.vars || theme).palette.action.hoverOpacity,
+                ),
+                '--variant-outlinedBorder': (theme.vars || theme).palette.secondary.main,
+                '--variant-outlinedBg': theme.alpha(
+                  (theme.vars || theme).palette.secondary.main,
+                  (theme.vars || theme).palette.action.hoverOpacity,
+                ),
+              },
+            },
+          },
+        },
+        {
+          props: { color: 'error' },
+          style: {
+            '--variant-textColor': (theme.vars || theme).palette.error.main,
+            '--variant-outlinedColor': (theme.vars || theme).palette.error.main,
+            '--variant-outlinedBorder': theme.alpha(
+              (theme.vars || theme).palette.error.main,
+              0.5,
+            ),
+            '--variant-containedColor': (theme.vars || theme).palette.error.contrastText,
+            '--variant-containedBg': (theme.vars || theme).palette.error.main,
+            '@media (hover: hover)': {
+              '&:hover': {
+                '--variant-containedBg': (theme.vars || theme).palette.error.dark,
+                '--variant-textBg': theme.alpha(
+                  (theme.vars || theme).palette.error.main,
+                  (theme.vars || theme).palette.action.hoverOpacity,
+                ),
+                '--variant-outlinedBorder': (theme.vars || theme).palette.error.main,
+                '--variant-outlinedBg': theme.alpha(
+                  (theme.vars || theme).palette.error.main,
                   (theme.vars || theme).palette.action.hoverOpacity,
                 ),
               },
@@ -519,7 +537,7 @@ Button.propTypes /* remove-proptypes */ = {
    * @default 'primary'
    */
   color: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['inherit', 'primary', 'secondary', 'success', 'error', 'info', 'warning']),
+    PropTypes.oneOf(['primary', 'secondary', 'error']),
     PropTypes.string,
   ]),
   /**
