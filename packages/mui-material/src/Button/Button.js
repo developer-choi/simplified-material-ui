@@ -524,14 +524,6 @@ Button.propTypes /* remove-proptypes */ = {
    */
   disableFocusRipple: PropTypes.bool,
   /**
-   * If `true`, the ripple effect is disabled.
-   *
-   * ⚠️ Without a ripple there is no styling for :focus-visible by default. Be sure
-   * to highlight the element by applying separate styles with the `.Mui-focusVisible` class.
-   * @default false
-   */
-  disableRipple: PropTypes.bool,
-  /**
    * Element placed after the children.
    */
   endIcon: PropTypes.node,
