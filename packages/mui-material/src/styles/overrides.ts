@@ -17,7 +17,7 @@ import { BottomNavigationActionClassKey } from '../../../navigation/BottomNaviga
 import { BottomNavigationClassKey } from '../../../navigation/BottomNavigation';
 import { BreadcrumbsClassKey } from '../Breadcrumbs';
 import { ButtonBaseClassKey } from '../ButtonBase';
-import { ButtonClassKey } from '../Button';
+import { ButtonClassKey } from '../../../form/Button';
 import { ButtonGroupClassKey } from '../ButtonGroup';
 import { CardActionAreaClassKey } from '../CardActionArea';
 import { CardActionsClassKey } from '../CardActions';

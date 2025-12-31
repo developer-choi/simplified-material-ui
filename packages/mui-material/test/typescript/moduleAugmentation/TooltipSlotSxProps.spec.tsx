@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
+import Button from '../../../../form/Button';
 import Tooltip from '../../../../data-display/Tooltip';
 import { PaletteColor } from '@mui/material/styles';
 

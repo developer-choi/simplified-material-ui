@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createRenderer, renderHook, screen } from '@mui/internal-test-utils';
 import { ThemeProvider, createTheme, useColorScheme, useTheme } from '@mui/material/styles';
-import Button from '@mui/material/Button';
+import Button from '../../../form/Button';
 
 describe('ThemeProvider', () => {
   const { render } = createRenderer();

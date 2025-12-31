@@ -2,13 +2,13 @@
 import * as React from 'react';
 import clsx from 'clsx';
 import resolveProps from '@mui/utils/resolveProps';
-import { unstable_useId as useId } from '../utils';
-import { styled } from '../zero-styled';
-import ButtonBase from '../ButtonBase';
-import CircularProgress from '../CircularProgress';
-import capitalize from '../utils/capitalize';
-import ButtonGroupContext from '../ButtonGroup/ButtonGroupContext';
-import ButtonGroupButtonContext from '../ButtonGroup/ButtonGroupButtonContext';
+import { unstable_useId as useId } from '@mui/material/utils';
+import { styled } from '@mui/material/zero-styled';
+import ButtonBase from '@mui/material/ButtonBase';
+import CircularProgress from '@mui/material/CircularProgress';
+import capitalize from '@mui/material/utils/capitalize';
+import ButtonGroupContext from '@mui/material/ButtonGroup/ButtonGroupContext';
+import ButtonGroupButtonContext from '@mui/material/ButtonGroup/ButtonGroupButtonContext';
 
 // 스타일 계산 함수
 const getButtonStyles = (variant, color, size, loading) => {

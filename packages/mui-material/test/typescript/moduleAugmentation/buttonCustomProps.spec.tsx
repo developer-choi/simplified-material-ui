@@ -1,9 +1,9 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
+import Button from '../../../../form/Button';
 import { createTheme } from '@mui/material/styles';
 
 // Update the Button's extendable props options
-declare module '@mui/material/Button' {
+declare module '../../../../form/Button' {
   interface ButtonPropsVariantOverrides {
     dashed: true;
     contained: false;

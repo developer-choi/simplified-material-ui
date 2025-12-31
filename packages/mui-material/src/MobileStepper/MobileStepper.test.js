@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createRenderer, fireEvent, screen } from '@mui/internal-test-utils';
 import Paper, { paperClasses } from '../../../surfaces/Paper';
-import Button from '@mui/material/Button';
+import Button from '../../../form/Button';
 import MobileStepper, { mobileStepperClasses as classes } from '@mui/material/MobileStepper';
 import KeyboardArrowRight from '../internal/svg-icons/KeyboardArrowRight';
 import KeyboardArrowLeft from '../internal/svg-icons/KeyboardArrowLeft';

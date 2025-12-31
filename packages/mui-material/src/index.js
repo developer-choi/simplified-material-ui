@@ -55,8 +55,8 @@ export * from './Box';
 export { default as Breadcrumbs } from './Breadcrumbs';
 export * from './Breadcrumbs';
 
-export { default as Button } from './Button';
-export * from './Button';
+export { default as Button } from '../../form/Button';
+export * from '../../form/Button';
 
 export { default as ButtonBase } from './ButtonBase';
 export * from './ButtonBase';

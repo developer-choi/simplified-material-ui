@@ -11,7 +11,7 @@ import { BottomNavigationProps } from '../../../navigation/BottomNavigation';
 import { BreadcrumbsProps } from '../Breadcrumbs';
 import { ButtonBaseProps } from '../ButtonBase';
 import { ButtonGroupProps } from '../ButtonGroup';
-import { ButtonProps } from '../Button';
+import { ButtonProps } from '../../../form/Button';
 import { CardActionAreaProps } from '../CardActionArea';
 import { CardActionsProps } from '../CardActions';
 import { CardContentProps } from '../CardContent';

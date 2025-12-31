@@ -28,7 +28,7 @@ declare module '@mui/material/styles' {
   }
 }
 
-declare module '@mui/material/Button' {
+declare module '../../../../form/Button' {
   interface ButtonPropsColorOverrides {
     neutral: true;
   }

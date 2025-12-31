@@ -2,7 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { expect } from 'chai';
 import { act, createRenderer, fireEvent, screen } from '@mui/internal-test-utils';
-import Button from '@mui/material/Button';
+import Button from '../../../form/Button';
 import MenuItem from '../../../menu/MenuItem';
 import Menu from '../../../menu/Menu';
 

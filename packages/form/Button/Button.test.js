@@ -4,10 +4,10 @@ import { createRenderer, screen, simulateKeyboardDevice, within } from '@mui/int
 import describeSkipIf from '@mui/internal-test-utils/describeSkipIf';
 import { ClassNames } from '@emotion/react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import Button, { buttonClasses as classes } from '@mui/material/Button';
+import Button, { buttonClasses as classes } from './index';
 import ButtonBase, { touchRippleClasses } from '@mui/material/ButtonBase';
-import describeConformance from '../../test/describeConformance';
-import * as ripple from '../../test/ripple';
+import describeConformance from '../../mui-material/test/describeConformance';
+import * as ripple from '../../mui-material/test/ripple';
 
 describe('<Button />', () => {
   const { render, renderToString } = createRenderer();

@@ -2,7 +2,7 @@
 import { blue, red } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
 
-declare module '@mui/material/Button' {
+declare module '../../../../form/Button' {
   interface ButtonPropsVariantOverrides {
     dashed: true;
   }

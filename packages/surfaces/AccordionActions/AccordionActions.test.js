@@ -2,7 +2,7 @@ import { createRenderer } from '@mui/internal-test-utils';
 import AccordionActions, {
   accordionActionsClasses as classes,
 } from './index';
-import Button from '@mui/material/Button';
+import Button from '../../form/Button';
 import { expect } from 'chai';
 import describeConformance from '../../mui-material/test/describeConformance';
 
