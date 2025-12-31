@@ -17,7 +17,7 @@ import ButtonGroupContext from '../ButtonGroup/ButtonGroupContext';
 import ButtonGroupButtonContext from '../ButtonGroup/ButtonGroupButtonContext';
 
 const useUtilityClasses = (ownerState) => {
-  const { color, disableElevation, size, variant, loading, classes } =
+  const { color, size, variant, loading, classes } =
     ownerState;
 
   const slots = {
@@ -29,7 +29,6 @@ const useUtilityClasses = (ownerState) => {
       `size${capitalize(size)}`,
       `${variant}Size${capitalize(size)}`,
       `color${capitalize(color)}`,
-      disableElevation && 'disableElevation',
     ],
     startIcon: ['icon', 'startIcon', `iconSize${capitalize(size)}`],
     endIcon: ['icon', 'endIcon', `iconSize${capitalize(size)}`],
@@ -85,7 +84,6 @@ const ButtonRoot = styled(ButtonBase, {
       styles[`${ownerState.variant}${capitalize(ownerState.color)}`],
       styles[`size${capitalize(ownerState.size)}`],
       styles[`${ownerState.variant}Size${capitalize(ownerState.size)}`],
-      ownerState.disableElevation && styles.disableElevation,
       ownerState.loading && styles.loading,
     ];
   },
@@ -299,26 +297,6 @@ const ButtonRoot = styled(ButtonBase, {
           },
         },
         {
-          props: {
-            disableElevation: true,
-          },
-          style: {
-            boxShadow: 'none',
-            '&:hover': {
-              boxShadow: 'none',
-            },
-            [`&.${buttonClasses.focusVisible}`]: {
-              boxShadow: 'none',
-            },
-            '&:active': {
-              boxShadow: 'none',
-            },
-            [`&.${buttonClasses.disabled}`]: {
-              boxShadow: 'none',
-            },
-          },
-        },
-        {
           props: { loading: true },
           style: {
             transition: theme.transitions.create(
@@ -427,7 +405,6 @@ const Button = React.forwardRef(function Button(inProps, ref) {
     component = 'button',
     className,
     disabled = false,
-    disableElevation = false,
     disableFocusRipple = false,
     endIcon: endIconProp,
     focusVisibleClassName,
@@ -447,7 +424,6 @@ const Button = React.forwardRef(function Button(inProps, ref) {
     color,
     component,
     disabled,
-    disableElevation,
     disableFocusRipple,
     loading,
     size,
@@ -542,11 +518,6 @@ Button.propTypes /* remove-proptypes */ = {
    * @default false
    */
   disabled: PropTypes.bool,
-  /**
-   * If `true`, no elevation is used.
-   * @default false
-   */
-  disableElevation: PropTypes.bool,
   /**
    * If `true`, the  keyboard focus ripple is disabled.
    * @default false
