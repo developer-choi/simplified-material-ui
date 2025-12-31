@@ -8,7 +8,6 @@ import { unstable_useId as useId } from '../utils';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import ButtonBase from '../ButtonBase';
 import CircularProgress from '../CircularProgress';
 import capitalize from '../utils/capitalize';
@@ -394,11 +393,10 @@ const ButtonLoadingIconPlaceholder = styled('span', {
 });
 
 const Button = React.forwardRef(function Button(inProps, ref) {
-  // props priority: `inProps` > `contextProps` > `themeDefaultProps`
+  // props priority: `inProps` > `contextProps`
   const contextProps = React.useContext(ButtonGroupContext);
   const buttonGroupButtonContextPositionClassName = React.useContext(ButtonGroupButtonContext);
-  const resolvedProps = resolveProps(contextProps, inProps);
-  const props = useDefaultProps({ props: resolvedProps, name: 'MuiButton' });
+  const props = resolveProps(contextProps, inProps);
   const {
     children,
     color = 'primary',
