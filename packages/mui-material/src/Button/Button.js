@@ -17,7 +17,7 @@ import ButtonGroupContext from '../ButtonGroup/ButtonGroupContext';
 import ButtonGroupButtonContext from '../ButtonGroup/ButtonGroupButtonContext';
 
 const useUtilityClasses = (ownerState) => {
-  const { color, disableElevation, fullWidth, size, variant, loading, classes } =
+  const { color, disableElevation, size, variant, loading, classes } =
     ownerState;
 
   const slots = {
@@ -30,7 +30,6 @@ const useUtilityClasses = (ownerState) => {
       `${variant}Size${capitalize(size)}`,
       `color${capitalize(color)}`,
       disableElevation && 'disableElevation',
-      fullWidth && 'fullWidth',
     ],
     startIcon: ['icon', 'startIcon', `iconSize${capitalize(size)}`],
     endIcon: ['icon', 'endIcon', `iconSize${capitalize(size)}`],
@@ -87,7 +86,6 @@ const ButtonRoot = styled(ButtonBase, {
       styles[`size${capitalize(ownerState.size)}`],
       styles[`${ownerState.variant}Size${capitalize(ownerState.size)}`],
       ownerState.disableElevation && styles.disableElevation,
-      ownerState.fullWidth && styles.fullWidth,
       ownerState.loading && styles.loading,
     ];
   },
@@ -321,10 +319,6 @@ const ButtonRoot = styled(ButtonBase, {
           },
         },
         {
-          props: { fullWidth: true },
-          style: { width: '100%' },
-        },
-        {
           props: { loading: true },
           style: {
             transition: theme.transitions.create(
@@ -437,7 +431,6 @@ const Button = React.forwardRef(function Button(inProps, ref) {
     disableFocusRipple = false,
     endIcon: endIconProp,
     focusVisibleClassName,
-    fullWidth = false,
     id: idProp,
     loading = null,
     size = 'medium',
@@ -456,7 +449,6 @@ const Button = React.forwardRef(function Button(inProps, ref) {
     disabled,
     disableElevation,
     disableFocusRipple,
-    fullWidth,
     loading,
     size,
     type,
@@ -576,11 +568,6 @@ Button.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   focusVisibleClassName: PropTypes.string,
-  /**
-   * If `true`, the button will take up the full width of its container.
-   * @default false
-   */
-  fullWidth: PropTypes.bool,
   /**
    * The URL to link to when the button is clicked.
    * If defined, an `a` element will be used as the root node.
