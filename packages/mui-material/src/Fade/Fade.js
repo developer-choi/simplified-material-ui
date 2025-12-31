@@ -3,8 +3,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Transition } from 'react-transition-group';
 import elementAcceptingRef from '@mui/utils/elementAcceptingRef';
-import getReactElementRef from '@mui/utils/getReactElementRef';
-import useForkRef from '../utils/useForkRef';
 
 const styles = {
   entering: {
@@ -29,7 +27,6 @@ const Fade = React.forwardRef(function Fade(props, ref) {
 
   const enableStrictModeCompat = true;
   const nodeRef = React.useRef(null);
-  const handleRef = useForkRef(nodeRef, getReactElementRef(children), ref);
 
   const handleEnter = (node, isAppearing) => {
     node.scrollTop; // So the animation always start from the start (force reflow).
@@ -73,7 +70,7 @@ const Fade = React.forwardRef(function Fade(props, ref) {
             ...style,
             ...children.props.style,
           },
-          ref: handleRef,
+          ref: nodeRef,
           ...restChildProps,
         });
       }}
