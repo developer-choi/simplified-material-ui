@@ -23,16 +23,11 @@ const styles = {
  */
 const Fade = React.forwardRef(function Fade(props, ref) {
   const theme = useTheme();
-  const defaultTimeout = {
-    enter: theme.transitions.duration.enteringScreen,
-    exit: theme.transitions.duration.leavingScreen,
-  };
 
   const {
     children,
     in: inProp,
     style,
-    timeout = defaultTimeout,
     ...other
   } = props;
 
@@ -44,7 +39,7 @@ const Fade = React.forwardRef(function Fade(props, ref) {
     reflow(node); // So the animation always start from the start.
 
     const transitionProps = getTransitionProps(
-      { style, timeout },
+      { style, timeout: 225 },
       {
         mode: 'enter',
       },
@@ -56,7 +51,7 @@ const Fade = React.forwardRef(function Fade(props, ref) {
 
   const handleExit = (node) => {
     const transitionProps = getTransitionProps(
-      { style, timeout },
+      { style, timeout: 195 },
       {
         mode: 'exit',
       },
@@ -73,7 +68,7 @@ const Fade = React.forwardRef(function Fade(props, ref) {
       nodeRef={enableStrictModeCompat ? nodeRef : undefined}
       onEnter={handleEnter}
       onExit={handleExit}
-      timeout={timeout}
+      timeout={{ enter: 225, exit: 195 }}
       {...other}
     >
       {/* Ensure "ownerState" is not forwarded to the child DOM element when a direct HTML element is used. This avoids unexpected behavior since "ownerState" is intended for internal styling, component props and not as a DOM attribute. */}
@@ -111,22 +106,6 @@ Fade.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   style: PropTypes.object,
-  /**
-   * The duration for the transition, in milliseconds.
-   * You may specify a single timeout for all transitions, or individually with an object.
-   * @default {
-   *   enter: theme.transitions.duration.enteringScreen,
-   *   exit: theme.transitions.duration.leavingScreen,
-   * }
-   */
-  timeout: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.shape({
-      appear: PropTypes.number,
-      enter: PropTypes.number,
-      exit: PropTypes.number,
-    }),
-  ]),
 };
 
 export default Fade;
