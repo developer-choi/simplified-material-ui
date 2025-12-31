@@ -29,7 +29,6 @@ const Fade = React.forwardRef(function Fade(props, ref) {
   };
 
   const {
-    appear = true,
     children,
     easing,
     in: inProp,
@@ -107,7 +106,7 @@ const Fade = React.forwardRef(function Fade(props, ref) {
 
   return (
     <TransitionComponent
-      appear={appear}
+      appear={true}
       in={inProp}
       nodeRef={enableStrictModeCompat ? nodeRef : undefined}
       onEnter={handleEnter}
@@ -142,12 +141,6 @@ Fade.propTypes /* remove-proptypes */ = {
   // │ These PropTypes are generated from the TypeScript type definitions. │
   // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
   // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * Perform the enter transition when it first mounts if `in` is also `true`.
-   * Set this to `false` to disable this behavior.
-   * @default true
-   */
-  appear: PropTypes.bool,
   /**
    * A single child content element.
    */
