@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { Transition } from 'react-transition-group';
 import elementAcceptingRef from '@mui/utils/elementAcceptingRef';
 import getReactElementRef from '@mui/utils/getReactElementRef';
-import { reflow, getTransitionProps } from '../transitions/utils';
 import useForkRef from '../utils/useForkRef';
 
 const styles = {
@@ -33,18 +32,11 @@ const Fade = React.forwardRef(function Fade(props, ref) {
   const handleRef = useForkRef(nodeRef, getReactElementRef(children), ref);
 
   const handleEnter = (node, isAppearing) => {
-    reflow(node); // So the animation always start from the start.
+    node.scrollTop; // So the animation always start from the start (force reflow).
 
-    const transitionProps = getTransitionProps(
-      { style, timeout: 225 },
-      {
-        mode: 'enter',
-      },
-    );
-
-    const duration = transitionProps.duration || 225;
-    const easing = transitionProps.easing || 'cubic-bezier(0.4, 0, 0.2, 1)';
-    const delay = transitionProps.delay || 0;
+    const duration = style?.transitionDuration || 225;
+    const easing = style?.transitionTimingFunction || 'cubic-bezier(0.4, 0, 0.2, 1)';
+    const delay = style?.transitionDelay || 0;
     const transition = `opacity ${duration}ms ${easing} ${delay}ms`;
 
     node.style.webkitTransition = transition;
@@ -52,16 +44,9 @@ const Fade = React.forwardRef(function Fade(props, ref) {
   };
 
   const handleExit = (node) => {
-    const transitionProps = getTransitionProps(
-      { style, timeout: 195 },
-      {
-        mode: 'exit',
-      },
-    );
-
-    const duration = transitionProps.duration || 195;
-    const easing = transitionProps.easing || 'cubic-bezier(0.4, 0, 0.2, 1)';
-    const delay = transitionProps.delay || 0;
+    const duration = style?.transitionDuration || 195;
+    const easing = style?.transitionTimingFunction || 'cubic-bezier(0.4, 0, 0.2, 1)';
+    const delay = style?.transitionDelay || 0;
     const transition = `opacity ${duration}ms ${easing} ${delay}ms`;
 
     node.style.webkitTransition = transition;
