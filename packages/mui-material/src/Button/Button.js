@@ -3,7 +3,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import resolveProps from '@mui/utils/resolveProps';
-import composeClasses from '@mui/utils/composeClasses';
 import { unstable_useId as useId } from '../utils';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
@@ -11,37 +10,9 @@ import memoTheme from '../utils/memoTheme';
 import ButtonBase from '../ButtonBase';
 import CircularProgress from '../CircularProgress';
 import capitalize from '../utils/capitalize';
-import buttonClasses, { getButtonUtilityClass } from './buttonClasses';
+import buttonClasses from './buttonClasses';
 import ButtonGroupContext from '../ButtonGroup/ButtonGroupContext';
 import ButtonGroupButtonContext from '../ButtonGroup/ButtonGroupButtonContext';
-
-const useUtilityClasses = (ownerState) => {
-  const { color, size, variant, loading, classes } =
-    ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      loading && 'loading',
-      variant,
-      `${variant}${capitalize(color)}`,
-      `size${capitalize(size)}`,
-      `${variant}Size${capitalize(size)}`,
-      `color${capitalize(color)}`,
-    ],
-    startIcon: ['icon', 'startIcon', `iconSize${capitalize(size)}`],
-    endIcon: ['icon', 'endIcon', `iconSize${capitalize(size)}`],
-    loadingIndicator: ['loadingIndicator'],
-    loadingWrapper: ['loadingWrapper'],
-  };
-
-  const composedClasses = composeClasses(slots, getButtonUtilityClass, classes);
-
-  return {
-    ...classes, // forward the focused, disabled, etc. classes to the ButtonBase
-    ...composedClasses,
-  };
-};
 
 const commonIconStyles = [
   {
@@ -425,16 +396,14 @@ const Button = React.forwardRef(function Button(inProps, ref) {
     variant,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   const startIcon = startIconProp && (
-    <ButtonStartIcon className={classes.startIcon} ownerState={ownerState}>
+    <ButtonStartIcon ownerState={ownerState}>
       {startIconProp}
     </ButtonStartIcon>
   );
 
   const endIcon = endIconProp && (
-    <ButtonEndIcon className={classes.endIcon} ownerState={ownerState}>
+    <ButtonEndIcon ownerState={ownerState}>
       {endIconProp}
     </ButtonEndIcon>
   );
@@ -444,9 +413,9 @@ const Button = React.forwardRef(function Button(inProps, ref) {
   const loader =
     typeof loading === 'boolean' ? (
       // use plain HTML span to minimize the runtime overhead
-      <span className={classes.loadingWrapper} style={{ display: 'contents' }}>
+      <span style={{ display: 'contents' }}>
         {loading && (
-          <ButtonLoadingIndicator className={classes.loadingIndicator} ownerState={ownerState}>
+          <ButtonLoadingIndicator ownerState={ownerState}>
             <CircularProgress aria-labelledby={loadingId} color="inherit" size={16} />
           </ButtonLoadingIndicator>
         )}
@@ -456,14 +425,13 @@ const Button = React.forwardRef(function Button(inProps, ref) {
   return (
     <ButtonRoot
       ownerState={ownerState}
-      className={clsx(contextProps.className, classes.root, className, positionClassName)}
+      className={clsx(contextProps.className, className, positionClassName)}
       disabled={disabled || loading}
-      focusVisibleClassName={clsx(classes.focusVisible, focusVisibleClassName)}
+      focusVisibleClassName={focusVisibleClassName}
       ref={ref}
       type={type}
       id={loading ? loadingId : idProp}
       {...other}
-      classes={classes}
     >
       {startIcon}
       {loader}
@@ -482,10 +450,6 @@ Button.propTypes /* remove-proptypes */ = {
    * The content of the component.
    */
   children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
   /**
    * @ignore
    */
