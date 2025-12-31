@@ -402,7 +402,6 @@ const Button = React.forwardRef(function Button(inProps, ref) {
   const {
     children,
     color = 'primary',
-    component = 'button',
     className,
     disabled = false,
     endIcon: endIconProp,
@@ -421,7 +420,6 @@ const Button = React.forwardRef(function Button(inProps, ref) {
   const ownerState = {
     ...props,
     color,
-    component,
     disabled,
     loading,
     size,
@@ -461,7 +459,6 @@ const Button = React.forwardRef(function Button(inProps, ref) {
     <ButtonRoot
       ownerState={ownerState}
       className={clsx(contextProps.className, classes.root, className, positionClassName)}
-      component={component}
       disabled={disabled || loading}
       focusVisibleClassName={clsx(classes.focusVisible, focusVisibleClassName)}
       ref={ref}
@@ -505,11 +502,6 @@ Button.propTypes /* remove-proptypes */ = {
     PropTypes.oneOf(['primary', 'secondary', 'error']),
     PropTypes.string,
   ]),
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
   /**
    * If `true`, the component is disabled.
    * @default false
