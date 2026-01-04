@@ -45,7 +45,7 @@ import { FormLabelProps } from '../FormLabel';
 import { GridLegacyProps } from '../GridLegacy';
 import { GridProps } from '../Grid';
 import { IconButtonProps } from '../IconButton';
-import { IconProps } from '../Icon';
+import { IconProps } from '../../../data-display/Icon';
 import { ImageListProps } from '../ImageList';
 import { ImageListItemBarProps } from '../ImageListItemBar';
 import { ImageListItemProps } from '../ImageListItem';

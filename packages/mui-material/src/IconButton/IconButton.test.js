@@ -5,7 +5,7 @@ import { createRenderer, reactMajor, screen, within } from '@mui/internal-test-u
 import capitalize from '@mui/utils/capitalize';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import IconButton, { iconButtonClasses as classes } from '@mui/material/IconButton';
-import Icon from '@mui/material/Icon';
+import Icon from '../../../data-display/Icon';
 import ButtonBase from '@mui/material/ButtonBase';
 import describeConformance from '../../test/describeConformance';
 import * as ripple from '../../test/ripple';

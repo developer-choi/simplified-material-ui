@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createRenderer, screen } from '@mui/internal-test-utils';
-import Icon, { iconClasses as classes } from '@mui/material/Icon';
-import describeConformance from '../../test/describeConformance';
+import Icon, { iconClasses as classes } from './index';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<Icon />', () => {
   const { render } = createRenderer();

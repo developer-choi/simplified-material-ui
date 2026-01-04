@@ -7,7 +7,7 @@ import {
   fireDiscreteEvent,
   screen,
 } from '@mui/internal-test-utils';
-import Icon from '@mui/material/Icon';
+import Icon from '../../../data-display/Icon';
 import SpeedDial, { speedDialClasses as classes } from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import { tooltipClasses } from '../../../data-display/Tooltip';

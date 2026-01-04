@@ -3,7 +3,7 @@ import { createRenderer, screen } from '@mui/internal-test-utils';
 import describeSkipIf from '@mui/internal-test-utils/describeSkipIf';
 import Fab, { fabClasses as classes } from '@mui/material/Fab';
 import ButtonBase, { touchRippleClasses } from '@mui/material/ButtonBase';
-import Icon from '@mui/material/Icon';
+import Icon from '../../../data-display/Icon';
 import describeConformance from '../../test/describeConformance';
 import * as ripple from '../../test/ripple';
 

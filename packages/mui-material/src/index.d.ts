@@ -163,8 +163,8 @@ export * from './Grid';
 export { default as Grow } from './Grow';
 export * from './Grow';
 
-export { default as Icon } from './Icon';
-export * from './Icon';
+export { default as Icon } from '../../data-display/Icon';
+export * from '../../data-display/Icon';
 
 export { default as IconButton } from './IconButton';
 export * from './IconButton';

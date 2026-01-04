@@ -7,7 +7,7 @@ import BottomNavigation, {
 import BottomNavigationAction, {
   bottomNavigationActionClasses as actionClasses,
 } from '../BottomNavigationAction';
-import Icon from '@mui/material/Icon';
+import Icon from '../../data-display/Icon';
 import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<BottomNavigation />', () => {

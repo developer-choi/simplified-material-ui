@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { createRenderer, screen } from '@mui/internal-test-utils';
-import Icon from '@mui/material/Icon';
+import Icon from '../../../data-display/Icon';
 import SpeedDialIcon, { speedDialIconClasses as classes } from '@mui/material/SpeedDialIcon';
 import describeConformance from '../../test/describeConformance';
 
