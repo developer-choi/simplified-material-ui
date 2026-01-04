@@ -122,7 +122,6 @@ const Icon = React.forwardRef(function Icon(inProps, ref) {
     baseClassName = 'material-icons',
     className,
     color = 'inherit',
-    component: Component = 'span',
     fontSize = 'medium',
     ...other
   } = props;
@@ -131,7 +130,6 @@ const Icon = React.forwardRef(function Icon(inProps, ref) {
     ...props,
     baseClassName,
     color,
-    component: Component,
     fontSize,
   };
 
@@ -139,7 +137,6 @@ const Icon = React.forwardRef(function Icon(inProps, ref) {
 
   return (
     <IconRoot
-      as={Component}
       className={clsx(
         baseClassName,
         // Prevent the translation of the text content.
