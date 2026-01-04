@@ -2,35 +2,14 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
-import capitalize from '../utils/capitalize';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { getIconUtilityClass } from './iconClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { color, classes } = ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      color !== 'inherit' && `color${capitalize(color)}`,
-    ],
-  };
-
-  return composeClasses(slots, getIconUtilityClass, classes);
-};
 
 const IconRoot = styled('span', {
   name: 'MuiIcon',
   slot: 'Root',
   overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.root,
-      ownerState.color !== 'inherit' && styles[`color${capitalize(ownerState.color)}`],
-    ];
+    return styles.root;
   },
 })(
   memoTheme(({ theme }) => ({
@@ -69,8 +48,6 @@ const Icon = React.forwardRef(function Icon(props, ref) {
     color,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <IconRoot
       className={clsx(
@@ -78,7 +55,6 @@ const Icon = React.forwardRef(function Icon(props, ref) {
         // Prevent the translation of the text content.
         // The font relies on the exact text content to render the icon.
         'notranslate',
-        classes.root,
         className,
       )}
       ownerState={ownerState}
