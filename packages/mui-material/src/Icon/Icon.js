@@ -6,7 +6,6 @@ import composeClasses from '@mui/utils/composeClasses';
 import capitalize from '../utils/capitalize';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import { getIconUtilityClass } from './iconClasses';
 
@@ -88,14 +87,6 @@ const IconRoot = styled('span', {
           color: undefined,
         },
       },
-      ...Object.entries(theme.palette)
-        .filter(createSimplePaletteValueFilter())
-        .map(([color]) => ({
-          props: { color },
-          style: {
-            color: (theme.vars || theme).palette[color].main,
-          },
-        })),
     ],
   })),
 );
