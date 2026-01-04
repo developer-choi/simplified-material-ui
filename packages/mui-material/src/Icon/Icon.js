@@ -82,22 +82,6 @@ const IconRoot = styled('span', {
       },
       {
         props: {
-          color: 'action',
-        },
-        style: {
-          color: (theme.vars || theme).palette.action.active,
-        },
-      },
-      {
-        props: {
-          color: 'disabled',
-        },
-        style: {
-          color: (theme.vars || theme).palette.action.disabled,
-        },
-      },
-      {
-        props: {
           color: 'inherit',
         },
         style: {
