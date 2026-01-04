@@ -3,7 +3,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 
 const IconRoot = styled('span', {
   name: 'MuiIcon',
@@ -11,30 +10,28 @@ const IconRoot = styled('span', {
   overridesResolver: (props, styles) => {
     return styles.root;
   },
-})(
-  memoTheme(({ theme }) => ({
-    userSelect: 'none',
-    width: '1em',
-    height: '1em',
-    // Chrome fix for https://issues.chromium.org/issues/41375697
-    // To remove at some point.
-    overflow: 'hidden',
-    display: 'inline-block', // allow overflow hidden to take action
-    textAlign: 'center', // support non-square icon
-    flexShrink: 0,
-    fontSize: theme.typography.pxToRem(24),
-    variants: [
-      {
-        props: {
-          color: 'inherit',
-        },
-        style: {
-          color: undefined,
-        },
+)({
+  userSelect: 'none',
+  width: '1em',
+  height: '1em',
+  // Chrome fix for https://issues.chromium.org/issues/41375697
+  // To remove at some point.
+  overflow: 'hidden',
+  display: 'inline-block', // allow overflow hidden to take action
+  textAlign: 'center', // support non-square icon
+  flexShrink: 0,
+  fontSize: '1.5rem', // 24px
+  variants: [
+    {
+      props: {
+        color: 'inherit',
       },
-    ],
-  })),
-);
+      style: {
+        color: undefined,
+      },
+    },
+  ],
+});
 
 const Icon = React.forwardRef(function Icon(props, ref) {
   const {
