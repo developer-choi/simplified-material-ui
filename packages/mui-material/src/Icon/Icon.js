@@ -61,7 +61,6 @@ const IconRoot = styled('span', {
 const Icon = React.forwardRef(function Icon(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiIcon' });
   const {
-    baseClassName = 'material-icons',
     className,
     color = 'inherit',
     ...other
@@ -69,7 +68,6 @@ const Icon = React.forwardRef(function Icon(inProps, ref) {
 
   const ownerState = {
     ...props,
-    baseClassName,
     color,
   };
 
@@ -78,7 +76,7 @@ const Icon = React.forwardRef(function Icon(inProps, ref) {
   return (
     <IconRoot
       className={clsx(
-        baseClassName,
+        'material-icons',
         // Prevent the translation of the text content.
         // The font relies on the exact text content to render the icon.
         'notranslate',
