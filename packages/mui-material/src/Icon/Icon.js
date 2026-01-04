@@ -10,13 +10,12 @@ import { useDefaultProps } from '../DefaultPropsProvider';
 import { getIconUtilityClass } from './iconClasses';
 
 const useUtilityClasses = (ownerState) => {
-  const { color, fontSize, classes } = ownerState;
+  const { color, classes } = ownerState;
 
   const slots = {
     root: [
       'root',
       color !== 'inherit' && `color${capitalize(color)}`,
-      `fontSize${capitalize(fontSize)}`,
     ],
   };
 
@@ -32,7 +31,6 @@ const IconRoot = styled('span', {
     return [
       styles.root,
       ownerState.color !== 'inherit' && styles[`color${capitalize(ownerState.color)}`],
-      styles[`fontSize${capitalize(ownerState.fontSize)}`],
     ];
   },
 })(
@@ -46,39 +44,8 @@ const IconRoot = styled('span', {
     display: 'inline-block', // allow overflow hidden to take action
     textAlign: 'center', // support non-square icon
     flexShrink: 0,
+    fontSize: theme.typography.pxToRem(24),
     variants: [
-      {
-        props: {
-          fontSize: 'inherit',
-        },
-        style: {
-          fontSize: 'inherit',
-        },
-      },
-      {
-        props: {
-          fontSize: 'small',
-        },
-        style: {
-          fontSize: theme.typography.pxToRem(20),
-        },
-      },
-      {
-        props: {
-          fontSize: 'medium',
-        },
-        style: {
-          fontSize: theme.typography.pxToRem(24),
-        },
-      },
-      {
-        props: {
-          fontSize: 'large',
-        },
-        style: {
-          fontSize: theme.typography.pxToRem(36),
-        },
-      },
       {
         props: {
           color: 'inherit',
@@ -97,7 +64,6 @@ const Icon = React.forwardRef(function Icon(inProps, ref) {
     baseClassName = 'material-icons',
     className,
     color = 'inherit',
-    fontSize = 'medium',
     ...other
   } = props;
 
@@ -105,7 +71,6 @@ const Icon = React.forwardRef(function Icon(inProps, ref) {
     ...props,
     baseClassName,
     color,
-    fontSize,
   };
 
   const classes = useUtilityClasses(ownerState);
