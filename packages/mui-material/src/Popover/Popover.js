@@ -18,29 +18,19 @@ import PaperBase from '../../../surfaces/Paper';
 import { getPopoverUtilityClass } from './popoverClasses';
 
 export function getOffsetTop(rect, vertical) {
-  let offset = 0;
-
-  if (vertical === 'center') {
-    offset = rect.height / 2;
-  } else if (vertical === 'bottom') {
-    offset = rect.height;
+  if (vertical === 'bottom') {
+    return rect.height;
   }
   // 'top' or default: 0
-
-  return offset;
+  return 0;
 }
 
 export function getOffsetLeft(rect, horizontal) {
-  let offset = 0;
-
-  if (horizontal === 'center') {
-    offset = rect.width / 2;
-  } else if (horizontal === 'right') {
-    offset = rect.width;
+  if (horizontal === 'right') {
+    return rect.width;
   }
   // 'left' or default: 0
-
-  return offset;
+  return 0;
 }
 
 function getTransformOriginValue(transformOrigin) {
