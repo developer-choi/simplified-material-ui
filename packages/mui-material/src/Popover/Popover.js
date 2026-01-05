@@ -8,7 +8,6 @@ import refType from '@mui/utils/refType';
 import elementTypeAcceptingRef from '@mui/utils/elementTypeAcceptingRef';
 import integerPropType from '@mui/utils/integerPropType';
 import chainPropTypes from '@mui/utils/chainPropTypes';
-import isHostComponent from '@mui/utils/isHostComponent';
 import { styled } from '../zero-styled';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import debounce from '../utils/debounce';
@@ -18,8 +17,6 @@ import Grow from '../Grow';
 import Modal from '../../../modal/Modal';
 import PaperBase from '../../../surfaces/Paper';
 import { getPopoverUtilityClass } from './popoverClasses';
-import useSlot from '../utils/useSlot';
-import { mergeSlotProps } from '../utils';
 
 export function getOffsetTop(rect, vertical) {
   let offset = 0;
@@ -108,10 +105,9 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
     container: containerProp,
     elevation = 8,
     marginThreshold = 16,
+    onClose,
     open,
     PaperProps: PaperPropsProp = {}, // TODO: remove in v7
-    slots = {},
-    slotProps = {},
     transformOrigin = {
       vertical: 'top',
       horizontal: 'left',
@@ -357,103 +353,44 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
 
   let transitionDuration = transitionDurationProp;
 
-  const externalForwardedProps = {
-    slots: {
-      transition: TransitionComponent,
-      ...slots,
-    },
-    slotProps: {
-      transition: TransitionProps,
-      paper: PaperPropsProp,
-      ...slotProps,
-    },
-  };
-
-  const [TransitionSlot, transitionSlotProps] = useSlot('transition', {
-    elementType: Grow,
-    externalForwardedProps,
-    ownerState,
-    getSlotProps: (handlers) => ({
-      ...handlers,
-      onEntering: (element, isAppearing) => {
-        handlers.onEntering?.(element, isAppearing);
-        handleEntering();
-      },
-      onExited: (element) => {
-        handlers.onExited?.(element);
-        handleExited();
-      },
-    }),
-    additionalProps: {
-      appear: true,
-      in: open,
-    },
-  });
-
-  if (transitionDurationProp === 'auto' && !TransitionSlot.muiSupportAuto) {
+  if (transitionDurationProp === 'auto' && !Grow.muiSupportAuto) {
     transitionDuration = undefined;
   }
 
-  // If the container prop is provided, use that
-  // If the anchorEl prop is provided, use its parent body element as the container
-  // If neither are provided let the Modal take care of choosing the container
   const container =
     containerProp || (anchorEl ? ownerDocument(resolveAnchorEl(anchorEl)).body : undefined);
 
-  const [RootSlot, { slots: rootSlotsProp, slotProps: rootSlotPropsProp, ...rootProps }] = useSlot(
-    'root',
-    {
-      ref,
-      elementType: PopoverRoot,
-      externalForwardedProps: {
-        ...externalForwardedProps,
-        ...other,
-      },
-      shouldForwardComponentProp: true,
-      additionalProps: {
-        slots: { backdrop: slots.backdrop },
-        slotProps: {
-          backdrop: mergeSlotProps(
-            typeof slotProps.backdrop === 'function'
-              ? slotProps.backdrop(ownerState)
-              : slotProps.backdrop,
-            { invisible: true },
-          ),
-        },
-        container,
-        open,
-      },
-      ownerState,
-      className: clsx(classes.root, className),
-    },
-  );
-
-  const [PaperSlot, paperProps] = useSlot('paper', {
-    ref: paperRef,
-    className: classes.paper,
-    elementType: PopoverPaper,
-    externalForwardedProps,
-    shouldForwardComponentProp: true,
-    additionalProps: {
-      elevation,
-      style: isPositioned ? undefined : { opacity: 0 },
-    },
-    ownerState,
-  });
-
   return (
-    <RootSlot
-      {...rootProps}
-      {...(!isHostComponent(RootSlot) && {
-        slots: rootSlotsProp,
-        slotProps: rootSlotPropsProp,
-        disableScrollLock,
-      })}
+    <PopoverRoot
+      ref={ref}
+      container={container}
+      open={open}
+      onClose={onClose}
+      className={clsx(classes.root, className)}
+      hideBackdrop={true}
+      {...other}
     >
-      <TransitionSlot {...transitionSlotProps} timeout={transitionDuration}>
-        <PaperSlot {...paperProps}>{children}</PaperSlot>
-      </TransitionSlot>
-    </RootSlot>
+      <Grow
+        appear={true}
+        in={open}
+        onEntering={(element, isAppearing) => {
+          handleEntering();
+        }}
+        onExited={(element) => {
+          handleExited();
+        }}
+        timeout={transitionDuration}
+      >
+        <PopoverPaper
+          ref={paperRef}
+          className={classes.paper}
+          elevation={elevation}
+          style={isPositioned ? undefined : { opacity: 0 }}
+        >
+          {children}
+        </PopoverPaper>
+      </Grow>
+    </PopoverRoot>
   );
 });
 
