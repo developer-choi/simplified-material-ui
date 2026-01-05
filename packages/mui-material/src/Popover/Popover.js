@@ -13,7 +13,6 @@ import { useDefaultProps } from '../DefaultPropsProvider';
 import debounce from '../utils/debounce';
 import ownerDocument from '../utils/ownerDocument';
 import ownerWindow from '../utils/ownerWindow';
-import Grow from '../Grow';
 import Modal from '../../../modal/Modal';
 import PaperBase from '../../../surfaces/Paper';
 import { getPopoverUtilityClass } from './popoverClasses';
@@ -112,9 +111,6 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
       vertical: 'top',
       horizontal: 'left',
     },
-    TransitionComponent, // TODO: remove in v7
-    transitionDuration: transitionDurationProp = 'auto',
-    TransitionProps = {}, // TODO: remove in v7
     disableScrollLock = false,
     ...other
   } = props;
@@ -128,9 +124,6 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
     elevation,
     marginThreshold,
     transformOrigin,
-    TransitionComponent,
-    transitionDuration: transitionDurationProp,
-    TransitionProps,
   };
 
   const classes = useUtilityClasses(ownerState);
@@ -279,8 +272,6 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
     [anchorEl, anchorReference, getAnchorOffset, getTransformOrigin, marginThreshold],
   );
 
-  const [isPositioned, setIsPositioned] = React.useState(open);
-
   const setPositioningStyles = React.useCallback(() => {
     const element = paperRef.current;
 
@@ -297,7 +288,6 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
       element.style.left = positioning.left;
     }
     element.style.transformOrigin = positioning.transformOrigin;
-    setIsPositioned(true);
   }, [getPositioningStyle]);
 
   React.useEffect(() => {
@@ -306,14 +296,6 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
     }
     return () => window.removeEventListener('scroll', setPositioningStyles);
   }, [anchorEl, disableScrollLock, setPositioningStyles]);
-
-  const handleEntering = () => {
-    setPositioningStyles();
-  };
-
-  const handleExited = () => {
-    setIsPositioned(false);
-  };
 
   React.useEffect(() => {
     if (open) {
@@ -351,12 +333,6 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
     };
   }, [anchorEl, open, setPositioningStyles]);
 
-  let transitionDuration = transitionDurationProp;
-
-  if (transitionDurationProp === 'auto' && !Grow.muiSupportAuto) {
-    transitionDuration = undefined;
-  }
-
   const container =
     containerProp || (anchorEl ? ownerDocument(resolveAnchorEl(anchorEl)).body : undefined);
 
@@ -370,26 +346,13 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
       hideBackdrop={true}
       {...other}
     >
-      <Grow
-        appear={true}
-        in={open}
-        onEntering={(element, isAppearing) => {
-          handleEntering();
-        }}
-        onExited={(element) => {
-          handleExited();
-        }}
-        timeout={transitionDuration}
+      <PopoverPaper
+        ref={paperRef}
+        className={classes.paper}
+        elevation={elevation}
       >
-        <PopoverPaper
-          ref={paperRef}
-          className={classes.paper}
-          elevation={elevation}
-          style={isPositioned ? undefined : { opacity: 0 }}
-        >
-          {children}
-        </PopoverPaper>
-      </Grow>
+        {children}
+      </PopoverPaper>
     </PopoverRoot>
   );
 });
