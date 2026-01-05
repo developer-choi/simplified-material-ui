@@ -97,8 +97,6 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
       vertical: 'top',
       horizontal: 'left',
     },
-    anchorPosition,
-    anchorReference = 'anchorEl',
     children,
     className,
     container: containerProp,
@@ -120,7 +118,6 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
   const ownerState = {
     ...props,
     anchorOrigin,
-    anchorReference,
     elevation,
     marginThreshold,
     transformOrigin,
@@ -131,18 +128,6 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
   // Returns the top/left offset of the position
   // to attach to on the anchor element (or body if none is provided)
   const getAnchorOffset = React.useCallback(() => {
-    if (anchorReference === 'anchorPosition') {
-      if (process.env.NODE_ENV !== 'production') {
-        if (!anchorPosition) {
-          console.error(
-            'MUI: You need to provide a `anchorPosition` prop when using ' +
-              '<Popover anchorReference="anchorPosition" />.',
-          );
-        }
-      }
-      return anchorPosition;
-    }
-
     const resolvedAnchorEl = resolveAnchorEl(anchorEl);
 
     // If an anchor element wasn't provided, just use the parent body element of this Popover
@@ -176,7 +161,7 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
       top: anchorRect.top + getOffsetTop(anchorRect, anchorOrigin.vertical),
       left: anchorRect.left + getOffsetLeft(anchorRect, anchorOrigin.horizontal),
     };
-  }, [anchorEl, anchorOrigin.horizontal, anchorOrigin.vertical, anchorPosition, anchorReference]);
+  }, [anchorEl, anchorOrigin.horizontal, anchorOrigin.vertical]);
 
   // Returns the base transform origin using the element
   const getTransformOrigin = React.useCallback(
@@ -198,14 +183,6 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
 
       // Get the transform origin point on the element itself
       const elemTransformOrigin = getTransformOrigin(elemRect);
-
-      if (anchorReference === 'none') {
-        return {
-          top: null,
-          left: null,
-          transformOrigin: getTransformOriginValue(elemTransformOrigin),
-        };
-      }
 
       // Get the offset of the anchoring element
       const anchorOffset = getAnchorOffset();
@@ -269,7 +246,7 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
         transformOrigin: getTransformOriginValue(elemTransformOrigin),
       };
     },
-    [anchorEl, anchorReference, getAnchorOffset, getTransformOrigin, marginThreshold],
+    [anchorEl, getAnchorOffset, getTransformOrigin, marginThreshold],
   );
 
   const setPositioningStyles = React.useCallback(() => {
