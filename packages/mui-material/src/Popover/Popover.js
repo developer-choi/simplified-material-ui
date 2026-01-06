@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import HTMLElementType from '@mui/utils/HTMLElementType';
 import elementTypeAcceptingRef from '@mui/utils/elementTypeAcceptingRef';
 import chainPropTypes from '@mui/utils/chainPropTypes';
-import { styled } from '../zero-styled';
 import debounce from '../utils/debounce';
 import ownerDocument from '../utils/ownerDocument';
 import ownerWindow from '../utils/ownerWindow';
@@ -34,28 +33,6 @@ function getTransformOriginValue(transformOrigin) {
 function resolveAnchorEl(anchorEl) {
   return typeof anchorEl === 'function' ? anchorEl() : anchorEl;
 }
-
-export const PopoverRoot = styled(Modal, {
-  name: 'MuiPopover',
-  slot: 'Root',
-})({});
-
-export const PopoverPaper = styled(PaperBase, {
-  name: 'MuiPopover',
-  slot: 'Paper',
-})({
-  position: 'absolute',
-  overflowY: 'auto',
-  overflowX: 'hidden',
-  // So we see the popover when it's empty.
-  // It's most likely on issue on userland.
-  minWidth: 16,
-  minHeight: 16,
-  maxWidth: 'calc(100% - 32px)',
-  maxHeight: 'calc(100% - 32px)',
-  // We disable the focus ring for mouse, touch and keyboard users.
-  outline: 0,
-});
 
 const Popover = React.forwardRef(function Popover(props, ref) {
   const {
@@ -247,7 +224,7 @@ const Popover = React.forwardRef(function Popover(props, ref) {
   const container = anchorEl ? ownerDocument(resolveAnchorEl(anchorEl)).body : undefined;
 
   return (
-    <PopoverRoot
+    <Modal
       ref={ref}
       container={container}
       open={open}
@@ -256,13 +233,23 @@ const Popover = React.forwardRef(function Popover(props, ref) {
       hideBackdrop={true}
       {...other}
     >
-      <PopoverPaper
+      <PaperBase
         ref={paperRef}
         elevation={8}
+        style={{
+          position: 'absolute',
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          minWidth: 16,
+          minHeight: 16,
+          maxWidth: 'calc(100% - 32px)',
+          maxHeight: 'calc(100% - 32px)',
+          outline: 0,
+        }}
       >
         {children}
-      </PopoverPaper>
-    </PopoverRoot>
+      </PaperBase>
+    </Modal>
   );
 });
 
