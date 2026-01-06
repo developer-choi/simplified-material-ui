@@ -9,7 +9,7 @@ import TextareaAutosize from '../TextareaAutosize';
 import formControlState from '../FormControl/formControlState';
 import FormControlContext from '../FormControl/FormControlContext';
 import useFormControl from '../FormControl/useFormControl';
-import { styled, globalCss } from '../zero-styled';
+import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import capitalize from '../utils/capitalize';
@@ -197,17 +197,6 @@ export const InputBaseInput = styled('input', {
       },
       variants: [
         {
-          props: ({ ownerState }) => !ownerState.disableInjectingGlobalStyles,
-          style: {
-            animationName: 'mui-auto-fill-cancel',
-            animationDuration: '10ms',
-            '&:-webkit-autofill': {
-              animationDuration: '5000s',
-              animationName: 'mui-auto-fill',
-            },
-          },
-        },
-        {
           props: {
             size: 'small',
           },
@@ -237,11 +226,6 @@ export const InputBaseInput = styled('input', {
   }),
 );
 
-const InputGlobalStyles = globalCss({
-  '@keyframes mui-auto-fill': { from: { display: 'block' } },
-  '@keyframes mui-auto-fill-cancel': { from: { display: 'block' } },
-});
-
 /**
  * `InputBase` contains as few styles as possible.
  * It aims to be a simple building block for creating an input.
@@ -256,7 +240,6 @@ const InputBase = React.forwardRef(function InputBase(inProps, ref) {
     className,
     defaultValue,
     disabled,
-    disableInjectingGlobalStyles,
     endAdornment,
     error,
     id,
@@ -467,11 +450,6 @@ const InputBase = React.forwardRef(function InputBase(inProps, ref) {
     InputComponent = TextareaAutosize;
   }
 
-  const handleAutoFill = (event) => {
-    // Provide a fake value as Chrome might not let you access it for security reasons.
-    checkDirty(event.animationName === 'mui-auto-fill-cancel' ? inputRef.current : { value: 'x' });
-  };
-
   React.useEffect(() => {
     if (muiFormControl) {
       muiFormControl.setAdornedStart(Boolean(startAdornment));
@@ -495,12 +473,6 @@ const InputBase = React.forwardRef(function InputBase(inProps, ref) {
 
   return (
     <React.Fragment>
-      {!disableInjectingGlobalStyles && typeof InputGlobalStyles === 'function' && (
-        // For Emotion/Styled-components, InputGlobalStyles will be a function
-        // For Pigment CSS, this has no effect because the InputGlobalStyles will be null.
-        <InputGlobalStyles />
-      )}
-
       <InputBaseRoot
         ref={ref}
         onClick={handleClick}
@@ -525,7 +497,6 @@ const InputBase = React.forwardRef(function InputBase(inProps, ref) {
             defaultValue={defaultValue}
             disabled={fcs.disabled}
             id={id}
-            onAnimationStart={handleAutoFill}
             name={name}
             placeholder={placeholder}
             readOnly={readOnly}
@@ -600,12 +571,6 @@ InputBase.propTypes /* remove-proptypes */ = {
    * The prop defaults to the value (`false`) inherited from the parent FormControl component.
    */
   disabled: PropTypes.bool,
-  /**
-   * If `true`, GlobalStyles for the auto-fill keyframes will not be injected/removed on mount/unmount. Make sure to inject them at the top of your application.
-   * This option is intended to help with boosting the initial rendering performance if you are loading a big amount of Input components at once.
-   * @default false
-   */
-  disableInjectingGlobalStyles: PropTypes.bool,
   /**
    * End `InputAdornment` for this component.
    */
