@@ -273,8 +273,6 @@ const InputBase = React.forwardRef(function InputBase(inProps, ref) {
     autoFocus,
     className,
     color,
-    components = {},
-    componentsProps = {},
     defaultValue,
     disabled,
     disableInjectingGlobalStyles,
@@ -522,11 +520,11 @@ const InputBase = React.forwardRef(function InputBase(inProps, ref) {
 
   const classes = useUtilityClasses(ownerState);
 
-  const Root = slots.root || components.Root || InputBaseRoot;
-  const rootProps = slotProps.root || componentsProps.root || {};
+  const Root = slots.root || InputBaseRoot;
+  const rootProps = slotProps.root || {};
 
-  const Input = slots.input || components.Input || InputBaseInput;
-  inputProps = { ...inputProps, ...(slotProps.input ?? componentsProps.input) };
+  const Input = slots.input || InputBaseInput;
+  inputProps = { ...inputProps, ...slotProps.input };
 
   return (
     <React.Fragment>
@@ -642,29 +640,6 @@ InputBase.propTypes /* remove-proptypes */ = {
     PropTypes.oneOf(['primary', 'secondary', 'error', 'info', 'success', 'warning']),
     PropTypes.string,
   ]),
-  /**
-   * The components used for each slot inside.
-   *
-   * @deprecated use the `slots` prop instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   *
-   * @default {}
-   */
-  components: PropTypes.shape({
-    Input: PropTypes.elementType,
-    Root: PropTypes.elementType,
-  }),
-  /**
-   * The extra props for the slot components.
-   * You can override the existing props or add new ones.
-   *
-   * @deprecated use the `slotProps` prop instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   *
-   * @default {}
-   */
-  componentsProps: PropTypes.shape({
-    input: PropTypes.object,
-    root: PropTypes.object,
-  }),
   /**
    * The default value. Use when the component is not controlled.
    */
