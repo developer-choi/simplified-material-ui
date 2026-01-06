@@ -1,19 +1,15 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import HTMLElementType from '@mui/utils/HTMLElementType';
 import elementTypeAcceptingRef from '@mui/utils/elementTypeAcceptingRef';
 import chainPropTypes from '@mui/utils/chainPropTypes';
 import { styled } from '../zero-styled';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import debounce from '../utils/debounce';
 import ownerDocument from '../utils/ownerDocument';
 import ownerWindow from '../utils/ownerWindow';
 import Modal from '../../../modal/Modal';
 import PaperBase from '../../../surfaces/Paper';
-import { getPopoverUtilityClass } from './popoverClasses';
 
 export function getOffsetTop(rect, vertical) {
   if (vertical === 'bottom') {
@@ -39,17 +35,6 @@ function resolveAnchorEl(anchorEl) {
   return typeof anchorEl === 'function' ? anchorEl() : anchorEl;
 }
 
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-
-  const slots = {
-    root: ['root'],
-    paper: ['paper'],
-  };
-
-  return composeClasses(slots, getPopoverUtilityClass, classes);
-};
-
 export const PopoverRoot = styled(Modal, {
   name: 'MuiPopover',
   slot: 'Root',
@@ -72,8 +57,7 @@ export const PopoverPaper = styled(PaperBase, {
   outline: 0,
 });
 
-const Popover = React.forwardRef(function Popover(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiPopover' });
+const Popover = React.forwardRef(function Popover(props, ref) {
   const {
     anchorEl,
     anchorOrigin = {
@@ -94,15 +78,6 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
   } = props;
 
   const paperRef = React.useRef();
-
-  const ownerState = {
-    ...props,
-    anchorOrigin,
-    marginThreshold,
-    transformOrigin,
-  };
-
-  const classes = useUtilityClasses(ownerState);
 
   // Returns the top/left offset of the position
   // to attach to on the anchor element (or body if none is provided)
@@ -277,13 +252,12 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
       container={container}
       open={open}
       onClose={onClose}
-      className={clsx(classes.root, className)}
+      className={className}
       hideBackdrop={true}
       {...other}
     >
       <PopoverPaper
         ref={paperRef}
-        className={classes.paper}
         elevation={8}
       >
         {children}
@@ -394,10 +368,6 @@ Popover.propTypes /* remove-proptypes */ = {
    * The content of the component.
    */
   children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
   /**
    * @ignore
    */
