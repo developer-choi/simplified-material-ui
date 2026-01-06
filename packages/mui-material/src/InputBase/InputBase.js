@@ -1,22 +1,16 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import elementTypeAcceptingRef from '@mui/utils/elementTypeAcceptingRef';
 import refType from '@mui/utils/refType';
-import composeClasses from '@mui/utils/composeClasses';
 import TextareaAutosize from '../TextareaAutosize';
 import formControlState from '../FormControl/formControlState';
 import FormControlContext from '../FormControl/FormControlContext';
 import useFormControl from '../FormControl/useFormControl';
 import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
-import capitalize from '../utils/capitalize';
 import useForkRef from '../utils/useForkRef';
 import useEnhancedEffect from '../utils/useEnhancedEffect';
 import { isFilled } from './utils';
-import inputBaseClasses, { getInputBaseUtilityClass } from './inputBaseClasses';
 
 export const rootOverridesResolver = (props, styles) => {
   const { ownerState } = props;
@@ -45,54 +39,11 @@ export const inputOverridesResolver = (props, styles) => {
   ];
 };
 
-const useUtilityClasses = (ownerState) => {
-  const {
-    classes,
-    disabled,
-    error,
-    endAdornment,
-    focused,
-    formControl,
-    hiddenLabel,
-    multiline,
-    readOnly,
-    startAdornment,
-    type,
-  } = ownerState;
-  const slots = {
-    root: [
-      'root',
-      disabled && 'disabled',
-      error && 'error',
-      focused && 'focused',
-      formControl && 'formControl',
-      multiline && 'multiline',
-      startAdornment && 'adornedStart',
-      endAdornment && 'adornedEnd',
-      hiddenLabel && 'hiddenLabel',
-      readOnly && 'readOnly',
-    ],
-    input: [
-      'input',
-      disabled && 'disabled',
-      type === 'search' && 'inputTypeSearch',
-      multiline && 'inputMultiline',
-      hiddenLabel && 'inputHiddenLabel',
-      startAdornment && 'inputAdornedStart',
-      endAdornment && 'inputAdornedEnd',
-      readOnly && 'readOnly',
-    ],
-  };
-
-  return composeClasses(slots, getInputBaseUtilityClass, classes);
-};
-
 export const InputBaseRoot = styled('div', {
   name: 'MuiInputBase',
   slot: 'Root',
   overridesResolver: rootOverridesResolver,
-})(
-  memoTheme(({ theme }) => ({
+})(({ theme }) => ({
     ...theme.typography.body1,
     color: (theme.vars || theme).palette.text.primary,
     lineHeight: '1.4375em', // 23px
@@ -101,7 +52,7 @@ export const InputBaseRoot = styled('div', {
     cursor: 'text',
     display: 'inline-flex',
     alignItems: 'center',
-    [`&.${inputBaseClasses.disabled}`]: {
+    '&.Mui-disabled': {
       color: (theme.vars || theme).palette.text.disabled,
       cursor: 'default',
     },
@@ -126,8 +77,7 @@ export const InputBaseInput = styled('input', {
   name: 'MuiInputBase',
   slot: 'Input',
   overridesResolver: inputOverridesResolver,
-})(
-  memoTheme(({ theme }) => {
+})(({ theme }) => {
     const light = theme.palette.mode === 'light';
     const placeholder = {
       color: 'currentColor',
@@ -183,7 +133,7 @@ export const InputBaseInput = styled('input', {
         WebkitAppearance: 'none',
       },
       // Show and hide the placeholder logic
-      [`label[data-shrink=false] + .${inputBaseClasses.formControl} &`]: {
+      'label[data-shrink=false] + .MuiInputBase-formControl &': {
         '&::-webkit-input-placeholder': placeholderHidden,
         '&::-moz-placeholder': placeholderHidden, // Firefox 19+
         '&::-ms-input-placeholder': placeholderHidden, // Edge
@@ -191,7 +141,7 @@ export const InputBaseInput = styled('input', {
         '&:focus::-moz-placeholder': placeholderVisible, // Firefox 19+
         '&:focus::-ms-input-placeholder': placeholderVisible, // Edge
       },
-      [`&.${inputBaseClasses.disabled}`]: {
+      '&.Mui-disabled': {
         opacity: 1, // Reset iOS opacity
         WebkitTextFillColor: (theme.vars || theme).palette.text.disabled, // Fix opacity Safari bug
       },
@@ -231,8 +181,7 @@ export const InputBaseInput = styled('input', {
  * It aims to be a simple building block for creating an input.
  * It contains a load of style reset and some state logic.
  */
-const InputBase = React.forwardRef(function InputBase(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiInputBase' });
+const InputBase = React.forwardRef(function InputBase(props, ref) {
   const {
     'aria-describedby': ariaDescribedby,
     autoComplete,
@@ -469,8 +418,6 @@ const InputBase = React.forwardRef(function InputBase(inProps, ref) {
     type,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <React.Fragment>
       <InputBaseRoot
@@ -478,14 +425,7 @@ const InputBase = React.forwardRef(function InputBase(inProps, ref) {
         onClick={handleClick}
         {...other}
         ownerState={ownerState}
-        className={clsx(
-          classes.root,
-          {
-            // TODO v6: remove this class as it duplicates with the global state class Mui-readOnly
-            'MuiInputBase-readOnly': readOnly,
-          },
-          className,
-        )}
+        className={className}
       >
         {startAdornment}
         <FormControlContext.Provider value={null}>
@@ -510,14 +450,7 @@ const InputBase = React.forwardRef(function InputBase(inProps, ref) {
             as={InputComponent}
             ownerState={ownerState}
             ref={handleInputRef}
-            className={clsx(
-              classes.input,
-              {
-                // TODO v6: remove this class as it duplicates with the global state class Mui-readOnly
-                'MuiInputBase-readOnly': readOnly,
-              },
-              inputProps.className,
-            )}
+            className={inputProps.className}
             onBlur={handleBlur}
             onChange={handleChange}
             onFocus={handleFocus}
@@ -554,10 +487,6 @@ InputBase.propTypes /* remove-proptypes */ = {
    * If `true`, the `input` element is focused during the first mount.
    */
   autoFocus: PropTypes.bool,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
   /**
    * @ignore
    */
