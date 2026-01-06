@@ -7,7 +7,6 @@ import TextareaAutosize from '../TextareaAutosize';
 import formControlState from '../FormControl/formControlState';
 import FormControlContext from '../FormControl/FormControlContext';
 import useFormControl from '../FormControl/useFormControl';
-import useForkRef from '../utils/useForkRef';
 import useEnhancedEffect from '../utils/useEnhancedEffect';
 import { isFilled } from './utils';
 
@@ -53,27 +52,7 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
   const value = inputPropsProp.value != null ? inputPropsProp.value : valueProp;
   const { current: isControlled } = React.useRef(value != null);
 
-  const inputRef = React.useRef();
-  const handleInputRefWarning = React.useCallback((instance) => {
-    if (process.env.NODE_ENV !== 'production') {
-      if (instance && instance.nodeName !== 'INPUT' && !instance.focus) {
-        console.error(
-          [
-            'MUI: You have provided a `inputComponent` to the input component',
-            'that does not correctly handle the `ref` prop.',
-            'Make sure the `ref` prop is called with a HTMLInputElement.',
-          ].join('\n'),
-        );
-      }
-    }
-  }, []);
-
-  const handleInputRef = useForkRef(
-    inputRef,
-    inputRefProp,
-    inputPropsProp.ref,
-    handleInputRefWarning,
-  );
+  const inputRef = inputRefProp || React.useRef();
 
   const [focused, setFocused] = React.useState(false);
   const muiFormControl = useFormControl();
@@ -297,7 +276,7 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
             onKeyUp={onKeyUp}
             type={type}
             {...inputProps}
-            ref={handleInputRef}
+            ref={inputRef}
             className={inputProps.className}
             style={{ ...inputStyle, ...inputProps.style }}
             onBlur={handleBlur}
