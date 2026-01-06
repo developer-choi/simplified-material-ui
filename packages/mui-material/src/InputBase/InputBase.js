@@ -28,7 +28,6 @@ export const rootOverridesResolver = (props, styles) => {
     ownerState.endAdornment && styles.adornedEnd,
     ownerState.error && styles.error,
     ownerState.multiline && styles.multiline,
-    ownerState.fullWidth && styles.fullWidth,
     ownerState.hiddenLabel && styles.hiddenLabel,
   ];
 };
@@ -54,7 +53,6 @@ const useUtilityClasses = (ownerState) => {
     endAdornment,
     focused,
     formControl,
-    fullWidth,
     hiddenLabel,
     multiline,
     readOnly,
@@ -66,7 +64,6 @@ const useUtilityClasses = (ownerState) => {
       'root',
       disabled && 'disabled',
       error && 'error',
-      fullWidth && 'fullWidth',
       focused && 'focused',
       formControl && 'formControl',
       multiline && 'multiline',
@@ -119,12 +116,6 @@ export const InputBaseRoot = styled('div', {
         props: ({ ownerState, size }) => ownerState.multiline && size === 'small',
         style: {
           paddingTop: 1,
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.fullWidth,
-        style: {
-          width: '100%',
         },
       },
     ],
@@ -268,12 +259,10 @@ const InputBase = React.forwardRef(function InputBase(inProps, ref) {
     disableInjectingGlobalStyles,
     endAdornment,
     error,
-    fullWidth = false,
     id,
     inputComponent = 'input',
     inputProps: inputPropsProp = {},
     inputRef: inputRefProp,
-    margin,
     maxRows,
     minRows,
     multiline = false,
@@ -496,7 +485,6 @@ const InputBase = React.forwardRef(function InputBase(inProps, ref) {
     error: fcs.error,
     focused: fcs.focused,
     formControl: muiFormControl,
-    fullWidth,
     hiddenLabel: fcs.hiddenLabel,
     multiline,
     startAdornment,
@@ -628,11 +616,6 @@ InputBase.propTypes /* remove-proptypes */ = {
    */
   error: PropTypes.bool,
   /**
-   * If `true`, the `input` will take up the full width of its container.
-   * @default false
-   */
-  fullWidth: PropTypes.bool,
-  /**
    * The id of the `input` element.
    */
   id: PropTypes.string,
@@ -651,12 +634,6 @@ InputBase.propTypes /* remove-proptypes */ = {
    * Pass a ref to the `input` element.
    */
   inputRef: refType,
-  /**
-   * If `dense`, will adjust vertical spacing. This is normally obtained via context from
-   * FormControl.
-   * The prop defaults to the value (`'none'`) inherited from the parent FormControl component.
-   */
-  margin: PropTypes.oneOf(['dense', 'none']),
   /**
    * Maximum number of rows to display when multiline option is set to true.
    */
