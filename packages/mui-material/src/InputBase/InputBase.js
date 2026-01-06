@@ -29,7 +29,6 @@ export const rootOverridesResolver = (props, styles) => {
     ownerState.error && styles.error,
     ownerState.size === 'small' && styles.sizeSmall,
     ownerState.multiline && styles.multiline,
-    ownerState.color && styles[`color${capitalize(ownerState.color)}`],
     ownerState.fullWidth && styles.fullWidth,
     ownerState.hiddenLabel && styles.hiddenLabel,
   ];
@@ -52,7 +51,6 @@ export const inputOverridesResolver = (props, styles) => {
 const useUtilityClasses = (ownerState) => {
   const {
     classes,
-    color,
     disabled,
     error,
     endAdornment,
@@ -69,7 +67,6 @@ const useUtilityClasses = (ownerState) => {
   const slots = {
     root: [
       'root',
-      `color${capitalize(color)}`,
       disabled && 'disabled',
       error && 'error',
       fullWidth && 'fullWidth',
@@ -271,7 +268,6 @@ const InputBase = React.forwardRef(function InputBase(inProps, ref) {
     autoComplete,
     autoFocus,
     className,
-    color,
     defaultValue,
     disabled,
     disableInjectingGlobalStyles,
@@ -347,7 +343,7 @@ const InputBase = React.forwardRef(function InputBase(inProps, ref) {
   const fcs = formControlState({
     props,
     muiFormControl,
-    states: ['color', 'disabled', 'error', 'hiddenLabel', 'size', 'required', 'filled'],
+    states: ['disabled', 'error', 'hiddenLabel', 'size', 'required', 'filled'],
   });
 
   fcs.focused = muiFormControl ? muiFormControl.focused : focused;
@@ -501,7 +497,6 @@ const InputBase = React.forwardRef(function InputBase(inProps, ref) {
 
   const ownerState = {
     ...props,
-    color: fcs.color || 'primary',
     disabled: fcs.disabled,
     endAdornment,
     error: fcs.error,
@@ -615,16 +610,6 @@ InputBase.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   className: PropTypes.string,
-  /**
-   * The color of the component.
-   * It supports both default and custom theme colors, which can be added as shown in the
-   * [palette customization guide](https://mui.com/material-ui/customization/palette/#custom-colors).
-   * The prop defaults to the value (`'primary'`) inherited from the parent FormControl component.
-   */
-  color: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['primary', 'secondary', 'error', 'info', 'success', 'warning']),
-    PropTypes.string,
-  ]),
   /**
    * The default value. Use when the component is not controlled.
    */
