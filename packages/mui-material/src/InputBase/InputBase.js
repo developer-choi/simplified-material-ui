@@ -7,174 +7,9 @@ import TextareaAutosize from '../TextareaAutosize';
 import formControlState from '../FormControl/formControlState';
 import FormControlContext from '../FormControl/FormControlContext';
 import useFormControl from '../FormControl/useFormControl';
-import { styled } from '../zero-styled';
 import useForkRef from '../utils/useForkRef';
 import useEnhancedEffect from '../utils/useEnhancedEffect';
 import { isFilled } from './utils';
-
-export const rootOverridesResolver = (props, styles) => {
-  const { ownerState } = props;
-
-  return [
-    styles.root,
-    ownerState.formControl && styles.formControl,
-    ownerState.startAdornment && styles.adornedStart,
-    ownerState.endAdornment && styles.adornedEnd,
-    ownerState.error && styles.error,
-    ownerState.multiline && styles.multiline,
-    ownerState.hiddenLabel && styles.hiddenLabel,
-  ];
-};
-
-export const inputOverridesResolver = (props, styles) => {
-  const { ownerState } = props;
-
-  return [
-    styles.input,
-    ownerState.multiline && styles.inputMultiline,
-    ownerState.type === 'search' && styles.inputTypeSearch,
-    ownerState.startAdornment && styles.inputAdornedStart,
-    ownerState.endAdornment && styles.inputAdornedEnd,
-    ownerState.hiddenLabel && styles.inputHiddenLabel,
-  ];
-};
-
-export const InputBaseRoot = styled('div', {
-  name: 'MuiInputBase',
-  slot: 'Root',
-  overridesResolver: rootOverridesResolver,
-})(({ theme }) => ({
-    ...theme.typography.body1,
-    color: (theme.vars || theme).palette.text.primary,
-    lineHeight: '1.4375em', // 23px
-    boxSizing: 'border-box', // Prevent padding issue with fullWidth.
-    position: 'relative',
-    cursor: 'text',
-    display: 'inline-flex',
-    alignItems: 'center',
-    '&.Mui-disabled': {
-      color: (theme.vars || theme).palette.text.disabled,
-      cursor: 'default',
-    },
-    variants: [
-      {
-        props: ({ ownerState }) => ownerState.multiline,
-        style: {
-          padding: '4px 0 5px',
-        },
-      },
-      {
-        props: ({ ownerState, size }) => ownerState.multiline && size === 'small',
-        style: {
-          paddingTop: 1,
-        },
-      },
-    ],
-  })),
-);
-
-export const InputBaseInput = styled('input', {
-  name: 'MuiInputBase',
-  slot: 'Input',
-  overridesResolver: inputOverridesResolver,
-})(({ theme }) => {
-    const light = theme.palette.mode === 'light';
-    const placeholder = {
-      color: 'currentColor',
-      ...(theme.vars
-        ? {
-            opacity: theme.vars.opacity.inputPlaceholder,
-          }
-        : {
-            opacity: light ? 0.42 : 0.5,
-          }),
-      transition: theme.transitions.create('opacity', {
-        duration: theme.transitions.duration.shorter,
-      }),
-    };
-    const placeholderHidden = {
-      opacity: '0 !important',
-    };
-    const placeholderVisible = theme.vars
-      ? {
-          opacity: theme.vars.opacity.inputPlaceholder,
-        }
-      : {
-          opacity: light ? 0.42 : 0.5,
-        };
-
-    return {
-      font: 'inherit',
-      letterSpacing: 'inherit',
-      color: 'currentColor',
-      padding: '4px 0 5px',
-      border: 0,
-      boxSizing: 'content-box',
-      background: 'none',
-      height: '1.4375em', // Reset 23pxthe native input line-height
-      margin: 0, // Reset for Safari
-      WebkitTapHighlightColor: 'transparent',
-      display: 'block',
-      // Make the flex item shrink with Firefox
-      minWidth: 0,
-      width: '100%',
-      '&::-webkit-input-placeholder': placeholder,
-      '&::-moz-placeholder': placeholder, // Firefox 19+
-      '&::-ms-input-placeholder': placeholder, // Edge
-      '&:focus': {
-        outline: 0,
-      },
-      // Reset Firefox invalid required input style
-      '&:invalid': {
-        boxShadow: 'none',
-      },
-      '&::-webkit-search-decoration': {
-        // Remove the padding when type=search.
-        WebkitAppearance: 'none',
-      },
-      // Show and hide the placeholder logic
-      'label[data-shrink=false] + .MuiInputBase-formControl &': {
-        '&::-webkit-input-placeholder': placeholderHidden,
-        '&::-moz-placeholder': placeholderHidden, // Firefox 19+
-        '&::-ms-input-placeholder': placeholderHidden, // Edge
-        '&:focus::-webkit-input-placeholder': placeholderVisible,
-        '&:focus::-moz-placeholder': placeholderVisible, // Firefox 19+
-        '&:focus::-ms-input-placeholder': placeholderVisible, // Edge
-      },
-      '&.Mui-disabled': {
-        opacity: 1, // Reset iOS opacity
-        WebkitTextFillColor: (theme.vars || theme).palette.text.disabled, // Fix opacity Safari bug
-      },
-      variants: [
-        {
-          props: {
-            size: 'small',
-          },
-          style: {
-            paddingTop: 1,
-          },
-        },
-        {
-          props: ({ ownerState }) => ownerState.multiline,
-          style: {
-            height: 'auto',
-            resize: 'none',
-            padding: 0,
-            paddingTop: 0,
-          },
-        },
-        {
-          props: {
-            type: 'search',
-          },
-          style: {
-            MozAppearance: 'textfield', // Improve type search style.
-          },
-        },
-      ],
-    };
-  }),
-);
 
 /**
  * `InputBase` contains as few styles as possible.
@@ -405,31 +240,46 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
     }
   }, [muiFormControl, startAdornment]);
 
-  const ownerState = {
-    ...props,
-    disabled: fcs.disabled,
-    endAdornment,
-    error: fcs.error,
-    focused: fcs.focused,
-    formControl: muiFormControl,
-    hiddenLabel: fcs.hiddenLabel,
-    multiline,
-    startAdornment,
-    type,
+  const rootStyle = {
+    lineHeight: '1.4375em',
+    boxSizing: 'border-box',
+    position: 'relative',
+    cursor: fcs.disabled ? 'default' : 'text',
+    display: 'inline-flex',
+    alignItems: 'center',
+    ...(multiline && { padding: '4px 0 5px' }),
+  };
+
+  const inputStyle = {
+    font: 'inherit',
+    letterSpacing: 'inherit',
+    color: 'currentColor',
+    padding: '4px 0 5px',
+    border: 0,
+    boxSizing: 'content-box',
+    background: 'none',
+    height: multiline ? 'auto' : '1.4375em',
+    margin: 0,
+    WebkitTapHighlightColor: 'transparent',
+    display: 'block',
+    minWidth: 0,
+    width: '100%',
+    ...(multiline && { resize: 'none', padding: 0 }),
+    ...(type === 'search' && { MozAppearance: 'textfield' }),
   };
 
   return (
     <React.Fragment>
-      <InputBaseRoot
+      <div
         ref={ref}
         onClick={handleClick}
         {...other}
-        ownerState={ownerState}
         className={className}
+        style={rootStyle}
       >
         {startAdornment}
         <FormControlContext.Provider value={null}>
-          <InputBaseInput
+          <InputComponent
             aria-invalid={fcs.error}
             aria-describedby={ariaDescribedby}
             autoComplete={autoComplete}
@@ -447,10 +297,9 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
             onKeyUp={onKeyUp}
             type={type}
             {...inputProps}
-            as={InputComponent}
-            ownerState={ownerState}
             ref={handleInputRef}
             className={inputProps.className}
+            style={{ ...inputStyle, ...inputProps.style }}
             onBlur={handleBlur}
             onChange={handleChange}
             onFocus={handleFocus}
