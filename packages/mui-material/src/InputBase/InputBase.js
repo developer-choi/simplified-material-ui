@@ -5,7 +5,6 @@ import clsx from 'clsx';
 import elementTypeAcceptingRef from '@mui/utils/elementTypeAcceptingRef';
 import refType from '@mui/utils/refType';
 import composeClasses from '@mui/utils/composeClasses';
-import isHostComponent from '@mui/utils/isHostComponent';
 import TextareaAutosize from '../TextareaAutosize';
 import formControlState from '../FormControl/formControlState';
 import FormControlContext from '../FormControl/FormControlContext';
@@ -299,8 +298,6 @@ const InputBase = React.forwardRef(function InputBase(inProps, ref) {
     renderSuffix,
     rows,
     size,
-    slotProps = {},
-    slots = {},
     startAdornment,
     type = 'text',
     value: valueProp,
@@ -520,12 +517,6 @@ const InputBase = React.forwardRef(function InputBase(inProps, ref) {
 
   const classes = useUtilityClasses(ownerState);
 
-  const Root = slots.root || InputBaseRoot;
-  const rootProps = slotProps.root || {};
-
-  const Input = slots.input || InputBaseInput;
-  inputProps = { ...inputProps, ...slotProps.input };
-
   return (
     <React.Fragment>
       {!disableInjectingGlobalStyles && typeof InputGlobalStyles === 'function' && (
@@ -534,27 +525,23 @@ const InputBase = React.forwardRef(function InputBase(inProps, ref) {
         <InputGlobalStyles />
       )}
 
-      <Root
-        {...rootProps}
+      <InputBaseRoot
         ref={ref}
         onClick={handleClick}
         {...other}
-        {...(!isHostComponent(Root) && {
-          ownerState: { ...ownerState, ...rootProps.ownerState },
-        })}
+        ownerState={ownerState}
         className={clsx(
           classes.root,
           {
             // TODO v6: remove this class as it duplicates with the global state class Mui-readOnly
             'MuiInputBase-readOnly': readOnly,
           },
-          rootProps.className,
           className,
         )}
       >
         {startAdornment}
         <FormControlContext.Provider value={null}>
-          <Input
+          <InputBaseInput
             aria-invalid={fcs.error}
             aria-describedby={ariaDescribedby}
             autoComplete={autoComplete}
@@ -573,10 +560,8 @@ const InputBase = React.forwardRef(function InputBase(inProps, ref) {
             onKeyUp={onKeyUp}
             type={type}
             {...inputProps}
-            {...(!isHostComponent(Input) && {
-              as: InputComponent,
-              ownerState: { ...ownerState, ...inputProps.ownerState },
-            })}
+            as={InputComponent}
+            ownerState={ownerState}
             ref={handleInputRef}
             className={clsx(
               classes.input,
@@ -598,7 +583,7 @@ const InputBase = React.forwardRef(function InputBase(inProps, ref) {
               startAdornment,
             })
           : null}
-      </Root>
+      </InputBaseRoot>
     </React.Fragment>
   );
 });
@@ -773,29 +758,6 @@ InputBase.propTypes /* remove-proptypes */ = {
     PropTypes.oneOf(['medium', 'small']),
     PropTypes.string,
   ]),
-  /**
-   * The extra props for the slot components.
-   * You can override the existing props or add new ones.
-   *
-   * This prop is an alias for the `componentsProps` prop, which will be deprecated in the future.
-   *
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    input: PropTypes.object,
-    root: PropTypes.object,
-  }),
-  /**
-   * The components used for each slot inside.
-   *
-   * This prop is an alias for the `components` prop, which will be deprecated in the future.
-   *
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    input: PropTypes.elementType,
-    root: PropTypes.elementType,
-  }),
   /**
    * Start `InputAdornment` for this component.
    */
