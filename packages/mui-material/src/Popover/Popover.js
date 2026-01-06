@@ -5,7 +5,6 @@ import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import HTMLElementType from '@mui/utils/HTMLElementType';
 import elementTypeAcceptingRef from '@mui/utils/elementTypeAcceptingRef';
-import integerPropType from '@mui/utils/integerPropType';
 import chainPropTypes from '@mui/utils/chainPropTypes';
 import { styled } from '../zero-styled';
 import { useDefaultProps } from '../DefaultPropsProvider';
@@ -83,7 +82,6 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
     },
     children,
     className,
-    elevation = 8,
     marginThreshold = 16,
     onClose,
     open,
@@ -100,7 +98,6 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
   const ownerState = {
     ...props,
     anchorOrigin,
-    elevation,
     marginThreshold,
     transformOrigin,
   };
@@ -287,7 +284,7 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
       <PopoverPaper
         ref={paperRef}
         className={classes.paper}
-        elevation={elevation}
+        elevation={8}
       >
         {children}
       </PopoverPaper>
@@ -405,11 +402,6 @@ Popover.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   className: PropTypes.string,
-  /**
-   * The elevation of the popover.
-   * @default 8
-   */
-  elevation: integerPropType,
   /**
    * Specifies how close to the edge of the window the popover can appear.
    * If null, the popover will not be constrained by the window.
