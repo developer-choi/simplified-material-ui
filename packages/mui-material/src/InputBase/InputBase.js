@@ -27,7 +27,6 @@ export const rootOverridesResolver = (props, styles) => {
     ownerState.startAdornment && styles.adornedStart,
     ownerState.endAdornment && styles.adornedEnd,
     ownerState.error && styles.error,
-    ownerState.size === 'small' && styles.sizeSmall,
     ownerState.multiline && styles.multiline,
     ownerState.fullWidth && styles.fullWidth,
     ownerState.hiddenLabel && styles.hiddenLabel,
@@ -39,7 +38,6 @@ export const inputOverridesResolver = (props, styles) => {
 
   return [
     styles.input,
-    ownerState.size === 'small' && styles.inputSizeSmall,
     ownerState.multiline && styles.inputMultiline,
     ownerState.type === 'search' && styles.inputTypeSearch,
     ownerState.startAdornment && styles.inputAdornedStart,
@@ -60,7 +58,6 @@ const useUtilityClasses = (ownerState) => {
     hiddenLabel,
     multiline,
     readOnly,
-    size,
     startAdornment,
     type,
   } = ownerState;
@@ -72,7 +69,6 @@ const useUtilityClasses = (ownerState) => {
       fullWidth && 'fullWidth',
       focused && 'focused',
       formControl && 'formControl',
-      size && size !== 'medium' && `size${capitalize(size)}`,
       multiline && 'multiline',
       startAdornment && 'adornedStart',
       endAdornment && 'adornedEnd',
@@ -84,7 +80,6 @@ const useUtilityClasses = (ownerState) => {
       disabled && 'disabled',
       type === 'search' && 'inputTypeSearch',
       multiline && 'inputMultiline',
-      size === 'small' && 'inputSizeSmall',
       hiddenLabel && 'inputHiddenLabel',
       startAdornment && 'inputAdornedStart',
       endAdornment && 'inputAdornedEnd',
@@ -293,7 +288,6 @@ const InputBase = React.forwardRef(function InputBase(inProps, ref) {
     readOnly,
     renderSuffix,
     rows,
-    size,
     startAdornment,
     type = 'text',
     value: valueProp,
@@ -343,7 +337,7 @@ const InputBase = React.forwardRef(function InputBase(inProps, ref) {
   const fcs = formControlState({
     props,
     muiFormControl,
-    states: ['disabled', 'error', 'hiddenLabel', 'size', 'required', 'filled'],
+    states: ['disabled', 'error', 'hiddenLabel', 'required', 'filled'],
   });
 
   fcs.focused = muiFormControl ? muiFormControl.focused : focused;
@@ -505,7 +499,6 @@ const InputBase = React.forwardRef(function InputBase(inProps, ref) {
     fullWidth,
     hiddenLabel: fcs.hiddenLabel,
     multiline,
-    size: fcs.size,
     startAdornment,
     type,
   };
@@ -736,13 +729,6 @@ InputBase.propTypes /* remove-proptypes */ = {
    * Number of rows to display when multiline option is set to true.
    */
   rows: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  /**
-   * The size of the component.
-   */
-  size: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['medium', 'small']),
-    PropTypes.string,
-  ]),
   /**
    * Start `InputAdornment` for this component.
    */
