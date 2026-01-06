@@ -3,7 +3,7 @@ import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
 import { InternalStandardProps as StandardProps } from '@mui/material/internal';
 import { PaperProps } from '../../surfaces/Paper';
-import { PopoverProps } from '@mui/material/Popover';
+import { PopoverProps } from '../../modal/Popover';
 import { MenuListProps } from '../MenuList';
 import { ModalProps } from '../../modal/Modal';
 import { BackdropProps } from '../../modal/Backdrop';

@@ -253,8 +253,8 @@ export * from './PaginationItem';
 export { default as Paper } from '../../surfaces/Paper';
 export * from '../../surfaces/Paper';
 
-export { default as Popover } from './Popover';
-export * from './Popover';
+export { default as Popover } from '../../modal/Popover';
+export * from '../../modal/Popover';
 
 export { default as Popper } from '../../layout/Popper';
 export * from '../../layout/Popper';

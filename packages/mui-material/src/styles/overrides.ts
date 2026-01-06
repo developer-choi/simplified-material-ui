@@ -75,7 +75,7 @@ import { OutlinedInputClassKey } from '../OutlinedInput';
 import { PaginationClassKey } from '../Pagination';
 import { PaginationItemClassKey } from '../PaginationItem';
 import { PaperClassKey } from '../../../surfaces/Paper';
-import { PopoverClassKey } from '../Popover';
+import { PopoverClassKey } from '../../../modal/Popover';
 import { RadioClassKey } from '../../../form/Radio';
 import { RadioGroupClassKey } from '../RadioGroup';
 import { RatingClassKey } from '../Rating';

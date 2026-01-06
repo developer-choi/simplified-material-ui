@@ -74,7 +74,7 @@ import { OutlinedInputProps } from '../OutlinedInput';
 import { PaginationProps } from '../Pagination';
 import { PaginationItemProps } from '../PaginationItem';
 import { PaperProps } from '../../../surfaces/Paper';
-import { PopoverProps } from '../Popover';
+import { PopoverProps } from '../../../modal/Popover';
 import { RadioGroupProps } from '../RadioGroup';
 import { RadioProps } from '../../../form/Radio';
 import { RatingProps } from '../Rating';

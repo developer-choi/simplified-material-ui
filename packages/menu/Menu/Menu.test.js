@@ -9,7 +9,7 @@ import {
   reactMajor,
 } from '@mui/internal-test-utils';
 import Menu, { menuClasses as classes } from './index';
-import Popover from '@mui/material/Popover';
+import Popover from '../../modal/Popover';
 import { modalClasses } from '../../modal/Modal';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import describeConformance from '../../mui-material/test/describeConformance';

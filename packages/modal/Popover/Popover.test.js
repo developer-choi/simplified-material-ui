@@ -3,14 +3,14 @@ import { expect } from 'chai';
 import { spy, stub, match } from 'sinon';
 import { act, createRenderer, reactMajor, screen } from '@mui/internal-test-utils';
 import PropTypes from 'prop-types';
-import Modal, { modalClasses } from '../../../modal/Modal';
-import Paper, { paperClasses } from '../../../surfaces/Paper';
-import Popover, { popoverClasses as classes, PopoverPaper } from '@mui/material/Popover';
+import Modal, { modalClasses } from '../Modal';
+import Paper, { paperClasses } from '../../surfaces/Paper';
+import Popover, { popoverClasses as classes, PopoverPaper } from './index';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { getOffsetLeft, getOffsetTop } from './Popover';
-import useForkRef from '../utils/useForkRef';
-import styled from '../styles/styled';
-import describeConformance from '../../test/describeConformance';
+import useForkRef from '@mui/material/utils/useForkRef';
+import styled from '@mui/material/styles/styled';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 const FakePaper = React.forwardRef(function FakeWidthPaper(props, ref) {
   const handleMocks = React.useCallback((paperInstance) => {
