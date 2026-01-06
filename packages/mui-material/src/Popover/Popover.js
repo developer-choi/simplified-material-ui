@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import HTMLElementType from '@mui/utils/HTMLElementType';
-import refType from '@mui/utils/refType';
 import elementTypeAcceptingRef from '@mui/utils/elementTypeAcceptingRef';
 import integerPropType from '@mui/utils/integerPropType';
 import chainPropTypes from '@mui/utils/chainPropTypes';
@@ -77,7 +76,6 @@ export const PopoverPaper = styled(PaperBase, {
 const Popover = React.forwardRef(function Popover(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiPopover' });
   const {
-    action,
     anchorEl,
     anchorOrigin = {
       vertical: 'top',
@@ -266,19 +264,6 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
     }
   });
 
-  React.useImperativeHandle(
-    action,
-    () =>
-      open
-        ? {
-            updatePosition: () => {
-              setPositioningStyles();
-            },
-          }
-        : null,
-    [open, setPositioningStyles],
-  );
-
   React.useEffect(() => {
     if (!open) {
       return undefined;
@@ -325,11 +310,6 @@ Popover.propTypes /* remove-proptypes */ = {
   // │ These PropTypes are generated from the TypeScript type definitions. │
   // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
   // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * A ref for imperative actions.
-   * It currently only supports updatePosition() action.
-   */
-  action: refType,
   /**
    * An HTML element, [PopoverVirtualElement](https://mui.com/material-ui/react-popover/#virtual-element),
    * or a function that returns either.
