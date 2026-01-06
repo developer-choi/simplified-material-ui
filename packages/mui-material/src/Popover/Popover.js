@@ -83,7 +83,6 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
     },
     children,
     className,
-    container: containerProp,
     elevation = 8,
     marginThreshold = 16,
     onClose,
@@ -93,7 +92,6 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
       vertical: 'top',
       horizontal: 'left',
     },
-    disableScrollLock = false,
     ...other
   } = props;
 
@@ -252,13 +250,6 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
   }, [getPositioningStyle]);
 
   React.useEffect(() => {
-    if (disableScrollLock) {
-      window.addEventListener('scroll', setPositioningStyles);
-    }
-    return () => window.removeEventListener('scroll', setPositioningStyles);
-  }, [anchorEl, disableScrollLock, setPositioningStyles]);
-
-  React.useEffect(() => {
     if (open) {
       setPositioningStyles();
     }
@@ -281,8 +272,7 @@ const Popover = React.forwardRef(function Popover(inProps, ref) {
     };
   }, [anchorEl, open, setPositioningStyles]);
 
-  const container =
-    containerProp || (anchorEl ? ownerDocument(resolveAnchorEl(anchorEl)).body : undefined);
+  const container = anchorEl ? ownerDocument(resolveAnchorEl(anchorEl)).body : undefined;
 
   return (
     <PopoverRoot
@@ -415,22 +405,6 @@ Popover.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   className: PropTypes.string,
-  /**
-   * An HTML element, component instance, or function that returns either.
-   * The `container` will passed to the Modal component.
-   *
-   * By default, it uses the body of the anchorEl's top-level document object,
-   * so it's simply `document.body` most of the time.
-   */
-  container: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    HTMLElementType,
-    PropTypes.func,
-  ]),
-  /**
-   * Disable the scroll lock behavior.
-   * @default false
-   */
-  disableScrollLock: PropTypes.bool,
   /**
    * The elevation of the popover.
    * @default 8
