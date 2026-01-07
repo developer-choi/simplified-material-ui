@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import composeClasses from '@mui/utils/composeClasses';
 import deepmerge from '@mui/utils/deepmerge';
 import refType from '@mui/utils/refType';
-import InputBase from '../InputBase';
+import InputBase from '../../../form/InputBase';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
@@ -16,7 +16,7 @@ import {
   inputOverridesResolver as inputBaseInputOverridesResolver,
   InputBaseRoot,
   InputBaseInput,
-} from '../InputBase/InputBase';
+} from '../../../form/InputBase/InputBase';
 
 const useUtilityClasses = (ownerState) => {
   const { classes, disableUnderline } = ownerState;

@@ -17,7 +17,7 @@ import InputBase, {
   inputOverridesResolver as inputBaseInputOverridesResolver,
   InputBaseRoot,
   InputBaseInput,
-} from '../InputBase/InputBase';
+} from '../../../form/InputBase/InputBase';
 import useSlot from '../utils/useSlot';
 
 const useUtilityClasses = (ownerState) => {

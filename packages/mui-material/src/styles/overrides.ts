@@ -52,7 +52,7 @@ import { ImageListClassKey } from '../ImageList';
 import { ImageListItemBarClassKey } from '../ImageListItemBar';
 import { ImageListItemClassKey } from '../ImageListItem';
 import { InputAdornmentClassKey } from '../InputAdornment';
-import { InputBaseClassKey } from '../InputBase';
+import { InputBaseClassKey } from '../../../form/InputBase';
 import { InputClassKey } from '../Input';
 import { InputLabelClassKey } from '../InputLabel';
 import { LinearProgressClassKey } from '../LinearProgress';

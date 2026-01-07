@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import { isFilled, isAdornedStart } from '../InputBase/utils';
+import { isFilled, isAdornedStart } from '../../../form/InputBase/utils';
 import capitalize from '../utils/capitalize';
 import isMuiElement from '../utils/isMuiElement';
 import FormControlContext from './FormControlContext';

@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { spy } from 'sinon';
 import { createRenderer, fireEvent, screen } from '@mui/internal-test-utils';
 import FormControl from '@mui/material/FormControl';
-import { inputBaseClasses } from '@mui/material/InputBase';
+import { inputBaseClasses } from '../../../form/InputBase';
 import MenuItem from '../../../menu/MenuItem';
 import { outlinedInputClasses } from '@mui/material/OutlinedInput';
 import TextField, { textFieldClasses as classes } from '@mui/material/TextField';

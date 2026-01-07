@@ -1,6 +1,6 @@
 import generateUtilityClasses from '@mui/utils/generateUtilityClasses';
 import generateUtilityClass from '@mui/utils/generateUtilityClass';
-import { inputBaseClasses } from '../InputBase';
+import { inputBaseClasses } from '../../../form/InputBase';
 
 export interface OutlinedInputClasses {
   /** Styles applied to the root element. */

@@ -5,7 +5,7 @@ import { Theme } from '../styles';
 import { InternalStandardProps as StandardProps } from '../internal';
 import { FormControlProps } from '../FormControl';
 import { FormHelperTextProps } from '../FormHelperText';
-import { InputBaseProps } from '../InputBase';
+import { InputBaseProps } from '../../../form/InputBase';
 import { InputProps as StandardInputProps } from '../Input';
 import { FilledInputProps } from '../FilledInput';
 import { OutlinedInputProps } from '../OutlinedInput';

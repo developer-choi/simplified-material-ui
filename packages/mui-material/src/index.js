@@ -180,8 +180,8 @@ export * from './Input';
 export { default as InputAdornment } from './InputAdornment';
 export * from './InputAdornment';
 
-export { default as InputBase } from './InputBase';
-export * from './InputBase';
+export { default as InputBase } from '../../form/InputBase';
+export * from '../../form/InputBase';
 
 export { default as InputLabel } from './InputLabel';
 export * from './InputLabel';

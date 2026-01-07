@@ -12,7 +12,7 @@ import {
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import MenuItem, { menuItemClasses } from '../../../menu/MenuItem';
 import ListSubheader from '@mui/material/ListSubheader';
-import InputBase from '@mui/material/InputBase';
+import InputBase from '../../../form/InputBase';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';

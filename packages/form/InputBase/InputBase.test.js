@@ -8,9 +8,9 @@ import FormControl, { useFormControl } from '@mui/material/FormControl';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
-import InputBase, { inputBaseClasses as classes } from '@mui/material/InputBase';
+import InputBase, { inputBaseClasses as classes } from './index';
 import { createTheme } from '@mui/material/styles';
-import describeConformance from '../../test/describeConformance';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<InputBase />', () => {
   const { render } = createRenderer();

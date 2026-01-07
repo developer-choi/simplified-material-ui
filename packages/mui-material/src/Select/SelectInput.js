@@ -10,7 +10,7 @@ import ownerDocument from '../utils/ownerDocument';
 import capitalize from '../utils/capitalize';
 import Menu from '../../../menu/Menu/Menu';
 import { StyledSelectSelect, StyledSelectIcon } from '../NativeSelect/NativeSelectInput';
-import { isFilled } from '../InputBase/utils';
+import { isFilled } from '../../../form/InputBase/utils';
 import { styled } from '../zero-styled';
 import slotShouldForwardProp from '../styles/slotShouldForwardProp';
 import useForkRef from '../utils/useForkRef';

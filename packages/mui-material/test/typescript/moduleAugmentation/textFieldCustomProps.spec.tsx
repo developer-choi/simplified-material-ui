@@ -19,7 +19,7 @@ declare module '@mui/material/FormControl' {
     extraLarge: true;
   }
 }
-declare module '@mui/material/InputBase' {
+declare module '../../../../form/InputBase' {
   interface InputBasePropsSizeOverrides {
     extraLarge: true;
   }

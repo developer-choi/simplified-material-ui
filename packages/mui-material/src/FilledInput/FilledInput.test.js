@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { createRenderer } from '@mui/internal-test-utils';
 import { styled } from '@mui/material/styles';
 import FilledInput, { filledInputClasses as classes } from '@mui/material/FilledInput';
-import InputBase from '@mui/material/InputBase';
+import InputBase from '../../../form/InputBase';
 import describeConformance from '../../test/describeConformance';
 
 describe('<FilledInput />', () => {

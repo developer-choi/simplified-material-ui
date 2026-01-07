@@ -50,7 +50,7 @@ import { ImageListProps } from '../ImageList';
 import { ImageListItemBarProps } from '../ImageListItemBar';
 import { ImageListItemProps } from '../ImageListItem';
 import { InputAdornmentProps } from '../InputAdornment';
-import { InputBaseProps } from '../InputBase';
+import { InputBaseProps } from '../../../form/InputBase';
 import { InputLabelProps } from '../InputLabel';
 import { InputProps } from '../Input';
 import { LinearProgressProps } from '../LinearProgress';
