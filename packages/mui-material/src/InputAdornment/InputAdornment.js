@@ -5,8 +5,6 @@ import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import capitalize from '../utils/capitalize';
 import Typography from '../Typography';
-import FormControlContext from '../FormControl/FormControlContext';
-import useFormControl from '../FormControl/useFormControl';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import inputAdornmentClasses, { getInputAdornmentUtilityClass } from './inputAdornmentClasses';
@@ -101,61 +99,38 @@ const InputAdornment = React.forwardRef(function InputAdornment(props, ref) {
     ...other
   } = props;
 
-  const muiFormControl = useFormControl() || {};
-
-  let variant = variantProp;
-
-  if (variantProp && muiFormControl.variant) {
-    if (process.env.NODE_ENV !== 'production') {
-      if (variantProp === muiFormControl.variant) {
-        console.error(
-          'MUI: The `InputAdornment` variant infers the variant prop ' +
-            'you do not have to provide one.',
-        );
-      }
-    }
-  }
-
-  if (muiFormControl && !variant) {
-    variant = muiFormControl.variant;
-  }
-
   const ownerState = {
     ...props,
-    hiddenLabel: muiFormControl.hiddenLabel,
-    size: muiFormControl.size,
     disablePointerEvents,
     position,
-    variant,
+    variant: variantProp,
   };
 
   const classes = useUtilityClasses(ownerState);
 
   return (
-    <FormControlContext.Provider value={null}>
-      <InputAdornmentRoot
-        as={component}
-        ownerState={ownerState}
-        className={clsx(classes.root, className)}
-        ref={ref}
-        {...other}
-      >
-        {typeof children === 'string' && !disableTypography ? (
-          <Typography color="textSecondary">{children}</Typography>
-        ) : (
-          <React.Fragment>
-            {/* To have the correct vertical alignment baseline */}
-            {position === 'start' ? (
-              /* notranslate needed while Google Translate will not fix zero-width space issue */
-              <span className="notranslate" aria-hidden>
-                &#8203;
-              </span>
-            ) : null}
-            {children}
-          </React.Fragment>
-        )}
-      </InputAdornmentRoot>
-    </FormControlContext.Provider>
+    <InputAdornmentRoot
+      as={component}
+      ownerState={ownerState}
+      className={clsx(classes.root, className)}
+      ref={ref}
+      {...other}
+    >
+      {typeof children === 'string' && !disableTypography ? (
+        <Typography color="textSecondary">{children}</Typography>
+      ) : (
+        <React.Fragment>
+          {/* To have the correct vertical alignment baseline */}
+          {position === 'start' ? (
+            /* notranslate needed while Google Translate will not fix zero-width space issue */
+            <span className="notranslate" aria-hidden>
+              &#8203;
+            </span>
+          ) : null}
+          {children}
+        </React.Fragment>
+      )}
+    </InputAdornmentRoot>
   );
 });
 
