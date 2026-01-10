@@ -2,13 +2,11 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import capitalize from '../utils/capitalize';
 
 const InputAdornment = React.forwardRef(function InputAdornment(props, ref) {
   const {
     children,
     className,
-    component = 'div',
     disablePointerEvents = false,
     position,
     variant: variantProp,
