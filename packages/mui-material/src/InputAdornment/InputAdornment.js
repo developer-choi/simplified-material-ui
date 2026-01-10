@@ -2,12 +2,11 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import capitalize from '../utils/capitalize';
 import Typography from '../Typography';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import inputAdornmentClasses, { getInputAdornmentUtilityClass } from './inputAdornmentClasses';
+import inputAdornmentClasses from './inputAdornmentClasses';
 
 const overridesResolver = (props, styles) => {
   const { ownerState } = props;
@@ -18,22 +17,6 @@ const overridesResolver = (props, styles) => {
     ownerState.disablePointerEvents === true && styles.disablePointerEvents,
     styles[ownerState.variant],
   ];
-};
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, disablePointerEvents, hiddenLabel, position, size, variant } = ownerState;
-  const slots = {
-    root: [
-      'root',
-      disablePointerEvents && 'disablePointerEvents',
-      position && `position${capitalize(position)}`,
-      variant,
-      hiddenLabel && 'hiddenLabel',
-      size && `size${capitalize(size)}`,
-    ],
-  };
-
-  return composeClasses(slots, getInputAdornmentUtilityClass, classes);
 };
 
 const InputAdornmentRoot = styled('div', {
@@ -106,13 +89,11 @@ const InputAdornment = React.forwardRef(function InputAdornment(props, ref) {
     variant: variantProp,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <InputAdornmentRoot
       as={component}
       ownerState={ownerState}
-      className={clsx(classes.root, className)}
+      className={clsx('MuiInputAdornment-root', className)}
       ref={ref}
       {...other}
     >
