@@ -3,7 +3,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import capitalize from '../utils/capitalize';
-import Typography from '../Typography';
 
 const InputAdornment = React.forwardRef(function InputAdornment(props, ref) {
   const {
@@ -11,7 +10,6 @@ const InputAdornment = React.forwardRef(function InputAdornment(props, ref) {
     className,
     component = 'div',
     disablePointerEvents = false,
-    disableTypography = false,
     position,
     variant: variantProp,
     ...other
@@ -34,20 +32,14 @@ const InputAdornment = React.forwardRef(function InputAdornment(props, ref) {
       }}
       {...other}
     >
-      {typeof children === 'string' && !disableTypography ? (
-        <Typography color="textSecondary">{children}</Typography>
-      ) : (
-        <React.Fragment>
-          {/* To have the correct vertical alignment baseline */}
-          {position === 'start' ? (
-            /* notranslate needed while Google Translate will not fix zero-width space issue */
-            <span className="notranslate" aria-hidden>
-              &#8203;
-            </span>
-          ) : null}
-          {children}
-        </React.Fragment>
-      )}
+      {/* To have the correct vertical alignment baseline */}
+      {position === 'start' ? (
+        /* notranslate needed while Google Translate will not fix zero-width space issue */
+        <span className="notranslate" aria-hidden>
+          &#8203;
+        </span>
+      ) : null}
+      {children}
     </div>
   );
 });
