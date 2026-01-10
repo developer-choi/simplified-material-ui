@@ -4,71 +4,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import capitalize from '../utils/capitalize';
 import Typography from '../Typography';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
-import inputAdornmentClasses from './inputAdornmentClasses';
-
-const overridesResolver = (props, styles) => {
-  const { ownerState } = props;
-
-  return [
-    styles.root,
-    styles[`position${capitalize(ownerState.position)}`],
-    ownerState.disablePointerEvents === true && styles.disablePointerEvents,
-    styles[ownerState.variant],
-  ];
-};
-
-const InputAdornmentRoot = styled('div', {
-  name: 'MuiInputAdornment',
-  slot: 'Root',
-  overridesResolver,
-})(
-  memoTheme(({ theme }) => ({
-    display: 'flex',
-    maxHeight: '2em',
-    alignItems: 'center',
-    whiteSpace: 'nowrap',
-    color: (theme.vars || theme).palette.action.active,
-    variants: [
-      {
-        props: {
-          variant: 'filled',
-        },
-        style: {
-          [`&.${inputAdornmentClasses.positionStart}&:not(.${inputAdornmentClasses.hiddenLabel})`]:
-            {
-              marginTop: 16,
-            },
-        },
-      },
-      {
-        props: {
-          position: 'start',
-        },
-        style: {
-          marginRight: 8,
-        },
-      },
-      {
-        props: {
-          position: 'end',
-        },
-        style: {
-          marginLeft: 8,
-        },
-      },
-      {
-        props: {
-          disablePointerEvents: true,
-        },
-        style: {
-          pointerEvents: 'none',
-        },
-      },
-    ],
-  })),
-);
 
 const InputAdornment = React.forwardRef(function InputAdornment(props, ref) {
   const {
@@ -82,19 +17,21 @@ const InputAdornment = React.forwardRef(function InputAdornment(props, ref) {
     ...other
   } = props;
 
-  const ownerState = {
-    ...props,
-    disablePointerEvents,
-    position,
-    variant: variantProp,
-  };
-
   return (
-    <InputAdornmentRoot
-      as={component}
-      ownerState={ownerState}
-      className={clsx('MuiInputAdornment-root', className)}
+    <div
       ref={ref}
+      className={clsx('MuiInputAdornment-root', className)}
+      style={{
+        display: 'flex',
+        maxHeight: '2em',
+        alignItems: 'center',
+        whiteSpace: 'nowrap',
+        color: '#757575',
+        ...(position === 'start' && { marginRight: 8 }),
+        ...(position === 'end' && { marginLeft: 8 }),
+        ...(disablePointerEvents && { pointerEvents: 'none' }),
+        ...(variantProp === 'filled' && position === 'start' && { marginTop: 16 }),
+      }}
       {...other}
     >
       {typeof children === 'string' && !disableTypography ? (
@@ -111,7 +48,7 @@ const InputAdornment = React.forwardRef(function InputAdornment(props, ref) {
           {children}
         </React.Fragment>
       )}
-    </InputAdornmentRoot>
+    </div>
   );
 });
 
