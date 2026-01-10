@@ -9,7 +9,6 @@ import FormControlContext from '../FormControl/FormControlContext';
 import useFormControl from '../FormControl/useFormControl';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import inputAdornmentClasses, { getInputAdornmentUtilityClass } from './inputAdornmentClasses';
 
 const overridesResolver = (props, styles) => {
@@ -90,8 +89,7 @@ const InputAdornmentRoot = styled('div', {
   })),
 );
 
-const InputAdornment = React.forwardRef(function InputAdornment(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiInputAdornment' });
+const InputAdornment = React.forwardRef(function InputAdornment(props, ref) {
   const {
     children,
     className,
