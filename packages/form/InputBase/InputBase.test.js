@@ -5,7 +5,7 @@ import { spy } from 'sinon';
 import { act, createRenderer, fireEvent, screen, reactMajor } from '@mui/internal-test-utils';
 import { ThemeProvider } from '@emotion/react';
 import FormControl, { useFormControl } from '@mui/material/FormControl';
-import InputAdornment from '@mui/material/InputAdornment';
+import InputAdornment from '../InputAdornment';
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import InputBase, { inputBaseClasses as classes } from './index';

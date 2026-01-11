@@ -51,7 +51,7 @@ import { IconClassKey } from '../../../data-display/Icon';
 import { ImageListClassKey } from '../ImageList';
 import { ImageListItemBarClassKey } from '../ImageListItemBar';
 import { ImageListItemClassKey } from '../ImageListItem';
-import { InputAdornmentClassKey } from '../InputAdornment';
+import { InputAdornmentClassKey } from '../../../form/InputAdornment';
 import { InputBaseClassKey } from '../../../form/InputBase';
 import { InputClassKey } from '../Input';
 import { InputLabelClassKey } from '../InputLabel';

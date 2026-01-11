@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SxProps } from '@mui/system';
-import { OverridableComponent, OverrideProps } from '../OverridableComponent';
-import { Theme } from '../styles';
+import { OverridableComponent, OverrideProps } from '@mui/material/OverridableComponent';
+import { Theme } from '@mui/material/styles';
 import { InputAdornmentClasses } from './inputAdornmentClasses';
 
 export interface InputAdornmentOwnProps {

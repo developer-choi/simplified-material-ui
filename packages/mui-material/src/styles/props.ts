@@ -49,7 +49,7 @@ import { IconProps } from '../../../data-display/Icon';
 import { ImageListProps } from '../ImageList';
 import { ImageListItemBarProps } from '../ImageListItemBar';
 import { ImageListItemProps } from '../ImageListItem';
-import { InputAdornmentProps } from '../InputAdornment';
+import { InputAdornmentProps } from '../../../form/InputAdornment';
 import { InputBaseProps } from '../../../form/InputBase';
 import { InputLabelProps } from '../InputLabel';
 import { InputProps } from '../Input';

@@ -177,8 +177,8 @@ export * from './ImageListItemBar';
 export { default as Input } from './Input';
 export * from './Input';
 
-export { default as InputAdornment } from './InputAdornment';
-export * from './InputAdornment';
+export { default as InputAdornment } from '../../form/InputAdornment';
+export * from '../../form/InputAdornment';
 
 export { default as InputBase } from '../../form/InputBase';
 export * from '../../form/InputBase';

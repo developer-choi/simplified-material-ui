@@ -19,7 +19,7 @@ import Autocomplete, {
 } from '@mui/material/Autocomplete';
 import { paperClasses } from '../../../surfaces/Paper';
 import { iconButtonClasses } from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
+import InputAdornment from '../../../form/InputAdornment';
 import Tooltip from '../../../data-display/Tooltip';
 import describeConformance from '../../test/describeConformance';
 

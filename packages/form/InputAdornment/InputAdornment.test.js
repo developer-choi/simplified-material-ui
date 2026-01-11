@@ -5,11 +5,11 @@ import {
   screen,
 } from '@mui/internal-test-utils';
 import { typographyClasses } from '@mui/material/Typography';
-import InputAdornment, { inputAdornmentClasses as classes } from '@mui/material/InputAdornment';
+import InputAdornment, { inputAdornmentClasses as classes } from './index';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import Input from '@mui/material/Input';
-import describeConformance from '../../test/describeConformance';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<InputAdornment />', () => {
   const { render } = createRenderer();
