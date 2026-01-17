@@ -7,7 +7,6 @@ import InputBase from '../../../form/InputBase';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import inputClasses, { getInputUtilityClass } from './inputClasses';
 import {
@@ -116,16 +115,14 @@ const InputRoot = styled(InputBaseRoot, {
             },
           },
         },
-        ...Object.entries(theme.palette)
-          .filter(createSimplePaletteValueFilter())
-          .map(([color]) => ({
-            props: { color, disableUnderline: false },
-            style: {
-              '&::after': {
-                borderBottom: `2px solid ${(theme.vars || theme).palette[color].main}`,
-              },
+        {
+          props: ({ ownerState }) => !ownerState.disableUnderline,
+          style: {
+            '&::after': {
+              borderBottom: '2px solid #1976d2', // primary.main
             },
-          })),
+          },
+        },
       ],
     };
   }),
