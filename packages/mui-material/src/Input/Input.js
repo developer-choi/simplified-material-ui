@@ -3,134 +3,90 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import refType from '@mui/utils/refType';
 import InputBase from '../../../form/InputBase';
-import rootShouldForwardProp from '../styles/rootShouldForwardProp';
-import { styled } from '../zero-styled';
-import inputClasses from './inputClasses';
-import {
-  rootOverridesResolver as inputBaseRootOverridesResolver,
-  inputOverridesResolver as inputBaseInputOverridesResolver,
-  InputBaseRoot,
-  InputBaseInput,
-} from '../../../form/InputBase/InputBase';
-
-const InputRoot = styled(InputBaseRoot, {
-  shouldForwardProp: (prop) => rootShouldForwardProp(prop) || prop === 'classes',
-  name: 'MuiInput',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      ...inputBaseRootOverridesResolver(props, styles),
-      !ownerState.disableUnderline && styles.underline,
-    ];
-  },
-)({
-  position: 'relative',
-  variants: [
-    {
-      props: ({ ownerState }) => ownerState.formControl,
-      style: {
-        'label + &': {
-          marginTop: 16,
-        },
-      },
-    },
-    {
-      props: ({ ownerState }) => !ownerState.disableUnderline,
-      style: {
-        '&::after': {
-          left: 0,
-          bottom: 0,
-          content: '""',
-          position: 'absolute',
-          right: 0,
-          transform: 'scaleX(0)',
-          transition: 'transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms',
-          pointerEvents: 'none', // Transparent to the hover style.
-        },
-        [`&.${inputClasses.focused}:after`]: {
-          // translateX(0) is a workaround for Safari transform scale bug
-          // See https://github.com/mui/material-ui/issues/31766
-          transform: 'scaleX(1) translateX(0)',
-        },
-        [`&.${inputClasses.error}`]: {
-          '&::before, &::after': {
-            borderBottomColor: '#d32f2f', // error.main
-          },
-        },
-        '&::before': {
-          borderBottom: '1px solid rgba(0, 0, 0, 0.42)',
-          left: 0,
-          bottom: 0,
-          content: '"\\00a0"',
-          position: 'absolute',
-          right: 0,
-          transition: 'border-bottom-color 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms',
-          pointerEvents: 'none', // Transparent to the hover style.
-        },
-        [`&:hover:not(.${inputClasses.disabled}, .${inputClasses.error}):before`]: {
-          borderBottom: '2px solid rgba(0, 0, 0, 0.87)', // text.primary
-          // Reset on touch devices, it doesn't add specificity
-          '@media (hover: none)': {
-            borderBottom: '1px solid rgba(0, 0, 0, 0.42)',
-          },
-        },
-        [`&.${inputClasses.disabled}:before`]: {
-          borderBottomStyle: 'dotted',
-        },
-      },
-    },
-    {
-      props: ({ ownerState }) => !ownerState.disableUnderline,
-      style: {
-        '&::after': {
-          borderBottom: '2px solid #1976d2', // primary.main
-        },
-      },
-    },
-  ],
-});
-
-const InputInput = styled(InputBaseInput, {
-  name: 'MuiInput',
-  slot: 'Input',
-  overridesResolver: inputBaseInputOverridesResolver,
-})({});
+import useFormControl from '../FormControl/useFormControl';
 
 const Input = React.forwardRef(function Input(props, ref) {
   const {
     disableUnderline = false,
-    fullWidth = false,
-    inputComponent = 'input',
-    multiline = false,
-    slotProps,
-    slots = {},
-    type = 'text',
+    className,
+    onFocus: onFocusProp,
+    onBlur: onBlurProp,
     ...other
   } = props;
 
-  const ownerState = { disableUnderline };
-  const inputComponentsProps = { root: { ownerState } };
+  const muiFormControl = useFormControl();
+  const [focused, setFocused] = React.useState(false);
+  const [hover, setHover] = React.useState(false);
 
-  const componentsProps = slotProps
-    ? { ...slotProps, root: { ...slotProps.root, ownerState } }
-    : inputComponentsProps;
+  const disabled = muiFormControl?.disabled ?? props.disabled ?? false;
+  const error = muiFormControl?.error ?? props.error ?? false;
 
-  const RootSlot = slots.root ?? InputRoot;
-  const InputSlot = slots.input ?? InputInput;
+  const handleFocus = (event) => {
+    setFocused(true);
+    if (onFocusProp) {
+      onFocusProp(event);
+    }
+  };
+
+  const handleBlur = (event) => {
+    setFocused(false);
+    if (onBlurProp) {
+      onBlurProp(event);
+    }
+  };
+
+  const containerStyle = {
+    position: 'relative',
+    display: 'inline-flex',
+    flexDirection: 'column',
+  };
+
+  const underlineBeforeStyle = !disableUnderline
+    ? {
+        borderBottom: error
+          ? '1px solid #d32f2f'
+          : hover && !disabled
+            ? '2px solid rgba(0, 0, 0, 0.87)'
+            : '1px solid rgba(0, 0, 0, 0.42)',
+        left: 0,
+        bottom: 0,
+        content: '""',
+        position: 'absolute',
+        right: 0,
+        transition: 'border-bottom-color 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms',
+        pointerEvents: 'none',
+        ...(disabled && {
+          borderBottomStyle: 'dotted',
+          borderBottomWidth: '1px',
+        }),
+      }
+    : { display: 'none' };
+
+  const underlineAfterStyle = !disableUnderline
+    ? {
+        borderBottom: error ? '2px solid #d32f2f' : '2px solid #1976d2',
+        left: 0,
+        bottom: 0,
+        content: '""',
+        position: 'absolute',
+        right: 0,
+        transform: focused ? 'scaleX(1) translateX(0)' : 'scaleX(0)',
+        transition: 'transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms',
+        pointerEvents: 'none',
+      }
+    : { display: 'none' };
 
   return (
-    <InputBase
-      slots={{ root: RootSlot, input: InputSlot }}
-      slotProps={componentsProps}
-      fullWidth={fullWidth}
-      inputComponent={inputComponent}
-      multiline={multiline}
-      ref={ref}
-      type={type}
-      {...other}
-    />
+    <div
+      className={className}
+      style={containerStyle}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+      <InputBase {...other} ref={ref} onFocus={handleFocus} onBlur={handleBlur} />
+      <span style={underlineBeforeStyle} />
+      <span style={underlineAfterStyle} />
+    </div>
   );
 });
 
