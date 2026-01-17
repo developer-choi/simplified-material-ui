@@ -14,12 +14,12 @@ import { useDefaultProps } from '../DefaultPropsProvider';
 import { getInputLabelUtilityClasses } from './inputLabelClasses';
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, formControl, shrink, disableAnimation, variant, required } = ownerState;
+  const { classes, formControl, shrink, variant, required } = ownerState;
   const slots = {
     root: [
       'root',
       formControl && 'formControl',
-      !disableAnimation && 'animated',
+      'animated',
       shrink && 'shrink',
       variant,
     ],
@@ -45,7 +45,7 @@ const InputLabelRoot = styled(FormLabel, {
       styles.root,
       ownerState.formControl && styles.formControl,
       ownerState.shrink && styles.shrink,
-      !ownerState.disableAnimation && styles.animated,
+      styles.animated,
       ownerState.focused && styles.focused,
       styles[ownerState.variant],
     ];
@@ -78,7 +78,7 @@ const InputLabelRoot = styled(FormLabel, {
         },
       },
       {
-        props: ({ ownerState }) => !ownerState.disableAnimation,
+        props: () => true,
         style: {
           transition: theme.transitions.create(['color', 'transform', 'max-width'], {
             duration: theme.transitions.duration.shorter,
@@ -140,7 +140,6 @@ const InputLabelRoot = styled(FormLabel, {
 const InputLabel = React.forwardRef(function InputLabel(inProps, ref) {
   const props = useDefaultProps({ name: 'MuiInputLabel', props: inProps });
   const {
-    disableAnimation = false,
     margin,
     shrink: shrinkProp,
     variant,
@@ -163,7 +162,6 @@ const InputLabel = React.forwardRef(function InputLabel(inProps, ref) {
 
   const ownerState = {
     ...props,
-    disableAnimation,
     formControl: muiFormControl,
     shrink,
     variant: fcs.variant,
@@ -211,11 +209,6 @@ InputLabel.propTypes /* remove-proptypes */ = {
     PropTypes.oneOf(['error', 'info', 'primary', 'secondary', 'success', 'warning']),
     PropTypes.string,
   ]),
-  /**
-   * If `true`, the transition animation is disabled.
-   * @default false
-   */
-  disableAnimation: PropTypes.bool,
   /**
    * If `true`, the component is disabled.
    */
