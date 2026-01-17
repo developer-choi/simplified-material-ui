@@ -1,36 +1,12 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import composeClasses from '@mui/utils/composeClasses';
-import clsx from 'clsx';
 import formControlState from '../FormControl/formControlState';
 import useFormControl from '../FormControl/useFormControl';
 import FormLabel, { formLabelClasses } from '../FormLabel';
 import capitalize from '../utils/capitalize';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
-import { getInputLabelUtilityClasses } from './inputLabelClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, formControl, shrink, variant, required } = ownerState;
-  const slots = {
-    root: [
-      'root',
-      formControl && 'formControl',
-      'animated',
-      shrink && 'shrink',
-      variant,
-    ],
-    asterisk: [required && 'asterisk'],
-  };
-
-  const composedClasses = composeClasses(slots, getInputLabelUtilityClasses, classes);
-
-  return {
-    ...classes, // forward the focused, disabled, etc. classes to the FormLabel
-    ...composedClasses,
-  };
-};
 
 const InputLabelRoot = styled(FormLabel, {
   shouldForwardProp: (prop) => rootShouldForwardProp(prop) || prop === 'classes',
@@ -162,16 +138,13 @@ const InputLabel = React.forwardRef(function InputLabel(props, ref) {
     focused: fcs.focused,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <InputLabelRoot
       data-shrink={shrink}
       ref={ref}
-      className={clsx(classes.root, className)}
+      className={className}
       {...other}
       ownerState={ownerState}
-      classes={classes}
     />
   );
 });
@@ -185,10 +158,6 @@ InputLabel.propTypes /* remove-proptypes */ = {
    * The content of the component.
    */
   children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
   /**
    * @ignore
    */
