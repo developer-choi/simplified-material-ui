@@ -9,8 +9,6 @@ import FormLabel, { formLabelClasses } from '../FormLabel';
 import capitalize from '../utils/capitalize';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import { getInputLabelUtilityClasses } from './inputLabelClasses';
 
 const useUtilityClasses = (ownerState) => {
@@ -50,42 +48,38 @@ const InputLabelRoot = styled(FormLabel, {
       styles[ownerState.variant],
     ];
   },
-})(
-  memoTheme(({ theme }) => ({
-    display: 'block',
-    transformOrigin: 'top left',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    maxWidth: '100%',
-    variants: [
-      {
-        props: ({ ownerState }) => ownerState.formControl,
-        style: {
-          position: 'absolute',
-          left: 0,
-          top: 0,
-          // slight alteration to spec spacing to match visual spec result
-          transform: 'translate(0, 20px) scale(1)',
-        },
+})(({ theme }) => ({
+  display: 'block',
+  transformOrigin: 'top left',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  maxWidth: '100%',
+  variants: [
+    {
+      props: ({ ownerState }) => ownerState.formControl,
+      style: {
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        // slight alteration to spec spacing to match visual spec result
+        transform: 'translate(0, 20px) scale(1)',
       },
-      {
-        props: ({ ownerState }) => ownerState.shrink,
-        style: {
-          transform: 'translate(0, -1.5px) scale(0.75)',
-          transformOrigin: 'top left',
-          maxWidth: '133%',
-        },
+    },
+    {
+      props: ({ ownerState }) => ownerState.shrink,
+      style: {
+        transform: 'translate(0, -1.5px) scale(0.75)',
+        transformOrigin: 'top left',
+        maxWidth: '133%',
       },
-      {
-        props: () => true,
-        style: {
-          transition: theme.transitions.create(['color', 'transform', 'max-width'], {
-            duration: theme.transitions.duration.shorter,
-            easing: theme.transitions.easing.easeOut,
-          }),
-        },
+    },
+    {
+      props: () => true,
+      style: {
+        transition: 'color 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms, transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms, max-width 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms',
       },
+    },
       {
         props: {
           variant: 'filled',
@@ -137,8 +131,7 @@ const InputLabelRoot = styled(FormLabel, {
   })),
 );
 
-const InputLabel = React.forwardRef(function InputLabel(inProps, ref) {
-  const props = useDefaultProps({ name: 'MuiInputLabel', props: inProps });
+const InputLabel = React.forwardRef(function InputLabel(props, ref) {
   const {
     margin,
     shrink: shrinkProp,
