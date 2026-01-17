@@ -6,8 +6,6 @@ import refType from '@mui/utils/refType';
 import InputBase from '../../../form/InputBase';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import inputClasses, { getInputUtilityClass } from './inputClasses';
 import {
   rootOverridesResolver as inputBaseRootOverridesResolver,
@@ -44,89 +42,72 @@ const InputRoot = styled(InputBaseRoot, {
       !ownerState.disableUnderline && styles.underline,
     ];
   },
-})(
-  memoTheme(({ theme }) => {
-    const light = theme.palette.mode === 'light';
-    let bottomLineColor = light ? 'rgba(0, 0, 0, 0.42)' : 'rgba(255, 255, 255, 0.7)';
-    if (theme.vars) {
-      bottomLineColor = theme.alpha(
-        theme.vars.palette.common.onBackground,
-        theme.vars.opacity.inputUnderline,
-      );
-    }
-    return {
-      position: 'relative',
-      variants: [
-        {
-          props: ({ ownerState }) => ownerState.formControl,
-          style: {
-            'label + &': {
-              marginTop: 16,
-            },
+)({
+  position: 'relative',
+  variants: [
+    {
+      props: ({ ownerState }) => ownerState.formControl,
+      style: {
+        'label + &': {
+          marginTop: 16,
+        },
+      },
+    },
+    {
+      props: ({ ownerState }) => !ownerState.disableUnderline,
+      style: {
+        '&::after': {
+          left: 0,
+          bottom: 0,
+          content: '""',
+          position: 'absolute',
+          right: 0,
+          transform: 'scaleX(0)',
+          transition: 'transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms',
+          pointerEvents: 'none', // Transparent to the hover style.
+        },
+        [`&.${inputClasses.focused}:after`]: {
+          // translateX(0) is a workaround for Safari transform scale bug
+          // See https://github.com/mui/material-ui/issues/31766
+          transform: 'scaleX(1) translateX(0)',
+        },
+        [`&.${inputClasses.error}`]: {
+          '&::before, &::after': {
+            borderBottomColor: '#d32f2f', // error.main
           },
         },
-        {
-          props: ({ ownerState }) => !ownerState.disableUnderline,
-          style: {
-            '&::after': {
-              left: 0,
-              bottom: 0,
-              content: '""',
-              position: 'absolute',
-              right: 0,
-              transform: 'scaleX(0)',
-              transition: theme.transitions.create('transform', {
-                duration: theme.transitions.duration.shorter,
-                easing: theme.transitions.easing.easeOut,
-              }),
-              pointerEvents: 'none', // Transparent to the hover style.
-            },
-            [`&.${inputClasses.focused}:after`]: {
-              // translateX(0) is a workaround for Safari transform scale bug
-              // See https://github.com/mui/material-ui/issues/31766
-              transform: 'scaleX(1) translateX(0)',
-            },
-            [`&.${inputClasses.error}`]: {
-              '&::before, &::after': {
-                borderBottomColor: (theme.vars || theme).palette.error.main,
-              },
-            },
-            '&::before': {
-              borderBottom: `1px solid ${bottomLineColor}`,
-              left: 0,
-              bottom: 0,
-              content: '"\\00a0"',
-              position: 'absolute',
-              right: 0,
-              transition: theme.transitions.create('border-bottom-color', {
-                duration: theme.transitions.duration.shorter,
-              }),
-              pointerEvents: 'none', // Transparent to the hover style.
-            },
-            [`&:hover:not(.${inputClasses.disabled}, .${inputClasses.error}):before`]: {
-              borderBottom: `2px solid ${(theme.vars || theme).palette.text.primary}`,
-              // Reset on touch devices, it doesn't add specificity
-              '@media (hover: none)': {
-                borderBottom: `1px solid ${bottomLineColor}`,
-              },
-            },
-            [`&.${inputClasses.disabled}:before`]: {
-              borderBottomStyle: 'dotted',
-            },
+        '&::before': {
+          borderBottom: '1px solid rgba(0, 0, 0, 0.42)',
+          left: 0,
+          bottom: 0,
+          content: '"\\00a0"',
+          position: 'absolute',
+          right: 0,
+          transition: 'border-bottom-color 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms',
+          pointerEvents: 'none', // Transparent to the hover style.
+        },
+        [`&:hover:not(.${inputClasses.disabled}, .${inputClasses.error}):before`]: {
+          borderBottom: '2px solid rgba(0, 0, 0, 0.87)', // text.primary
+          // Reset on touch devices, it doesn't add specificity
+          '@media (hover: none)': {
+            borderBottom: '1px solid rgba(0, 0, 0, 0.42)',
           },
         },
-        {
-          props: ({ ownerState }) => !ownerState.disableUnderline,
-          style: {
-            '&::after': {
-              borderBottom: '2px solid #1976d2', // primary.main
-            },
-          },
+        [`&.${inputClasses.disabled}:before`]: {
+          borderBottomStyle: 'dotted',
         },
-      ],
-    };
-  }),
-);
+      },
+    },
+    {
+      props: ({ ownerState }) => !ownerState.disableUnderline,
+      style: {
+        '&::after': {
+          borderBottom: '2px solid #1976d2', // primary.main
+        },
+      },
+    },
+  ],
+});
 
 const InputInput = styled(InputBaseInput, {
   name: 'MuiInput',
@@ -134,8 +115,7 @@ const InputInput = styled(InputBaseInput, {
   overridesResolver: inputBaseInputOverridesResolver,
 })({});
 
-const Input = React.forwardRef(function Input(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiInput' });
+const Input = React.forwardRef(function Input(props, ref) {
   const {
     disableUnderline = false,
     fullWidth = false,
