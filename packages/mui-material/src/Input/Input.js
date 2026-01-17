@@ -1,34 +1,17 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import composeClasses from '@mui/utils/composeClasses';
 import refType from '@mui/utils/refType';
 import InputBase from '../../../form/InputBase';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
-import inputClasses, { getInputUtilityClass } from './inputClasses';
+import inputClasses from './inputClasses';
 import {
   rootOverridesResolver as inputBaseRootOverridesResolver,
   inputOverridesResolver as inputBaseInputOverridesResolver,
   InputBaseRoot,
   InputBaseInput,
 } from '../../../form/InputBase/InputBase';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, disableUnderline } = ownerState;
-
-  const slots = {
-    root: ['root', !disableUnderline && 'underline'],
-    input: ['input'],
-  };
-
-  const composedClasses = composeClasses(slots, getInputUtilityClass, classes);
-
-  return {
-    ...classes, // forward classes to the InputBase
-    ...composedClasses,
-  };
-};
 
 const InputRoot = styled(InputBaseRoot, {
   shouldForwardProp: (prop) => rootShouldForwardProp(prop) || prop === 'classes',
@@ -127,8 +110,6 @@ const Input = React.forwardRef(function Input(props, ref) {
     ...other
   } = props;
 
-  const classes = useUtilityClasses(props);
-
   const ownerState = { disableUnderline };
   const inputComponentsProps = { root: { ownerState } };
 
@@ -149,7 +130,6 @@ const Input = React.forwardRef(function Input(props, ref) {
       ref={ref}
       type={type}
       {...other}
-      classes={classes}
     />
   );
 });
@@ -169,10 +149,6 @@ Input.propTypes /* remove-proptypes */ = {
    * If `true`, the `input` element is focused during the first mount.
    */
   autoFocus: PropTypes.bool,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
   /**
    * The color of the component.
    * It supports both default and custom theme colors, which can be added as shown in the
