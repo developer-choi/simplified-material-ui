@@ -14,14 +14,13 @@ import { useDefaultProps } from '../DefaultPropsProvider';
 import { getInputLabelUtilityClasses } from './inputLabelClasses';
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, formControl, size, shrink, disableAnimation, variant, required } = ownerState;
+  const { classes, formControl, shrink, disableAnimation, variant, required } = ownerState;
   const slots = {
     root: [
       'root',
       formControl && 'formControl',
       !disableAnimation && 'animated',
       shrink && 'shrink',
-      size && size !== 'medium' && `size${capitalize(size)}`,
       variant,
     ],
     asterisk: [required && 'asterisk'],
@@ -45,7 +44,6 @@ const InputLabelRoot = styled(FormLabel, {
       { [`& .${formLabelClasses.asterisk}`]: styles.asterisk },
       styles.root,
       ownerState.formControl && styles.formControl,
-      ownerState.size === 'small' && styles.sizeSmall,
       ownerState.shrink && styles.shrink,
       !ownerState.disableAnimation && styles.animated,
       ownerState.focused && styles.focused,
@@ -69,15 +67,6 @@ const InputLabelRoot = styled(FormLabel, {
           top: 0,
           // slight alteration to spec spacing to match visual spec result
           transform: 'translate(0, 20px) scale(1)',
-        },
-      },
-      {
-        props: {
-          size: 'small',
-        },
-        style: {
-          // Compensation for the `Input.inputSizeSmall` style.
-          transform: 'translate(0, 17px) scale(1)',
         },
       },
       {
@@ -113,28 +102,12 @@ const InputLabelRoot = styled(FormLabel, {
         },
       },
       {
-        props: {
-          variant: 'filled',
-          size: 'small',
-        },
-        style: {
-          transform: 'translate(12px, 13px) scale(1)',
-        },
-      },
-      {
         props: ({ variant, ownerState }) => variant === 'filled' && ownerState.shrink,
         style: {
           userSelect: 'none',
           pointerEvents: 'auto',
           transform: 'translate(12px, 7px) scale(0.75)',
           maxWidth: 'calc(133% - 24px)',
-        },
-      },
-      {
-        props: ({ variant, ownerState, size }) =>
-          variant === 'filled' && ownerState.shrink && size === 'small',
-        style: {
-          transform: 'translate(12px, 4px) scale(0.75)',
         },
       },
       {
@@ -147,15 +120,6 @@ const InputLabelRoot = styled(FormLabel, {
           pointerEvents: 'none',
           transform: 'translate(14px, 16px) scale(1)',
           maxWidth: 'calc(100% - 24px)',
-        },
-      },
-      {
-        props: {
-          variant: 'outlined',
-          size: 'small',
-        },
-        style: {
-          transform: 'translate(14px, 9px) scale(1)',
         },
       },
       {
@@ -194,7 +158,7 @@ const InputLabel = React.forwardRef(function InputLabel(inProps, ref) {
   const fcs = formControlState({
     props,
     muiFormControl,
-    states: ['size', 'variant', 'required', 'focused'],
+    states: ['variant', 'required', 'focused'],
   });
 
   const ownerState = {
@@ -202,7 +166,6 @@ const InputLabel = React.forwardRef(function InputLabel(inProps, ref) {
     disableAnimation,
     formControl: muiFormControl,
     shrink,
-    size: fcs.size,
     variant: fcs.variant,
     required: fcs.required,
     focused: fcs.focused,
@@ -278,14 +241,6 @@ InputLabel.propTypes /* remove-proptypes */ = {
    * If `true`, the label is shrunk.
    */
   shrink: PropTypes.bool,
-  /**
-   * The size of the component.
-   * @default 'medium'
-   */
-  size: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['medium', 'small']),
-    PropTypes.string,
-  ]),
   /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
