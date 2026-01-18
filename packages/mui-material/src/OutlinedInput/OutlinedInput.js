@@ -9,7 +9,6 @@ import formControlState from '../../../form/FormControl/formControlState';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import outlinedInputClasses, { getOutlinedInputUtilityClass } from './outlinedInputClasses';
 import InputBase, {
@@ -62,29 +61,15 @@ const OutlinedInputRoot = styled(InputBaseRoot, {
       },
       [`&.${outlinedInputClasses.focused} .${outlinedInputClasses.notchedOutline}`]: {
         borderWidth: 2,
+        borderColor: (theme.vars || theme).palette.primary.main,
+      },
+      [`&.${outlinedInputClasses.error} .${outlinedInputClasses.notchedOutline}`]: {
+        borderColor: (theme.vars || theme).palette.error.main,
+      },
+      [`&.${outlinedInputClasses.disabled} .${outlinedInputClasses.notchedOutline}`]: {
+        borderColor: (theme.vars || theme).palette.action.disabled,
       },
       variants: [
-        ...Object.entries(theme.palette)
-          .filter(createSimplePaletteValueFilter())
-          .map(([color]) => ({
-            props: { color },
-            style: {
-              [`&.${outlinedInputClasses.focused} .${outlinedInputClasses.notchedOutline}`]: {
-                borderColor: (theme.vars || theme).palette[color].main,
-              },
-            },
-          })),
-        {
-          props: {}, // to override the above style
-          style: {
-            [`&.${outlinedInputClasses.error} .${outlinedInputClasses.notchedOutline}`]: {
-              borderColor: (theme.vars || theme).palette.error.main,
-            },
-            [`&.${outlinedInputClasses.disabled} .${outlinedInputClasses.notchedOutline}`]: {
-              borderColor: (theme.vars || theme).palette.action.disabled,
-            },
-          },
-        },
         {
           props: ({ ownerState }) => ownerState.startAdornment,
           style: {
@@ -207,12 +192,11 @@ const OutlinedInput = React.forwardRef(function OutlinedInput(inProps, ref) {
   const fcs = formControlState({
     props,
     muiFormControl,
-    states: ['color', 'disabled', 'error', 'focused', 'hiddenLabel', 'size', 'required'],
+    states: ['disabled', 'error', 'focused', 'hiddenLabel', 'size', 'required'],
   });
 
   const ownerState = {
     ...props,
-    color: fcs.color || 'primary',
     disabled: fcs.disabled,
     error: fcs.error,
     focused: fcs.focused,
