@@ -1,7 +1,5 @@
 'use client';
 import * as React from 'react';
-import refType from '@mui/utils/refType';
-import PropTypes from 'prop-types';
 import InputBase from '../../../form/InputBase';
 import useFormControl from '../../../form/FormControl/useFormControl';
 
@@ -125,39 +123,6 @@ const FilledInput = React.forwardRef(function FilledInput(props, ref) {
     </div>
   );
 });
-
-FilledInput.propTypes /* remove-proptypes */ = {
-  autoComplete: PropTypes.string,
-  autoFocus: PropTypes.bool,
-  className: PropTypes.string,
-  defaultValue: PropTypes.any,
-  disabled: PropTypes.bool,
-  disableUnderline: PropTypes.bool,
-  endAdornment: PropTypes.node,
-  error: PropTypes.bool,
-  fullWidth: PropTypes.bool,
-  hiddenLabel: PropTypes.bool,
-  id: PropTypes.string,
-  inputComponent: PropTypes.elementType,
-  inputProps: PropTypes.object,
-  inputRef: refType,
-  margin: PropTypes.oneOf(['dense', 'none']),
-  maxRows: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  minRows: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  multiline: PropTypes.bool,
-  name: PropTypes.string,
-  onBlur: PropTypes.func,
-  onChange: PropTypes.func,
-  onFocus: PropTypes.func,
-  placeholder: PropTypes.string,
-  readOnly: PropTypes.bool,
-  required: PropTypes.bool,
-  rows: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  size: PropTypes.oneOf(['small', 'medium']),
-  startAdornment: PropTypes.node,
-  type: PropTypes.string,
-  value: PropTypes.any,
-};
 
 FilledInput.muiName = 'Input';
 
