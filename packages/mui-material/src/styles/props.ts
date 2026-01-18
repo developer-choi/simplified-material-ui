@@ -70,7 +70,7 @@ import { MobileStepperProps } from '../MobileStepper';
 import { ModalProps } from '../Modal';
 import { NativeSelectProps } from '../NativeSelect';
 import { UseMediaQueryOptions } from '../useMediaQuery';
-import { OutlinedInputProps } from '../OutlinedInput';
+import { OutlinedInputProps } from '../../../form/OutlinedInput';
 import { PaginationProps } from '../Pagination';
 import { PaginationItemProps } from '../PaginationItem';
 import { PaperProps } from '../../../surfaces/Paper';

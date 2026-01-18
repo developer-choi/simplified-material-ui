@@ -71,7 +71,7 @@ import { MenuListClassKey } from '../../../menu/MenuList';
 import { MobileStepperClassKey } from '../MobileStepper';
 import { ModalClassKey } from '../Modal';
 import { NativeSelectClassKey } from '../NativeSelect';
-import { OutlinedInputClassKey } from '../OutlinedInput';
+import { OutlinedInputClassKey } from '../../../form/OutlinedInput';
 import { PaginationClassKey } from '../Pagination';
 import { PaginationItemClassKey } from '../PaginationItem';
 import { PaperClassKey } from '../../../surfaces/Paper';

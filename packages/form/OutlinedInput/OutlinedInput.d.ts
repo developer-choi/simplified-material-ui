@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { SxProps } from '@mui/system';
-import { CreateSlotsAndSlotProps, SlotProps } from '../utils/types';
-import { Theme } from '../styles';
-import { InternalStandardProps as StandardProps } from '../internal';
-import { InputBaseProps } from '../../../form/InputBase';
+import { CreateSlotsAndSlotProps, SlotProps } from '@mui/material/utils/types';
+import { Theme } from '@mui/material/styles';
+import { InternalStandardProps as StandardProps } from '@mui/material/internal';
+import { InputBaseProps } from '../InputBase';
 import { OutlinedInputClasses } from './outlinedInputClasses';
 
 interface OutlinedInputSlots {

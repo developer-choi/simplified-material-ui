@@ -1,4 +1,4 @@
-import OutlinedInput from '@mui/material/OutlinedInput';
+import OutlinedInput from './index';
 
 function NoNotched() {
   return null;

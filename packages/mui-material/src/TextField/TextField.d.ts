@@ -8,7 +8,7 @@ import { FormHelperTextProps } from '../FormHelperText';
 import { InputBaseProps } from '../../../form/InputBase';
 import { InputProps as StandardInputProps } from '../../../form/Input';
 import { FilledInputProps } from '../../../form/FilledInput';
-import { OutlinedInputProps } from '../OutlinedInput';
+import { OutlinedInputProps } from '../../../form/OutlinedInput';
 import { InputLabelProps } from '../../../form/InputLabel';
 import { SelectProps } from '../Select';
 import { TextFieldClasses } from './textFieldClasses';

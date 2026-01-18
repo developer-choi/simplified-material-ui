@@ -13,7 +13,7 @@ import IconButton from '../IconButton';
 import Chip from '../../../data-display/Chip';
 import inputClasses from '../../../form/Input/inputClasses';
 import inputBaseClasses from '../../../form/InputBase/inputBaseClasses';
-import outlinedInputClasses from '../OutlinedInput/outlinedInputClasses';
+import outlinedInputClasses from '../../../form/OutlinedInput/outlinedInputClasses';
 import filledInputClasses from '../../../form/FilledInput/filledInputClasses';
 import ClearIcon from '../internal/svg-icons/Close';
 import ArrowDropDownIcon from '../internal/svg-icons/ArrowDropDown';

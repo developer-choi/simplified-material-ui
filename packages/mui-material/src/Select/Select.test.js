@@ -13,7 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import MenuItem, { menuItemClasses } from '../../../menu/MenuItem';
 import ListSubheader from '@mui/material/ListSubheader';
 import InputBase from '../../../form/InputBase';
-import OutlinedInput from '@mui/material/OutlinedInput';
+import OutlinedInput from '../../../form/OutlinedInput';
 import InputLabel from '../../../form/InputLabel';
 import Select from '@mui/material/Select';
 import Divider from '../../../data-display/Divider';

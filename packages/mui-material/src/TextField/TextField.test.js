@@ -5,7 +5,7 @@ import { createRenderer, fireEvent, screen } from '@mui/internal-test-utils';
 import FormControl from '../../../form/FormControl';
 import { inputBaseClasses } from '../../../form/InputBase';
 import MenuItem from '../../../menu/MenuItem';
-import { outlinedInputClasses } from '@mui/material/OutlinedInput';
+import { outlinedInputClasses } from '../../../form/OutlinedInput';
 import TextField, { textFieldClasses as classes } from '@mui/material/TextField';
 import describeConformance from '../../test/describeConformance';
 

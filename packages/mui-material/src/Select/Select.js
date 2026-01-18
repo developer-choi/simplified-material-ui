@@ -12,7 +12,7 @@ import ArrowDropDownIcon from '../internal/svg-icons/ArrowDropDown';
 import Input from '../../../form/Input';
 import NativeSelectInput from '../NativeSelect/NativeSelectInput';
 import FilledInput from '../../../form/FilledInput';
-import OutlinedInput from '../OutlinedInput';
+import OutlinedInput from '../../../form/OutlinedInput';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import useForkRef from '../utils/useForkRef';
 import { styled } from '../zero-styled';

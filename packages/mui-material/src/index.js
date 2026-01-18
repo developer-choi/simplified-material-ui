@@ -237,8 +237,8 @@ export * from './NativeSelect';
 export { default as NoSsr } from './NoSsr';
 export * from './NoSsr';
 
-export { default as OutlinedInput } from './OutlinedInput';
-export * from './OutlinedInput';
+export { default as OutlinedInput } from '../../form/OutlinedInput';
+export * from '../../form/OutlinedInput';
 
 export { default as Pagination } from './Pagination';
 export * from './Pagination';
