@@ -1,57 +1,9 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { styled } from '../zero-styled';
 import { isFilled, isAdornedStart } from '../../../form/InputBase/utils';
-import capitalize from '../utils/capitalize';
 import isMuiElement from '../utils/isMuiElement';
 import FormControlContext from './FormControlContext';
-
-const FormControlRoot = styled('div', {
-  name: 'MuiFormControl',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.root,
-      styles[`margin${capitalize(ownerState.margin)}`],
-      ownerState.fullWidth && styles.fullWidth,
-    ];
-  },
-})({
-  display: 'inline-flex',
-  flexDirection: 'column',
-  position: 'relative',
-  // Reset fieldset default style.
-  minWidth: 0,
-  padding: 0,
-  margin: 0,
-  border: 0,
-  verticalAlign: 'top', // Fix alignment issue on Safari.
-  variants: [
-    {
-      props: { margin: 'normal' },
-      style: {
-        marginTop: 16,
-        marginBottom: 8,
-      },
-    },
-    {
-      props: { margin: 'dense' },
-      style: {
-        marginTop: 8,
-        marginBottom: 4,
-      },
-    },
-    {
-      props: { fullWidth: true },
-      style: {
-        width: '100%',
-      },
-    },
-  ],
-});
 
 /**
  * Provides context such as filled/focused/error/required for form inputs.
@@ -82,7 +34,6 @@ const FormControl = React.forwardRef(function FormControl(props, ref) {
     children,
     className,
     color = 'primary',
-    component = 'div',
     disabled = false,
     error = false,
     focused: visuallyFocused,
@@ -94,20 +45,6 @@ const FormControl = React.forwardRef(function FormControl(props, ref) {
     variant = 'outlined',
     ...other
   } = props;
-
-  const ownerState = {
-    ...props,
-    color,
-    component,
-    disabled,
-    error,
-    fullWidth,
-    hiddenLabel,
-    margin,
-    required,
-    size,
-    variant,
-  };
 
   const [adornedStart, setAdornedStart] = React.useState(() => {
     // We need to iterate through the children and find the Input in order
@@ -226,17 +163,30 @@ const FormControl = React.forwardRef(function FormControl(props, ref) {
     variant,
   ]);
 
+  const rootStyle = {
+    display: 'inline-flex',
+    flexDirection: 'column',
+    position: 'relative',
+    minWidth: 0,
+    padding: 0,
+    margin: 0,
+    border: 0,
+    verticalAlign: 'top',
+    ...(margin === 'normal' && { marginTop: 16, marginBottom: 8 }),
+    ...(margin === 'dense' && { marginTop: 8, marginBottom: 4 }),
+    ...(fullWidth && { width: '100%' }),
+  };
+
   return (
     <FormControlContext.Provider value={childContext}>
-      <FormControlRoot
-        as={component}
-        ownerState={ownerState}
+      <div
         className={className}
+        style={rootStyle}
         ref={ref}
         {...other}
       >
         {children}
-      </FormControlRoot>
+      </div>
     </FormControlContext.Provider>
   );
 });
@@ -268,11 +218,6 @@ FormControl.propTypes /* remove-proptypes */ = {
     PropTypes.oneOf(['primary', 'secondary', 'error', 'info', 'success', 'warning']),
     PropTypes.string,
   ]),
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
   /**
    * If `true`, the label, input and helper text should be displayed in a disabled state.
    * @default false
