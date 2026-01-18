@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import refType from '@mui/utils/refType';
 import NotchedOutline from './NotchedOutline';
 import useFormControl from '../../../form/FormControl/useFormControl';
-import formControlState from '../../../form/FormControl/formControlState';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
 import outlinedInputClasses from './outlinedInputClasses';
@@ -14,7 +13,6 @@ import InputBase, {
   InputBaseRoot,
   InputBaseInput,
 } from '../../../form/InputBase/InputBase';
-import useSlot from '../utils/useSlot';
 
 const OutlinedInputRoot = styled(InputBaseRoot, {
   shouldForwardProp: (prop) => rootShouldForwardProp(prop) || prop === 'classes',
@@ -123,63 +121,47 @@ const OutlinedInput = React.forwardRef(function OutlinedInput(props, ref) {
     label,
     multiline = false,
     notched,
-    slots = {},
-    slotProps = {},
     type = 'text',
     ...other
   } = props;
 
   const muiFormControl = useFormControl();
-  const fcs = formControlState({
-    props,
-    muiFormControl,
-    states: ['disabled', 'error', 'focused', 'hiddenLabel', 'size', 'required'],
-  });
+
+  const disabled = props.disabled ?? muiFormControl?.disabled ?? false;
+  const error = props.error ?? muiFormControl?.error ?? false;
+  const focused = muiFormControl?.focused ?? false;
+  const size = props.size ?? muiFormControl?.size ?? 'medium';
+  const required = props.required ?? muiFormControl?.required ?? false;
 
   const ownerState = {
     ...props,
-    disabled: fcs.disabled,
-    error: fcs.error,
-    focused: fcs.focused,
+    disabled,
+    error,
+    focused,
     formControl: muiFormControl,
     fullWidth,
-    hiddenLabel: fcs.hiddenLabel,
     multiline,
-    size: fcs.size,
+    size,
     type,
   };
 
-  const RootSlot = slots.root ?? OutlinedInputRoot;
-  const InputSlot = slots.input ?? OutlinedInputInput;
-
-  const [NotchedSlot, notchedProps] = useSlot('notchedOutline', {
-    elementType: NotchedOutlineRoot,
-    shouldForwardComponentProp: true,
-    ownerState,
-    externalForwardedProps: {
-      slots,
-      slotProps,
-    },
-    additionalProps: {
-      label:
-        label != null && label !== '' && fcs.required ? (
-          <React.Fragment>
-            {label}
-            &thinsp;{'*'}
-          </React.Fragment>
-        ) : (
-          label
-        ),
-    },
-  });
+  const notchedLabel =
+    label != null && label !== '' && required ? (
+      <React.Fragment>
+        {label}
+        &thinsp;{'*'}
+      </React.Fragment>
+    ) : (
+      label
+    );
 
   return (
     <InputBase
-      slots={{ root: RootSlot, input: InputSlot }}
-      slotProps={slotProps}
+      slots={{ root: OutlinedInputRoot, input: OutlinedInputInput }}
       renderSuffix={(state) => (
-        <NotchedSlot
-          {...notchedProps}
+        <NotchedOutlineRoot
+          ownerState={ownerState}
+          label={notchedLabel}
           notched={
             typeof notched !== 'undefined'
               ? notched
