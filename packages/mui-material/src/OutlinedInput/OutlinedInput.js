@@ -2,151 +2,67 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import refType from '@mui/utils/refType';
-import NotchedOutline from './NotchedOutline';
+import InputBase from '../../../form/InputBase';
 import useFormControl from '../../../form/FormControl/useFormControl';
-import rootShouldForwardProp from '../styles/rootShouldForwardProp';
-import { styled } from '../zero-styled';
-import outlinedInputClasses from './outlinedInputClasses';
-import InputBase, {
-  rootOverridesResolver as inputBaseRootOverridesResolver,
-  inputOverridesResolver as inputBaseInputOverridesResolver,
-  InputBaseRoot,
-  InputBaseInput,
-} from '../../../form/InputBase/InputBase';
-
-const OutlinedInputRoot = styled(InputBaseRoot, {
-  shouldForwardProp: (prop) => rootShouldForwardProp(prop) || prop === 'classes',
-  name: 'MuiOutlinedInput',
-  slot: 'Root',
-  overridesResolver: inputBaseRootOverridesResolver,
-})({
-  position: 'relative',
-  borderRadius: 4,
-  [`&:hover .${outlinedInputClasses.notchedOutline}`]: {
-    borderColor: 'rgba(0, 0, 0, 0.87)',
-  },
-  '@media (hover: none)': {
-    [`&:hover .${outlinedInputClasses.notchedOutline}`]: {
-      borderColor: 'rgba(0, 0, 0, 0.23)',
-    },
-  },
-  [`&.${outlinedInputClasses.focused} .${outlinedInputClasses.notchedOutline}`]: {
-    borderWidth: 2,
-    borderColor: '#1976d2',
-  },
-  [`&.${outlinedInputClasses.error} .${outlinedInputClasses.notchedOutline}`]: {
-    borderColor: '#d32f2f',
-  },
-  [`&.${outlinedInputClasses.disabled} .${outlinedInputClasses.notchedOutline}`]: {
-    borderColor: 'rgba(0, 0, 0, 0.26)',
-  },
-  variants: [
-    {
-      props: ({ ownerState }) => ownerState.startAdornment,
-      style: {
-        paddingLeft: 14,
-      },
-    },
-    {
-      props: ({ ownerState }) => ownerState.endAdornment,
-      style: {
-        paddingRight: 14,
-      },
-    },
-    {
-      props: ({ ownerState }) => ownerState.multiline,
-      style: {
-        padding: '16.5px 14px',
-      },
-    },
-    {
-      props: ({ ownerState, size }) => ownerState.multiline && size === 'small',
-      style: {
-        padding: '8.5px 14px',
-      },
-    },
-  ],
-});
-
-const NotchedOutlineRoot = styled(NotchedOutline, {
-  name: 'MuiOutlinedInput',
-  slot: 'NotchedOutline',
-})({
-  borderColor: 'rgba(0, 0, 0, 0.23)',
-});
-
-const OutlinedInputInput = styled(InputBaseInput, {
-  name: 'MuiOutlinedInput',
-  slot: 'Input',
-  overridesResolver: inputBaseInputOverridesResolver,
-})({
-  padding: '16.5px 14px',
-  '&:-webkit-autofill': {
-    borderRadius: 'inherit',
-  },
-  variants: [
-    {
-      props: {
-        size: 'small',
-      },
-      style: {
-        padding: '8.5px 14px',
-      },
-    },
-    {
-      props: ({ ownerState }) => ownerState.multiline,
-      style: {
-        padding: 0,
-      },
-    },
-    {
-      props: ({ ownerState }) => ownerState.startAdornment,
-      style: {
-        paddingLeft: 0,
-      },
-    },
-    {
-      props: ({ ownerState }) => ownerState.endAdornment,
-      style: {
-        paddingRight: 0,
-      },
-    },
-  ],
-});
 
 const OutlinedInput = React.forwardRef(function OutlinedInput(props, ref) {
   const {
+    className,
+    disabled: disabledProp,
+    error: errorProp,
     fullWidth = false,
     inputComponent = 'input',
     label,
     multiline = false,
-    notched,
+    notched: notchedProp,
+    size,
+    startAdornment,
+    endAdornment,
     type = 'text',
     ...other
   } = props;
 
   const muiFormControl = useFormControl();
+  const [focused, setFocused] = React.useState(false);
+  const [filled, setFilled] = React.useState(
+    Boolean(props.value || props.defaultValue)
+  );
 
-  const disabled = props.disabled ?? muiFormControl?.disabled ?? false;
-  const error = props.error ?? muiFormControl?.error ?? false;
-  const focused = muiFormControl?.focused ?? false;
-  const size = props.size ?? muiFormControl?.size ?? 'medium';
-  const required = props.required ?? muiFormControl?.required ?? false;
+  const fcs = muiFormControl || {};
+  const disabled = disabledProp ?? fcs.disabled ?? false;
+  const error = errorProp ?? fcs.error ?? false;
+  const required = props.required ?? fcs.required ?? false;
 
-  const ownerState = {
-    ...props,
-    disabled,
-    error,
-    focused,
-    formControl: muiFormControl,
-    fullWidth,
-    multiline,
-    size,
-    type,
+  const handleFocus = (event) => {
+    setFocused(true);
+    if (props.onFocus) {
+      props.onFocus(event);
+    }
   };
 
+  const handleBlur = (event) => {
+    setFocused(false);
+    if (props.onBlur) {
+      props.onBlur(event);
+    }
+  };
+
+  const handleChange = (event) => {
+    setFilled(event.target.value !== '');
+    if (props.onChange) {
+      props.onChange(event);
+    }
+  };
+
+  const notched =
+    typeof notchedProp !== 'undefined'
+      ? notchedProp
+      : Boolean(startAdornment || filled || focused);
+
+  const withLabel = label != null && label !== '';
+
   const notchedLabel =
-    label != null && label !== '' && required ? (
+    withLabel && required ? (
       <React.Fragment>
         {label}
         &thinsp;{'*'}
@@ -155,207 +71,141 @@ const OutlinedInput = React.forwardRef(function OutlinedInput(props, ref) {
       label
     );
 
+  const getBorderColor = () => {
+    if (disabled) return 'rgba(0, 0, 0, 0.26)';
+    if (error) return '#d32f2f';
+    if (focused) return '#1976d2';
+    return 'rgba(0, 0, 0, 0.23)';
+  };
+
+  const containerStyle = {
+    position: 'relative',
+    borderRadius: 4,
+    display: fullWidth ? 'flex' : 'inline-flex',
+    width: fullWidth ? '100%' : undefined,
+    ...(startAdornment && { paddingLeft: 14 }),
+    ...(endAdornment && { paddingRight: 14 }),
+    ...(multiline && {
+      padding: size === 'small' ? '8.5px 14px' : '16.5px 14px',
+    }),
+  };
+
+  const inputStyle = {
+    padding: size === 'small' ? '8.5px 14px' : '16.5px 14px',
+    ...(multiline && { padding: 0 }),
+    ...(startAdornment && { paddingLeft: 0 }),
+    ...(endAdornment && { paddingRight: 0 }),
+  };
+
+  const fieldsetStyle = {
+    textAlign: 'left',
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    top: -5,
+    left: 0,
+    margin: 0,
+    padding: '0 8px',
+    pointerEvents: 'none',
+    borderRadius: 'inherit',
+    borderStyle: 'solid',
+    borderWidth: focused ? 2 : 1,
+    borderColor: getBorderColor(),
+    overflow: 'hidden',
+    minWidth: '0%',
+    transition: 'border-color 150ms cubic-bezier(0.4, 0, 0.2, 1)',
+  };
+
+  const legendStyle = {
+    float: 'unset',
+    width: 'auto',
+    overflow: 'hidden',
+    display: withLabel ? 'block' : undefined,
+    padding: 0,
+    height: withLabel ? 11 : undefined,
+    lineHeight: withLabel ? undefined : '11px',
+    fontSize: withLabel ? '0.75em' : undefined,
+    visibility: withLabel ? 'hidden' : undefined,
+    maxWidth: withLabel ? (notched ? '100%' : 0.01) : undefined,
+    transition: withLabel
+      ? notched
+        ? 'max-width 100ms cubic-bezier(0.4, 0, 0.2, 1) 50ms'
+        : 'max-width 50ms cubic-bezier(0.4, 0, 0.2, 1)'
+      : 'width 150ms cubic-bezier(0.4, 0, 0.2, 1)',
+    whiteSpace: withLabel ? 'nowrap' : undefined,
+  };
+
+  const legendSpanStyle = withLabel
+    ? {
+        paddingLeft: 5,
+        paddingRight: 5,
+        display: 'inline-block',
+        opacity: 0,
+        visibility: 'visible',
+      }
+    : undefined;
+
   return (
-    <InputBase
-      slots={{ root: OutlinedInputRoot, input: OutlinedInputInput }}
-      renderSuffix={(state) => (
-        <NotchedOutlineRoot
-          ownerState={ownerState}
-          label={notchedLabel}
-          notched={
-            typeof notched !== 'undefined'
-              ? notched
-              : Boolean(state.startAdornment || state.filled || state.focused)
-          }
-        />
-      )}
-      fullWidth={fullWidth}
-      inputComponent={inputComponent}
-      multiline={multiline}
-      ref={ref}
-      type={type}
-      {...other}
-    />
+    <div style={containerStyle} className={className}>
+      <InputBase
+        inputComponent={inputComponent}
+        multiline={multiline}
+        ref={ref}
+        type={type}
+        disabled={disabled}
+        fullWidth={fullWidth}
+        startAdornment={startAdornment}
+        endAdornment={endAdornment}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        onChange={handleChange}
+        style={inputStyle}
+        {...other}
+      />
+      <fieldset aria-hidden style={fieldsetStyle}>
+        <legend style={legendStyle}>
+          {withLabel ? (
+            <span style={legendSpanStyle}>{notchedLabel}</span>
+          ) : (
+            <span className="notranslate" aria-hidden>
+              &#8203;
+            </span>
+          )}
+        </legend>
+      </fieldset>
+    </div>
   );
 });
 
-OutlinedInput.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * This prop helps users to fill forms faster, especially on mobile devices.
-   * The name can be confusing, as it's more like an autofill.
-   * You can learn more about it [following the specification](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill).
-   */
+OutlinedInput.propTypes = {
   autoComplete: PropTypes.string,
-  /**
-   * If `true`, the `input` element is focused during the first mount.
-   */
   autoFocus: PropTypes.bool,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
-  /**
-   * The color of the component.
-   * It supports both default and custom theme colors, which can be added as shown in the
-   * [palette customization guide](https://mui.com/material-ui/customization/palette/#custom-colors).
-   * The prop defaults to the value (`'primary'`) inherited from the parent FormControl component.
-   */
-  color: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['primary', 'secondary']),
-    PropTypes.string,
-  ]),
-  /**
-   * The components used for each slot inside.
-   *
-   * @deprecated use the `slots` prop instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   *
-   * @default {}
-   */
-  components: PropTypes.shape({
-    Input: PropTypes.elementType,
-    Root: PropTypes.elementType,
-  }),
-  /**
-   * The default value. Use when the component is not controlled.
-   */
+  className: PropTypes.string,
   defaultValue: PropTypes.any,
-  /**
-   * If `true`, the component is disabled.
-   * The prop defaults to the value (`false`) inherited from the parent FormControl component.
-   */
   disabled: PropTypes.bool,
-  /**
-   * End `InputAdornment` for this component.
-   */
   endAdornment: PropTypes.node,
-  /**
-   * If `true`, the `input` will indicate an error.
-   * The prop defaults to the value (`false`) inherited from the parent FormControl component.
-   */
   error: PropTypes.bool,
-  /**
-   * If `true`, the `input` will take up the full width of its container.
-   * @default false
-   */
   fullWidth: PropTypes.bool,
-  /**
-   * The id of the `input` element.
-   */
   id: PropTypes.string,
-  /**
-   * The component used for the `input` element.
-   * Either a string to use a HTML element or a component.
-   * @default 'input'
-   */
   inputComponent: PropTypes.elementType,
-  /**
-   * [Attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input#attributes) applied to the `input` element.
-   * @default {}
-   */
   inputProps: PropTypes.object,
-  /**
-   * Pass a ref to the `input` element.
-   */
   inputRef: refType,
-  /**
-   * The label of the `input`. It is only used for layout. The actual labelling
-   * is handled by `InputLabel`.
-   */
   label: PropTypes.node,
-  /**
-   * If `dense`, will adjust vertical spacing. This is normally obtained via context from
-   * FormControl.
-   * The prop defaults to the value (`'none'`) inherited from the parent FormControl component.
-   */
-  margin: PropTypes.oneOf(['dense', 'none']),
-  /**
-   * Maximum number of rows to display when multiline option is set to true.
-   */
   maxRows: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  /**
-   * Minimum number of rows to display when multiline option is set to true.
-   */
   minRows: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  /**
-   * If `true`, a [TextareaAutosize](https://mui.com/material-ui/react-textarea-autosize/) element is rendered.
-   * @default false
-   */
   multiline: PropTypes.bool,
-  /**
-   * Name attribute of the `input` element.
-   */
   name: PropTypes.string,
-  /**
-   * If `true`, the outline is notched to accommodate the label.
-   */
   notched: PropTypes.bool,
-  /**
-   * Callback fired when the value is changed.
-   *
-   * @param {React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>} event The event source of the callback.
-   * You can pull out the new value by accessing `event.target.value` (string).
-   */
   onChange: PropTypes.func,
-  /**
-   * The short hint displayed in the `input` before the user enters a value.
-   */
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func,
   placeholder: PropTypes.string,
-  /**
-   * It prevents the user from changing the value of the field
-   * (not from interacting with the field).
-   */
   readOnly: PropTypes.bool,
-  /**
-   * If `true`, the `input` element is required.
-   * The prop defaults to the value (`false`) inherited from the parent FormControl component.
-   */
   required: PropTypes.bool,
-  /**
-   * Number of rows to display when multiline option is set to true.
-   */
   rows: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  /**
-   * The props used for each slot inside.
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    input: PropTypes.object,
-    notchedOutline: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    root: PropTypes.object,
-  }),
-  /**
-   * The components used for each slot inside.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    input: PropTypes.elementType,
-    notchedOutline: PropTypes.elementType,
-    root: PropTypes.elementType,
-  }),
-  /**
-   * Start `InputAdornment` for this component.
-   */
+  size: PropTypes.oneOf(['small', 'medium']),
   startAdornment: PropTypes.node,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-  /**
-   * Type of the `input` element. It should be [a valid HTML5 input type](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input#input_types).
-   * @default 'text'
-   */
   type: PropTypes.string,
-  /**
-   * The value of the `input` element, required for a controlled component.
-   */
   value: PropTypes.any,
 };
 
