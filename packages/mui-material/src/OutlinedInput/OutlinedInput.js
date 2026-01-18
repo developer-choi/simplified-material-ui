@@ -2,13 +2,12 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import refType from '@mui/utils/refType';
-import composeClasses from '@mui/utils/composeClasses';
 import NotchedOutline from './NotchedOutline';
 import useFormControl from '../../../form/FormControl/useFormControl';
 import formControlState from '../../../form/FormControl/formControlState';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
-import outlinedInputClasses, { getOutlinedInputUtilityClass } from './outlinedInputClasses';
+import outlinedInputClasses from './outlinedInputClasses';
 import InputBase, {
   rootOverridesResolver as inputBaseRootOverridesResolver,
   inputOverridesResolver as inputBaseInputOverridesResolver,
@@ -16,23 +15,6 @@ import InputBase, {
   InputBaseInput,
 } from '../../../form/InputBase/InputBase';
 import useSlot from '../utils/useSlot';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-
-  const slots = {
-    root: ['root'],
-    notchedOutline: ['notchedOutline'],
-    input: ['input'],
-  };
-
-  const composedClasses = composeClasses(slots, getOutlinedInputUtilityClass, classes);
-
-  return {
-    ...classes, // forward classes to the InputBase
-    ...composedClasses,
-  };
-};
 
 const OutlinedInputRoot = styled(InputBaseRoot, {
   shouldForwardProp: (prop) => rootShouldForwardProp(prop) || prop === 'classes',
@@ -147,8 +129,6 @@ const OutlinedInput = React.forwardRef(function OutlinedInput(props, ref) {
     ...other
   } = props;
 
-  const classes = useUtilityClasses(props);
-
   const muiFormControl = useFormControl();
   const fcs = formControlState({
     props,
@@ -174,7 +154,6 @@ const OutlinedInput = React.forwardRef(function OutlinedInput(props, ref) {
 
   const [NotchedSlot, notchedProps] = useSlot('notchedOutline', {
     elementType: NotchedOutlineRoot,
-    className: classes.notchedOutline,
     shouldForwardComponentProp: true,
     ownerState,
     externalForwardedProps: {
@@ -214,10 +193,6 @@ const OutlinedInput = React.forwardRef(function OutlinedInput(props, ref) {
       ref={ref}
       type={type}
       {...other}
-      classes={{
-        ...classes,
-        notchedOutline: null,
-      }}
     />
   );
 });
