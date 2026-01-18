@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import refType from '@mui/utils/refType';
 import composeClasses from '@mui/utils/composeClasses';
-import { useFormControl } from '../FormControl';
+import { useFormControl } from '../../../form/FormControl';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
@@ -13,7 +13,7 @@ import capitalize from '../utils/capitalize';
 import formControlLabelClasses, {
   getFormControlLabelUtilityClasses,
 } from './formControlLabelClasses';
-import formControlState from '../FormControl/formControlState';
+import formControlState from '../../../form/FormControl/formControlState';
 import useSlot from '../utils/useSlot';
 
 const useUtilityClasses = (ownerState) => {

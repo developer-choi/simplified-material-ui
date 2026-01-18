@@ -7,7 +7,7 @@ import capitalize from '../utils/capitalize';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
 import useControlled from '../utils/useControlled';
-import useFormControl from '../FormControl/useFormControl';
+import useFormControl from '../../../form/FormControl/useFormControl';
 import ButtonBase from '../ButtonBase';
 import { getSwitchBaseUtilityClass } from './switchBaseClasses';
 import useSlot from '../utils/useSlot';

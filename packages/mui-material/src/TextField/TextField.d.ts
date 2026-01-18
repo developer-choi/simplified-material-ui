@@ -3,7 +3,7 @@ import { SxProps } from '@mui/system';
 import { OverridableStringUnion } from '@mui/types';
 import { Theme } from '../styles';
 import { InternalStandardProps as StandardProps } from '../internal';
-import { FormControlProps } from '../FormControl';
+import { FormControlProps } from '../../../form/FormControl';
 import { FormHelperTextProps } from '../FormHelperText';
 import { InputBaseProps } from '../../../form/InputBase';
 import { InputProps as StandardInputProps } from '../../../form/Input';

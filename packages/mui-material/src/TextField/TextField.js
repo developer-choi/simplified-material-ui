@@ -11,7 +11,7 @@ import Input from '../../../form/Input';
 import FilledInput from '../FilledInput';
 import OutlinedInput from '../OutlinedInput';
 import InputLabel from '../../../form/InputLabel';
-import FormControl from '../FormControl';
+import FormControl from '../../../form/FormControl';
 import FormHelperText from '../FormHelperText';
 import Select from '../Select';
 import { getTextFieldUtilityClass } from './textFieldClasses';

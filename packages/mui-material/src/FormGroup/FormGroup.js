@@ -6,8 +6,8 @@ import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import { getFormGroupUtilityClass } from './formGroupClasses';
-import useFormControl from '../FormControl/useFormControl';
-import formControlState from '../FormControl/formControlState';
+import useFormControl from '../../../form/FormControl/useFormControl';
+import formControlState from '../../../form/FormControl/formControlState';
 
 const useUtilityClasses = (ownerState) => {
   const { classes, row, error } = ownerState;

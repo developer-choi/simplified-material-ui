@@ -139,8 +139,8 @@ export * from '../../utils/Fade';
 export { default as FilledInput } from './FilledInput';
 export * from './FilledInput';
 
-export { default as FormControl } from './FormControl';
-export * from './FormControl';
+export { default as FormControl } from '../../form/FormControl';
+export * from '../../form/FormControl';
 
 export { default as FormControlLabel } from './FormControlLabel';
 export * from './FormControlLabel';

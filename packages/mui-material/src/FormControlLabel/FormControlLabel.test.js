@@ -5,7 +5,7 @@ import FormControlLabel, {
   formControlLabelClasses as classes,
 } from '@mui/material/FormControlLabel';
 import Checkbox from '../../../form/Checkbox';
-import FormControl from '@mui/material/FormControl';
+import FormControl from '../../../form/FormControl';
 import Typography from '@mui/material/Typography';
 import describeConformance from '../../test/describeConformance';
 

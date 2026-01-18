@@ -11,7 +11,7 @@ declare module '@mui/material/TextField' {
     extraLarge: true;
   }
 }
-declare module '@mui/material/FormControl' {
+declare module '../../../../form/FormControl' {
   interface FormControlPropsColorOverrides {
     customPalette: true;
   }

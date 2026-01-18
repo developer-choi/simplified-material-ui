@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { act, createRenderer, fireEvent, screen } from '@mui/internal-test-utils';
 import Switch, { switchClasses as classes } from '@mui/material/Switch';
-import FormControl from '@mui/material/FormControl';
+import FormControl from '../../../form/FormControl';
 import describeConformance from '../../test/describeConformance';
 
 describe('<Switch />', () => {

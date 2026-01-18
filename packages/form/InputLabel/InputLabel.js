@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
-import formControlState from '@mui/material/FormControl/formControlState';
-import useFormControl from '@mui/material/FormControl/useFormControl';
+import formControlState from '../FormControl/formControlState';
+import useFormControl from '../FormControl/useFormControl';
 
 // variant와 shrink에 따른 transform 계산 함수
 function getTransform(variant, shrink, formControl) {

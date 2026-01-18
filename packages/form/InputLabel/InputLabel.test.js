@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { act, createRenderer, screen } from '@mui/internal-test-utils';
 import { ClassNames } from '@emotion/react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import FormControl from '@mui/material/FormControl';
+import FormControl from '../FormControl';
 import Input from '../Input';
 import FormLabel from '@mui/material/FormLabel';
 import InputLabel, { inputLabelClasses as classes } from './index';

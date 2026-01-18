@@ -3,7 +3,7 @@ import * as React from 'react';
 import SwitchBase from '@mui/material/internal/SwitchBase';
 import RadioButtonIcon from './RadioButtonIcon';
 import createChainedFunction from '@mui/material/utils/createChainedFunction';
-import useFormControl from '@mui/material/FormControl/useFormControl';
+import useFormControl from '../FormControl/useFormControl';
 import useRadioGroup from '@mui/material/RadioGroup/useRadioGroup';
 
 function areEqualValues(a, b) {

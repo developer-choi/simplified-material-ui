@@ -39,7 +39,7 @@ import { DividerClassKey } from '../../../data-display/Divider';
 import { DrawerClassKey } from '../Drawer';
 import { FabClassKey } from '../Fab';
 import { FilledInputClassKey } from '../FilledInput';
-import { FormControlClassKey } from '../FormControl';
+import { FormControlClassKey } from '../../../form/FormControl';
 import { FormControlLabelClassKey } from '../FormControlLabel';
 import { FormGroupClassKey } from '../FormGroup';
 import { FormHelperTextClassKey } from '../FormHelperText';

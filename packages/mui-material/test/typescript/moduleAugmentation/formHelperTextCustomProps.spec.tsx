@@ -1,6 +1,6 @@
 import * as React from 'react';
 import FormHelperText from '@mui/material/FormHelperText';
-import FormControl from '@mui/material/FormControl';
+import FormControl from '../../../../form/FormControl';
 import { createTheme } from '@mui/material/styles';
 
 declare module '@mui/material/FormHelperText' {

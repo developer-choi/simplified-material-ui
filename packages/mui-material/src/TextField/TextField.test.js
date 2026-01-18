@@ -2,7 +2,7 @@ import * as React from 'react';
 import { expect } from 'chai';
 import { spy } from 'sinon';
 import { createRenderer, fireEvent, screen } from '@mui/internal-test-utils';
-import FormControl from '@mui/material/FormControl';
+import FormControl from '../../../form/FormControl';
 import { inputBaseClasses } from '../../../form/InputBase';
 import MenuItem from '../../../menu/MenuItem';
 import { outlinedInputClasses } from '@mui/material/OutlinedInput';

@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { spy } from 'sinon';
 import { act, createRenderer, reactMajor, screen } from '@mui/internal-test-utils';
 import SwitchBase from './SwitchBase';
-import FormControl, { useFormControl } from '../FormControl';
+import FormControl, { useFormControl } from '../../../form/FormControl';
 import ButtonBase from '../ButtonBase';
 import classes from './switchBaseClasses';
 import describeConformance from '../../test/describeConformance';

@@ -4,7 +4,7 @@ import { act, createRenderer, fireEvent, screen } from '@mui/internal-test-utils
 import MenuItem from '../../../menu/MenuItem';
 import Select from '@mui/material/Select';
 import Dialog from '../../../modal/Dialog';
-import FormControl from '@mui/material/FormControl';
+import FormControl from '../../../form/FormControl';
 import InputLabel from '../../../form/InputLabel';
 
 describe('<Select> integration', () => {

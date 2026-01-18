@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { spy } from 'sinon';
 import { act, createRenderer, fireEvent, screen, reactMajor } from '@mui/internal-test-utils';
 import { ThemeProvider } from '@emotion/react';
-import FormControl, { useFormControl } from '@mui/material/FormControl';
+import FormControl, { useFormControl } from '../FormControl';
 import InputAdornment from '../InputAdornment';
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
