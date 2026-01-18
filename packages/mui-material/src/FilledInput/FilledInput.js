@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import deepmerge from '@mui/utils/deepmerge';
 import refType from '@mui/utils/refType';
 import PropTypes from 'prop-types';
 import composeClasses from '@mui/utils/composeClasses';
@@ -284,8 +283,6 @@ const FilledInput = React.forwardRef(function FilledInput(inProps, ref) {
 
   const {
     disableUnderline = false,
-    components = {},
-    componentsProps: componentsPropsProp,
     fullWidth = false,
     hiddenLabel, // declare here to prevent spreading to DOM
     inputComponent = 'input',
@@ -308,18 +305,17 @@ const FilledInput = React.forwardRef(function FilledInput(inProps, ref) {
   const classes = useUtilityClasses(props);
   const filledInputComponentsProps = { root: { ownerState }, input: { ownerState } };
 
-  const componentsProps =
-    (slotProps ?? componentsPropsProp)
-      ? deepmerge(filledInputComponentsProps, slotProps ?? componentsPropsProp)
-      : filledInputComponentsProps;
+  const mergedSlotProps = slotProps
+    ? { ...filledInputComponentsProps, ...slotProps }
+    : filledInputComponentsProps;
 
-  const RootSlot = slots.root ?? components.Root ?? FilledInputRoot;
-  const InputSlot = slots.input ?? components.Input ?? FilledInputInput;
+  const RootSlot = slots.root ?? FilledInputRoot;
+  const InputSlot = slots.input ?? FilledInputInput;
 
   return (
     <InputBase
       slots={{ root: RootSlot, input: InputSlot }}
-      slotProps={componentsProps}
+      slotProps={mergedSlotProps}
       fullWidth={fullWidth}
       inputComponent={inputComponent}
       multiline={multiline}
@@ -360,29 +356,6 @@ FilledInput.propTypes /* remove-proptypes */ = {
     PropTypes.oneOf(['primary', 'secondary']),
     PropTypes.string,
   ]),
-  /**
-   * The components used for each slot inside.
-   *
-   * @deprecated use the `slots` prop instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   *
-   * @default {}
-   */
-  components: PropTypes.shape({
-    Input: PropTypes.elementType,
-    Root: PropTypes.elementType,
-  }),
-  /**
-   * The extra props for the slot components.
-   * You can override the existing props or add new ones.
-   *
-   * @deprecated use the `slotProps` prop instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   *
-   * @default {}
-   */
-  componentsProps: PropTypes.shape({
-    input: PropTypes.object,
-    root: PropTypes.object,
-  }),
   /**
    * The default value. Use when the component is not controlled.
    */
