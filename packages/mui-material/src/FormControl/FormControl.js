@@ -1,8 +1,6 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { isFilled, isAdornedStart } from '../../../form/InputBase/utils';
-import isMuiElement from '../utils/isMuiElement';
 import FormControlContext from './FormControlContext';
 
 /**
@@ -46,46 +44,8 @@ const FormControl = React.forwardRef(function FormControl(props, ref) {
     ...other
   } = props;
 
-  const [adornedStart, setAdornedStart] = React.useState(() => {
-    // We need to iterate through the children and find the Input in order
-    // to fully support server-side rendering.
-    let initialAdornedStart = false;
-
-    if (children) {
-      React.Children.forEach(children, (child) => {
-        if (!isMuiElement(child, ['Input', 'Select'])) {
-          return;
-        }
-
-        const input = isMuiElement(child, ['Select']) ? child.props.input : child;
-
-        if (input && isAdornedStart(input.props)) {
-          initialAdornedStart = true;
-        }
-      });
-    }
-    return initialAdornedStart;
-  });
-
-  const [filled, setFilled] = React.useState(() => {
-    // We need to iterate through the children and find the Input in order
-    // to fully support server-side rendering.
-    let initialFilled = false;
-
-    if (children) {
-      React.Children.forEach(children, (child) => {
-        if (!isMuiElement(child, ['Input', 'Select'])) {
-          return;
-        }
-
-        if (isFilled(child.props, true) || isFilled(child.props.inputProps, true)) {
-          initialFilled = true;
-        }
-      });
-    }
-
-    return initialFilled;
-  });
+  const [adornedStart, setAdornedStart] = React.useState(false);
+  const [filled, setFilled] = React.useState(false);
 
   const [focusedState, setFocused] = React.useState(false);
   if (disabled && focusedState) {
@@ -93,26 +53,6 @@ const FormControl = React.forwardRef(function FormControl(props, ref) {
   }
 
   const focused = visuallyFocused !== undefined && !disabled ? visuallyFocused : focusedState;
-
-  let registerEffect;
-  const registeredInput = React.useRef(false);
-  if (process.env.NODE_ENV !== 'production') {
-    registerEffect = () => {
-      if (registeredInput.current) {
-        console.error(
-          [
-            'MUI: There are multiple `InputBase` components inside a FormControl.',
-            'This creates visual inconsistencies, only use one `InputBase`.',
-          ].join('\n'),
-        );
-      }
-
-      registeredInput.current = true;
-      return () => {
-        registeredInput.current = false;
-      };
-    };
-  }
 
   const onFilled = React.useCallback(() => {
     setFilled(true);
@@ -142,7 +82,6 @@ const FormControl = React.forwardRef(function FormControl(props, ref) {
       },
       onEmpty,
       onFilled,
-      registerEffect,
       required,
       variant,
     };
@@ -155,7 +94,6 @@ const FormControl = React.forwardRef(function FormControl(props, ref) {
     focused,
     fullWidth,
     hiddenLabel,
-    registerEffect,
     onEmpty,
     onFilled,
     required,
