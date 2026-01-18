@@ -1,7 +1,7 @@
 import * as React from 'react';
-import InputLabel from '@mui/material/InputLabel';
+import InputLabel from '../../../../form/InputLabel';
 
-declare module '@mui/material/InputLabel' {
+declare module '../../../../form/InputLabel' {
   interface InputLabelPropsSizeOverrides {
     customSize: true;
   }

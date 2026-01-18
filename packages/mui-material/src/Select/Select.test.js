@@ -14,7 +14,7 @@ import MenuItem, { menuItemClasses } from '../../../menu/MenuItem';
 import ListSubheader from '@mui/material/ListSubheader';
 import InputBase from '../../../form/InputBase';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
+import InputLabel from '../../../form/InputLabel';
 import Select from '@mui/material/Select';
 import Divider from '../../../data-display/Divider';
 import { listClasses } from '@mui/material/List';

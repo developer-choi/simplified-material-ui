@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import { createRenderer } from '@mui/internal-test-utils';
-import InputBase from '../../../form/InputBase';
-import Input, { inputClasses as classes } from '@mui/material/Input';
-import describeConformance from '../../test/describeConformance';
+import InputBase from '../InputBase';
+import Input, { inputClasses as classes } from './index';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<Input />', () => {
   const { render } = createRenderer();

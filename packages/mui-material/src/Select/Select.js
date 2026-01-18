@@ -9,7 +9,7 @@ import SelectInput from './SelectInput';
 import formControlState from '../FormControl/formControlState';
 import useFormControl from '../FormControl/useFormControl';
 import ArrowDropDownIcon from '../internal/svg-icons/ArrowDropDown';
-import Input from '../Input';
+import Input from '../../../form/Input';
 import NativeSelectInput from '../NativeSelect/NativeSelectInput';
 import FilledInput from '../FilledInput';
 import OutlinedInput from '../OutlinedInput';

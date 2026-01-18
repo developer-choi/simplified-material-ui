@@ -7,7 +7,7 @@ import TableFooter from '@mui/material/TableFooter';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import TablePagination, { tablePaginationClasses as classes } from '@mui/material/TablePagination';
-import { inputClasses } from '@mui/material/Input';
+import { inputClasses } from '../../../form/Input';
 import { outlinedInputClasses } from '@mui/material/OutlinedInput';
 import { filledInputClasses } from '@mui/material/FilledInput';
 import IconButton, { iconButtonClasses } from '@mui/material/IconButton';

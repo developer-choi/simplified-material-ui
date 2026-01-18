@@ -174,8 +174,8 @@ export * from './ImageListItem';
 export { default as ImageListItemBar } from './ImageListItemBar';
 export * from './ImageListItemBar';
 
-export { default as Input } from './Input';
-export * from './Input';
+export { default as Input } from '../../form/Input';
+export * from '../../form/Input';
 
 export { default as InputAdornment } from '../../form/InputAdornment';
 export * from '../../form/InputAdornment';
@@ -183,8 +183,8 @@ export * from '../../form/InputAdornment';
 export { default as InputBase } from '../../form/InputBase';
 export * from '../../form/InputBase';
 
-export { default as InputLabel } from './InputLabel';
-export * from './InputLabel';
+export { default as InputLabel } from '../../form/InputLabel';
+export * from '../../form/InputLabel';
 
 export { default as LinearProgress } from './LinearProgress';
 export * from './LinearProgress';

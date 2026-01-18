@@ -4,10 +4,10 @@ import { act, createRenderer, screen } from '@mui/internal-test-utils';
 import { ClassNames } from '@emotion/react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import FormControl from '@mui/material/FormControl';
-import Input from '@mui/material/Input';
+import Input from '../Input';
 import FormLabel from '@mui/material/FormLabel';
-import InputLabel, { inputLabelClasses as classes } from '@mui/material/InputLabel';
-import describeConformance from '../../test/describeConformance';
+import InputLabel, { inputLabelClasses as classes } from './index';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<InputLabel />', () => {
   const { render } = createRenderer();

@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
-import InputBase from '../../../form/InputBase';
-import useFormControl from '../FormControl/useFormControl';
+import InputBase from '../InputBase';
+import useFormControl from '@mui/material/FormControl/useFormControl';
 
 const Input = React.forwardRef(function Input(props, ref) {
   const {

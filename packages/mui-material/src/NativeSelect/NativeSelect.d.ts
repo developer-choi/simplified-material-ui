@@ -2,7 +2,7 @@ import * as React from 'react';
 import { SxProps } from '@mui/system';
 import { Theme } from '../styles';
 import { InternalStandardProps as StandardProps } from '../internal';
-import { InputProps } from '../Input';
+import { InputProps } from '../../../form/Input';
 import { NativeSelectInputProps } from './NativeSelectInput';
 import { NativeSelectClasses } from './nativeSelectClasses';
 

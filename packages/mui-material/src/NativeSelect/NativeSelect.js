@@ -7,7 +7,7 @@ import NativeSelectInput from './NativeSelectInput';
 import formControlState from '../FormControl/formControlState';
 import useFormControl from '../FormControl/useFormControl';
 import ArrowDropDownIcon from '../internal/svg-icons/ArrowDropDown';
-import Input from '../Input';
+import Input from '../../../form/Input';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import { getNativeSelectUtilityClasses } from './nativeSelectClasses';
 

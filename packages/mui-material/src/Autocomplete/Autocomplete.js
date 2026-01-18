@@ -11,7 +11,7 @@ import ListSubheader from '../ListSubheader';
 import Paper from '../../../surfaces/Paper';
 import IconButton from '../IconButton';
 import Chip from '../../../data-display/Chip';
-import inputClasses from '../Input/inputClasses';
+import inputClasses from '../../../form/Input/inputClasses';
 import inputBaseClasses from '../../../form/InputBase/inputBaseClasses';
 import outlinedInputClasses from '../OutlinedInput/outlinedInputClasses';
 import filledInputClasses from '../FilledInput/filledInputClasses';

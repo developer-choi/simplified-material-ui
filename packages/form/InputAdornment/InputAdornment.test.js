@@ -8,7 +8,7 @@ import { typographyClasses } from '@mui/material/Typography';
 import InputAdornment, { inputAdornmentClasses as classes } from './index';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
-import Input from '@mui/material/Input';
+import Input from '../Input';
 import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<InputAdornment />', () => {
