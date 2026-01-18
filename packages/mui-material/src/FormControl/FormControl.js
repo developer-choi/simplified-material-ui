@@ -1,23 +1,11 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import { isFilled, isAdornedStart } from '../../../form/InputBase/utils';
 import capitalize from '../utils/capitalize';
 import isMuiElement from '../utils/isMuiElement';
 import FormControlContext from './FormControlContext';
-import { getFormControlUtilityClasses } from './formControlClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, margin, fullWidth } = ownerState;
-  const slots = {
-    root: ['root', margin !== 'none' && `margin${capitalize(margin)}`, fullWidth && 'fullWidth'],
-  };
-
-  return composeClasses(slots, getFormControlUtilityClasses, classes);
-};
 
 const FormControlRoot = styled('div', {
   name: 'MuiFormControl',
@@ -120,8 +108,6 @@ const FormControl = React.forwardRef(function FormControl(props, ref) {
     size,
     variant,
   };
-
-  const classes = useUtilityClasses(ownerState);
 
   const [adornedStart, setAdornedStart] = React.useState(() => {
     // We need to iterate through the children and find the Input in order
@@ -245,7 +231,7 @@ const FormControl = React.forwardRef(function FormControl(props, ref) {
       <FormControlRoot
         as={component}
         ownerState={ownerState}
-        className={clsx(classes.root, className)}
+        className={className}
         ref={ref}
         {...other}
       >
