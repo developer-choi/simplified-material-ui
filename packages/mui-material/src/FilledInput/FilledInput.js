@@ -7,7 +7,6 @@ import InputBase from '../../../form/InputBase';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import filledInputClasses, { getFilledInputUtilityClass } from './filledInputClasses';
 import {
@@ -139,19 +138,14 @@ const FilledInputRoot = styled(InputBaseRoot, {
             },
           },
         },
-        ...Object.entries(theme.palette)
-          .filter(createSimplePaletteValueFilter()) // check all the used fields in the style below
-          .map(([color]) => ({
-            props: {
-              disableUnderline: false,
-              color,
+        {
+          props: { disableUnderline: false },
+          style: {
+            '&::after': {
+              borderBottom: `2px solid ${(theme.vars || theme).palette.primary?.main}`,
             },
-            style: {
-              '&::after': {
-                borderBottom: `2px solid ${(theme.vars || theme).palette[color]?.main}`,
-              },
-            },
-          })),
+          },
+        },
         {
           props: ({ ownerState }) => ownerState.startAdornment,
           style: {
@@ -346,16 +340,6 @@ FilledInput.propTypes /* remove-proptypes */ = {
    * Override or extend the styles applied to the component.
    */
   classes: PropTypes.object,
-  /**
-   * The color of the component.
-   * It supports both default and custom theme colors, which can be added as shown in the
-   * [palette customization guide](https://mui.com/material-ui/customization/palette/#custom-colors).
-   * The prop defaults to the value (`'primary'`) inherited from the parent FormControl component.
-   */
-  color: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['primary', 'secondary']),
-    PropTypes.string,
-  ]),
   /**
    * The default value. Use when the component is not controlled.
    */
