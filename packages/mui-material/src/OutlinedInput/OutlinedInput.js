@@ -1,7 +1,5 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import refType from '@mui/utils/refType';
 import InputBase from '../../../form/InputBase';
 import useFormControl from '../../../form/FormControl/useFormControl';
 
@@ -176,38 +174,6 @@ const OutlinedInput = React.forwardRef(function OutlinedInput(props, ref) {
     </div>
   );
 });
-
-OutlinedInput.propTypes = {
-  autoComplete: PropTypes.string,
-  autoFocus: PropTypes.bool,
-  className: PropTypes.string,
-  defaultValue: PropTypes.any,
-  disabled: PropTypes.bool,
-  endAdornment: PropTypes.node,
-  error: PropTypes.bool,
-  fullWidth: PropTypes.bool,
-  id: PropTypes.string,
-  inputComponent: PropTypes.elementType,
-  inputProps: PropTypes.object,
-  inputRef: refType,
-  label: PropTypes.node,
-  maxRows: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  minRows: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  multiline: PropTypes.bool,
-  name: PropTypes.string,
-  notched: PropTypes.bool,
-  onChange: PropTypes.func,
-  onFocus: PropTypes.func,
-  onBlur: PropTypes.func,
-  placeholder: PropTypes.string,
-  readOnly: PropTypes.bool,
-  required: PropTypes.bool,
-  rows: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  size: PropTypes.oneOf(['small', 'medium']),
-  startAdornment: PropTypes.node,
-  type: PropTypes.string,
-  value: PropTypes.any,
-};
 
 OutlinedInput.muiName = 'Input';
 
