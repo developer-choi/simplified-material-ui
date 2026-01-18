@@ -2,7 +2,6 @@
 import PropTypes from 'prop-types';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 
 const NotchedOutlineRoot = styled('fieldset', {
   name: 'MuiNotchedOutlined',
@@ -27,60 +26,48 @@ const NotchedOutlineRoot = styled('fieldset', {
 const NotchedOutlineLegend = styled('legend', {
   name: 'MuiNotchedOutlined',
   shouldForwardProp: rootShouldForwardProp,
-})(
-  memoTheme(({ theme }) => ({
-    float: 'unset', // Fix conflict with bootstrap
-    width: 'auto', // Fix conflict with bootstrap
-    overflow: 'hidden', // Fix Horizontal scroll when label too long
-    variants: [
-      {
-        props: ({ ownerState }) => !ownerState.withLabel,
-        style: {
-          padding: 0,
-          lineHeight: '11px', // sync with `height` in `legend` styles
-          transition: theme.transitions.create('width', {
-            duration: 150,
-            easing: theme.transitions.easing.easeOut,
-          }),
+})({
+  float: 'unset',
+  width: 'auto',
+  overflow: 'hidden',
+  variants: [
+    {
+      props: ({ ownerState }) => !ownerState.withLabel,
+      style: {
+        padding: 0,
+        lineHeight: '11px',
+        transition: 'width 150ms cubic-bezier(0.4, 0, 0.2, 1)',
+      },
+    },
+    {
+      props: ({ ownerState }) => ownerState.withLabel,
+      style: {
+        display: 'block',
+        padding: 0,
+        height: 11,
+        fontSize: '0.75em',
+        visibility: 'hidden',
+        maxWidth: 0.01,
+        transition: 'max-width 50ms cubic-bezier(0.4, 0, 0.2, 1)',
+        whiteSpace: 'nowrap',
+        '& > span': {
+          paddingLeft: 5,
+          paddingRight: 5,
+          display: 'inline-block',
+          opacity: 0,
+          visibility: 'visible',
         },
       },
-      {
-        props: ({ ownerState }) => ownerState.withLabel,
-        style: {
-          display: 'block', // Fix conflict with normalize.css and sanitize.css
-          padding: 0,
-          height: 11, // sync with `lineHeight` in `legend` styles
-          fontSize: '0.75em',
-          visibility: 'hidden',
-          maxWidth: 0.01,
-          transition: theme.transitions.create('max-width', {
-            duration: 50,
-            easing: theme.transitions.easing.easeOut,
-          }),
-          whiteSpace: 'nowrap',
-          '& > span': {
-            paddingLeft: 5,
-            paddingRight: 5,
-            display: 'inline-block',
-            opacity: 0,
-            visibility: 'visible',
-          },
-        },
+    },
+    {
+      props: ({ ownerState }) => ownerState.withLabel && ownerState.notched,
+      style: {
+        maxWidth: '100%',
+        transition: 'max-width 100ms cubic-bezier(0.4, 0, 0.2, 1) 50ms',
       },
-      {
-        props: ({ ownerState }) => ownerState.withLabel && ownerState.notched,
-        style: {
-          maxWidth: '100%',
-          transition: theme.transitions.create('max-width', {
-            duration: 100,
-            easing: theme.transitions.easing.easeOut,
-            delay: 50,
-          }),
-        },
-      },
-    ],
-  })),
-);
+    },
+  ],
+});
 
 /**
  * @ignore - internal component.
