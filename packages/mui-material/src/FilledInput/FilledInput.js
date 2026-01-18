@@ -2,43 +2,16 @@
 import * as React from 'react';
 import refType from '@mui/utils/refType';
 import PropTypes from 'prop-types';
-import composeClasses from '@mui/utils/composeClasses';
 import InputBase from '../../../form/InputBase';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
-import filledInputClasses, { getFilledInputUtilityClass } from './filledInputClasses';
+import filledInputClasses from './filledInputClasses';
 import {
   rootOverridesResolver as inputBaseRootOverridesResolver,
   inputOverridesResolver as inputBaseInputOverridesResolver,
   InputBaseRoot,
   InputBaseInput,
 } from '../../../form/InputBase/InputBase';
-import { capitalize } from '../utils';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, disableUnderline, startAdornment, endAdornment, size, hiddenLabel, multiline } =
-    ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      !disableUnderline && 'underline',
-      startAdornment && 'adornedStart',
-      endAdornment && 'adornedEnd',
-      size === 'small' && `size${capitalize(size)}`,
-      hiddenLabel && 'hiddenLabel',
-      multiline && 'multiline',
-    ],
-    input: ['input'],
-  };
-
-  const composedClasses = composeClasses(slots, getFilledInputUtilityClass, classes);
-
-  return {
-    ...classes, // forward classes to the InputBase
-    ...composedClasses,
-  };
-};
 
 const FilledInputRoot = styled(InputBaseRoot, {
   shouldForwardProp: (prop) => rootShouldForwardProp(prop) || prop === 'classes',
@@ -243,7 +216,6 @@ const FilledInput = React.forwardRef(function FilledInput(props, ref) {
     type,
   };
 
-  const classes = useUtilityClasses(props);
   const filledInputComponentsProps = { root: { ownerState }, input: { ownerState } };
 
   const mergedSlotProps = slotProps
@@ -263,7 +235,6 @@ const FilledInput = React.forwardRef(function FilledInput(props, ref) {
       ref={ref}
       type={type}
       {...other}
-      classes={classes}
     />
   );
 });
@@ -283,10 +254,6 @@ FilledInput.propTypes /* remove-proptypes */ = {
    * If `true`, the `input` element is focused during the first mount.
    */
   autoFocus: PropTypes.bool,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
   /**
    * The default value. Use when the component is not controlled.
    */
