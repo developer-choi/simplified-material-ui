@@ -6,8 +6,6 @@ import composeClasses from '@mui/utils/composeClasses';
 import InputBase from '../../../form/InputBase';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import filledInputClasses, { getFilledInputUtilityClass } from './filledInputClasses';
 import {
   rootOverridesResolver as inputBaseRootOverridesResolver,
@@ -53,228 +51,177 @@ const FilledInputRoot = styled(InputBaseRoot, {
       !ownerState.disableUnderline && styles.underline,
     ];
   },
-})(
-  memoTheme(({ theme }) => {
-    const light = theme.palette.mode === 'light';
-    const bottomLineColor = light ? 'rgba(0, 0, 0, 0.42)' : 'rgba(255, 255, 255, 0.7)';
-    const backgroundColor = light ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.09)';
-    const hoverBackground = light ? 'rgba(0, 0, 0, 0.09)' : 'rgba(255, 255, 255, 0.13)';
-    const disabledBackground = light ? 'rgba(0, 0, 0, 0.12)' : 'rgba(255, 255, 255, 0.12)';
-    return {
-      position: 'relative',
-      backgroundColor: theme.vars ? theme.vars.palette.FilledInput.bg : backgroundColor,
-      borderTopLeftRadius: (theme.vars || theme).shape.borderRadius,
-      borderTopRightRadius: (theme.vars || theme).shape.borderRadius,
-      transition: theme.transitions.create('background-color', {
-        duration: theme.transitions.duration.shorter,
-        easing: theme.transitions.easing.easeOut,
-      }),
-      '&:hover': {
-        backgroundColor: theme.vars ? theme.vars.palette.FilledInput.hoverBg : hoverBackground,
-        // Reset on touch devices, it doesn't add specificity
-        '@media (hover: none)': {
-          backgroundColor: theme.vars ? theme.vars.palette.FilledInput.bg : backgroundColor,
+)({
+  position: 'relative',
+  backgroundColor: 'rgba(0, 0, 0, 0.06)',
+  borderTopLeftRadius: 4,
+  borderTopRightRadius: 4,
+  transition: 'background-color 150ms cubic-bezier(0.0, 0, 0.2, 1)',
+  '&:hover': {
+    backgroundColor: 'rgba(0, 0, 0, 0.09)',
+    '@media (hover: none)': {
+      backgroundColor: 'rgba(0, 0, 0, 0.06)',
+    },
+  },
+  [`&.${filledInputClasses.focused}`]: {
+    backgroundColor: 'rgba(0, 0, 0, 0.06)',
+  },
+  [`&.${filledInputClasses.disabled}`]: {
+    backgroundColor: 'rgba(0, 0, 0, 0.12)',
+  },
+  variants: [
+    {
+      props: ({ ownerState }) => !ownerState.disableUnderline,
+      style: {
+        '&::after': {
+          left: 0,
+          bottom: 0,
+          content: '""',
+          position: 'absolute',
+          right: 0,
+          transform: 'scaleX(0)',
+          transition: 'transform 150ms cubic-bezier(0.0, 0, 0.2, 1)',
+          pointerEvents: 'none',
+        },
+        [`&.${filledInputClasses.focused}:after`]: {
+          transform: 'scaleX(1) translateX(0)',
+        },
+        [`&.${filledInputClasses.error}`]: {
+          '&::before, &::after': {
+            borderBottomColor: '#d32f2f',
+          },
+        },
+        '&::before': {
+          borderBottom: '1px solid rgba(0, 0, 0, 0.42)',
+          left: 0,
+          bottom: 0,
+          content: '"\\00a0"',
+          position: 'absolute',
+          right: 0,
+          transition: 'border-bottom-color 150ms',
+          pointerEvents: 'none',
+        },
+        [`&:hover:not(.${filledInputClasses.disabled}, .${filledInputClasses.error}):before`]: {
+          borderBottom: '1px solid rgba(0, 0, 0, 0.87)',
+        },
+        [`&.${filledInputClasses.disabled}:before`]: {
+          borderBottomStyle: 'dotted',
         },
       },
-      [`&.${filledInputClasses.focused}`]: {
-        backgroundColor: theme.vars ? theme.vars.palette.FilledInput.bg : backgroundColor,
+    },
+    {
+      props: { disableUnderline: false },
+      style: {
+        '&::after': {
+          borderBottom: '2px solid #1976d2',
+        },
       },
-      [`&.${filledInputClasses.disabled}`]: {
-        backgroundColor: theme.vars
-          ? theme.vars.palette.FilledInput.disabledBg
-          : disabledBackground,
+    },
+    {
+      props: ({ ownerState }) => ownerState.startAdornment,
+      style: {
+        paddingLeft: 12,
       },
-      variants: [
-        {
-          props: ({ ownerState }) => !ownerState.disableUnderline,
-          style: {
-            '&::after': {
-              left: 0,
-              bottom: 0,
-              content: '""',
-              position: 'absolute',
-              right: 0,
-              transform: 'scaleX(0)',
-              transition: theme.transitions.create('transform', {
-                duration: theme.transitions.duration.shorter,
-                easing: theme.transitions.easing.easeOut,
-              }),
-              pointerEvents: 'none', // Transparent to the hover style.
-            },
-            [`&.${filledInputClasses.focused}:after`]: {
-              // translateX(0) is a workaround for Safari transform scale bug
-              // See https://github.com/mui/material-ui/issues/31766
-              transform: 'scaleX(1) translateX(0)',
-            },
-            [`&.${filledInputClasses.error}`]: {
-              '&::before, &::after': {
-                borderBottomColor: (theme.vars || theme).palette.error.main,
-              },
-            },
-            '&::before': {
-              borderBottom: `1px solid ${
-                theme.vars
-                  ? theme.alpha(
-                      theme.vars.palette.common.onBackground,
-                      theme.vars.opacity.inputUnderline,
-                    )
-                  : bottomLineColor
-              }`,
-              left: 0,
-              bottom: 0,
-              content: '"\\00a0"',
-              position: 'absolute',
-              right: 0,
-              transition: theme.transitions.create('border-bottom-color', {
-                duration: theme.transitions.duration.shorter,
-              }),
-              pointerEvents: 'none', // Transparent to the hover style.
-            },
-            [`&:hover:not(.${filledInputClasses.disabled}, .${filledInputClasses.error}):before`]: {
-              borderBottom: `1px solid ${(theme.vars || theme).palette.text.primary}`,
-            },
-            [`&.${filledInputClasses.disabled}:before`]: {
-              borderBottomStyle: 'dotted',
-            },
-          },
-        },
-        {
-          props: { disableUnderline: false },
-          style: {
-            '&::after': {
-              borderBottom: `2px solid ${(theme.vars || theme).palette.primary?.main}`,
-            },
-          },
-        },
-        {
-          props: ({ ownerState }) => ownerState.startAdornment,
-          style: {
-            paddingLeft: 12,
-          },
-        },
-        {
-          props: ({ ownerState }) => ownerState.endAdornment,
-          style: {
-            paddingRight: 12,
-          },
-        },
-        {
-          props: ({ ownerState }) => ownerState.multiline,
-          style: {
-            padding: '25px 12px 8px',
-          },
-        },
-        {
-          props: ({ ownerState, size }) => ownerState.multiline && size === 'small',
-          style: {
-            paddingTop: 21,
-            paddingBottom: 4,
-          },
-        },
-        {
-          props: ({ ownerState }) => ownerState.multiline && ownerState.hiddenLabel,
-          style: {
-            paddingTop: 16,
-            paddingBottom: 17,
-          },
-        },
-        {
-          props: ({ ownerState }) =>
-            ownerState.multiline && ownerState.hiddenLabel && ownerState.size === 'small',
-          style: {
-            paddingTop: 8,
-            paddingBottom: 9,
-          },
-        },
-      ],
-    };
-  }),
-);
+    },
+    {
+      props: ({ ownerState }) => ownerState.endAdornment,
+      style: {
+        paddingRight: 12,
+      },
+    },
+    {
+      props: ({ ownerState }) => ownerState.multiline,
+      style: {
+        padding: '25px 12px 8px',
+      },
+    },
+    {
+      props: ({ ownerState, size }) => ownerState.multiline && size === 'small',
+      style: {
+        paddingTop: 21,
+        paddingBottom: 4,
+      },
+    },
+    {
+      props: ({ ownerState }) => ownerState.multiline && ownerState.hiddenLabel,
+      style: {
+        paddingTop: 16,
+        paddingBottom: 17,
+      },
+    },
+    {
+      props: ({ ownerState }) =>
+        ownerState.multiline && ownerState.hiddenLabel && ownerState.size === 'small',
+      style: {
+        paddingTop: 8,
+        paddingBottom: 9,
+      },
+    },
+  ],
+});
 
 const FilledInputInput = styled(InputBaseInput, {
   name: 'MuiFilledInput',
   slot: 'Input',
   overridesResolver: inputBaseInputOverridesResolver,
-})(
-  memoTheme(({ theme }) => ({
-    paddingTop: 25,
-    paddingRight: 12,
-    paddingBottom: 8,
-    paddingLeft: 12,
-    ...(!theme.vars && {
-      '&:-webkit-autofill': {
-        WebkitBoxShadow: theme.palette.mode === 'light' ? null : '0 0 0 100px #266798 inset',
-        WebkitTextFillColor: theme.palette.mode === 'light' ? null : '#fff',
-        caretColor: theme.palette.mode === 'light' ? null : '#fff',
-        borderTopLeftRadius: 'inherit',
-        borderTopRightRadius: 'inherit',
+})({
+  paddingTop: 25,
+  paddingRight: 12,
+  paddingBottom: 8,
+  paddingLeft: 12,
+  '&:-webkit-autofill': {
+    borderTopLeftRadius: 'inherit',
+    borderTopRightRadius: 'inherit',
+  },
+  variants: [
+    {
+      props: {
+        size: 'small',
       },
-    }),
-    ...(theme.vars && {
-      '&:-webkit-autofill': {
-        borderTopLeftRadius: 'inherit',
-        borderTopRightRadius: 'inherit',
+      style: {
+        paddingTop: 21,
+        paddingBottom: 4,
       },
-      [theme.getColorSchemeSelector('dark')]: {
-        '&:-webkit-autofill': {
-          WebkitBoxShadow: '0 0 0 100px #266798 inset',
-          WebkitTextFillColor: '#fff',
-          caretColor: '#fff',
-        },
+    },
+    {
+      props: ({ ownerState }) => ownerState.hiddenLabel,
+      style: {
+        paddingTop: 16,
+        paddingBottom: 17,
       },
-    }),
-    variants: [
-      {
-        props: {
-          size: 'small',
-        },
-        style: {
-          paddingTop: 21,
-          paddingBottom: 4,
-        },
+    },
+    {
+      props: ({ ownerState }) => ownerState.startAdornment,
+      style: {
+        paddingLeft: 0,
       },
-      {
-        props: ({ ownerState }) => ownerState.hiddenLabel,
-        style: {
-          paddingTop: 16,
-          paddingBottom: 17,
-        },
+    },
+    {
+      props: ({ ownerState }) => ownerState.endAdornment,
+      style: {
+        paddingRight: 0,
       },
-      {
-        props: ({ ownerState }) => ownerState.startAdornment,
-        style: {
-          paddingLeft: 0,
-        },
+    },
+    {
+      props: ({ ownerState }) => ownerState.hiddenLabel && ownerState.size === 'small',
+      style: {
+        paddingTop: 8,
+        paddingBottom: 9,
       },
-      {
-        props: ({ ownerState }) => ownerState.endAdornment,
-        style: {
-          paddingRight: 0,
-        },
+    },
+    {
+      props: ({ ownerState }) => ownerState.multiline,
+      style: {
+        paddingTop: 0,
+        paddingBottom: 0,
+        paddingLeft: 0,
+        paddingRight: 0,
       },
-      {
-        props: ({ ownerState }) => ownerState.hiddenLabel && ownerState.size === 'small',
-        style: {
-          paddingTop: 8,
-          paddingBottom: 9,
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.multiline,
-        style: {
-          paddingTop: 0,
-          paddingBottom: 0,
-          paddingLeft: 0,
-          paddingRight: 0,
-        },
-      },
-    ],
-  })),
-);
+    },
+  ],
+});
 
-const FilledInput = React.forwardRef(function FilledInput(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiFilledInput' });
-
+const FilledInput = React.forwardRef(function FilledInput(props, ref) {
   const {
     disableUnderline = false,
     fullWidth = false,
