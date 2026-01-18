@@ -136,8 +136,8 @@ export * from './Fab';
 export { default as Fade } from '../../utils/Fade';
 export * from '../../utils/Fade';
 
-export { default as FilledInput } from './FilledInput';
-export * from './FilledInput';
+export { default as FilledInput } from '../../form/FilledInput';
+export * from '../../form/FilledInput';
 
 export { default as FormControl } from '../../form/FormControl';
 export * from '../../form/FormControl';

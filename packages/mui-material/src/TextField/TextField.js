@@ -8,7 +8,7 @@ import refType from '@mui/utils/refType';
 import { styled } from '../zero-styled';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import Input from '../../../form/Input';
-import FilledInput from '../FilledInput';
+import FilledInput from '../../../form/FilledInput';
 import OutlinedInput from '../OutlinedInput';
 import InputLabel from '../../../form/InputLabel';
 import FormControl from '../../../form/FormControl';

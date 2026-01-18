@@ -7,7 +7,7 @@ import { MenuProps } from '../../../menu/Menu';
 import { SelectChangeEvent, SelectInputProps } from './SelectInput';
 import { SelectClasses } from './selectClasses';
 import { OutlinedInputProps } from '../OutlinedInput';
-import { FilledInputProps } from '../FilledInput';
+import { FilledInputProps } from '../../../form/FilledInput';
 
 export { SelectChangeEvent };
 

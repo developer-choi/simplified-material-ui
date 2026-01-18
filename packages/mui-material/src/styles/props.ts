@@ -36,7 +36,7 @@ import { AccordionDetailsProps } from '../../../surfaces/AccordionDetails';
 import { AccordionProps } from '../../../surfaces/Accordion';
 import { AccordionSummaryProps } from '../../../surfaces/AccordionSummary';
 import { FabProps } from '../Fab';
-import { FilledInputProps } from '../FilledInput';
+import { FilledInputProps } from '../../../form/FilledInput';
 import { FormControlLabelProps } from '../FormControlLabel';
 import { FormControlProps } from '../../../form/FormControl';
 import { FormGroupProps } from '../FormGroup';

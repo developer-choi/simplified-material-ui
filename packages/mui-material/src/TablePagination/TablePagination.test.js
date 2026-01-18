@@ -9,7 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import TablePagination, { tablePaginationClasses as classes } from '@mui/material/TablePagination';
 import { inputClasses } from '../../../form/Input';
 import { outlinedInputClasses } from '@mui/material/OutlinedInput';
-import { filledInputClasses } from '@mui/material/FilledInput';
+import { filledInputClasses } from '../../../form/FilledInput';
 import IconButton, { iconButtonClasses } from '@mui/material/IconButton';
 import { svgIconClasses } from '@mui/material/SvgIcon';
 import { createSvgIcon } from '@mui/material/utils';

@@ -14,7 +14,7 @@ import Chip from '../../../data-display/Chip';
 import inputClasses from '../../../form/Input/inputClasses';
 import inputBaseClasses from '../../../form/InputBase/inputBaseClasses';
 import outlinedInputClasses from '../OutlinedInput/outlinedInputClasses';
-import filledInputClasses from '../FilledInput/filledInputClasses';
+import filledInputClasses from '../../../form/FilledInput/filledInputClasses';
 import ClearIcon from '../internal/svg-icons/Close';
 import ArrowDropDownIcon from '../internal/svg-icons/ArrowDropDown';
 import { styled } from '../zero-styled';

@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
-import InputBase from '../../../form/InputBase';
-import useFormControl from '../../../form/FormControl/useFormControl';
+import InputBase from '../InputBase';
+import useFormControl from '../FormControl/useFormControl';
 
 const FilledInput = React.forwardRef(function FilledInput(props, ref) {
   const {
