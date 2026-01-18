@@ -190,7 +190,6 @@ const OutlinedInputInput = styled(InputBaseInput, {
 const OutlinedInput = React.forwardRef(function OutlinedInput(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiOutlinedInput' });
   const {
-    components = {},
     fullWidth = false,
     inputComponent = 'input',
     label,
@@ -225,8 +224,8 @@ const OutlinedInput = React.forwardRef(function OutlinedInput(inProps, ref) {
     type,
   };
 
-  const RootSlot = slots.root ?? components.Root ?? OutlinedInputRoot;
-  const InputSlot = slots.input ?? components.Input ?? OutlinedInputInput;
+  const RootSlot = slots.root ?? OutlinedInputRoot;
+  const InputSlot = slots.input ?? OutlinedInputInput;
 
   const [NotchedSlot, notchedProps] = useSlot('notchedOutline', {
     elementType: NotchedOutlineRoot,
