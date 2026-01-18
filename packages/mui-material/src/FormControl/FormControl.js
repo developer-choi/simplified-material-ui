@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import FormControlContext from './FormControlContext';
 
 /**
@@ -128,91 +127,5 @@ const FormControl = React.forwardRef(function FormControl(props, ref) {
     </FormControlContext.Provider>
   );
 });
-
-FormControl.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * The content of the component.
-   */
-  children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * The color of the component.
-   * It supports both default and custom theme colors, which can be added as shown in the
-   * [palette customization guide](https://mui.com/material-ui/customization/palette/#custom-colors).
-   * @default 'primary'
-   */
-  color: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['primary', 'secondary', 'error', 'info', 'success', 'warning']),
-    PropTypes.string,
-  ]),
-  /**
-   * If `true`, the label, input and helper text should be displayed in a disabled state.
-   * @default false
-   */
-  disabled: PropTypes.bool,
-  /**
-   * If `true`, the label is displayed in an error state.
-   * @default false
-   */
-  error: PropTypes.bool,
-  /**
-   * If `true`, the component is displayed in focused state.
-   */
-  focused: PropTypes.bool,
-  /**
-   * If `true`, the component will take up the full width of its container.
-   * @default false
-   */
-  fullWidth: PropTypes.bool,
-  /**
-   * If `true`, the label is hidden.
-   * This is used to increase density for a `FilledInput`.
-   * Be sure to add `aria-label` to the `input` element.
-   * @default false
-   */
-  hiddenLabel: PropTypes.bool,
-  /**
-   * If `dense` or `normal`, will adjust vertical spacing of this and contained components.
-   * @default 'none'
-   */
-  margin: PropTypes.oneOf(['dense', 'none', 'normal']),
-  /**
-   * If `true`, the label will indicate that the `input` is required.
-   * @default false
-   */
-  required: PropTypes.bool,
-  /**
-   * The size of the component.
-   * @default 'medium'
-   */
-  size: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['medium', 'small']),
-    PropTypes.string,
-  ]),
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-  /**
-   * The variant to use.
-   * @default 'outlined'
-   */
-  variant: PropTypes.oneOf(['filled', 'outlined', 'standard']),
-};
 
 export default FormControl;
