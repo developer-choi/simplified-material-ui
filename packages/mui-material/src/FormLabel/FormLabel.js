@@ -8,50 +8,6 @@ import memoTheme from '../utils/memoTheme';
 import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
 import formLabelClasses from './formLabelClasses';
 
-export const FormLabelRoot = styled('label', {
-  name: 'MuiFormLabel',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-    return [
-      styles.root,
-      ownerState.color === 'secondary' && styles.colorSecondary,
-      ownerState.filled && styles.filled,
-    ];
-  },
-})(
-  memoTheme(({ theme }) => ({
-    color: (theme.vars || theme).palette.text.secondary,
-    ...theme.typography.body1,
-    lineHeight: '1.4375em',
-    padding: 0,
-    position: 'relative',
-    variants: [
-      ...Object.entries(theme.palette)
-        .filter(createSimplePaletteValueFilter())
-        .map(([color]) => ({
-          props: { color },
-          style: {
-            [`&.${formLabelClasses.focused}`]: {
-              color: (theme.vars || theme).palette[color].main,
-            },
-          },
-        })),
-      {
-        props: {},
-        style: {
-          [`&.${formLabelClasses.disabled}`]: {
-            color: (theme.vars || theme).palette.text.disabled,
-          },
-          [`&.${formLabelClasses.error}`]: {
-            color: (theme.vars || theme).palette.error.main,
-          },
-        },
-      },
-    ],
-  })),
-);
-
 const AsteriskComponent = styled('span', {
   name: 'MuiFormLabel',
   slot: 'Asterisk',
@@ -67,8 +23,6 @@ const FormLabel = React.forwardRef(function FormLabel(props, ref) {
   const {
     children,
     className,
-    color,
-    component = 'label',
     disabled,
     error,
     filled,
@@ -87,7 +41,6 @@ const FormLabel = React.forwardRef(function FormLabel(props, ref) {
   const ownerState = {
     ...props,
     color: fcs.color || 'primary',
-    component,
     disabled: fcs.disabled,
     error: fcs.error,
     filled: fcs.filled,
@@ -95,12 +48,29 @@ const FormLabel = React.forwardRef(function FormLabel(props, ref) {
     required: fcs.required,
   };
 
+  const getLabelColor = () => {
+    if (fcs.error) return '#d32f2f';
+    if (fcs.disabled) return 'rgba(0, 0, 0, 0.38)';
+    if (fcs.focused) return '#1976d2';
+    return 'rgba(0, 0, 0, 0.6)';
+  };
+
+  const rootStyle = {
+    color: getLabelColor(),
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontWeight: 400,
+    fontSize: '1rem',
+    lineHeight: '1.4375em',
+    letterSpacing: '0.00938em',
+    padding: 0,
+    position: 'relative',
+  };
+
   return (
-    <FormLabelRoot
-      as={component}
-      ownerState={ownerState}
+    <label
       className={className}
       ref={ref}
+      style={rootStyle}
       {...other}
     >
       {children}
@@ -109,7 +79,7 @@ const FormLabel = React.forwardRef(function FormLabel(props, ref) {
           &thinsp;{'*'}
         </AsteriskComponent>
       )}
-    </FormLabelRoot>
+    </label>
   );
 });
 
