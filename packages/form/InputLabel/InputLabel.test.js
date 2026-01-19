@@ -5,7 +5,7 @@ import { ClassNames } from '@emotion/react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import FormControl from '../FormControl';
 import Input from '../Input';
-import FormLabel from '@mui/material/FormLabel';
+import FormLabel from '../FormLabel';
 import InputLabel, { inputLabelClasses as classes } from './index';
 import describeConformance from '../../mui-material/test/describeConformance';
 

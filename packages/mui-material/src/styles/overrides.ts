@@ -43,7 +43,7 @@ import { FormControlClassKey } from '../../../form/FormControl';
 import { FormControlLabelClassKey } from '../FormControlLabel';
 import { FormGroupClassKey } from '../FormGroup';
 import { FormHelperTextClassKey } from '../FormHelperText';
-import { FormLabelClassKey } from '../FormLabel';
+import { FormLabelClassKey } from '../../../form/FormLabel';
 import { GridLegacyClassKey } from '../GridLegacy';
 import { GridClassKey } from '../Grid';
 import { IconButtonClassKey } from '../IconButton';

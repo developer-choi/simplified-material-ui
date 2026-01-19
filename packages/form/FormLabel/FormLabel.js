@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
-import formControlState from '../../../form/FormControl/formControlState';
-import useFormControl from '../../../form/FormControl/useFormControl';
+import formControlState from '../FormControl/formControlState';
+import useFormControl from '../FormControl/useFormControl';
 
 const FormLabel = React.forwardRef(function FormLabel(props, ref) {
   const {

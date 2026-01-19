@@ -148,8 +148,8 @@ export * from './FormGroup';
 export { default as FormHelperText } from './FormHelperText';
 export * from './FormHelperText';
 
-export { default as FormLabel } from './FormLabel';
-export * from './FormLabel';
+export { default as FormLabel } from '../../form/FormLabel';
+export * from '../../form/FormLabel';
 
 export { default as GridLegacy } from './GridLegacy';
 

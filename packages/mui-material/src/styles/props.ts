@@ -41,7 +41,7 @@ import { FormControlLabelProps } from '../FormControlLabel';
 import { FormControlProps } from '../../../form/FormControl';
 import { FormGroupProps } from '../FormGroup';
 import { FormHelperTextProps } from '../FormHelperText';
-import { FormLabelProps } from '../FormLabel';
+import { FormLabelProps } from '../../../form/FormLabel';
 import { GridLegacyProps } from '../GridLegacy';
 import { GridProps } from '../Grid';
 import { IconButtonProps } from '../IconButton';
