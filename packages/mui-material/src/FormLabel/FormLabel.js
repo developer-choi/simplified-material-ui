@@ -1,33 +1,12 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import formControlState from '../../../form/FormControl/formControlState';
 import useFormControl from '../../../form/FormControl/useFormControl';
-import capitalize from '../utils/capitalize';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
-import formLabelClasses, { getFormLabelUtilityClasses } from './formLabelClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, color, focused, disabled, error, filled, required } = ownerState;
-  const slots = {
-    root: [
-      'root',
-      `color${capitalize(color)}`,
-      disabled && 'disabled',
-      error && 'error',
-      filled && 'filled',
-      focused && 'focused',
-      required && 'required',
-    ],
-    asterisk: ['asterisk', error && 'error'],
-  };
-
-  return composeClasses(slots, getFormLabelUtilityClasses, classes);
-};
+import formLabelClasses from './formLabelClasses';
 
 export const FormLabelRoot = styled('label', {
   name: 'MuiFormLabel',
@@ -116,19 +95,17 @@ const FormLabel = React.forwardRef(function FormLabel(props, ref) {
     required: fcs.required,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <FormLabelRoot
       as={component}
       ownerState={ownerState}
-      className={clsx(classes.root, className)}
+      className={className}
       ref={ref}
       {...other}
     >
       {children}
       {fcs.required && (
-        <AsteriskComponent ownerState={ownerState} aria-hidden className={classes.asterisk}>
+        <AsteriskComponent ownerState={ownerState} aria-hidden>
           &thinsp;{'*'}
         </AsteriskComponent>
       )}
