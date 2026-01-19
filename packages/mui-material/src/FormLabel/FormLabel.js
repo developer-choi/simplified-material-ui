@@ -9,7 +9,6 @@ import capitalize from '../utils/capitalize';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import formLabelClasses, { getFormLabelUtilityClasses } from './formLabelClasses';
 
 const useUtilityClasses = (ownerState) => {
@@ -85,8 +84,7 @@ const AsteriskComponent = styled('span', {
   })),
 );
 
-const FormLabel = React.forwardRef(function FormLabel(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiFormLabel' });
+const FormLabel = React.forwardRef(function FormLabel(props, ref) {
   const {
     children,
     className,
