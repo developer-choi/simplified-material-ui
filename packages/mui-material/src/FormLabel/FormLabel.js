@@ -3,21 +3,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import formControlState from '../../../form/FormControl/formControlState';
 import useFormControl from '../../../form/FormControl/useFormControl';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
-import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
-import formLabelClasses from './formLabelClasses';
-
-const AsteriskComponent = styled('span', {
-  name: 'MuiFormLabel',
-  slot: 'Asterisk',
-})(
-  memoTheme(({ theme }) => ({
-    [`&.${formLabelClasses.error}`]: {
-      color: (theme.vars || theme).palette.error.main,
-    },
-  })),
-);
 
 const FormLabel = React.forwardRef(function FormLabel(props, ref) {
   const {
@@ -37,16 +22,6 @@ const FormLabel = React.forwardRef(function FormLabel(props, ref) {
     muiFormControl,
     states: ['color', 'required', 'focused', 'disabled', 'error', 'filled'],
   });
-
-  const ownerState = {
-    ...props,
-    color: fcs.color || 'primary',
-    disabled: fcs.disabled,
-    error: fcs.error,
-    filled: fcs.filled,
-    focused: fcs.focused,
-    required: fcs.required,
-  };
 
   const getLabelColor = () => {
     if (fcs.error) return '#d32f2f';
@@ -75,9 +50,12 @@ const FormLabel = React.forwardRef(function FormLabel(props, ref) {
     >
       {children}
       {fcs.required && (
-        <AsteriskComponent ownerState={ownerState} aria-hidden>
+        <span
+          aria-hidden
+          style={{ color: fcs.error ? '#d32f2f' : 'inherit' }}
+        >
           &thinsp;{'*'}
-        </AsteriskComponent>
+        </span>
       )}
     </label>
   );
