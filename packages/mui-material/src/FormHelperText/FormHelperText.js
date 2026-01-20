@@ -7,7 +7,6 @@ import formControlState from '../../../form/FormControl/formControlState';
 import useFormControl from '../../../form/FormControl/useFormControl';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import capitalize from '../utils/capitalize';
 import formHelperTextClasses, { getFormHelperTextUtilityClasses } from './formHelperTextClasses';
 
@@ -78,7 +77,6 @@ const FormHelperTextRoot = styled('p', {
 );
 
 const FormHelperText = React.forwardRef(function FormHelperText(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiFormHelperText' });
   const {
     children,
     className,
@@ -91,17 +89,17 @@ const FormHelperText = React.forwardRef(function FormHelperText(inProps, ref) {
     required,
     variant,
     ...other
-  } = props;
+  } = inProps;
 
   const muiFormControl = useFormControl();
   const fcs = formControlState({
-    props,
+    props: inProps,
     muiFormControl,
     states: ['variant', 'size', 'disabled', 'error', 'filled', 'focused', 'required'],
   });
 
   const ownerState = {
-    ...props,
+    ...inProps,
     component,
     contained: fcs.variant === 'filled' || fcs.variant === 'outlined',
     variant: fcs.variant,
