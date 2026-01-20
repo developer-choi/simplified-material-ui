@@ -3,71 +3,16 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import formControlState from '../../../form/FormControl/formControlState';
 import useFormControl from '../../../form/FormControl/useFormControl';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
-import capitalize from '../utils/capitalize';
-import formHelperTextClasses from './formHelperTextClasses';
-
-const FormHelperTextRoot = styled('p', {
-  name: 'MuiFormHelperText',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.root,
-      ownerState.size && styles[`size${capitalize(ownerState.size)}`],
-      ownerState.contained && styles.contained,
-      ownerState.filled && styles.filled,
-    ];
-  },
-})(
-  memoTheme(({ theme }) => ({
-    color: (theme.vars || theme).palette.text.secondary,
-    ...theme.typography.caption,
-    textAlign: 'left',
-    marginTop: 3,
-    marginRight: 0,
-    marginBottom: 0,
-    marginLeft: 0,
-    [`&.${formHelperTextClasses.disabled}`]: {
-      color: (theme.vars || theme).palette.text.disabled,
-    },
-    [`&.${formHelperTextClasses.error}`]: {
-      color: (theme.vars || theme).palette.error.main,
-    },
-    variants: [
-      {
-        props: {
-          size: 'small',
-        },
-        style: {
-          marginTop: 4,
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.contained,
-        style: {
-          marginLeft: 14,
-          marginRight: 14,
-        },
-      },
-    ],
-  })),
-);
 
 const FormHelperText = React.forwardRef(function FormHelperText(inProps, ref) {
   const {
     children,
     className,
-    component = 'p',
     disabled,
     error,
     filled,
     focused,
-    margin,
     required,
-    variant,
     ...other
   } = inProps;
 
@@ -75,32 +20,36 @@ const FormHelperText = React.forwardRef(function FormHelperText(inProps, ref) {
   const fcs = formControlState({
     props: inProps,
     muiFormControl,
-    states: ['variant', 'size', 'disabled', 'error', 'filled', 'focused', 'required'],
+    states: ['disabled', 'error', 'filled', 'focused', 'required'],
   });
 
-  const ownerState = {
-    ...inProps,
-    component,
-    contained: fcs.variant === 'filled' || fcs.variant === 'outlined',
-    variant: fcs.variant,
-    size: fcs.size,
-    disabled: fcs.disabled,
-    error: fcs.error,
-    filled: fcs.filled,
-    focused: fcs.focused,
-    required: fcs.required,
+  // 상태 기반 동적 색상 결정 (error > disabled > default)
+  const getTextColor = () => {
+    if (fcs.error) return '#d32f2f'; // error.main
+    if (fcs.disabled) return 'rgba(0, 0, 0, 0.38)'; // text.disabled
+    return 'rgba(0, 0, 0, 0.6)'; // text.secondary
   };
 
-  // This issue explains why this is required: https://github.com/mui/material-ui/issues/42184
-  delete ownerState.ownerState;
+  const rootStyle = {
+    color: getTextColor(),
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontWeight: 400,
+    fontSize: '0.75rem',
+    lineHeight: 1.66,
+    letterSpacing: '0.03333em',
+    textAlign: 'left',
+    marginTop: 3,
+    marginRight: 0,
+    marginBottom: 0,
+    marginLeft: 0,
+  };
 
   return (
-    <FormHelperTextRoot
-      as={component}
+    <p
       className={className}
       ref={ref}
+      style={rootStyle}
       {...other}
-      ownerState={ownerState}
     >
       {children === ' ' ? (
         // notranslate needed while Google Translate will not fix zero-width space issue
@@ -110,7 +59,7 @@ const FormHelperText = React.forwardRef(function FormHelperText(inProps, ref) {
       ) : (
         children
       )}
-    </FormHelperTextRoot>
+    </p>
   );
 });
 
