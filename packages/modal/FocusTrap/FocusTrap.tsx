@@ -117,8 +117,9 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
         return;
       }
 
-      // The focus is already inside
-      if (rootElement.contains(activeEl)) {
+      const focusIsAlreadyInside = rootElement.contains(activeEl);
+
+      if (focusIsAlreadyInside) {
         return;
       }
 
