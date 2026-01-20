@@ -12,7 +12,7 @@ import FilledInput from '../../../form/FilledInput';
 import OutlinedInput from '../../../form/OutlinedInput';
 import InputLabel from '../../../form/InputLabel';
 import FormControl from '../../../form/FormControl';
-import FormHelperText from '../FormHelperText';
+import FormHelperText from '../../../form/FormHelperText';
 import Select from '../Select';
 import { getTextFieldUtilityClass } from './textFieldClasses';
 import useSlot from '../utils/useSlot';

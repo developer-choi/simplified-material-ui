@@ -4,7 +4,7 @@ import { OverridableStringUnion } from '@mui/types';
 import { Theme } from '../styles';
 import { InternalStandardProps as StandardProps } from '../internal';
 import { FormControlProps } from '../../../form/FormControl';
-import { FormHelperTextProps } from '../FormHelperText';
+import { FormHelperTextProps } from '../../../form/FormHelperText';
 import { InputBaseProps } from '../../../form/InputBase';
 import { InputProps as StandardInputProps } from '../../../form/Input';
 import { FilledInputProps } from '../../../form/FilledInput';

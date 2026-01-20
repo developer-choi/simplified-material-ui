@@ -1,9 +1,9 @@
 import * as React from 'react';
-import FormHelperText from '@mui/material/FormHelperText';
+import FormHelperText from '../../../../form/FormHelperText';
 import FormControl from '../../../../form/FormControl';
 import { createTheme } from '@mui/material/styles';
 
-declare module '@mui/material/FormHelperText' {
+declare module '../../../../form/FormHelperText' {
   interface FormHelperTextPropsVariantOverrides {
     warning: true;
   }

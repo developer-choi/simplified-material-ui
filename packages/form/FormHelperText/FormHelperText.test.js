@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import { createRenderer, screen } from '@mui/internal-test-utils';
-import FormHelperText, { formHelperTextClasses as classes } from '@mui/material/FormHelperText';
-import FormControl from '../../../form/FormControl';
-import describeConformance from '../../test/describeConformance';
+import FormHelperText, { formHelperTextClasses as classes } from './index';
+import FormControl from '../FormControl';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<FormHelperText />', () => {
   const { render } = createRenderer();
