@@ -1,6 +1,16 @@
 # Dialog 컴포넌트
 
-> Dialog를 최소한의 구조로 단순화 - Modal의 얇은 래퍼
+> Modal을 감싸서 중앙 정렬된 대화상자 UI를 제공하는 래퍼 컴포넌트
+
+---
+
+## 이 문서의 목적
+
+**이 문서는 단순화된 Dialog 코드의 "설명서"입니다.**
+
+Dialog는 Modal 위에 얇은 레이어를 추가한 컴포넌트입니다. 단순화했더라도 왜 이렇게 구조화했는지, 각 부분이 어떤 역할을 하는지 이해해야 합니다.
+
+> **💡 참고할 예시**: `docs/modal/FocusTrap-simplified.md` - 가장 상세하게 작성된 문서
 
 ---
 
@@ -9,132 +19,27 @@
 수정된 Dialog는 **Modal을 감싸서 중앙 정렬된 대화상자를 제공하는 단순한 래퍼**입니다.
 
 ### 핵심 기능 (남은 것)
-1. **Modal 래핑** - Modal의 기능 그대로 사용
-2. **중앙 정렬** - DialogContainer로 화면 중앙 배치
-3. **Paper 스타일** - 고정된 카드 디자인
-4. **ARIA 속성** - role="dialog", aria-modal, aria-labelledby
+
+1. **Modal 래핑** - Modal의 기능(Backdrop, FocusTrap, Portal)을 그대로 사용
+2. **중앙 정렬** - DialogContainer로 화면 중앙에 배치
+3. **Paper 스타일** - DialogPaper로 카드 형태 UI 제공
+4. **ARIA 접근성** - `role="dialog"`, `aria-modal`, `aria-labelledby` 자동 설정
+
+> **💡 주의**: Backdrop 클릭 닫기, ESC 키 닫기, 포커스 트랩은 **Modal의 기능**입니다. Dialog 자체는 UI 구조만 담당합니다.
 
 ---
 
-## 내부 구조
+## 핵심 학습 포인트
 
-### 1. 컴포넌트 구조
-
-```javascript
-// 위치: packages/mui-material/src/Dialog/Dialog.js (94줄, 원본 548줄)
-
-Dialog
-  └─> Modal (Modal.js의 단순화된 버전)
-       └─> DialogContainer (중앙 정렬)
-            └─> DialogPaper (고정 스타일)
-                 └─> children
-```
-
-### 2. DialogContainer (6-25줄)
-
-```javascript
-const DialogContainer = React.forwardRef(function DialogContainer(props, ref) {
-  const { children, style, ...other } = props;
-  return (
-    <div
-      ref={ref}
-      role="presentation"
-      {...other}
-      style={{
-        height: '100%',
-        outline: 0,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',  // 항상 중앙 정렬
-        ...style,
-      }}
-    >
-      {children}
-    </div>
-  );
-});
-```
-
-### 3. DialogPaper (27-53줄)
-
-```javascript
-const DialogPaper = React.forwardRef(function DialogPaper(props, ref) {
-  const { children, style, ...other } = props;
-  return (
-    <div
-      ref={ref}
-      role="dialog"
-      aria-modal="true"
-      {...other}
-      style={{
-        margin: 32,
-        position: 'relative',
-        overflowY: 'auto',
-        display: 'flex',
-        flexDirection: 'column',
-        maxHeight: 'calc(100% - 64px)',
-        maxWidth: '600px',                    // 고정
-        width: 'calc(100% - 64px)',
-        backgroundColor: '#fff',              // 고정
-        borderRadius: 4,                      // 고정
-        boxShadow: '0px 11px 15px -7px rgba(0,0,0,0.2),0px 24px 38px 3px rgba(0,0,0,0.14),0px 9px 46px 8px rgba(0,0,0,0.12)',  // elevation 24
-        ...style,
-      }}
-    >
-      {children}
-    </div>
-  );
-});
-```
-
-**고정된 스타일**:
-- `maxWidth: 600px` (원본은 'sm' breakpoint)
-- `backgroundColor: #fff`
-- `borderRadius: 4px`
-- `boxShadow: elevation 24` (Material Design)
-
-### 4. Props (5개만 남음)
-
-| Prop | 타입 | 기본값 | 설명 |
-|------|------|--------|------|
-| `open` | boolean | **required** | 대화상자 표시 여부 |
-| `onClose` | function | - | 닫기 콜백 |
-| `children` | node | - | 대화상자 내용 |
-| `disableEscapeKeyDown` | boolean | false | ESC 키 비활성화 |
-| `aria-describedby` | string | - | 설명 요소 ID |
-| `aria-labelledby` | string | - | 제목 요소 ID (자동 생성) |
-
-### 5. Dialog 컴포넌트 (58-91줄)
+### 1. Composition 패턴 - Modal 위에 레이어 쌓기
 
 ```javascript
 const Dialog = React.forwardRef(function Dialog(inProps, ref) {
-  const {
-    'aria-describedby': ariaDescribedby,
-    'aria-labelledby': ariaLabelledbyProp,
-    children,
-    className,
-    disableEscapeKeyDown = false,
-    onClose,
-    open,
-    ...other
-  } = inProps;
-
-  const ariaLabelledby = useId(ariaLabelledbyProp);
-
+  // ...
   return (
-    <Modal
-      ref={ref}
-      className={className}
-      disableEscapeKeyDown={disableEscapeKeyDown}
-      onClose={onClose}
-      open={open}
-      {...other}
-    >
-      <DialogContainer>
-        <DialogPaper
-          aria-describedby={ariaDescribedby}
-          aria-labelledby={ariaLabelledby}
-        >
+    <Modal ...>              {/* 기반 기능 제공 */}
+      <DialogContainer>      {/* 중앙 정렬 */}
+        <DialogPaper>        {/* 카드 스타일 */}
           {children}
         </DialogPaper>
       </DialogContainer>
@@ -143,49 +48,343 @@ const Dialog = React.forwardRef(function Dialog(inProps, ref) {
 });
 ```
 
+**학습 가치**:
+- **관심사 분리**: Modal은 "열림/닫힘 + 오버레이", Dialog는 "UI 구조"
+- **재사용성**: Modal을 직접 수정하지 않고 래핑으로 확장
+- **단일 책임**: 각 컴포넌트가 한 가지 역할만 수행
+
+### 2. 내부 컴포넌트 분리 - DialogContainer와 DialogPaper
+
+```javascript
+// DialogContainer: 중앙 정렬 담당
+const DialogContainer = React.forwardRef(function DialogContainer(props, ref) {
+  return (
+    <div
+      style={{
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',  // Flexbox 중앙 정렬
+      }}
+    >
+      {children}
+    </div>
+  );
+});
+
+// DialogPaper: 카드 스타일 담당
+const DialogPaper = React.forwardRef(function DialogPaper(props, ref) {
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      style={{
+        maxWidth: '600px',
+        backgroundColor: '#fff',
+        borderRadius: 4,
+        boxShadow: '...',  // elevation 24
+      }}
+    >
+      {children}
+    </div>
+  );
+});
+```
+
+**학습 가치**:
+- **역할 분리**: Container는 "위치", Paper는 "외관"
+- **가독성**: 인라인으로 모든 스타일을 넣는 것보다 컴포넌트로 분리하면 의도가 명확
+- **Spread Override 패턴**: `...style`로 사용자 커스터마이징 허용
+
+### 3. useId를 활용한 접근성 ID 자동 생성
+
+```javascript
+import useId from '@mui/utils/useId';
+
+const Dialog = React.forwardRef(function Dialog(inProps, ref) {
+  const {
+    'aria-labelledby': ariaLabelledbyProp,  // 사용자 지정 가능
+    // ...
+  } = inProps;
+
+  const ariaLabelledby = useId(ariaLabelledbyProp);  // 없으면 자동 생성
+
+  return (
+    <Modal ...>
+      <DialogContainer>
+        <DialogPaper aria-labelledby={ariaLabelledby}>
+          {children}
+        </DialogPaper>
+      </DialogContainer>
+    </Modal>
+  );
+});
+```
+
+**학습 가치**:
+- **useId 훅**: React 18+에서 SSR-safe한 고유 ID 생성
+- **접근성**: 스크린 리더가 Dialog 제목을 읽을 수 있게 연결
+- **유연성**: 사용자가 ID를 지정하면 그 값 사용, 아니면 자동 생성
+
+---
+
+## 내부 구조
+
+### 1. 렌더링 구조
+
+```javascript
+// 위치: packages/modal/Dialog/Dialog.js (94줄, 원본 548줄)
+
+Dialog
+  └─> Modal  ← Portal, Backdrop, FocusTrap 제공
+       └─> DialogContainer  ← height:100%, Flexbox 중앙 정렬
+            └─> DialogPaper  ← role="dialog", 카드 스타일
+                 └─> children
+```
+
+### 2. 핵심 상태 (ref, state, 변수)
+
+| 이름 | 타입 | 용도 |
+|------|------|------|
+| `ariaLabelledby` | 변수 | `useId()`로 생성된 접근성 ID |
+
+> Dialog는 상태가 거의 없습니다. 열림/닫힘 상태는 **Modal이 관리**합니다.
+
+### 3. 함수 역할
+
+Dialog 자체에는 함수가 없습니다. 모든 이벤트 처리는 Modal에 위임합니다.
+
+#### Props 전달 흐름
+
+```javascript
+// Dialog가 받은 props를 Modal에 그대로 전달
+<Modal
+  ref={ref}
+  className={className}
+  disableEscapeKeyDown={disableEscapeKeyDown}  // ESC 키 처리
+  onClose={onClose}                            // 닫기 콜백
+  open={open}                                  // 열림 상태
+  {...other}                                   // 나머지 props
+>
+```
+
+**왜 이렇게 구현했는지**: Dialog는 UI 구조만 담당하고, 모든 동작 로직은 Modal에 맡깁니다. 이것이 **Thin Wrapper 패턴**입니다.
+
+### 4. 동작 흐름
+
+#### Dialog 열림 흐름
+
+```
+open={true} 전달
+        ↓
+Modal이 Portal로 document.body에 렌더링
+        ↓
+Modal이 Backdrop 표시
+        ↓
+Modal이 FocusTrap 활성화
+        ↓
+DialogContainer가 Flexbox로 중앙 정렬
+        ↓
+DialogPaper가 카드 형태로 children 표시
+```
+
+#### Dialog 닫힘 흐름
+
+```
+사용자 액션 (ESC 키 또는 Backdrop 클릭)
+        ↓
+Modal이 onClose 콜백 호출
+        ↓
+┌─────────────────────────────────┐
+│ 부모 컴포넌트가 open을 false로  │
+└─────────────────────────────────┘
+        ↓
+Modal이 FocusTrap 비활성화 + 포커스 복원
+        ↓
+전체 트리 언마운트
+```
+
+### 5. 핵심 패턴/플래그
+
+#### role="presentation" vs role="dialog"
+
+```javascript
+// DialogContainer
+<div role="presentation" ...>  // 시맨틱 의미 없음, 레이아웃용
+
+// DialogPaper
+<div role="dialog" aria-modal="true" ...>  // 진짜 대화상자
+```
+
+**왜 필요한가?**
+
+- `role="presentation"`: 스크린 리더에게 "이건 그냥 레이아웃 컨테이너야"라고 알림
+- `role="dialog"`: 스크린 리더에게 "여기가 대화상자야, 집중해"라고 알림
+- 둘을 분리해야 스크린 리더가 정확한 위치를 인식
+
+### 6. 주요 변경 사항 (원본 대비)
+
+```javascript
+// 원본: styled() + 복잡한 props
+const DialogPaper = styled(Paper, {
+  name: 'MuiDialog',
+  slot: 'Paper',
+  overridesResolver: (props, styles) => { ... },
+})(memoTheme(({ theme, ownerState }) => ({
+  // 테마 기반 동적 스타일
+  maxWidth: theme.breakpoints.values[ownerState.maxWidth],
+  // ...
+})));
+
+// 수정본: 인라인 스타일 + 고정값
+const DialogPaper = React.forwardRef(function DialogPaper(props, ref) {
+  return (
+    <div
+      style={{
+        maxWidth: '600px',  // 고정
+        backgroundColor: '#fff',  // 고정
+        // ...
+      }}
+    >
+      {children}
+    </div>
+  );
+});
+```
+
+**원본과의 차이**:
+- ❌ `styled()` 제거 → 인라인 스타일
+- ❌ `maxWidth` prop (xs/sm/md/lg/xl) 제거 → 600px 고정
+- ❌ `fullWidth` prop 제거 → 고정 너비
+- ❌ `fullScreen` prop 제거 → 항상 카드 형태
+- ❌ `scroll` prop 제거 → 항상 paper 스크롤 모드
+- ❌ `TransitionComponent` 제거 → 즉시 표시
+- ❌ `DialogContext` 제거 → 하위 컴포넌트와 통신 불가
+- ✅ `aria-labelledby` 유지 → 접근성 필수
+
+### 7. Props
+
+| Prop | 타입 | 기본값 | 설명 |
+|------|------|--------|------|
+| `open` | boolean | **필수** | 대화상자 표시 여부 |
+| `onClose` | function | - | 닫기 콜백 `(event, reason) => void` |
+| `children` | ReactNode | - | 대화상자 내용 |
+| `disableEscapeKeyDown` | boolean | `false` | ESC 키로 닫기 비활성화 |
+| `aria-labelledby` | string | 자동생성 | 제목 요소 ID |
+| `aria-describedby` | string | - | 설명 요소 ID |
+| `className` | string | - | Modal에 전달할 CSS 클래스 |
+
+**제거된 Props**:
+- ❌ `maxWidth` - 600px 고정으로 충분
+- ❌ `fullWidth` - 학습 목적에 불필요
+- ❌ `fullScreen` - 학습 목적에 불필요
+- ❌ `scroll` - paper 모드로 고정
+- ❌ `TransitionComponent` - 애니메이션은 별도 학습
+- ❌ `PaperComponent` - 커스터마이징 제거
+- ❌ `BackdropComponent` - 커스터마이징 제거
+
 ---
 
 ## 커밋 히스토리로 보는 단순화 과정
 
-Dialog는 **45개의 커밋**을 통해 단순화되었으며, Modal과 FocusTrap의 변경 사항을 모두 포함합니다.
+Dialog는 **17개의 커밋**을 통해 단순화되었습니다.
 
-### Dialog 전용 커밋 (19개)
+### 1단계: Slot 시스템 제거
 
-#### 1단계: Slot 시스템 제거
-- `2b80ce8c` - Dialog에 Slot 삭제 (122줄 변경)
+- `9e72205c` - Dialog에 Slot 삭제
 
-#### 2단계: Transition 제거
-- `c7adbd14` - Dialog에서 Transition 다 삭제 (81줄 변경)
-- Fade, Grow 등 애니메이션 컴포넌트 제거
+**삭제된 코드**:
+```javascript
+// slots, slotProps, components, componentsProps
+const [PaperSlot, paperSlotProps] = useSlot('paper', { ... });
+const [BackdropSlot, backdropSlotProps] = useSlot('backdrop', { ... });
+```
 
-#### 3단계: Component Props 제거
-- `c49dd05d` - BackdropComponent 고정
-- `0bb97028` - PaperComponent 고정
+**왜 불필요한가**:
+- **학습 목적**: Dialog 핵심은 "Modal + 중앙 정렬"이지 "커스터마이징 시스템"이 아님
+- **복잡도**: useSlot() 훅, props 병합 로직 등 제거
 
-#### 4단계: Layout Props 제거
-- `12d5d63d` - fullScreen prop 삭제
-- `d9e0dce3` - fullWidth prop 삭제
-- `6406e2ae` - maxWidth prop 삭제 (breakpoint 반응형 제거)
-- `89ab41ad` - scroll prop 삭제 (항상 paper 모드)
+### 2단계: Transition 제거
 
-#### 5단계: 이벤트 Props 제거
-- `c635fc56` - onClick prop 삭제
+- `88c1b472` - Dialog에서 Transition 다 삭제
 
-#### 6단계: 테마 시스템 제거
-- `2cbc4407` - useDefaultProps 삭제
-- `72ad74e0` - useUtilityClasses, composeClasses 삭제
-- `054e6ff1` - memoTheme 삭제
+**삭제된 코드**:
+```javascript
+import Fade from '../Fade';
+const TransitionComponent = Fade;
+// transitionDuration, TransitionProps 등
+```
 
-#### 7단계: 스타일 단순화
-- `017c123a` - classes, sx, ownerState 등 스타일 시스템 삭제
-- `5ec31173` - Dialog 구현 단순화, styled 제거, 인라인 스타일로 전환 (164줄 변경)
+**왜 불필요한가**:
+- **학습 목적**: 애니메이션은 Transition 컴포넌트에서 별도 학습
+- **복잡도**: 81줄 감소
 
-#### 8단계: 컴포넌트 재구성
-- `8f2f5d7a` - DialogContainer, DialogPaper 컴포넌트 재도입 (82줄 변경)
-- 가독성 향상을 위해 인라인 스타일을 별도 컴포넌트로 분리
+### 3단계: Component Props 제거
 
-#### 9단계: Context 제거
-- `8da250ba` - DialogContext 기능 삭제
+- `8bc8941d` - BackdropComponent 고정
+- `b00786739b` - PaperComponent 고정
+
+**왜 불필요한가**:
+- **학습 목적**: 기본 구조 이해가 목표, 커스터마이징은 고급 주제
+
+### 4단계: Layout Props 제거
+
+- `ea2b00cc` - fullScreen prop 삭제
+- `a8629a88` - fullWidth prop 삭제
+- `1dd9a04d` - maxWidth prop 삭제
+- `5ff021ec` - scroll prop 삭제
+
+**삭제된 코드**:
+```javascript
+// 반응형 breakpoint 처리
+maxWidth: theme.breakpoints.values[ownerState.maxWidth],
+
+// fullScreen 처리
+...(ownerState.fullScreen && {
+  margin: 0,
+  width: '100%',
+  maxWidth: '100%',
+  // ...
+}),
+```
+
+**왜 불필요한가**:
+- **학습 목적**: 기본 형태(600px 중앙 정렬)로도 Dialog 개념 충분히 이해 가능
+- **복잡도**: breakpoint 계산, 조건부 스타일 등 제거
+
+### 5단계: 테마 시스템 제거
+
+- `87da2fa6` - useDefaultProps 삭제
+- `91ff3513` - useUtilityClasses, composeClasses 삭제
+- `59795afe` - memoTheme 삭제
+
+**왜 불필요한가**:
+- **학습 목적**: 테마 시스템은 Material-UI 전체 주제, Dialog 학습과 분리
+
+### 6단계: 스타일 단순화
+
+- `0321935f` - classes, sx, ownerState 삭제
+- `d0b0d671` - styled 제거, 인라인 스타일로 전환
+- `e204177d` - DialogContainer, DialogPaper 컴포넌트 재도입
+
+**왜 이렇게 변경했나**:
+- styled() 제거 후 인라인 스타일이 복잡해짐
+- 가독성을 위해 내부 컴포넌트로 분리
+
+### 7단계: Context 제거
+
+- `58a1b606` - DialogContext 기능 삭제
+
+**삭제된 코드**:
+```javascript
+import DialogContext from './DialogContext';
+// DialogTitle, DialogContent 등과 통신하는 Context
+<DialogContext.Provider value={{ titleId: ariaLabelledby }}>
+```
+
+**왜 불필요한가**:
+- **학습 목적**: Context 통신은 고급 주제
+- **대안**: aria-labelledby를 직접 전달
 
 ---
 
@@ -194,13 +393,51 @@ Dialog는 **45개의 커밋**을 통해 단순화되었으며, Modal과 FocusTra
 | 항목 | 원본 | 수정본 |
 |------|------|--------|
 | **코드 라인** | 548줄 | 94줄 (83% 감소) |
-| **Props 개수** | 15개 | 5개 |
-| **styled 사용** | ✅ (4개 컴포넌트) | ❌ |
-| **테마 통합** | ✅ | ❌ |
-| **Transition** | ✅ Fade | ❌ |
+| **Props 개수** | 15개 | 7개 |
+| **styled 사용** | ✅ 4개 컴포넌트 | ❌ 인라인 스타일 |
+| **테마 통합** | ✅ | ❌ 하드코딩 |
+| **Transition** | ✅ Fade | ❌ 즉시 표시 |
 | **DialogContext** | ✅ | ❌ |
-| **maxWidth** | xs/sm/md/lg/xl | ❌ (600px 고정) |
+| **maxWidth** | xs/sm/md/lg/xl | ❌ 600px 고정 |
 | **fullWidth** | ✅ | ❌ |
 | **fullScreen** | ✅ | ❌ |
-| **scroll 모드** | paper/body | ❌ (항상 paper) |
-| **Backdrop 클릭** | 정교한 처리 | 기본 처리 (Modal에서) |
+| **scroll 모드** | paper/body | ❌ paper 고정 |
+| **Slot 시스템** | ✅ | ❌ |
+
+---
+
+## 학습 후 다음 단계
+
+Dialog를 이해했다면:
+
+1. **Modal** - Dialog가 감싸는 기반 컴포넌트, 핵심 로직 학습
+2. **FocusTrap** - Modal 내부의 포커스 관리 메커니즘
+3. **Drawer** - Dialog와 비슷하게 Modal을 래핑하지만 다른 UI (사이드 패널)
+4. **실전 응용** - 확인 대화상자, 폼 대화상자 직접 만들기
+
+**예시: 기본 사용**
+```javascript
+function ConfirmDialog({ open, onClose, onConfirm }) {
+  return (
+    <Dialog open={open} onClose={onClose}>
+      <h2 id="dialog-title">확인</h2>
+      <p>정말 삭제하시겠습니까?</p>
+      <button onClick={onClose}>취소</button>
+      <button onClick={onConfirm}>확인</button>
+    </Dialog>
+  );
+}
+```
+
+**예시: aria-labelledby 사용**
+```javascript
+<Dialog
+  open={open}
+  onClose={onClose}
+  aria-labelledby="my-dialog-title"
+  aria-describedby="my-dialog-description"
+>
+  <h2 id="my-dialog-title">제목</h2>
+  <p id="my-dialog-description">설명 텍스트</p>
+</Dialog>
+```
