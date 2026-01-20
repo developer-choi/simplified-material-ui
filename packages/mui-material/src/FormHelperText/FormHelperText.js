@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import formControlState from '../../../form/FormControl/formControlState';
 import useFormControl from '../../../form/FormControl/useFormControl';
 
@@ -62,71 +61,5 @@ const FormHelperText = React.forwardRef(function FormHelperText(inProps, ref) {
     </p>
   );
 });
-
-FormHelperText.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * The content of the component.
-   *
-   * If `' '` is provided, the component reserves one line height for displaying a future message.
-   */
-  children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
-  /**
-   * If `true`, the helper text should be displayed in a disabled state.
-   */
-  disabled: PropTypes.bool,
-  /**
-   * If `true`, helper text should be displayed in an error state.
-   */
-  error: PropTypes.bool,
-  /**
-   * If `true`, the helper text should use filled classes key.
-   */
-  filled: PropTypes.bool,
-  /**
-   * If `true`, the helper text should use focused classes key.
-   */
-  focused: PropTypes.bool,
-  /**
-   * If `dense`, will adjust vertical spacing. This is normally obtained via context from
-   * FormControl.
-   */
-  margin: PropTypes.oneOf(['dense']),
-  /**
-   * If `true`, the helper text should use required classes key.
-   */
-  required: PropTypes.bool,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-  /**
-   * The variant to use.
-   */
-  variant: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['filled', 'outlined', 'standard']),
-    PropTypes.string,
-  ]),
-};
 
 export default FormHelperText;
