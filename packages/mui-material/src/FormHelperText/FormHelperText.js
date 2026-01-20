@@ -1,32 +1,12 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import formControlState from '../../../form/FormControl/formControlState';
 import useFormControl from '../../../form/FormControl/useFormControl';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import capitalize from '../utils/capitalize';
-import formHelperTextClasses, { getFormHelperTextUtilityClasses } from './formHelperTextClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, contained, size, disabled, error, filled, focused, required } = ownerState;
-  const slots = {
-    root: [
-      'root',
-      disabled && 'disabled',
-      error && 'error',
-      size && `size${capitalize(size)}`,
-      contained && 'contained',
-      focused && 'focused',
-      filled && 'filled',
-      required && 'required',
-    ],
-  };
-
-  return composeClasses(slots, getFormHelperTextUtilityClasses, classes);
-};
+import formHelperTextClasses from './formHelperTextClasses';
 
 const FormHelperTextRoot = styled('p', {
   name: 'MuiFormHelperText',
@@ -114,12 +94,10 @@ const FormHelperText = React.forwardRef(function FormHelperText(inProps, ref) {
   // This issue explains why this is required: https://github.com/mui/material-ui/issues/42184
   delete ownerState.ownerState;
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <FormHelperTextRoot
       as={component}
-      className={clsx(classes.root, className)}
+      className={className}
       ref={ref}
       {...other}
       ownerState={ownerState}
