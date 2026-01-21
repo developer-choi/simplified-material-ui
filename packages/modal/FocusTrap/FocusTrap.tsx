@@ -130,15 +130,12 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
           lastKeydown.current?.shiftKey && lastKeydown.current?.key === 'Tab',
         );
 
-        const focusNext = tabbable[0];
-        const focusPrevious = tabbable[tabbable.length - 1];
-
-        if (typeof focusNext !== 'string' && typeof focusPrevious !== 'string') {
-          if (isShiftTab) {
-            focusPrevious.focus();
-          } else {
-            focusNext.focus();
-          }
+        if (isShiftTab) {
+          const focusPrevious = tabbable[tabbable.length - 1];
+          focusPrevious.focus();
+        } else {
+          const focusNext = tabbable[0];
+          focusNext.focus();
         }
         // no tabbable elements in the trap focus or the focus was outside of the focus trap
       } else {
