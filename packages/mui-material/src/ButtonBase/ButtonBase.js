@@ -2,7 +2,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import refType from '@mui/utils/refType';
 import elementTypeAcceptingRef from '@mui/utils/elementTypeAcceptingRef';
 import composeClasses from '@mui/utils/composeClasses';
 import isFocusVisible from '@mui/utils/isFocusVisible';
@@ -75,7 +74,6 @@ export const ButtonBaseRoot = styled('button', {
 const ButtonBase = React.forwardRef(function ButtonBase(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiButtonBase' });
   const {
-    action,
     children,
     className,
     component = 'button',
@@ -109,17 +107,6 @@ const ButtonBase = React.forwardRef(function ButtonBase(inProps, ref) {
   if (disabled && focusVisible) {
     setFocusVisible(false);
   }
-
-  React.useImperativeHandle(
-    action,
-    () => ({
-      focusVisible: () => {
-        setFocusVisible(true);
-        buttonRef.current.focus();
-      },
-    }),
-    [],
-  );
 
   const enableTouchRipple = ripple.shouldMount && !disabled;
 
@@ -300,11 +287,6 @@ ButtonBase.propTypes /* remove-proptypes */ = {
   // │ These PropTypes are generated from the TypeScript type definitions. │
   // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
   // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * A ref for imperative actions.
-   * It currently only supports `focusVisible()` action.
-   */
-  action: refType,
   /**
    * The content of the component.
    */
