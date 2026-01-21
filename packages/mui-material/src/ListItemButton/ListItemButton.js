@@ -7,7 +7,7 @@ import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
-import ButtonBase from '../ButtonBase';
+import ButtonBase from '../../../form/ButtonBase';
 import useEnhancedEffect from '../utils/useEnhancedEffect';
 import useForkRef from '../utils/useForkRef';
 import ListContext from '../List/ListContext';

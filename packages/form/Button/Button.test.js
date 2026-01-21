@@ -5,7 +5,7 @@ import describeSkipIf from '@mui/internal-test-utils/describeSkipIf';
 import { ClassNames } from '@emotion/react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Button, { buttonClasses as classes } from './index';
-import ButtonBase, { touchRippleClasses } from '@mui/material/ButtonBase';
+import ButtonBase, { touchRippleClasses } from '../ButtonBase';
 import describeConformance from '../../mui-material/test/describeConformance';
 import * as ripple from '../../mui-material/test/ripple';
 

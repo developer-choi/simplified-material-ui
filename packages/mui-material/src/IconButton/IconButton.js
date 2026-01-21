@@ -9,7 +9,7 @@ import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import ButtonBase from '../ButtonBase';
+import ButtonBase from '../../../form/ButtonBase';
 import CircularProgress from '../CircularProgress';
 import capitalize from '../utils/capitalize';
 import iconButtonClasses, { getIconButtonUtilityClass } from './iconButtonClasses';

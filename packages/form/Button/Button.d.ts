@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DistributiveOmit, OverridableStringUnion } from '@mui/types';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
-import { ExtendButtonBase, ExtendButtonBaseTypeMap } from '@mui/material/ButtonBase';
+import { ExtendButtonBase, ExtendButtonBaseTypeMap } from '../ButtonBase';
 import { OverrideProps, OverridableComponent, OverridableTypeMap } from '@mui/material/OverridableComponent';
 import { ButtonClasses } from './buttonClasses';
 

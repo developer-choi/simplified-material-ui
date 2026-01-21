@@ -2,7 +2,7 @@ import { SxProps } from '@mui/system';
 import { OverridableStringUnion } from '@mui/types';
 import * as React from 'react';
 import { Theme } from '../styles';
-import { ExtendButtonBase, ExtendButtonBaseTypeMap } from '../ButtonBase';
+import { ExtendButtonBase, ExtendButtonBaseTypeMap } from '../../../form/ButtonBase';
 import { OverrideProps } from '../OverridableComponent';
 import { ToggleButtonClasses } from './toggleButtonClasses';
 

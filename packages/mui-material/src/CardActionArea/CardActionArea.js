@@ -7,7 +7,7 @@ import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import cardActionAreaClasses, { getCardActionAreaUtilityClass } from './cardActionAreaClasses';
-import ButtonBase from '../ButtonBase';
+import ButtonBase from '../../../form/ButtonBase';
 import useSlot from '../utils/useSlot';
 
 const useUtilityClasses = (ownerState) => {

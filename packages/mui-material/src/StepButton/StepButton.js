@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import ButtonBase from '../ButtonBase';
+import ButtonBase from '../../../form/ButtonBase';
 import StepLabel from '../StepLabel';
 import isMuiElement from '../utils/isMuiElement';
 import StepperContext from '../Stepper/StepperContext';

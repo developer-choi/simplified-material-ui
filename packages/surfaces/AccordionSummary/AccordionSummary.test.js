@@ -6,7 +6,7 @@ import AccordionSummary, {
   accordionSummaryClasses as classes,
 } from './index';
 import Accordion from '../Accordion';
-import ButtonBase from '@mui/material/ButtonBase';
+import ButtonBase from '../../form/ButtonBase';
 import describeConformance from '../../mui-material/test/describeConformance';
 
 const CustomButtonBase = React.forwardRef(({ focusVisible, ...props }, ref) => (

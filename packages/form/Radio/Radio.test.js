@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { createRenderer, screen } from '@mui/internal-test-utils';
 import Radio, { radioClasses as classes } from './index';
 import FormControl from '../FormControl';
-import ButtonBase from '@mui/material/ButtonBase';
+import ButtonBase from '../ButtonBase';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import switchBaseClasses from '@mui/material/internal/switchBaseClasses';
 import describeConformance from '../../mui-material/test/describeConformance';

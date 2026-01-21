@@ -5,7 +5,7 @@ import { createRenderer, within, screen } from '@mui/internal-test-utils';
 import BottomNavigationAction, {
   bottomNavigationActionClasses as classes,
 } from './index';
-import ButtonBase from '@mui/material/ButtonBase';
+import ButtonBase from '../../form/ButtonBase';
 import describeConformance from '../../mui-material/test/describeConformance';
 
 const CustomButtonBase = React.forwardRef(({ focusRipple, ...props }, ref) => (

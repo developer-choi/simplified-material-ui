@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import resolveProps from '@mui/utils/resolveProps';
 import composeClasses from '@mui/utils/composeClasses';
-import ButtonBase from '../ButtonBase';
+import ButtonBase from '../../../form/ButtonBase';
 import capitalize from '../utils/capitalize';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';

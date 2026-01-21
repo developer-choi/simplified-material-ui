@@ -3,7 +3,7 @@ import { spy } from 'sinon';
 import { createRenderer, screen } from '@mui/internal-test-utils';
 import describeSkipIf from '@mui/internal-test-utils/describeSkipIf';
 import ToggleButton, { toggleButtonClasses as classes } from '@mui/material/ToggleButton';
-import ButtonBase from '@mui/material/ButtonBase';
+import ButtonBase from '../../../form/ButtonBase';
 import describeConformance from '../../test/describeConformance';
 
 describe('<ToggleButton />', () => {

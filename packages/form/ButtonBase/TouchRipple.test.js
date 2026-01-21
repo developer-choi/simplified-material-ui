@@ -2,7 +2,7 @@ import * as React from 'react';
 import { expect } from 'chai';
 import { act, createRenderer } from '@mui/internal-test-utils';
 import TouchRipple, { DELAY_RIPPLE } from './TouchRipple';
-import describeConformance from '../../test/describeConformance';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 const cb = () => {};
 

@@ -7,7 +7,7 @@ import {
   ButtonBaseTypeMap,
   ExtendButtonBase,
   ExtendButtonBaseTypeMap,
-} from '../ButtonBase';
+} from '../../../form/ButtonBase';
 import { OverrideProps } from '../OverridableComponent';
 import { CardActionAreaClasses } from './cardActionAreaClasses';
 

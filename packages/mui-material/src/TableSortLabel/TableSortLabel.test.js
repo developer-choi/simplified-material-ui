@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createRenderer, screen } from '@mui/internal-test-utils';
 import TableSortLabel, { tableSortLabelClasses as classes } from '@mui/material/TableSortLabel';
-import ButtonBase from '@mui/material/ButtonBase';
+import ButtonBase from '../../../form/ButtonBase';
 import { createSvgIcon } from '@mui/material/utils';
 import describeConformance from '../../test/describeConformance';
 

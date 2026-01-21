@@ -3,7 +3,7 @@ import * as React from 'react';
 import clsx from 'clsx';
 import resolveProps from '@mui/utils/resolveProps';
 import { unstable_useId as useId } from '@mui/material/utils';
-import ButtonBase from '@mui/material/ButtonBase';
+import ButtonBase from '../ButtonBase';
 import CircularProgress from '@mui/material/CircularProgress';
 import ButtonGroupContext from '@mui/material/ButtonGroup/ButtonGroupContext';
 import ButtonGroupButtonContext from '@mui/material/ButtonGroup/ButtonGroupButtonContext';

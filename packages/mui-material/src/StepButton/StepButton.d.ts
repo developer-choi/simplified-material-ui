@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SxProps } from '@mui/system';
-import { ButtonBaseTypeMap, ExtendButtonBase, ExtendButtonBaseTypeMap } from '../ButtonBase';
+import { ButtonBaseTypeMap, ExtendButtonBase, ExtendButtonBaseTypeMap } from '../../../form/ButtonBase';
 import { OverrideProps } from '../OverridableComponent';
 import { Theme } from '../styles';
 import { StepButtonClasses } from './stepButtonClasses';

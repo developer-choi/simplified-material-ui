@@ -3,7 +3,7 @@ import composeClasses from '@mui/utils/composeClasses';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import * as React from 'react';
-import ButtonBase from '../ButtonBase';
+import ButtonBase from '../../../form/ButtonBase';
 import ArrowDownwardIcon from '../internal/svg-icons/ArrowDownward';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';

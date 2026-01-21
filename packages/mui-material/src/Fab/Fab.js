@@ -3,7 +3,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
-import ButtonBase from '../ButtonBase';
+import ButtonBase from '../../../form/ButtonBase';
 import capitalize from '../utils/capitalize';
 import fabClasses, { getFabUtilityClass } from './fabClasses';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';

@@ -2,9 +2,9 @@
 import * as React from 'react';
 import clsx from 'clsx';
 import isFocusVisible from '@mui/utils/isFocusVisible';
-import useForkRef from '../utils/useForkRef';
-import useEventCallback from '../utils/useEventCallback';
-import useLazyRipple from '../useLazyRipple';
+import useForkRef from '@mui/material/utils/useForkRef';
+import useEventCallback from '@mui/material/utils/useEventCallback';
+import useLazyRipple from '@mui/material/useLazyRipple';
 import TouchRipple from './TouchRipple';
 
 // 버튼 기본 스타일 (브라우저 기본 스타일 리셋)
