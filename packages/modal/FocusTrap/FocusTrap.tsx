@@ -57,17 +57,12 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
       rootRef.current.focus();
     }
 
-    // 3. Cleanup & Restore (포커스 복원)
     return () => {
-      // 항상 포커스 복원 (disableRestoreFocus=false 기본값)
-      if (nodeToRestore.current && (nodeToRestore.current as HTMLElement).focus) {
+      if (nodeToRestore.current) {
         // 포커스 트랩의 감시망을 잠시 끄고(flag), 원래 버튼으로 포커스 복귀
         ignoreNextEnforceFocus.current = true;
 
-        // IE11 호환성 체크 로직 제거 (현대 브라우저는 HTMLElement에 focus가 무조건 있음)
         nodeToRestore.current.focus();
-
-        // 참조 해제
         nodeToRestore.current = null;
       }
     };
