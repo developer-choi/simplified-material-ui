@@ -170,15 +170,6 @@ const ButtonLoadingIndicator = styled('span', {
   ],
 }));
 
-const ButtonLoadingIconPlaceholder = styled('span', {
-  name: 'MuiButton',
-  slot: 'LoadingIconPlaceholder',
-})({
-  display: 'inline-block',
-  width: '1em',
-  height: '1em',
-});
-
 const Button = React.forwardRef(function Button(inProps, ref) {
   // props priority: `inProps` > `contextProps`
   const contextProps = React.useContext(ButtonGroupContext);
