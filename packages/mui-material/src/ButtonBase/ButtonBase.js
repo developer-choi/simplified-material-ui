@@ -79,35 +79,20 @@ const ButtonBase = React.forwardRef(function ButtonBase(inProps, ref) {
   const handleContextMenu = useRippleHandler(ripple, 'stop', onContextMenu);
   const handleDragLeave = useRippleHandler(ripple, 'stop', onDragLeave);
   const handleMouseUp = useRippleHandler(ripple, 'stop', onMouseUp);
-  const handleMouseLeave = useRippleHandler(
-    ripple,
-    'stop',
-    (event) => {
-      if (focusVisible) {
-        event.preventDefault();
-      }
-      if (onMouseLeave) {
-        onMouseLeave(event);
-      }
-    },
-  );
+  const handleMouseLeave = useRippleHandler(ripple, 'stop', onMouseLeave);
   const handleTouchStart = useRippleHandler(ripple, 'start', onTouchStart);
   const handleTouchEnd = useRippleHandler(ripple, 'stop', onTouchEnd);
   const handleTouchMove = useRippleHandler(ripple, 'stop', onTouchMove);
 
-  const handleBlur = useRippleHandler(
-    ripple,
-    'stop',
-    (event) => {
-      if (!isFocusVisible(event.target)) {
-        setFocusVisible(false);
-      }
-      if (onBlur) {
-        onBlur(event);
-      }
-    },
-    false,
-  );
+  const handleBlur = useEventCallback((event) => {
+    ripple.stop(event);
+    if (!isFocusVisible(event.target)) {
+      setFocusVisible(false);
+    }
+    if (onBlur) {
+      onBlur(event);
+    }
+  });
 
   const handleFocus = useEventCallback((event) => {
     // Fix for https://github.com/facebook/react/issues/7769
