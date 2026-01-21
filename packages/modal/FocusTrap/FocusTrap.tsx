@@ -57,17 +57,12 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
       rootRef.current.focus();
     }
 
-    // 3. Cleanup & Restore (포커스 복원)
     return () => {
-      // 항상 포커스 복원 (disableRestoreFocus=false 기본값)
-      if (nodeToRestore.current && (nodeToRestore.current as HTMLElement).focus) {
+      if (nodeToRestore.current) {
         // 포커스 트랩의 감시망을 잠시 끄고(flag), 원래 버튼으로 포커스 복귀
         ignoreNextEnforceFocus.current = true;
 
-        // IE11 호환성 체크 로직 제거 (현대 브라우저는 HTMLElement에 focus가 무조건 있음)
         nodeToRestore.current.focus();
-
-        // 참조 해제
         nodeToRestore.current = null;
       }
     };
@@ -135,15 +130,12 @@ function FocusTrap(props: FocusTrapProps): React.JSX.Element {
           lastKeydown.current?.shiftKey && lastKeydown.current?.key === 'Tab',
         );
 
-        const focusNext = tabbable[0];
-        const focusPrevious = tabbable[tabbable.length - 1];
-
-        if (typeof focusNext !== 'string' && typeof focusPrevious !== 'string') {
-          if (isShiftTab) {
-            focusPrevious.focus();
-          } else {
-            focusNext.focus();
-          }
+        if (isShiftTab) {
+          const focusPrevious = tabbable[tabbable.length - 1];
+          focusPrevious.focus();
+        } else {
+          const focusNext = tabbable[0];
+          focusNext.focus();
         }
         // no tabbable elements in the trap focus or the focus was outside of the focus trap
       } else {
