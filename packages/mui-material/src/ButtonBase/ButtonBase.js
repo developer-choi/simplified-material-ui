@@ -6,7 +6,6 @@ import elementTypeAcceptingRef from '@mui/utils/elementTypeAcceptingRef';
 import composeClasses from '@mui/utils/composeClasses';
 import isFocusVisible from '@mui/utils/isFocusVisible';
 import { styled } from '../zero-styled';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import useForkRef from '../utils/useForkRef';
 import useEventCallback from '../utils/useEventCallback';
 import useLazyRipple from '../useLazyRipple';
@@ -72,7 +71,6 @@ export const ButtonBaseRoot = styled('button', {
  * It contains a load of style reset and some focus/ripple logic.
  */
 const ButtonBase = React.forwardRef(function ButtonBase(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiButtonBase' });
   const {
     children,
     className,
@@ -97,7 +95,7 @@ const ButtonBase = React.forwardRef(function ButtonBase(inProps, ref) {
     tabIndex = 0,
     type,
     ...other
-  } = props;
+  } = inProps;
 
   const buttonRef = React.useRef(null);
 
@@ -233,7 +231,7 @@ const ButtonBase = React.forwardRef(function ButtonBase(inProps, ref) {
   const handleRef = useForkRef(ref, buttonRef);
 
   const ownerState = {
-    ...props,
+    ...inProps,
     component,
     disabled,
     tabIndex,
