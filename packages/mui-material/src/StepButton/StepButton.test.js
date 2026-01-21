@@ -4,7 +4,7 @@ import { createRenderer, screen, fireEvent, supportsTouch } from '@mui/internal-
 import StepButton, { stepButtonClasses as classes } from '@mui/material/StepButton';
 import Step from '@mui/material/Step';
 import StepLabel, { stepLabelClasses } from '@mui/material/StepLabel';
-import ButtonBase from '@mui/material/ButtonBase';
+import ButtonBase from '../../../form/ButtonBase';
 import describeConformance from '../../test/describeConformance';
 
 describe('<StepButton />', () => {

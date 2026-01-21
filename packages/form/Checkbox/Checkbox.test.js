@@ -4,7 +4,7 @@ import { spy } from 'sinon';
 import { act, createRenderer, screen } from '@mui/internal-test-utils';
 import Checkbox, { checkboxClasses as classes } from './index';
 import FormControl from '../FormControl';
-import ButtonBase from '@mui/material/ButtonBase';
+import ButtonBase from '../ButtonBase';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import describeConformance from '../../mui-material/test/describeConformance';
 import * as ripple from '../../mui-material/test/ripple';

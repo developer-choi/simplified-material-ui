@@ -9,7 +9,7 @@ import { BadgeProps } from '../../../data-display/Badge';
 import { BottomNavigationActionProps } from '../../../navigation/BottomNavigationAction';
 import { BottomNavigationProps } from '../../../navigation/BottomNavigation';
 import { BreadcrumbsProps } from '../Breadcrumbs';
-import { ButtonBaseProps } from '../ButtonBase';
+import { ButtonBaseProps } from '../../../form/ButtonBase';
 import { ButtonGroupProps } from '../ButtonGroup';
 import { ButtonProps } from '../../../form/Button';
 import { CardActionAreaProps } from '../CardActionArea';
@@ -115,7 +115,7 @@ import { ToggleButtonProps } from '../ToggleButton';
 import { ToggleButtonGroupProps } from '../ToggleButtonGroup';
 import { ToolbarProps } from '../Toolbar';
 import { TooltipProps } from '../../../data-display/Tooltip';
-import { TouchRippleProps } from '../ButtonBase/TouchRipple';
+import { TouchRippleProps } from '../../../form/ButtonBase/TouchRipple';
 import { TypographyProps } from '../Typography';
 import { PopperProps } from '../../../layout/Popper';
 

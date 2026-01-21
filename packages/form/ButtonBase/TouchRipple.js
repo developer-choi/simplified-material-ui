@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { TransitionGroup } from 'react-transition-group';
 import clsx from 'clsx';
 import useTimeout from '@mui/utils/useTimeout';
-import { keyframes, styled } from '../zero-styled';
-import { useDefaultProps } from '../DefaultPropsProvider';
+import { keyframes, styled } from '@mui/material/zero-styled';
+import { useDefaultProps } from '@mui/material/DefaultPropsProvider';
 import Ripple from './Ripple';
 import touchRippleClasses from './touchRippleClasses';
 

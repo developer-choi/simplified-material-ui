@@ -16,7 +16,7 @@ import { BadgeClassKey } from '../../../data-display/Badge';
 import { BottomNavigationActionClassKey } from '../../../navigation/BottomNavigationAction';
 import { BottomNavigationClassKey } from '../../../navigation/BottomNavigation';
 import { BreadcrumbsClassKey } from '../Breadcrumbs';
-import { ButtonBaseClassKey } from '../ButtonBase';
+import { ButtonBaseClassKey } from '../../../form/ButtonBase';
 import { ButtonClassKey } from '../../../form/Button';
 import { ButtonGroupClassKey } from '../ButtonGroup';
 import { CardActionAreaClassKey } from '../CardActionArea';
@@ -115,7 +115,7 @@ import { ToggleButtonClassKey } from '../ToggleButton';
 import { ToggleButtonGroupClassKey } from '../ToggleButtonGroup';
 import { ToolbarClassKey } from '../Toolbar';
 import { TooltipClassKey } from '../../../data-display/Tooltip';
-import { TouchRippleClassKey } from '../ButtonBase/TouchRipple';
+import { TouchRippleClassKey } from '../../../form/ButtonBase/TouchRipple';
 import { TypographyClassKey } from '../Typography';
 
 export type OverridesStyleRules<

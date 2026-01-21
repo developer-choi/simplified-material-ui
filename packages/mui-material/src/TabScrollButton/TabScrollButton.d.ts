@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SxProps } from '@mui/system';
 import { SlotComponentProps } from '../utils/types';
-import { ButtonBaseProps } from '../ButtonBase';
+import { ButtonBaseProps } from '../../../form/ButtonBase';
 import { Theme } from '../styles';
 import SvgIcon from '../SvgIcon';
 import { TabScrollButtonClasses } from './tabScrollButtonClasses';

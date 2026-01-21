@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { SxProps } from '@mui/system';
-import { Theme } from '../styles';
+import { Theme } from '@mui/material/styles';
 import { TouchRippleActions, TouchRippleProps } from './TouchRipple';
-import { OverrideProps, OverridableComponent, OverridableTypeMap } from '../OverridableComponent';
+import { OverrideProps, OverridableComponent, OverridableTypeMap } from '@mui/material/OverridableComponent';
 import { ButtonBaseClasses } from './buttonBaseClasses';
 
 export { TouchRippleActions, TouchRippleProps };

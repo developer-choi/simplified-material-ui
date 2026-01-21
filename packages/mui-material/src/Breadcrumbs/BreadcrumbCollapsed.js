@@ -4,7 +4,7 @@ import { emphasize } from '@mui/system/colorManipulator';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import MoreHorizIcon from '../internal/svg-icons/MoreHoriz';
-import ButtonBase from '../ButtonBase';
+import ButtonBase from '../../../form/ButtonBase';
 
 const BreadcrumbCollapsedButton = styled(ButtonBase, {
   name: 'MuiBreadcrumbCollapsed',

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { InternalStandardProps as StandardProps } from '.';
-import { ButtonBaseProps } from '../ButtonBase';
+import { ButtonBaseProps } from '../../../form/ButtonBase';
 import { SwitchBaseClasses } from './switchBaseClasses';
 import { CreateSlotsAndSlotProps, SlotProps } from '../utils/types';
 

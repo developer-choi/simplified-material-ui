@@ -58,8 +58,8 @@ export * from './Breadcrumbs';
 export { default as Button } from '../../form/Button';
 export * from '../../form/Button';
 
-export { default as ButtonBase } from './ButtonBase';
-export * from './ButtonBase';
+export { default as ButtonBase } from '../../form/ButtonBase';
+export * from '../../form/ButtonBase';
 
 export { default as ButtonGroup } from './ButtonGroup';
 export * from './ButtonGroup';

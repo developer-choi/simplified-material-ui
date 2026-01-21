@@ -15,9 +15,9 @@ import {
 import describeSkipIf from '@mui/internal-test-utils/describeSkipIf';
 import PropTypes from 'prop-types';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import ButtonBase, { buttonBaseClasses as classes } from '@mui/material/ButtonBase';
-import describeConformance from '../../test/describeConformance';
-import * as ripple from '../../test/ripple';
+import ButtonBase, { buttonBaseClasses as classes } from './index';
+import describeConformance from '../../mui-material/test/describeConformance';
+import * as ripple from '../../mui-material/test/ripple';
 
 describe('<ButtonBase />', () => {
   const { render } = createRenderer();

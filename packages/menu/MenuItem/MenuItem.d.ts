@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
-import { ExtendButtonBase, ExtendButtonBaseTypeMap } from '@mui/material/ButtonBase';
+import { ExtendButtonBase, ExtendButtonBaseTypeMap } from '../../form/ButtonBase';
 import { OverrideProps } from '@mui/material/OverridableComponent';
 import { MenuItemClasses } from './menuItemClasses';
 

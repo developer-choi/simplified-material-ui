@@ -6,7 +6,7 @@ import {
   ButtonBaseTypeMap,
   ExtendButtonBase,
   ExtendButtonBaseTypeMap,
-} from '@mui/material/ButtonBase';
+} from '../../form/ButtonBase';
 import { OverrideProps } from '@mui/material/OverridableComponent';
 import { BottomNavigationActionClasses } from './bottomNavigationActionClasses';
 
