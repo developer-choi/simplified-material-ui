@@ -80,7 +80,6 @@ const ButtonBase = React.forwardRef(function ButtonBase(inProps, ref) {
     className,
     component = 'button',
     disabled = false,
-    disableRipple = false,
     focusVisibleClassName,
     LinkComponent = 'a',
     onBlur,
@@ -122,7 +121,7 @@ const ButtonBase = React.forwardRef(function ButtonBase(inProps, ref) {
     [],
   );
 
-  const enableTouchRipple = ripple.shouldMount && !disableRipple && !disabled;
+  const enableTouchRipple = ripple.shouldMount && !disabled;
 
   const handleMouseDown = useRippleHandler(ripple, 'start', onMouseDown);
   const handleContextMenu = useRippleHandler(ripple, 'stop', onContextMenu);
@@ -250,7 +249,6 @@ const ButtonBase = React.forwardRef(function ButtonBase(inProps, ref) {
     ...props,
     component,
     disabled,
-    disableRipple,
     tabIndex,
     focusVisible,
   };
@@ -329,14 +327,6 @@ ButtonBase.propTypes /* remove-proptypes */ = {
    * @default false
    */
   disabled: PropTypes.bool,
-  /**
-   * If `true`, the ripple effect is disabled.
-   *
-   * ⚠️ Without a ripple there is no styling for :focus-visible by default. Be sure
-   * to highlight the element by applying separate styles with the `.Mui-focusVisible` class.
-   * @default false
-   */
-  disableRipple: PropTypes.bool,
   /**
    * This prop can help identify which element has keyboard focus.
    * The class name will be applied when the element gains the focus through keyboard interaction.
