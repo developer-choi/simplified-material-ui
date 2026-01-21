@@ -3,30 +3,13 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import elementTypeAcceptingRef from '@mui/utils/elementTypeAcceptingRef';
-import composeClasses from '@mui/utils/composeClasses';
 import isFocusVisible from '@mui/utils/isFocusVisible';
 import { styled } from '../zero-styled';
 import useForkRef from '../utils/useForkRef';
 import useEventCallback from '../utils/useEventCallback';
 import useLazyRipple from '../useLazyRipple';
 import TouchRipple from './TouchRipple';
-import buttonBaseClasses, { getButtonBaseUtilityClass } from './buttonBaseClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { disabled, focusVisible, focusVisibleClassName, classes } = ownerState;
-
-  const slots = {
-    root: ['root', disabled && 'disabled', focusVisible && 'focusVisible'],
-  };
-
-  const composedClasses = composeClasses(slots, getButtonBaseUtilityClass, classes);
-
-  if (focusVisible && focusVisibleClassName) {
-    composedClasses.root += ` ${focusVisibleClassName}`;
-  }
-
-  return composedClasses;
-};
+import buttonBaseClasses from './buttonBaseClasses';
 
 export const ButtonBaseRoot = styled('button', {
   name: 'MuiButtonBase',
@@ -238,12 +221,10 @@ const ButtonBase = React.forwardRef(function ButtonBase(inProps, ref) {
     focusVisible,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <ButtonBaseRoot
       as={ComponentProp}
-      className={clsx(classes.root, className)}
+      className={clsx(className, focusVisible && focusVisibleClassName)}
       ownerState={ownerState}
       onBlur={handleBlur}
       onClick={onClick}
@@ -289,10 +270,6 @@ ButtonBase.propTypes /* remove-proptypes */ = {
    * The content of the component.
    */
   children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
   /**
    * @ignore
    */
