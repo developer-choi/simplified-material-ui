@@ -4,49 +4,33 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import elementTypeAcceptingRef from '@mui/utils/elementTypeAcceptingRef';
 import isFocusVisible from '@mui/utils/isFocusVisible';
-import { styled } from '../zero-styled';
 import useForkRef from '../utils/useForkRef';
 import useEventCallback from '../utils/useEventCallback';
 import useLazyRipple from '../useLazyRipple';
 import TouchRipple from './TouchRipple';
-import buttonBaseClasses from './buttonBaseClasses';
 
-export const ButtonBaseRoot = styled('button', {
-  name: 'MuiButtonBase',
-  slot: 'Root',
-})({
+// 버튼 기본 스타일 (브라우저 기본 스타일 리셋)
+const buttonBaseStyles = {
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
   position: 'relative',
   boxSizing: 'border-box',
   WebkitTapHighlightColor: 'transparent',
-  backgroundColor: 'transparent', // Reset default value
-  // We disable the focus ring for mouse, touch and keyboard users.
+  backgroundColor: 'transparent',
   outline: 0,
   border: 0,
-  margin: 0, // Remove the margin in Safari
+  margin: 0,
   borderRadius: 0,
-  padding: 0, // Remove the padding in Firefox
+  padding: 0,
   cursor: 'pointer',
   userSelect: 'none',
   verticalAlign: 'middle',
-  MozAppearance: 'none', // Reset
-  WebkitAppearance: 'none', // Reset
+  MozAppearance: 'none',
+  WebkitAppearance: 'none',
   textDecoration: 'none',
-  // So we take precedent over the style of a native <a /> element.
   color: 'inherit',
-  '&::-moz-focus-inner': {
-    borderStyle: 'none', // Remove Firefox dotted outline.
-  },
-  [`&.${buttonBaseClasses.disabled}`]: {
-    pointerEvents: 'none', // Disable link interactions
-    cursor: 'default',
-  },
-  '@media print': {
-    colorAdjust: 'exact',
-  },
-});
+};
 
 /**
  * `ButtonBase` contains as few styles as possible.
@@ -213,19 +197,18 @@ const ButtonBase = React.forwardRef(function ButtonBase(inProps, ref) {
 
   const handleRef = useForkRef(ref, buttonRef);
 
-  const ownerState = {
-    ...inProps,
-    component,
-    disabled,
-    tabIndex,
-    focusVisible,
+  const rootStyle = {
+    ...buttonBaseStyles,
+    ...(disabled && {
+      pointerEvents: 'none',
+      cursor: 'default',
+    }),
   };
 
   return (
-    <ButtonBaseRoot
-      as={ComponentProp}
+    <ComponentProp
       className={clsx(className, focusVisible && focusVisibleClassName)}
-      ownerState={ownerState}
+      style={rootStyle}
       onBlur={handleBlur}
       onClick={onClick}
       onContextMenu={handleContextMenu}
@@ -241,13 +224,12 @@ const ButtonBase = React.forwardRef(function ButtonBase(inProps, ref) {
       onTouchStart={handleTouchStart}
       ref={handleRef}
       tabIndex={disabled ? -1 : tabIndex}
-      type={type}
       {...buttonProps}
       {...other}
     >
       {children}
       {enableTouchRipple ? <TouchRipple ref={ripple.ref} /> : null}
-    </ButtonBaseRoot>
+    </ComponentProp>
   );
 });
 
@@ -363,14 +345,6 @@ ButtonBase.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   onTouchStart: PropTypes.func,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
   /**
    * @default 0
    */
