@@ -76,14 +76,11 @@ const ButtonBase = React.forwardRef(function ButtonBase(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiButtonBase' });
   const {
     action,
-    centerRipple = false,
     children,
     className,
     component = 'button',
     disabled = false,
     disableRipple = false,
-    disableTouchRipple = false,
-    focusRipple = false,
     focusVisibleClassName,
     LinkComponent = 'a',
     onBlur,
@@ -101,8 +98,6 @@ const ButtonBase = React.forwardRef(function ButtonBase(inProps, ref) {
     onTouchMove,
     onTouchStart,
     tabIndex = 0,
-    TouchRippleProps,
-    touchRippleRef,
     type,
     ...other
   } = props;
@@ -110,7 +105,6 @@ const ButtonBase = React.forwardRef(function ButtonBase(inProps, ref) {
   const buttonRef = React.useRef(null);
 
   const ripple = useLazyRipple();
-  const handleRippleRef = useForkRef(ripple.ref, touchRippleRef);
 
   const [focusVisible, setFocusVisible] = React.useState(false);
   if (disabled && focusVisible) {
@@ -130,16 +124,10 @@ const ButtonBase = React.forwardRef(function ButtonBase(inProps, ref) {
 
   const enableTouchRipple = ripple.shouldMount && !disableRipple && !disabled;
 
-  React.useEffect(() => {
-    if (focusVisible && focusRipple && !disableRipple) {
-      ripple.pulsate();
-    }
-  }, [disableRipple, focusRipple, focusVisible, ripple]);
-
-  const handleMouseDown = useRippleHandler(ripple, 'start', onMouseDown, disableTouchRipple);
-  const handleContextMenu = useRippleHandler(ripple, 'stop', onContextMenu, disableTouchRipple);
-  const handleDragLeave = useRippleHandler(ripple, 'stop', onDragLeave, disableTouchRipple);
-  const handleMouseUp = useRippleHandler(ripple, 'stop', onMouseUp, disableTouchRipple);
+  const handleMouseDown = useRippleHandler(ripple, 'start', onMouseDown);
+  const handleContextMenu = useRippleHandler(ripple, 'stop', onContextMenu);
+  const handleDragLeave = useRippleHandler(ripple, 'stop', onDragLeave);
+  const handleMouseUp = useRippleHandler(ripple, 'stop', onMouseUp);
   const handleMouseLeave = useRippleHandler(
     ripple,
     'stop',
@@ -151,11 +139,10 @@ const ButtonBase = React.forwardRef(function ButtonBase(inProps, ref) {
         onMouseLeave(event);
       }
     },
-    disableTouchRipple,
   );
-  const handleTouchStart = useRippleHandler(ripple, 'start', onTouchStart, disableTouchRipple);
-  const handleTouchEnd = useRippleHandler(ripple, 'stop', onTouchEnd, disableTouchRipple);
-  const handleTouchMove = useRippleHandler(ripple, 'stop', onTouchMove, disableTouchRipple);
+  const handleTouchStart = useRippleHandler(ripple, 'start', onTouchStart);
+  const handleTouchEnd = useRippleHandler(ripple, 'stop', onTouchEnd);
+  const handleTouchMove = useRippleHandler(ripple, 'stop', onTouchMove);
 
   const handleBlur = useRippleHandler(
     ripple,
@@ -196,13 +183,6 @@ const ButtonBase = React.forwardRef(function ButtonBase(inProps, ref) {
   };
 
   const handleKeyDown = useEventCallback((event) => {
-    // Check if key is already down to avoid repeats being counted as multiple activations
-    if (focusRipple && !event.repeat && focusVisible && event.key === ' ') {
-      ripple.stop(event, () => {
-        ripple.start(event);
-      });
-    }
-
     if (event.target === event.currentTarget && isNonNativeButton() && event.key === ' ') {
       event.preventDefault();
     }
@@ -226,13 +206,6 @@ const ButtonBase = React.forwardRef(function ButtonBase(inProps, ref) {
   });
 
   const handleKeyUp = useEventCallback((event) => {
-    // calling preventDefault in keyUp on a <button> will not dispatch a click event if Space is pressed
-    // https://codesandbox.io/p/sandbox/button-keyup-preventdefault-dn7f0
-    if (focusRipple && event.key === ' ' && focusVisible && !event.defaultPrevented) {
-      ripple.stop(event, () => {
-        ripple.pulsate(event);
-      });
-    }
     if (onKeyUp) {
       onKeyUp(event);
     }
@@ -275,12 +248,9 @@ const ButtonBase = React.forwardRef(function ButtonBase(inProps, ref) {
 
   const ownerState = {
     ...props,
-    centerRipple,
     component,
     disabled,
     disableRipple,
-    disableTouchRipple,
-    focusRipple,
     tabIndex,
     focusVisible,
   };
@@ -312,23 +282,17 @@ const ButtonBase = React.forwardRef(function ButtonBase(inProps, ref) {
       {...other}
     >
       {children}
-      {enableTouchRipple ? (
-        <TouchRipple ref={handleRippleRef} center={centerRipple} {...TouchRippleProps} />
-      ) : null}
+      {enableTouchRipple ? <TouchRipple ref={ripple.ref} /> : null}
     </ButtonBaseRoot>
   );
 });
 
-function useRippleHandler(ripple, rippleAction, eventCallback, skipRippleAction = false) {
+function useRippleHandler(ripple, rippleAction, eventCallback) {
   return useEventCallback((event) => {
     if (eventCallback) {
       eventCallback(event);
     }
-
-    if (!skipRippleAction) {
-      ripple[rippleAction](event);
-    }
-
+    ripple[rippleAction](event);
     return true;
   });
 }
@@ -343,12 +307,6 @@ ButtonBase.propTypes /* remove-proptypes */ = {
    * It currently only supports `focusVisible()` action.
    */
   action: refType,
-  /**
-   * If `true`, the ripples are centered.
-   * They won't start at the cursor interaction position.
-   * @default false
-   */
-  centerRipple: PropTypes.bool,
   /**
    * The content of the component.
    */
@@ -379,16 +337,6 @@ ButtonBase.propTypes /* remove-proptypes */ = {
    * @default false
    */
   disableRipple: PropTypes.bool,
-  /**
-   * If `true`, the touch ripple effect is disabled.
-   * @default false
-   */
-  disableTouchRipple: PropTypes.bool,
-  /**
-   * If `true`, the base button will have a keyboard focus ripple.
-   * @default false
-   */
-  focusRipple: PropTypes.bool,
   /**
    * This prop can help identify which element has keyboard focus.
    * The class name will be applied when the element gains the focus through keyboard interaction.
@@ -480,23 +428,6 @@ ButtonBase.propTypes /* remove-proptypes */ = {
    * @default 0
    */
   tabIndex: PropTypes.number,
-  /**
-   * Props applied to the `TouchRipple` element.
-   */
-  TouchRippleProps: PropTypes.object,
-  /**
-   * A ref that points to the `TouchRipple` element.
-   */
-  touchRippleRef: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.shape({
-      current: PropTypes.shape({
-        pulsate: PropTypes.func.isRequired,
-        start: PropTypes.func.isRequired,
-        stop: PropTypes.func.isRequired,
-      }),
-    }),
-  ]),
   /**
    * @ignore
    */
