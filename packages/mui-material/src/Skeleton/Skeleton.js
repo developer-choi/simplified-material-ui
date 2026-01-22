@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { unstable_getUnit as getUnit, unstable_toUnitless as toUnitless } from '../styles';
 import { keyframes, css, styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 
 const pulseKeyframe = keyframes`
   0% {
@@ -185,8 +184,7 @@ const SkeletonRoot = styled('span', {
   }),
 );
 
-const Skeleton = React.forwardRef(function Skeleton(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiSkeleton' });
+const Skeleton = React.forwardRef(function Skeleton(props, ref) {
   const {
     animation = 'pulse',
     className,
