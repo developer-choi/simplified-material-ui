@@ -2,22 +2,10 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import { getFormGroupUtilityClass } from './formGroupClasses';
 import useFormControl from '../../../form/FormControl/useFormControl';
 import formControlState from '../../../form/FormControl/formControlState';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, row, error } = ownerState;
-
-  const slots = {
-    root: ['root', row && 'row', error && 'error'],
-  };
-
-  return composeClasses(slots, getFormGroupUtilityClass, classes);
-};
 
 const FormGroupRoot = styled('div', {
   name: 'MuiFormGroup',
@@ -61,11 +49,10 @@ const FormGroup = React.forwardRef(function FormGroup(inProps, ref) {
   });
 
   const ownerState = { ...props, row, error: fcs.error };
-  const classes = useUtilityClasses(ownerState);
 
   return (
     <FormGroupRoot
-      className={clsx(classes.root, className)}
+      className={clsx(className)}
       ownerState={ownerState}
       ref={ref}
       {...other}
