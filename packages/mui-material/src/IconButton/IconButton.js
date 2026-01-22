@@ -1,9 +1,7 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import chainPropTypes from '@mui/utils/chainPropTypes';
-import composeClasses from '@mui/utils/composeClasses';
 import { unstable_useId as useId } from '../utils';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
@@ -12,26 +10,6 @@ import { useDefaultProps } from '../DefaultPropsProvider';
 import ButtonBase from '../../../form/ButtonBase';
 import CircularProgress from '../CircularProgress';
 import capitalize from '../utils/capitalize';
-import iconButtonClasses, { getIconButtonUtilityClass } from './iconButtonClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, disabled, color, edge, size, loading } = ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      loading && 'loading',
-      disabled && 'disabled',
-      color !== 'default' && `color${capitalize(color)}`,
-      edge && `edge${capitalize(edge)}`,
-      `size${capitalize(size)}`,
-    ],
-    loadingIndicator: ['loadingIndicator'],
-    loadingWrapper: ['loadingWrapper'],
-  };
-
-  return composeClasses(slots, getIconButtonUtilityClass, classes);
-};
 
 const IconButtonRoot = styled(ButtonBase, {
   name: 'MuiIconButton',
@@ -142,14 +120,20 @@ const IconButtonRoot = styled(ButtonBase, {
           fontSize: theme.typography.pxToRem(28),
         },
       },
+      {
+        props: { disabled: true },
+        style: {
+          backgroundColor: 'transparent',
+          color: (theme.vars || theme).palette.action.disabled,
+        },
+      },
+      {
+        props: { loading: true },
+        style: {
+          color: 'transparent',
+        },
+      },
     ],
-    [`&.${iconButtonClasses.disabled}`]: {
-      backgroundColor: 'transparent',
-      color: (theme.vars || theme).palette.action.disabled,
-    },
-    [`&.${iconButtonClasses.loading}`]: {
-      color: 'transparent',
-    },
   })),
 );
 
@@ -203,12 +187,10 @@ const IconButton = React.forwardRef(function IconButton(inProps, ref) {
     size,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <IconButtonRoot
       id={loading ? loadingId : idProp}
-      className={clsx(classes.root, className)}
+      className={className}
       centerRipple
       focusRipple={!disableFocusRipple}
       disabled={disabled || loading}
@@ -217,9 +199,8 @@ const IconButton = React.forwardRef(function IconButton(inProps, ref) {
       ownerState={ownerState}
     >
       {typeof loading === 'boolean' && (
-        // use plain HTML span to minimize the runtime overhead
-        <span className={classes.loadingWrapper} style={{ display: 'contents' }}>
-          <IconButtonLoadingIndicator className={classes.loadingIndicator} ownerState={ownerState}>
+        <span style={{ display: 'contents' }}>
+          <IconButtonLoadingIndicator ownerState={ownerState}>
             {loading && loadingIndicator}
           </IconButtonLoadingIndicator>
         </span>
