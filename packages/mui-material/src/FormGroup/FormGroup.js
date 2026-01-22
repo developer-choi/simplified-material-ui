@@ -1,32 +1,21 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { styled } from '../zero-styled';
 import useFormControl from '../../../form/FormControl/useFormControl';
 import formControlState from '../../../form/FormControl/formControlState';
 
-const FormGroupRoot = styled('div', {
-  name: 'MuiFormGroup',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [styles.root, ownerState.row && styles.row];
-  },
-})({
+// 기본 스타일
+const baseStyle = {
   display: 'flex',
   flexDirection: 'column',
   flexWrap: 'wrap',
-  variants: [
-    {
-      props: { row: true },
-      style: {
-        flexDirection: 'row',
-      },
-    },
-  ],
-});
+};
+
+// row 스타일
+const rowStyle = {
+  ...baseStyle,
+  flexDirection: 'row',
+};
 
 /**
  * `FormGroup` wraps controls such as `Checkbox` and `Switch`.
@@ -34,7 +23,7 @@ const FormGroupRoot = styled('div', {
  * For the `Radio`, you should be using the `RadioGroup` component instead of this one.
  */
 const FormGroup = React.forwardRef(function FormGroup(props, ref) {
-  const { className, row = false, ...other } = props;
+  const { className, row = false, style, ...other } = props;
   const muiFormControl = useFormControl();
   const fcs = formControlState({
     props,
@@ -42,13 +31,16 @@ const FormGroup = React.forwardRef(function FormGroup(props, ref) {
     states: ['error'],
   });
 
-  const ownerState = { ...props, row, error: fcs.error };
+  // error 상태는 FormControl과 연동되지만 스타일에는 사용하지 않음
+  // 필요 시 fcs.error로 접근 가능
+
+  const formGroupStyle = row ? rowStyle : baseStyle;
 
   return (
-    <FormGroupRoot
-      className={clsx(className)}
-      ownerState={ownerState}
+    <div
+      className={className}
       ref={ref}
+      style={{ ...formGroupStyle, ...style }}
       {...other}
     />
   );
