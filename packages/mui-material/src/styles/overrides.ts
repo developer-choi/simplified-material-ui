@@ -41,7 +41,7 @@ import { FabClassKey } from '../Fab';
 import { FilledInputClassKey } from '../../../form/FilledInput';
 import { FormControlClassKey } from '../../../form/FormControl';
 import { FormControlLabelClassKey } from '../FormControlLabel';
-import { FormGroupClassKey } from '../FormGroup';
+import { FormGroupClassKey } from '../../../form/FormGroup';
 import { FormHelperTextClassKey } from '../../../form/FormHelperText';
 import { FormLabelClassKey } from '../../../form/FormLabel';
 import { GridLegacyClassKey } from '../GridLegacy';

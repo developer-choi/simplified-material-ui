@@ -1,6 +1,6 @@
 import generateUtilityClasses from '@mui/utils/generateUtilityClasses';
 import generateUtilityClass from '@mui/utils/generateUtilityClass';
-import { FormGroupClasses } from '../FormGroup';
+import { FormGroupClasses } from '../../../form/FormGroup';
 
 export type RadioGroupClassKey = keyof FormGroupClasses;
 

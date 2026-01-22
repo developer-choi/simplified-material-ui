@@ -3,7 +3,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
-import FormGroup from '../FormGroup';
+import FormGroup from '../../../form/FormGroup';
 import { getRadioGroupUtilityClass } from './radioGroupClasses';
 import useForkRef from '../utils/useForkRef';
 import useControlled from '../utils/useControlled';

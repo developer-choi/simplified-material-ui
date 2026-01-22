@@ -142,8 +142,8 @@ export * from '../../form/FormControl';
 export { default as FormControlLabel } from './FormControlLabel';
 export * from './FormControlLabel';
 
-export { default as FormGroup } from './FormGroup';
-export * from './FormGroup';
+export { default as FormGroup } from '../../form/FormGroup';
+export * from '../../form/FormGroup';
 
 export { default as FormHelperText } from '../../form/FormHelperText';
 export * from '../../form/FormHelperText';

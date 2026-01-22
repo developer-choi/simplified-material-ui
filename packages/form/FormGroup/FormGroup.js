@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
-import useFormControl from '../../../form/FormControl/useFormControl';
-import formControlState from '../../../form/FormControl/formControlState';
+import useFormControl from '../FormControl/useFormControl';
+import formControlState from '../FormControl/formControlState';
 
 // 기본 스타일
 const baseStyle = {

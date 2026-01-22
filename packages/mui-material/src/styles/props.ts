@@ -39,7 +39,7 @@ import { FabProps } from '../Fab';
 import { FilledInputProps } from '../../../form/FilledInput';
 import { FormControlLabelProps } from '../FormControlLabel';
 import { FormControlProps } from '../../../form/FormControl';
-import { FormGroupProps } from '../FormGroup';
+import { FormGroupProps } from '../../../form/FormGroup';
 import { FormHelperTextProps } from '../../../form/FormHelperText';
 import { FormLabelProps } from '../../../form/FormLabel';
 import { GridLegacyProps } from '../GridLegacy';
