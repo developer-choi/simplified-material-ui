@@ -6,7 +6,6 @@ import { unstable_useId as useId } from '../utils';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import ButtonBase from '../../../form/ButtonBase';
 import CircularProgress from '../CircularProgress';
 import capitalize from '../utils/capitalize';
@@ -155,8 +154,7 @@ const IconButtonLoadingIndicator = styled('span', {
  * Refer to the [Icons](/material-ui/icons/) section of the documentation
  * regarding the available icon options.
  */
-const IconButton = React.forwardRef(function IconButton(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiIconButton' });
+const IconButton = React.forwardRef(function IconButton(props, ref) {
   const {
     edge = false,
     children,
