@@ -1,30 +1,10 @@
 'use client';
 import * as React from 'react';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import composeClasses from '@mui/utils/composeClasses';
 import { unstable_getUnit as getUnit, unstable_toUnitless as toUnitless } from '../styles';
 import { keyframes, css, styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import { getSkeletonUtilityClass } from './skeletonClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, variant, animation, hasChildren, width, height } = ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      variant,
-      animation,
-      hasChildren && 'withChildren',
-      hasChildren && !width && 'fitContent',
-      hasChildren && !height && 'heightAuto',
-    ],
-  };
-
-  return composeClasses(slots, getSkeletonUtilityClass, classes);
-};
 
 const pulseKeyframe = keyframes`
   0% {
@@ -226,13 +206,11 @@ const Skeleton = React.forwardRef(function Skeleton(inProps, ref) {
     hasChildren: Boolean(other.children),
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <SkeletonRoot
       as={component}
       ref={ref}
-      className={clsx(classes.root, className)}
+      className={className}
       ownerState={ownerState}
       {...other}
       style={{
