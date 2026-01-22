@@ -3,7 +3,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { styled } from '../zero-styled';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import useFormControl from '../../../form/FormControl/useFormControl';
 import formControlState from '../../../form/FormControl/formControlState';
 
@@ -34,12 +33,7 @@ const FormGroupRoot = styled('div', {
  * It provides compact row layout.
  * For the `Radio`, you should be using the `RadioGroup` component instead of this one.
  */
-const FormGroup = React.forwardRef(function FormGroup(inProps, ref) {
-  const props = useDefaultProps({
-    props: inProps,
-    name: 'MuiFormGroup',
-  });
-
+const FormGroup = React.forwardRef(function FormGroup(props, ref) {
   const { className, row = false, ...other } = props;
   const muiFormControl = useFormControl();
   const fcs = formControlState({
