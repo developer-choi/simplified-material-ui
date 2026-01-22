@@ -3,7 +3,7 @@ import { SxProps } from '@mui/system';
 import { OverridableStringUnion } from '@mui/types';
 import { Theme } from '../styles';
 import { InternalStandardProps as StandardProps } from '../internal';
-import { IconButtonProps } from '../IconButton';
+import { IconButtonProps } from '../../../form/IconButton';
 import { ChipProps, ChipTypeMap } from '../../../data-display/Chip';
 import { PaperProps } from '../../../surfaces/Paper';
 import { PopperProps } from '../../../layout/Popper';

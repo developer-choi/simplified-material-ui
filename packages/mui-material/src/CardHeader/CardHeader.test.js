@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { createRenderer } from '@mui/internal-test-utils';
 import { typographyClasses } from '@mui/material/Typography';
 import Avatar from '../../../data-display/Avatar';
-import IconButton from '@mui/material/IconButton';
+import IconButton from '../../../form/IconButton';
 import CardHeader, { cardHeaderClasses as classes } from '@mui/material/CardHeader';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import describeConformance from '../../test/describeConformance';

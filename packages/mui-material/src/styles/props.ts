@@ -44,7 +44,7 @@ import { FormHelperTextProps } from '../../../form/FormHelperText';
 import { FormLabelProps } from '../../../form/FormLabel';
 import { GridLegacyProps } from '../GridLegacy';
 import { GridProps } from '../Grid';
-import { IconButtonProps } from '../IconButton';
+import { IconButtonProps } from '../../../form/IconButton';
 import { IconProps } from '../../../data-display/Icon';
 import { ImageListProps } from '../ImageList';
 import { ImageListItemBarProps } from '../ImageListItemBar';

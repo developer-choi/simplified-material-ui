@@ -10,7 +10,7 @@ import TablePagination, { tablePaginationClasses as classes } from '@mui/materia
 import { inputClasses } from '../../../form/Input';
 import { outlinedInputClasses } from '../../../form/OutlinedInput';
 import { filledInputClasses } from '../../../form/FilledInput';
-import IconButton, { iconButtonClasses } from '@mui/material/IconButton';
+import IconButton, { iconButtonClasses } from '../../../form/IconButton';
 import { svgIconClasses } from '@mui/material/SvgIcon';
 import { createSvgIcon } from '@mui/material/utils';
 import describeConformance from '../../test/describeConformance';

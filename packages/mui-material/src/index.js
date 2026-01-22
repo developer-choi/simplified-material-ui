@@ -162,8 +162,8 @@ export * from './Grow';
 export { default as Icon } from '../../data-display/Icon';
 export * from '../../data-display/Icon';
 
-export { default as IconButton } from './IconButton';
-export * from './IconButton';
+export { default as IconButton } from '../../form/IconButton';
+export * from '../../form/IconButton';
 
 export { default as ImageList } from './ImageList';
 export * from './ImageList';

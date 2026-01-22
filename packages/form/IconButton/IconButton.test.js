@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import { createRenderer, reactMajor, screen, within } from '@mui/internal-test-utils';
 import capitalize from '@mui/utils/capitalize';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import IconButton, { iconButtonClasses as classes } from '@mui/material/IconButton';
-import Icon from '../../../data-display/Icon';
-import ButtonBase from '../../../form/ButtonBase';
-import describeConformance from '../../test/describeConformance';
-import * as ripple from '../../test/ripple';
+import IconButton, { iconButtonClasses as classes } from './index';
+import Icon from '../../data-display/Icon';
+import ButtonBase from '../ButtonBase';
+import describeConformance from '../../mui-material/test/describeConformance';
+import * as ripple from '../../mui-material/test/ripple';
 
 describe('<IconButton />', () => {
   const { render } = createRenderer();

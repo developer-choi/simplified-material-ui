@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { SxProps } from '@mui/system';
 import { OverridableStringUnion } from '@mui/types';
-import { Theme } from '../styles';
-import { ExtendButtonBase, ExtendButtonBaseTypeMap } from '../../../form/ButtonBase';
-import { OverrideProps } from '../OverridableComponent';
+import { Theme } from '@mui/material/styles';
+import { ExtendButtonBase, ExtendButtonBaseTypeMap } from '../ButtonBase';
+import { OverrideProps } from '@mui/material/OverridableComponent';
 import { IconButtonClasses } from './iconButtonClasses';
 
 export interface IconButtonPropsColorOverrides {}

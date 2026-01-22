@@ -1,8 +1,8 @@
 'use client';
 import * as React from 'react';
-import { unstable_useId as useId } from '../utils';
-import ButtonBase from '../../../form/ButtonBase';
-import CircularProgress from '../CircularProgress';
+import { unstable_useId as useId } from '@mui/material/utils';
+import ButtonBase from '../ButtonBase';
+import CircularProgress from '@mui/material/CircularProgress';
 
 // 색상 매핑 (하드코딩)
 const colorMap = {

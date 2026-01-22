@@ -46,7 +46,7 @@ import { FormHelperTextClassKey } from '../../../form/FormHelperText';
 import { FormLabelClassKey } from '../../../form/FormLabel';
 import { GridLegacyClassKey } from '../GridLegacy';
 import { GridClassKey } from '../Grid';
-import { IconButtonClassKey } from '../IconButton';
+import { IconButtonClassKey } from '../../../form/IconButton';
 import { IconClassKey } from '../../../data-display/Icon';
 import { ImageListClassKey } from '../ImageList';
 import { ImageListItemBarClassKey } from '../ImageListItemBar';

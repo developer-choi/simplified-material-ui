@@ -9,7 +9,7 @@ import useAutocomplete, { createFilterOptions } from '../useAutocomplete';
 import Popper from '../../../layout/Popper';
 import ListSubheader from '../ListSubheader';
 import Paper from '../../../surfaces/Paper';
-import IconButton from '../IconButton';
+import IconButton from '../../../form/IconButton';
 import Chip from '../../../data-display/Chip';
 import inputClasses from '../../../form/Input/inputClasses';
 import inputBaseClasses from '../../../form/InputBase/inputBaseClasses';
