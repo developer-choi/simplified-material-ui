@@ -1,112 +1,204 @@
 # Drawer 컴포넌트
 
-> Drawer를 최소한의 구조로 단순화 - Modal의 얇은 래퍼
+> Modal을 감싸서 화면 가장자리에서 슬라이드되는 서랍 패널을 제공하는 래퍼 컴포넌트
+
+---
+
+## 이 문서의 목적
+
+**이 문서는 단순화된 코드의 "설명서"입니다.**
+
+Material-UI는 라이브러리 코드라서 복잡합니다. 단순화했더라도 코드만 보고는 이해하기 어려울 수 있습니다.
+이 문서는 코드의 **동작 원리, 핵심 패턴, 왜 이렇게 구현했는지**를 상세히 설명하여 학습을 돕습니다.
 
 ---
 
 ## 무슨 기능을 하는가?
 
-수정된 Drawer는 **Modal을 감싸서 왼쪽에서 나타나는 고정된 서랍을 제공하는 단순한 래퍼**입니다.
+수정된 Drawer는 **Modal을 감싸서 왼쪽에서 나타나는 고정된 서랍을 제공하는 단순한 래퍼** 컴포넌트입니다.
 
 ### 핵심 기능 (남은 것)
-1. **Modal 래핑** - Modal의 기능 그대로 사용
-2. **왼쪽 고정** - 항상 왼쪽에서 나타남
-3. **Paper 스타일** - 고정된 카드 디자인
-4. **ARIA 속성** - role="dialog", aria-modal="true"
+1. **Modal 래핑** - Modal의 기능(포커스 트랩, ESC 닫기, 백드롭 클릭 닫기) 재사용
+2. **Paper 스타일** - 고정된 서랍 UI (왼쪽, 전체 높이)
+3. **ARIA 속성** - `role="dialog"`, `aria-modal="true"`로 접근성 확보
+
+> Drawer 자체는 상태 관리나 이벤트 핸들링을 하지 않습니다. 모두 Modal에 위임합니다.
+
+---
+
+## 핵심 학습 포인트
+
+### 1. Composition 패턴 (Modal 래퍼)
+
+```javascript
+<Modal
+  ref={ref}
+  className={className}
+  open={open}
+  onClose={onClose}
+  style={{ zIndex: 1200 }}
+  {...other}
+>
+  <Paper>
+    {children}
+  </Paper>
+</Modal>
+```
+
+**학습 가치**:
+- **코드 재사용**: Modal의 모든 기능(포커스 트랩, ESC 닫기, 백드롭 클릭)을 그대로 사용
+- **관심사 분리**: Drawer는 "어떻게 보이는가"만 담당, "어떻게 동작하는가"는 Modal에 위임
+- **유지보수 용이**: Modal 수정 시 Drawer도 자동으로 개선됨
+
+### 2. Paper를 이용한 서랍 UI
+
+```javascript
+<Paper
+  elevation={16}
+  square
+  role="dialog"
+  aria-modal="true"
+  style={{
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    height: '100%',
+    // ...
+  }}
+>
+```
+
+**학습 가치**:
+- **시각적 계층**: `elevation={16}`으로 그림자 효과, 콘텐츠 위에 떠있는 느낌
+- **position: fixed**: 스크롤해도 고정 위치 유지
+- **square**: 모서리 둥글림 제거 (화면 가장자리에 붙으므로 불필요)
+
+### 3. 접근성 속성
+
+```javascript
+role="dialog"
+aria-modal="true"
+```
+
+**학습 가치**:
+- `role="dialog"`: 스크린 리더에게 "대화상자"임을 알림
+- `aria-modal="true"`: 모달 뒤의 콘텐츠가 비활성화됨을 알림
 
 ---
 
 ## 내부 구조
 
-### 1. 컴포넌트 구조
+### 1. 렌더링 구조
 
-```javascript
-// 위치: packages/mui-material/src/Drawer/Drawer.js (50줄, 원본 453줄)
+```
+// 위치: packages/modal/Drawer/Drawer.js (50줄, 원본 453줄)
 
-Drawer
-  └─> Modal (inline style)
-       └─> Paper (inline style)
-            └─> children
+Drawer (래퍼, 로직 없음)
+  └─> Modal (z-index: 1200)
+       ├─> Backdrop (Modal 내부)
+       └─> FocusTrap (Modal 내부)
+            └─> Paper (position: fixed, left: 0)
+                 └─> children (서랍 내용)
 ```
 
-### 2. 전체 코드 (50줄)
+### 2. 핵심 상태 (ref, state, 변수)
 
-```javascript
-'use client';
-import * as React from 'react';
-import Modal from '../Modal';
-import Paper from '../Paper';
+| 이름 | 타입 | 용도 |
+|------|------|------|
+| - | - | Drawer 자체에는 상태가 없음. 모든 상태 관리는 Modal에 위임 |
 
-const Drawer = React.forwardRef(function Drawer(inProps, ref) {
-  const {
-    children,
-    className,
-    onClose,
-    open = false,
-    ...other
-  } = inProps;
+### 3. 함수 역할
 
-  return (
-    <Modal
-      ref={ref}
-      className={className}
-      open={open}
-      onClose={onClose}
-      style={{ zIndex: 1200 }}
-      {...other}
-    >
-      <Paper
-        elevation={16}
-        square
-        role="dialog"
-        aria-modal="true"
-        style={{
-          overflowY: 'auto',
-          display: 'flex',
-          flexDirection: 'column',
-          height: '100%',
-          flex: '1 0 auto',
-          zIndex: 1200,
-          WebkitOverflowScrolling: 'touch',
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          outline: 0,
-        }}
-      >
-        {children}
-      </Paper>
-    </Modal>
-  );
-});
+Drawer 내부에는 함수가 없습니다. 모든 이벤트 핸들링(ESC 키, 백드롭 클릭)은 Modal에서 처리됩니다.
 
-export default Drawer;
+### 4. 동작 흐름
+
+#### 열기/닫기 플로우차트
+
+```
+[open={true}]
+      ↓
+┌─────────────────────────────────┐
+│ Modal 렌더링                     │
+│  - Portal로 body에 추가          │
+│  - Backdrop 표시                 │
+│  - FocusTrap 활성화              │
+└─────────────────────────────────┘
+      ↓
+┌─────────────────────────────────┐
+│ Paper 표시                       │
+│  - 왼쪽에 고정 (left: 0)         │
+│  - 전체 높이 (height: 100%)      │
+└─────────────────────────────────┘
 ```
 
-### 3. Props (4개만 남음)
+```
+[사용자 액션] ESC 키 또는 백드롭 클릭
+      ↓
+┌─────────────────────────────────┐
+│ Modal의 onClose 호출             │
+│  - reason: 'escapeKeyDown' 또는  │
+│           'backdropClick'       │
+└─────────────────────────────────┘
+      ↓
+[부모 컴포넌트에서 open={false} 설정]
+      ↓
+[Modal 언마운트, 포커스 복원]
+```
+
+### 5. 핵심 패턴/플래그
+
+Drawer는 단순 래퍼이므로 특수 플래그가 없습니다.
+
+### 6. 주요 변경 사항 (원본 대비)
+
+**원본과의 차이**:
+- ❌ `variant` 제거 → `temporary` 고정 (permanent, persistent 불필요)
+- ❌ `anchor` 제거 → `left` 고정 (right, top, bottom 불필요)
+- ❌ `Slide` 애니메이션 제거 → 즉시 표시/숨김
+- ❌ `elevation` prop 제거 → `16` 고정
+- ❌ `hideBackdrop` 제거 → 항상 백드롭 표시
+- ❌ `transitionDuration` 제거 → 애니메이션 없음
+- ❌ Slot 시스템 제거 → 직접 컴포넌트 사용
+- ❌ RTL(Right-to-Left) 지원 제거
+- ✅ Modal 기능 유지 → 포커스 트랩, ESC 닫기, 백드롭 클릭 닫기
+
+### 7. Props
 
 | Prop | 타입 | 기본값 | 설명 |
 |------|------|--------|------|
 | `open` | boolean | false | 서랍 표시 여부 |
-| `onClose` | function | - | 닫기 콜백 |
+| `onClose` | function | - | 닫기 콜백 (Modal에서 호출) |
 | `children` | node | - | 서랍 내용 |
-| `className` | string | - | CSS 클래스 |
+| `className` | string | - | Modal에 적용될 CSS 클래스 |
 
-### 4. 고정된 스타일
+**제거된 Props**:
+- ❌ `variant` - temporary만 사용
+- ❌ `anchor` - left만 사용
+- ❌ `elevation` - 16 고정
+- ❌ `hideBackdrop` - 항상 표시
+- ❌ `transitionDuration` - 애니메이션 없음
+- ❌ `ModalProps` - 직접 props로 전달
+- ❌ `PaperProps` - 고정 스타일 사용
+- ❌ `SlideProps` - Slide 제거됨
+
+---
+
+## 고정된 스타일
 
 **Modal**:
-- `zIndex: 1200` (theme.zIndex.drawer의 기본값)
+- `zIndex: 1200` (MUI theme.zIndex.drawer의 기본값)
 
 **Paper**:
 - `elevation: 16` (고정)
 - `position: fixed`
 - `top: 0`
 - `left: 0` (항상 왼쪽)
+- `height: 100%`
 - `zIndex: 1200`
 - `overflowY: auto`
 - `display: flex`
 - `flexDirection: column`
-- `height: 100%`
 - `outline: 0`
 
 ---
@@ -124,8 +216,10 @@ if (variant === 'permanent') {
   return <DockedSlot {...dockedSlotProps}>{drawer}</DockedSlot>;
 }
 ```
-- permanent variant는 항상 표시되는 서랍
-- 학습 목적에는 불필요한 복잡도
+
+**왜 불필요한가**:
+- permanent variant는 항상 표시되는 서랍 (모달 아님)
+- 학습 목적에는 temporary만으로 충분
 
 **2. persistent variant 삭제**
 ```javascript
@@ -134,8 +228,10 @@ if (variant === 'persistent') {
   return <DockedSlot {...dockedSlotProps}>{slidingDrawer}</DockedSlot>;
 }
 ```
-- persistent variant는 backdrop 없는 서랍
-- temporary만으로 충분
+
+**왜 불필요한가**:
+- persistent variant는 백드롭 없는 서랍
+- temporary와의 차이점 학습은 부가적
 
 **3. variant prop 삭제 (temporary 고정)**
 ```javascript
@@ -143,61 +239,23 @@ if (variant === 'persistent') {
 const variant = 'temporary';
 
 // REMOVED:
-const DrawerDockedRoot = styled('div', {
-  name: 'MuiDrawer',
-  slot: 'Docked',
-  // ...
-})({
-  flex: '0 0 auto',
-});
+DrawerDockedRoot styled 컴포넌트
+useUtilityClasses variant 로직
 ```
-- variant를 'temporary'로 고정
-- DrawerDockedRoot styled 컴포넌트 제거
-- useUtilityClasses에서 variant 관련 로직 제거
-- PaperSlot additionalProps 단순화
 
 ### Phase 2: Anchor Props 제거 (커밋 4-6)
 
 **4. top, bottom anchor 삭제**
 ```javascript
 // REMOVED DrawerPaper variants:
-{
-  props: { anchor: 'top' },
-  style: {
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 'auto',
-    maxHeight: '100%',
-  },
-},
-{
-  props: { anchor: 'bottom' },
-  style: {
-    top: 'auto',
-    left: 0,
-    bottom: 0,
-    right: 0,
-    height: 'auto',
-    maxHeight: '100%',
-  },
-}
-
-// REMOVED from oppositeDirection:
-top: 'down',
-bottom: 'up',
+{ props: { anchor: 'top' }, style: { ... } },
+{ props: { anchor: 'bottom' }, style: { ... } }
 ```
 
 **5. right anchor 삭제**
 ```javascript
-// REMOVED DrawerPaper variant:
-{
-  props: { anchor: 'right' },
-  style: { right: 0 },
-}
-
-// REMOVED from oppositeDirection:
-right: 'left',
+// REMOVED:
+{ props: { anchor: 'right' }, style: { right: 0 } }
 ```
 
 **6. anchor prop 삭제 (left 고정)**
@@ -206,41 +264,21 @@ right: 'left',
 const anchor = 'left';
 
 // REMOVED:
-anchor: anchorProp = 'left',
-const anchorInvariant = getAnchor({ direction: isRtl ? 'rtl' : 'ltr' }, anchorProp);
-const anchor = anchorProp;
-
-// REMOVED functions:
-export function isHorizontal(anchor) {
-  return ['left', 'right'].includes(anchor);
-}
-
-export function getAnchor({ direction }, anchor) {
-  return direction === 'rtl' && isHorizontal(anchor)
-    ? oppositeDirection[anchor]
-    : anchor;
-}
-
-const oppositeDirection = {
-  left: 'right',
-};
+isHorizontal() 함수
+getAnchor() 함수 (RTL 처리)
+oppositeDirection 객체
 ```
-- anchor를 'left'로 고정
-- RTL 관련 함수 모두 제거
-- useUtilityClasses, DrawerPaper overridesResolver 단순화
-- Slide direction을 'right'로 고정
 
 ### Phase 3: RTL 지원 제거 (커밋 7)
 
-**7. RTL 지원 제거**
 ```javascript
-// REMOVED import:
-import { useRtl } from '@mui/system/RtlProvider';
-
 // REMOVED:
+import { useRtl } from '@mui/system/RtlProvider';
 const isRtl = useRtl();
 ```
-- anchor가 'left'로 고정되어 RTL 처리 불필요
+
+**왜 불필요한가**:
+- anchor가 'left' 고정이므로 RTL 처리 불필요
 
 ### Phase 4: Transition 제거 (커밋 8-9)
 
@@ -248,391 +286,95 @@ const isRtl = useRtl();
 ```javascript
 // REMOVED:
 transitionDuration = defaultTransitionDuration,
-const defaultTransitionDuration = {
-  enter: theme.transitions.duration.enteringScreen,
-  exit: theme.transitions.duration.leavingScreen,
-};
-
-// CHANGED in TransitionSlot:
-timeout: transitionDuration,  // → timeout: 225,
 ```
-- transitionDuration을 225ms로 고정
-- defaultTransitionDuration 계산 제거
 
 **9. Slide transition 삭제**
 ```javascript
-// REMOVED import:
-import Slide from '../Slide';
-
-// REMOVED props:
-SlideProps,
-TransitionComponent,
-
 // REMOVED:
-const mounted = React.useRef(false);
-React.useEffect(() => {
-  mounted.current = true;
-}, []);
-
-const [TransitionSlot, transitionSlotProps] = useSlot('transition', {
-  elementType: Slide,
-  ownerState,
-  externalForwardedProps,
-  additionalProps: {
-    in: open,
-    direction: 'right',
-    timeout: 225,
-    appear: mounted.current,
-  },
-});
-
-const slidingDrawer = <TransitionSlot {...transitionSlotProps}>{drawer}</TransitionSlot>;
+import Slide from '../Slide';
+const slidingDrawer = <TransitionSlot>{drawer}</TransitionSlot>;
 
 // CHANGED to:
-const drawer = <PaperSlot {...paperSlotProps}>{children}</PaperSlot>;
-return <RootSlot {...rootSlotProps}>{drawer}</RootSlot>;
+return <RootSlot>{drawer}</RootSlot>;  // 즉시 표시
 ```
-- Slide 애니메이션 완전 제거
-- mounted ref 제거
-- drawer 직접 렌더링
+
+**왜 불필요한가**:
+- 애니메이션은 UX 향상일 뿐, Modal의 핵심 동작 학습과 무관
+- 코드 복잡도 대폭 감소
 
 ### Phase 5: Deprecated Props 제거 (커밋 10)
 
-**10. deprecated PaperProps, SlideProps, BackdropProps 삭제**
 ```javascript
-// REMOVED props:
+// REMOVED:
 BackdropProps,
 PaperProps = {},
-
-// REMOVED from externalForwardedProps.slotProps:
-paper: PaperProps,
-
-// CHANGED:
-backdrop: slotProps.backdrop || { ...BackdropProps, ...BackdropPropsProp },
-// → backdrop: slotProps.backdrop || BackdropPropsProp,
-
-// REMOVED from PaperSlot className:
-className: clsx(classes.paper, PaperProps.className),
-// → className: classes.paper,
 ```
 
 ### Phase 6: Slot 시스템 제거 (커밋 11)
 
-**11. Slot 시스템 삭제**
 ```javascript
-// REMOVED imports:
-import useSlot from '../utils/useSlot';
-import { mergeSlotProps } from '../utils';
-
-// REMOVED props:
-slots = {},
-slotProps = {},
-
 // REMOVED:
-const externalForwardedProps = {
-  slots: {
-    transition: TransitionComponent,
-    ...slots,
-  },
-  slotProps: {
-    paper: PaperProps,
-    transition: SlideProps,
-    ...slotProps,
-    backdrop: slotProps.backdrop || BackdropPropsProp,
-  },
-};
-
+import useSlot from '../utils/useSlot';
 const [RootSlot, rootSlotProps] = useSlot('root', { ... });
 const [PaperSlot, paperSlotProps] = useSlot('paper', { ... });
 
 // CHANGED to direct JSX:
-return (
-  <DrawerRoot
-    ref={ref}
-    className={clsx(classes.root, classes.modal, className)}
-    ownerState={ownerState}
-    open={open}
-    onClose={onClose}
-    hideBackdrop={hideBackdrop}
-    slotProps={{ backdrop: BackdropPropsProp }}
-    {...other}
-    {...ModalProps}
-  >
-    <DrawerPaper
-      className={classes.paper}
-      ownerState={ownerState}
-      elevation={elevation}
-      square
-      role="dialog"
-      aria-modal="true"
-    >
-      {children}
-    </DrawerPaper>
-  </DrawerRoot>
-);
+<DrawerRoot>
+  <DrawerPaper>
+    {children}
+  </DrawerPaper>
+</DrawerRoot>
 ```
-- useSlot 호출을 직접 JSX로 변경
-- 가독성 대폭 향상
 
 ### Phase 7: Props 단순화 (커밋 12-14)
 
-**12. elevation prop 삭제 (16 고정)**
 ```javascript
-// REMOVED prop:
-elevation = 16,
-
-// REMOVED from ownerState:
-elevation,
-
-// CHANGED in DrawerPaper:
-elevation={elevation}  // → elevation={16}
-```
-
-**13. hideBackdrop prop 삭제**
-```javascript
-// REMOVED prop:
-hideBackdrop = false,
-
-// REMOVED from DrawerRoot:
-hideBackdrop={hideBackdrop}
-```
-- Modal의 기본값(false) 사용
-
-**14. ModalProps prop 삭제**
-```javascript
-// REMOVED prop:
-ModalProps: { BackdropProps: BackdropPropsProp, ...ModalProps } = {},
-
-// REMOVED from DrawerRoot:
-slotProps={{ backdrop: BackdropPropsProp }}
-{...ModalProps}
+// REMOVED:
+elevation = 16,  // → 고정
+hideBackdrop = false,  // → Modal 기본값 사용
+ModalProps,  // → ...other로 대체
 ```
 
 ### Phase 8: 테마 시스템 제거 (커밋 15-17)
 
-**15. useDefaultProps 삭제**
 ```javascript
-// REMOVED import:
-import { useDefaultProps } from '../DefaultPropsProvider';
-
 // REMOVED:
-const props = useDefaultProps({ props: inProps, name: 'MuiDrawer' });
-
-// CHANGED to:
-const { children, className, onClose, open = false, ...other } = inProps;
-const ownerState = { ...inProps, anchor, open, variant, ...other };
-```
-
-**16. useUtilityClasses, composeClasses 삭제**
-```javascript
-// REMOVED imports:
-import composeClasses from '@mui/utils/composeClasses';
-import capitalize from '../utils/capitalize';
-import { getDrawerUtilityClass } from './drawerClasses';
-
-// REMOVED:
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-  const slots = {
-    root: ['root', 'anchorLeft'],
-    modal: ['modal'],
-    paper: ['paper', 'paperAnchorLeft'],
-  };
-  return composeClasses(slots, getDrawerUtilityClass, classes);
-};
-
-const classes = useUtilityClasses(ownerState);
-
-// CHANGED in DrawerRoot:
-className={clsx(classes.root, classes.modal, className)}
-// → className={className}
-```
-
-**17. useTheme, memoTheme 삭제**
-```javascript
-// REMOVED imports:
-import { styled, useTheme } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
-
-// REMOVED:
+import { useTheme } from '../zero-styled';
 const theme = useTheme();
 
-// CHANGED DrawerRoot:
-const DrawerRoot = styled(Modal, {
-  name: 'MuiDrawer',
-  slot: 'Root',
-  overridesResolver,
-})(
-  memoTheme(({ theme }) => ({
-    zIndex: (theme.vars || theme).zIndex.drawer,
-  })),
-);
-// →
-const DrawerRoot = styled(Modal, {
-  name: 'MuiDrawer',
-  slot: 'Root',
-  overridesResolver,
-})({
-  zIndex: 1200,
-});
-
-// CHANGED DrawerPaper:
-memoTheme(({ theme }) => ({
-  zIndex: (theme.vars || theme).zIndex.drawer,
-  // ...
-}))
-// →
-{
-  zIndex: 1200,
-  // ...
-}
+// CHANGED:
+zIndex: theme.zIndex.drawer  // → zIndex: 1200
 ```
-- theme.zIndex.drawer를 1200으로 하드코딩
 
 ### Phase 9: Styled 제거 (커밋 18)
 
-**18. styled 함수 제거**
 ```javascript
-// REMOVED imports:
-import { styled } from '../zero-styled';
-import rootShouldForwardProp from '../styles/rootShouldForwardProp';
-
 // REMOVED:
-const overridesResolver = (props, styles) => {
-  return [
-    styles.root,
-    styles.modal,
-  ];
-};
+const DrawerRoot = styled(Modal, { ... })({ zIndex: 1200 });
+const DrawerPaper = styled(Paper, { ... })({ ... });
 
-const DrawerRoot = styled(Modal, {
-  name: 'MuiDrawer',
-  slot: 'Root',
-  overridesResolver,
-})({
-  zIndex: 1200,
-});
-
-const DrawerPaper = styled(Paper, {
-  name: 'MuiDrawer',
-  slot: 'Paper',
-  overridesResolver: (props, styles) => {
-    return [
-      styles.paper,
-      styles.paperAnchorLeft,
-    ];
-  },
-})({
-  overflowY: 'auto',
-  display: 'flex',
-  // ...
-  left: 0,
-  outline: 0,
-});
-
-// CHANGED to direct components with inline styles:
-return (
-  <Modal
-    ref={ref}
-    className={className}
-    open={open}
-    onClose={onClose}
-    style={{ zIndex: 1200 }}
-    {...other}
-  >
-    <Paper
-      elevation={16}
-      square
-      role="dialog"
-      aria-modal="true"
-      style={{
-        overflowY: 'auto',
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-        flex: '1 0 auto',
-        zIndex: 1200,
-        WebkitOverflowScrolling: 'touch',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        outline: 0,
-      }}
-    >
-      {children}
-    </Paper>
-  </Modal>
-);
+// CHANGED to inline styles:
+<Modal style={{ zIndex: 1200 }}>
+  <Paper style={{ position: 'fixed', ... }}>
 ```
-- styled 컴포넌트를 inline style로 완전히 변환
-- 가장 큰 코드 감소 (51줄 제거)
+
+**코드 감소**: 51줄 제거 (가장 큰 감소)
 
 ### Phase 10: 메타데이터 제거 (커밋 19-21)
 
-**19. classes, sx, ownerState 삭제**
 ```javascript
-// REMOVED import:
-import clsx from 'clsx';
-
 // REMOVED:
-const variant = 'temporary';
-const anchor = 'left';
-
-const ownerState = {
-  ...inProps,
-  anchor,
-  open,
-  variant,
-  ...other,
-};
+const ownerState = { ... };
+const classes = useUtilityClasses(ownerState);
 ```
-- ownerState 객체 제거
-- 더 이상 필요 없는 메타데이터 정리
-
-**20. Drawer 구현 단순화**
-```javascript
-// REMOVED JSDoc comment:
-/**
- * The props of the [Modal](/material-ui/api/modal/) component are available
- * when `variant="temporary"` is set.
- */
-```
-- 불필요한 주석 제거
-- 공백 정리
 
 **21. PropTypes 삭제**
 ```javascript
-// REMOVED imports:
-import PropTypes from 'prop-types';
-import integerPropType from '@mui/utils/integerPropType';
-
 // REMOVED (117줄):
-Drawer.propTypes = {
-  anchor: PropTypes.oneOf(['bottom', 'left', 'right', 'top']),
-  BackdropProps: PropTypes.object,
-  children: PropTypes.node,
-  classes: PropTypes.object,
-  className: PropTypes.string,
-  elevation: integerPropType,
-  hideBackdrop: PropTypes.bool,
-  ModalProps: PropTypes.object,
-  onClose: PropTypes.func,
-  open: PropTypes.bool,
-  PaperProps: PropTypes.object,
-  SlideProps: PropTypes.object,
-  slotProps: PropTypes.shape({ ... }),
-  slots: PropTypes.shape({ ... }),
-  sx: PropTypes.oneOfType([ ... ]),
-  transitionDuration: PropTypes.oneOfType([ ... ]),
-  variant: PropTypes.oneOf(['permanent', 'persistent', 'temporary']),
-};
+Drawer.propTypes = { ... };
 ```
-- PropTypes 정의 전체 삭제 (117줄)
-- 가장 많은 코드가 제거된 단계
 
 **22. 불필요한 import 정리**
-- 모든 import가 사용 중임을 확인
-- 최종 검증
 
 ---
 
@@ -651,6 +393,49 @@ Drawer.propTypes = {
 | **Styled 컴포넌트** | ✅ 3개 | ❌ (inline style) |
 | **Utility Classes** | ✅ | ❌ |
 | **PropTypes** | ✅ 117줄 | ❌ |
-| **elevation** | 0~24 커스터마이징 | 16 (고정) |
-| **hideBackdrop** | ✅ | ❌ (항상 표시) |
-| **ModalProps** | ✅ | ❌ |
+
+---
+
+## 학습 후 다음 단계
+
+Drawer를 이해했다면:
+
+1. **Modal** - Drawer가 사용하는 핵심 컴포넌트. 포커스 트랩, 백드롭 클릭 등의 동작 원리 학습
+2. **Dialog** - 또 다른 Modal 래퍼. Drawer와 비교하며 Composition 패턴 이해
+3. **FocusTrap** - Modal 내부의 포커스 관리 메커니즘
+
+**예시: 기본 사용**
+```javascript
+function App() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <button onClick={() => setOpen(true)}>Open Drawer</button>
+      <Drawer open={open} onClose={() => setOpen(false)}>
+        <nav>
+          <a href="/home">Home</a>
+          <a href="/about">About</a>
+        </nav>
+      </Drawer>
+    </>
+  );
+}
+```
+
+**예시: 닫기 이유 구분**
+```javascript
+<Drawer
+  open={open}
+  onClose={(event, reason) => {
+    if (reason === 'backdropClick') {
+      console.log('백드롭 클릭으로 닫힘');
+    } else if (reason === 'escapeKeyDown') {
+      console.log('ESC 키로 닫힘');
+    }
+    setOpen(false);
+  }}
+>
+  {/* ... */}
+</Drawer>
+```
