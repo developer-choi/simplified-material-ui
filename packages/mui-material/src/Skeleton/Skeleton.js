@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
 
 // 기본 배경색 (light mode 기준, text.primary의 11% 투명도)
 const defaultBgColor = 'rgba(0, 0, 0, 0.11)';
@@ -93,65 +92,5 @@ const Skeleton = React.forwardRef(function Skeleton(props, ref) {
     </Component>
   );
 });
-
-Skeleton.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * The animation.
-   * If `false` the animation effect is disabled.
-   * @default 'pulse'
-   */
-  animation: PropTypes.oneOf(['pulse', 'wave', false]),
-  /**
-   * Optional children to infer width and height from.
-   */
-  children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
-  /**
-   * Height of the skeleton.
-   * Useful when you don't want to adapt the skeleton to a text element but for instance a card.
-   */
-  height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  /**
-   * @ignore
-   */
-  style: PropTypes.object,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-  /**
-   * The type of content that will be rendered.
-   * @default 'text'
-   */
-  variant: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['circular', 'rectangular', 'rounded', 'text']),
-    PropTypes.string,
-  ]),
-  /**
-   * Width of the skeleton.
-   * Useful when the skeleton is inside an inline element with no width of its own.
-   */
-  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-};
 
 export default Skeleton;
