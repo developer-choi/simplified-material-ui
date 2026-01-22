@@ -25,7 +25,189 @@ Dialog는 Modal 위에 얇은 레이어를 추가한 컴포넌트입니다. 단�
 3. **Paper 스타일** - DialogPaper로 카드 형태 UI 제공
 4. **ARIA 접근성** - `role="dialog"`, `aria-modal`, `aria-labelledby` 자동 설정
 
-> **💡 주의**: Backdrop 클릭 닫기, ESC 키 닫기, 포커스 트랩은 **Modal의 기능**입니다. Dialog 자체는 UI 구조만 담당합니다.
+> **💡 주의**: ESC 키 닫기와 포커스 트랩은 **Modal의 기능**입니다. 단, **Backdrop 클릭 닫기는 Dialog가 직접 처리**합니다 (아래 설명 참고).
+
+---
+
+## 원본과 간소화 버전의 핵심 차이: Backdrop 클릭 처리
+
+### 왜 Dialog가 Backdrop 클릭을 직접 처리해야 하는가?
+
+**구조적 문제**: Dialog의 Container가 `height: 100%`로 전체 화면을 덮어서 Modal의 Backdrop에 클릭이 도달하지 않습니다.
+
+```
+┌─────────────────────────────────────┐
+│ Modal (position: fixed)             │
+│                                     │
+│  ┌───────────────────────────────┐  │
+│  │ Backdrop (z-index: -1)        │  │  ← 맨 뒤에 위치
+│  └───────────────────────────────┘  │
+│                                     │
+│  ┌───────────────────────────────┐  │
+│  │ FocusTrap                     │  │
+│  │  ┌─────────────────────────┐  │  │
+│  │  │ Container (height:100%) │  │  │  ← 전체를 덮음, 클릭이 여기서 잡힘
+│  │  │    ┌─────────────────┐  │  │  │
+│  │  │    │     Paper       │  │  │  │
+│  │  │    └─────────────────┘  │  │  │
+│  │  └─────────────────────────┘  │  │
+│  └───────────────────────────────┘  │
+└─────────────────────────────────────┘
+```
+
+### Backdrop의 z-index: -1 이유
+
+Modal의 Backdrop은 `z-index: -1`로 설정되어 있습니다:
+
+```javascript
+// Modal.js (원본)
+const ModalBackdrop = styled(Backdrop, {
+  name: 'MuiModal',
+  slot: 'Backdrop',
+})({
+  zIndex: -1,  // 형제 요소들 뒤에 배치
+});
+```
+
+#### 왜 z-index: -1인가?
+
+**목적**: Backdrop을 형제 요소(FocusTrap/children)보다 **확실히 뒤에** 배치하기 위해서입니다.
+
+```
+ModalRoot (stacking context 생성)
+├── Backdrop (z-index: -1)  ← 형제들 중 맨 뒤
+└── FocusTrap (z-index: auto = 0)  ← Backdrop보다 앞
+    └── children
+```
+
+#### z-index: -1 없이도 동작하는가?
+
+**동작합니다.** DOM 순서로도 같은 효과를 얻을 수 있습니다:
+
+```jsx
+<ModalRoot>
+  <Backdrop />      {/* 먼저 렌더링 → 뒤에 배치 */}
+  <FocusTrap>       {/* 나중에 렌더링 → 앞에 배치 */}
+    {children}
+  </FocusTrap>
+</ModalRoot>
+```
+
+하지만 원본 MUI는 **명시적 보장**을 위해 `z-index: -1`을 사용합니다. DOM 순서가 바뀌어도 항상 Backdrop이 뒤에 위치하도록요.
+
+#### z-index: -1의 효과
+
+| children 위치 | 클릭 대상 | 설명 |
+|---------------|-----------|------|
+| children이 있는 영역 | children | z-index가 높아서 앞에 있음 |
+| children이 없는 영역 | Backdrop | 그 위치에 Backdrop만 있으므로 클릭 가능 |
+
+**Drawer에서 이게 중요한 이유**: Drawer 패널이 화면 일부만 차지하므로, 나머지 영역에서 Backdrop 클릭이 가능해야 합니다.
+
+**Dialog에서는 의미 없는 이유**: Container가 `height: 100%`로 전체를 덮어서 Backdrop에 클릭이 도달하지 않습니다. 그래서 Dialog는 Container에서 직접 클릭을 처리합니다.
+
+### Dialog vs Drawer: Backdrop 클릭 처리 방식 차이
+
+| 컴포넌트 | Container 크기 | Backdrop 노출 | 클릭 처리 |
+|----------|----------------|---------------|-----------|
+| **Drawer** | 화면 일부 (예: 왼쪽 250px) | ✅ 나머지 영역 노출 | Modal에 위임 |
+| **Dialog** | `height: 100%` 전체 덮음 | ❌ Container에 가려짐 | **직접 처리 필수** |
+
+**Drawer 구조** (Backdrop 클릭 가능):
+```
+┌────────────────────────────────┐
+│ Modal                          │
+│  ┌──────────────────────────┐  │
+│  │ Backdrop                 │◀─┼── 이 영역 클릭 가능
+│  └──────────────────────────┘  │
+│  ┌────────┐                    │
+│  │ Drawer │ (width: 250px)     │
+│  │ Panel  │                    │
+│  └────────┘                    │
+└────────────────────────────────┘
+```
+
+**Dialog 구조** (Backdrop 클릭 불가):
+```
+┌────────────────────────────────┐
+│ Modal                          │
+│  ┌──────────────────────────┐  │
+│  │ Backdrop (z-index: -1)   │  │  ← 가려져서 클릭 안됨
+│  └──────────────────────────┘  │
+│  ┌──────────────────────────┐  │
+│  │ Container (height: 100%) │◀─┼── 여기서 클릭 감지해야 함
+│  │    ┌──────────────┐      │  │
+│  │    │    Paper     │      │  │
+│  │    └──────────────┘      │  │
+│  └──────────────────────────┘  │
+└────────────────────────────────┘
+```
+
+### 원본 Dialog의 Backdrop 클릭 처리 코드
+
+```javascript
+// Dialog.js (원본)
+const backdropClick = React.useRef();
+
+// Container에서 mouseDown 감지
+const handleMouseDown = (event) => {
+  backdropClick.current = event.target === event.currentTarget;
+};
+
+// Modal에 전달된 onClick에서 처리
+const handleBackdropClick = (event) => {
+  if (!backdropClick.current) {
+    return;
+  }
+  backdropClick.current = null;
+
+  if (onClose) {
+    onClose(event, 'backdropClick');
+  }
+};
+
+return (
+  <Modal
+    onClick={handleBackdropClick}  // ← Modal의 onClick으로 전달
+    ...
+  >
+    <DialogContainer
+      onMouseDown={handleMouseDown}  // ← Container에서 mouseDown 감지
+    >
+      <DialogPaper>
+        {children}
+      </DialogPaper>
+    </DialogContainer>
+  </Modal>
+);
+```
+
+### 왜 mouseDown + click 조합을 사용하는가?
+
+**드래그 오작동 방지**: Paper 안에서 텍스트 드래그를 시작해서 Container에서 마우스를 놓아도 닫히지 않게 합니다.
+
+```
+// mouseDown만 체크하면:
+Paper에서 드래그 시작 → Container에서 mouseUp → 닫히지 않음 ✅
+
+// click만 체크하면:
+Paper에서 드래그 시작 → Container에서 mouseUp → click 이벤트 발생 → 닫힘 ❌
+```
+
+### 간소화 버전에서의 선택
+
+간소화 버전에서는 두 가지 선택지가 있습니다:
+
+**옵션 1: 원본처럼 Dialog가 직접 처리**
+- Dialog에 `handleMouseDown` + `handleBackdropClick` 구현
+- Modal은 Backdrop 클릭 처리 없음 (또는 Drawer용으로만)
+
+**옵션 2: Modal에 위임 (현재 간소화 버전)**
+- Dialog는 UI만 담당
+- 단, Container가 Backdrop을 가리므로 `pointer-events` 조정 필요
+- 또는 Container에서 이벤트를 Modal로 전파
+
+> **⚠️ 현재 간소화 버전의 한계**: "Modal에 위임"으로 단순화했지만, 이는 원본과 다른 구조입니다. 원본 동작을 정확히 재현하려면 옵션 1을 사용해야 합니다.
 
 ---
 
