@@ -2,7 +2,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '../zero-styled';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import ListContext from './ListContext';
 
 const ListRoot = styled('ul', {
@@ -40,8 +39,7 @@ const ListRoot = styled('ul', {
   ],
 });
 
-const List = React.forwardRef(function List(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiList' });
+const List = React.forwardRef(function List(props, ref) {
   const {
     children,
     className,
