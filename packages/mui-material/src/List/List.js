@@ -1,22 +1,9 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import ListContext from './ListContext';
-import { getListUtilityClass } from './listClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, disablePadding, dense, subheader } = ownerState;
-
-  const slots = {
-    root: ['root', !disablePadding && 'padding', dense && 'dense', subheader && 'subheader'],
-  };
-
-  return composeClasses(slots, getListUtilityClass, classes);
-};
 
 const ListRoot = styled('ul', {
   name: 'MuiList',
@@ -74,13 +61,11 @@ const List = React.forwardRef(function List(inProps, ref) {
     disablePadding,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <ListContext.Provider value={context}>
       <ListRoot
         as={component}
-        className={clsx(classes.root, className)}
+        className={className}
         ref={ref}
         ownerState={ownerState}
         {...other}
