@@ -80,7 +80,7 @@ import { RadioProps } from '../../../form/Radio';
 import { RatingProps } from '../Rating';
 import { ScopedCssBaselineProps } from '../ScopedCssBaseline';
 import { SelectProps } from '../Select';
-import { SkeletonProps } from '../Skeleton';
+import { SkeletonProps } from '../../../feedback/Skeleton';
 import { SliderProps } from '../Slider';
 import { SnackbarContentProps } from '../SnackbarContent';
 import { SnackbarProps } from '../Snackbar';

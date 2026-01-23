@@ -81,7 +81,7 @@ import { RadioGroupClassKey } from '../RadioGroup';
 import { RatingClassKey } from '../Rating';
 import { ScopedCssBaselineClassKey } from '../ScopedCssBaseline';
 import { SelectClassKey } from '../Select';
-import { SkeletonClassKey } from '../Skeleton';
+import { SkeletonClassKey } from '../../../feedback/Skeleton';
 import { SliderClassKey } from '../Slider';
 import { SnackbarClassKey } from '../Snackbar';
 import { SnackbarContentClassKey } from '../SnackbarContent';
