@@ -1,76 +1,57 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { styled } from '../zero-styled';
 import ListContext from './ListContext';
 
-const ListRoot = styled('ul', {
-  name: 'MuiList',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.root,
-      !ownerState.disablePadding && styles.padding,
-      ownerState.dense && styles.dense,
-      ownerState.subheader && styles.subheader,
-    ];
-  },
-})({
+// 기본 스타일
+const baseStyle = {
   listStyle: 'none',
   margin: 0,
   padding: 0,
   position: 'relative',
-  variants: [
-    {
-      props: ({ ownerState }) => !ownerState.disablePadding,
-      style: {
-        paddingTop: 8,
-        paddingBottom: 8,
-      },
-    },
-    {
-      props: ({ ownerState }) => ownerState.subheader,
-      style: {
-        paddingTop: 0,
-      },
-    },
-  ],
-});
+};
 
 const List = React.forwardRef(function List(props, ref) {
   const {
     children,
     className,
-    component = 'ul',
+    component: Component = 'ul',
     dense = false,
     disablePadding = false,
     subheader,
+    style,
     ...other
   } = props;
 
   const context = React.useMemo(() => ({ dense }), [dense]);
 
-  const ownerState = {
-    ...props,
-    component,
-    dense,
-    disablePadding,
+  // 스타일 계산
+  const computedStyle = {
+    ...baseStyle,
+    // disablePadding이 false면 패딩 추가
+    ...(!disablePadding && {
+      paddingTop: 8,
+      paddingBottom: 8,
+    }),
+    // subheader가 있으면 상단 패딩 제거
+    ...(subheader && {
+      paddingTop: 0,
+    }),
+    // 사용자 style 오버라이드
+    ...style,
   };
 
   return (
     <ListContext.Provider value={context}>
-      <ListRoot
-        as={component}
-        className={className}
+      <Component
         ref={ref}
-        ownerState={ownerState}
+        className={className}
+        style={computedStyle}
         {...other}
       >
         {subheader}
         {children}
-      </ListRoot>
+      </Component>
     </ListContext.Provider>
   );
 });
