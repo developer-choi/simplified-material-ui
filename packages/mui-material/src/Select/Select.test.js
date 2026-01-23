@@ -17,7 +17,7 @@ import OutlinedInput from '../../../form/OutlinedInput';
 import InputLabel from '../../../form/InputLabel';
 import Select from '@mui/material/Select';
 import Divider from '../../../data-display/Divider';
-import { listClasses } from '@mui/material/List';
+import { listClasses } from '../../../data-display/List';
 import classes from './selectClasses';
 import { nativeSelectClasses } from '../NativeSelect';
 import describeConformance from '../../test/describeConformance';

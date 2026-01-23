@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ExtendList, ExtendListTypeMap } from '@mui/material/List';
+import { ExtendList, ExtendListTypeMap } from '../../data-display/List';
 import { OverrideProps } from '@mui/material/OverridableComponent';
 
 export interface MenuListOwnProps {

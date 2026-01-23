@@ -3,7 +3,7 @@ import { spy } from 'sinon';
 import { act, createRenderer, fireEvent, screen, supportsTouch } from '@mui/internal-test-utils';
 import MenuItem, { menuItemClasses as classes } from './index';
 import ButtonBase from '../../form/ButtonBase';
-import ListContext from '@mui/material/List/ListContext';
+import ListContext from '../../data-display/List/ListContext';
 import describeConformance from '../../mui-material/test/describeConformance';
 import * as ripple from '../../mui-material/test/ripple';
 

@@ -5,7 +5,7 @@ import describeSkipIf from '@mui/internal-test-utils/describeSkipIf';
 import ListItemButton, { listItemButtonClasses as classes } from '@mui/material/ListItemButton';
 import ButtonBase from '../../../form/ButtonBase';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import ListContext from '../List/ListContext';
+import ListContext from '../../../data-display/List/ListContext';
 import describeConformance from '../../test/describeConformance';
 
 describe('<ListItemButton />', () => {

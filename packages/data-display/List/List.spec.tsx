@@ -1,5 +1,5 @@
 import * as React from 'react';
-import List from '@mui/material/List';
+import List from './index';
 
 // custom host
 // https://github.com/mui/material-ui/issues/13746

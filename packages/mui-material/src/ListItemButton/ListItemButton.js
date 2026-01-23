@@ -10,7 +10,7 @@ import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import ButtonBase from '../../../form/ButtonBase';
 import useEnhancedEffect from '../utils/useEnhancedEffect';
 import useForkRef from '../utils/useForkRef';
-import ListContext from '../List/ListContext';
+import ListContext from '../../../data-display/List/ListContext';
 import listItemButtonClasses, { getListItemButtonUtilityClass } from './listItemButtonClasses';
 
 export const overridesResolver = (props, styles) => {

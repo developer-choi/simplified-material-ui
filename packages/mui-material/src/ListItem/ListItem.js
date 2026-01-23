@@ -12,7 +12,7 @@ import { useDefaultProps } from '../DefaultPropsProvider';
 import isMuiElement from '../utils/isMuiElement';
 import useForkRef from '../utils/useForkRef';
 import useSlot from '../utils/useSlot';
-import ListContext from '../List/ListContext';
+import ListContext from '../../../data-display/List/ListContext';
 import { getListItemUtilityClass } from './listItemClasses';
 import { listItemButtonClasses } from '../ListItemButton';
 import ListItemSecondaryAction from '../ListItemSecondaryAction';

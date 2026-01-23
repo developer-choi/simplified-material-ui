@@ -61,7 +61,7 @@ import { ListItemProps } from '../ListItem';
 import { ListItemButtonProps } from '../ListItemButton';
 import { ListItemSecondaryActionProps } from '../ListItemSecondaryAction';
 import { ListItemTextProps } from '../ListItemText';
-import { ListProps } from '../List';
+import { ListProps } from '../../../data-display/List';
 import { ListSubheaderProps } from '../ListSubheader';
 import { MenuItemProps } from '../../../menu/MenuItem';
 import { MenuListProps } from '../../../menu/MenuList';

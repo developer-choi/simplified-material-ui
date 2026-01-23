@@ -196,8 +196,8 @@ export * from './LinearProgress';
 export { default as Link } from './Link';
 export * from './Link';
 
-export { default as List } from './List';
-export * from './List';
+export { default as List } from '../../data-display/List';
+export * from '../../data-display/List';
 
 export { default as ListItem } from './ListItem';
 export * from './ListItem';

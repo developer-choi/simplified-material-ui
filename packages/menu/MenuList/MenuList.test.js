@@ -5,7 +5,7 @@ import { createRenderer, screen } from '@mui/internal-test-utils';
 import Divider from '../../data-display/Divider';
 import MenuList from './index';
 import MenuItem from '../MenuItem';
-import List from '@mui/material/List';
+import List from '../../data-display/List';
 import getScrollbarSize from '@mui/material/utils/getScrollbarSize';
 import describeConformance from '../../mui-material/test/describeConformance';
 

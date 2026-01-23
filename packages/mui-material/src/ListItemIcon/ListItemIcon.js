@@ -7,7 +7,7 @@ import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import { getListItemIconUtilityClass } from './listItemIconClasses';
-import ListContext from '../List/ListContext';
+import ListContext from '../../../data-display/List/ListContext';
 
 const useUtilityClasses = (ownerState) => {
   const { alignItems, classes } = ownerState;

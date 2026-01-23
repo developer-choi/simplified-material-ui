@@ -5,7 +5,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import ListItem, { listItemClasses as classes } from '@mui/material/ListItem';
-import ListContext from '../List/ListContext';
+import ListContext from '../../../data-display/List/ListContext';
 import describeConformance from '../../test/describeConformance';
 
 describe('<ListItem />', () => {

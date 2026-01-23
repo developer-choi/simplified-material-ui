@@ -57,7 +57,7 @@ import { InputClassKey } from '../../../form/Input';
 import { InputLabelClassKey } from '../../../form/InputLabel';
 import { LinearProgressClassKey } from '../LinearProgress';
 import { LinkClassKey } from '../Link';
-import { ListClassKey } from '../List';
+import { ListClassKey } from '../../../data-display/List';
 import { ListItemAvatarClassKey } from '../ListItemAvatar';
 import { ListItemClassKey } from '../ListItem';
 import { ListItemButtonClassKey } from '../ListItemButton';
