@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import ListContext from '../../../data-display/List/ListContext';
 import ListItemSecondaryAction from '../ListItemSecondaryAction';
 
@@ -96,55 +95,5 @@ const ListItem = React.forwardRef(function ListItem(props, ref) {
     </ListContext.Provider>
   );
 });
-
-ListItem.propTypes /* remove-proptypes */ = {
-  /**
-   * Defines the `align-items` style property.
-   * @default 'center'
-   */
-  alignItems: PropTypes.oneOf(['center', 'flex-start']),
-  /**
-   * The content of the component.
-   */
-  children: PropTypes.node,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
-  /**
-   * If `true`, compact vertical padding designed for keyboard and mouse input is used.
-   * The prop defaults to the value inherited from the parent List component.
-   * @default false
-   */
-  dense: PropTypes.bool,
-  /**
-   * If `true`, the left and right padding is removed.
-   * @default false
-   */
-  disableGutters: PropTypes.bool,
-  /**
-   * If `true`, all padding is removed.
-   * @default false
-   */
-  disablePadding: PropTypes.bool,
-  /**
-   * If `true`, a 1px light border is added to the bottom of the list item.
-   * @default false
-   */
-  divider: PropTypes.bool,
-  /**
-   * The element to display at the end of ListItem.
-   */
-  secondaryAction: PropTypes.node,
-  /**
-   * @ignore
-   */
-  style: PropTypes.object,
-};
 
 export default ListItem;
