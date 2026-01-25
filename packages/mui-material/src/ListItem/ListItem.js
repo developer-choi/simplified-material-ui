@@ -1,8 +1,6 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import elementTypeAcceptingRef from '@mui/utils/elementTypeAcceptingRef';
 import chainPropTypes from '@mui/utils/chainPropTypes';
 import isHostComponent from '@mui/utils/isHostComponent';
@@ -13,56 +11,12 @@ import isMuiElement from '../utils/isMuiElement';
 import useForkRef from '../utils/useForkRef';
 import useSlot from '../utils/useSlot';
 import ListContext from '../../../data-display/List/ListContext';
-import { getListItemUtilityClass } from './listItemClasses';
 import { listItemButtonClasses } from '../ListItemButton';
 import ListItemSecondaryAction from '../ListItemSecondaryAction';
 
-export const overridesResolver = (props, styles) => {
-  const { ownerState } = props;
-
-  return [
-    styles.root,
-    ownerState.dense && styles.dense,
-    ownerState.alignItems === 'flex-start' && styles.alignItemsFlexStart,
-    ownerState.divider && styles.divider,
-    !ownerState.disableGutters && styles.gutters,
-    !ownerState.disablePadding && styles.padding,
-    ownerState.hasSecondaryAction && styles.secondaryAction,
-  ];
-};
-
-const useUtilityClasses = (ownerState) => {
-  const {
-    alignItems,
-    classes,
-    dense,
-    disableGutters,
-    disablePadding,
-    divider,
-    hasSecondaryAction,
-  } = ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      dense && 'dense',
-      !disableGutters && 'gutters',
-      !disablePadding && 'padding',
-      divider && 'divider',
-      alignItems === 'flex-start' && 'alignItemsFlexStart',
-      hasSecondaryAction && 'secondaryAction',
-    ],
-    container: ['container'],
-    secondaryAction: ['secondaryAction'],
-  };
-
-  return composeClasses(slots, getListItemUtilityClass, classes);
-};
-
-export const ListItemRoot = styled('div', {
+const ListItemRoot = styled('div', {
   name: 'MuiListItem',
   slot: 'Root',
-  overridesResolver,
 })(
   memoTheme(({ theme }) => ({
     display: 'flex',
@@ -213,8 +167,6 @@ const ListItem = React.forwardRef(function ListItem(inProps, ref) {
     hasSecondaryAction,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   const handleRef = useForkRef(listItemRef, ref);
 
   const externalForwardedProps = {
@@ -226,14 +178,13 @@ const ListItem = React.forwardRef(function ListItem(inProps, ref) {
     elementType: ListItemSecondaryAction,
     externalForwardedProps,
     ownerState,
-    className: classes.secondaryAction,
   });
 
   const Root = slots.root || components.Root || ListItemRoot;
   const rootProps = slotProps.root || componentsProps.root || {};
 
   const componentProps = {
-    className: clsx(classes.root, rootProps.className, className),
+    className,
     ...other,
   };
 
@@ -257,7 +208,7 @@ const ListItem = React.forwardRef(function ListItem(inProps, ref) {
       <ListContext.Provider value={childContext}>
         <ListItemContainer
           as={ContainerComponent}
-          className={clsx(classes.container, ContainerClassName)}
+          className={ContainerClassName}
           ref={handleRef}
           ownerState={ownerState}
           {...ContainerProps}
