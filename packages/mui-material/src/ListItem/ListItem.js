@@ -6,7 +6,6 @@ import chainPropTypes from '@mui/utils/chainPropTypes';
 import isHostComponent from '@mui/utils/isHostComponent';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import isMuiElement from '../utils/isMuiElement';
 import useForkRef from '../utils/useForkRef';
 import useSlot from '../utils/useSlot';
@@ -118,8 +117,7 @@ const ListItemContainer = styled('li', {
 /**
  * Uses an additional container component if `ListItemSecondaryAction` is the last child.
  */
-const ListItem = React.forwardRef(function ListItem(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiListItem' });
+const ListItem = React.forwardRef(function ListItem(props, ref) {
   const {
     alignItems = 'center',
     children: childrenProp,
