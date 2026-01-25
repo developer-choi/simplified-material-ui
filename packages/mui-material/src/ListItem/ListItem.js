@@ -1,143 +1,44 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import elementTypeAcceptingRef from '@mui/utils/elementTypeAcceptingRef';
-import chainPropTypes from '@mui/utils/chainPropTypes';
-import isHostComponent from '@mui/utils/isHostComponent';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
-import isMuiElement from '../utils/isMuiElement';
-import useForkRef from '../utils/useForkRef';
-import useSlot from '../utils/useSlot';
 import ListContext from '../../../data-display/List/ListContext';
-import { listItemButtonClasses } from '../ListItemButton';
 import ListItemSecondaryAction from '../ListItemSecondaryAction';
 
-const ListItemRoot = styled('div', {
-  name: 'MuiListItem',
-  slot: 'Root',
-})(
-  memoTheme(({ theme }) => ({
-    display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    position: 'relative',
-    textDecoration: 'none',
-    width: '100%',
-    boxSizing: 'border-box',
-    textAlign: 'left',
-    variants: [
-      {
-        props: ({ ownerState }) => !ownerState.disablePadding,
-        style: {
-          paddingTop: 8,
-          paddingBottom: 8,
-        },
-      },
-      {
-        props: ({ ownerState }) => !ownerState.disablePadding && ownerState.dense,
-        style: {
-          paddingTop: 4,
-          paddingBottom: 4,
-        },
-      },
-      {
-        props: ({ ownerState }) => !ownerState.disablePadding && !ownerState.disableGutters,
-        style: {
-          paddingLeft: 16,
-          paddingRight: 16,
-        },
-      },
-      {
-        props: ({ ownerState }) => !ownerState.disablePadding && !!ownerState.secondaryAction,
-        style: {
-          // Add some space to avoid collision as `ListItemSecondaryAction`
-          // is absolutely positioned.
-          paddingRight: 48,
-        },
-      },
-      {
-        props: ({ ownerState }) => !!ownerState.secondaryAction,
-        style: {
-          [`& > .${listItemButtonClasses.root}`]: {
-            paddingRight: 48,
-          },
-        },
-      },
-      {
-        props: {
-          alignItems: 'flex-start',
-        },
-        style: {
-          alignItems: 'flex-start',
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.divider,
-        style: {
-          borderBottom: `1px solid ${(theme.vars || theme).palette.divider}`,
-          backgroundClip: 'padding-box',
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.button,
-        style: {
-          transition: theme.transitions.create('background-color', {
-            duration: theme.transitions.duration.shortest,
-          }),
-          '&:hover': {
-            textDecoration: 'none',
-            backgroundColor: (theme.vars || theme).palette.action.hover,
-            // Reset on touch devices, it doesn't add specificity
-            '@media (hover: none)': {
-              backgroundColor: 'transparent',
-            },
-          },
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.hasSecondaryAction,
-        style: {
-          // Add some space to avoid collision as `ListItemSecondaryAction`
-          // is absolutely positioned.
-          paddingRight: 48,
-        },
-      },
-    ],
-  })),
-);
-
-const ListItemContainer = styled('li', {
-  name: 'MuiListItem',
-  slot: 'Container',
-})({
+// 기본 스타일
+const baseStyle = {
+  display: 'flex',
+  justifyContent: 'flex-start',
+  alignItems: 'center',
   position: 'relative',
-});
+  textDecoration: 'none',
+  width: '100%',
+  boxSizing: 'border-box',
+  textAlign: 'left',
+};
 
 /**
- * Uses an additional container component if `ListItemSecondaryAction` is the last child.
+ * ListItem 컴포넌트
+ * List 내의 개별 목록 아이템을 렌더링합니다.
  */
 const ListItem = React.forwardRef(function ListItem(props, ref) {
   const {
     alignItems = 'center',
-    children: childrenProp,
+    children,
     className,
-    component: componentProp,
-    components = {},
-    componentsProps = {},
-    ContainerComponent = 'li',
-    ContainerProps: { className: ContainerClassName, ...ContainerProps } = {},
+    component: Component = 'li',
     dense = false,
     disableGutters = false,
     disablePadding = false,
     divider = false,
     secondaryAction,
-    slotProps = {},
-    slots = {},
+    style,
     ...other
   } = props;
 
+  // 부모 List의 Context 소비
   const context = React.useContext(ListContext);
+
+  // 자식에게 전달할 Context 생성
   const childContext = React.useMemo(
     () => ({
       dense: dense || context.dense || false,
@@ -147,148 +48,65 @@ const ListItem = React.forwardRef(function ListItem(props, ref) {
     [alignItems, context.dense, dense, disableGutters],
   );
 
-  const listItemRef = React.useRef(null);
+  const isDense = childContext.dense;
 
-  const children = React.Children.toArray(childrenProp);
-
-  // v4 implementation, deprecated in v6, will be removed in a future major release
-  const hasSecondaryAction =
-    children.length && isMuiElement(children[children.length - 1], ['ListItemSecondaryAction']);
-
-  const ownerState = {
-    ...props,
-    alignItems,
-    dense: childContext.dense,
-    disableGutters,
-    disablePadding,
-    divider,
-    hasSecondaryAction,
+  // 스타일 계산
+  const computedStyle = {
+    ...baseStyle,
+    // alignItems
+    ...(alignItems === 'flex-start' && {
+      alignItems: 'flex-start',
+    }),
+    // 패딩 (disablePadding이 false일 때)
+    ...(!disablePadding && {
+      paddingTop: isDense ? 4 : 8,
+      paddingBottom: isDense ? 4 : 8,
+    }),
+    // 좌우 패딩 (disablePadding과 disableGutters가 둘 다 false일 때)
+    ...(!disablePadding && !disableGutters && {
+      paddingLeft: 16,
+      paddingRight: 16,
+    }),
+    // secondaryAction이 있으면 오른쪽 여백 추가
+    ...(secondaryAction && {
+      paddingRight: 48,
+    }),
+    // 구분선
+    ...(divider && {
+      borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+      backgroundClip: 'padding-box',
+    }),
+    // 사용자 style 오버라이드
+    ...style,
   };
-
-  const handleRef = useForkRef(listItemRef, ref);
-
-  const externalForwardedProps = {
-    slots,
-    slotProps,
-  };
-
-  const [SecondaryActionSlot, secondaryActionSlotProps] = useSlot('secondaryAction', {
-    elementType: ListItemSecondaryAction,
-    externalForwardedProps,
-    ownerState,
-  });
-
-  const Root = slots.root || components.Root || ListItemRoot;
-  const rootProps = slotProps.root || componentsProps.root || {};
-
-  const componentProps = {
-    className,
-    ...other,
-  };
-
-  let Component = componentProp || 'li';
-
-  // v4 implementation, deprecated in v6, will be removed in a future major release
-  if (hasSecondaryAction) {
-    // Use div by default.
-    Component = !componentProps.component && !componentProp ? 'div' : Component;
-
-    // Avoid nesting of li > li.
-    if (ContainerComponent === 'li') {
-      if (Component === 'li') {
-        Component = 'div';
-      } else if (componentProps.component === 'li') {
-        componentProps.component = 'div';
-      }
-    }
-
-    return (
-      <ListContext.Provider value={childContext}>
-        <ListItemContainer
-          as={ContainerComponent}
-          className={ContainerClassName}
-          ref={handleRef}
-          ownerState={ownerState}
-          {...ContainerProps}
-        >
-          <Root
-            {...rootProps}
-            {...(!isHostComponent(Root) && {
-              as: Component,
-              ownerState: { ...ownerState, ...rootProps.ownerState },
-            })}
-            {...componentProps}
-          >
-            {children}
-          </Root>
-          {children.pop()}
-        </ListItemContainer>
-      </ListContext.Provider>
-    );
-  }
 
   return (
     <ListContext.Provider value={childContext}>
-      <Root
-        {...rootProps}
-        as={Component}
-        ref={handleRef}
-        {...(!isHostComponent(Root) && {
-          ownerState: { ...ownerState, ...rootProps.ownerState },
-        })}
-        {...componentProps}
+      <Component
+        ref={ref}
+        className={className}
+        style={computedStyle}
+        {...other}
       >
         {children}
         {secondaryAction && (
-          <SecondaryActionSlot {...secondaryActionSlotProps}>{secondaryAction}</SecondaryActionSlot>
+          <ListItemSecondaryAction>{secondaryAction}</ListItemSecondaryAction>
         )}
-      </Root>
+      </Component>
     </ListContext.Provider>
   );
 });
 
 ListItem.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
   /**
    * Defines the `align-items` style property.
    * @default 'center'
    */
   alignItems: PropTypes.oneOf(['center', 'flex-start']),
   /**
-   * The content of the component if a `ListItemSecondaryAction` is used it must
-   * be the last child.
+   * The content of the component.
    */
-  children: chainPropTypes(PropTypes.node, (props) => {
-    const children = React.Children.toArray(props.children);
-
-    // React.Children.toArray(props.children).findLastIndex(isListItemSecondaryAction)
-    let secondaryActionIndex = -1;
-    for (let i = children.length - 1; i >= 0; i -= 1) {
-      const child = children[i];
-      if (isMuiElement(child, ['ListItemSecondaryAction'])) {
-        secondaryActionIndex = i;
-        break;
-      }
-    }
-
-    //  is ListItemSecondaryAction the last child of ListItem
-    if (secondaryActionIndex !== -1 && secondaryActionIndex !== children.length - 1) {
-      return new Error(
-        'MUI: You used an element after ListItemSecondaryAction. ' +
-          'For ListItem to detect that it has a secondary action ' +
-          'you must pass it as the last child to ListItem.',
-      );
-    }
-
-    return null;
-  }),
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
+  children: PropTypes.node,
   /**
    * @ignore
    */
@@ -298,37 +116,6 @@ ListItem.propTypes /* remove-proptypes */ = {
    * Either a string to use a HTML element or a component.
    */
   component: PropTypes.elementType,
-  /**
-   * The components used for each slot inside.
-   *
-   * @deprecated Use the `slots` prop instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   * @default {}
-   */
-  components: PropTypes.shape({
-    Root: PropTypes.elementType,
-  }),
-  /**
-   * The extra props for the slot components.
-   * You can override the existing props or add new ones.
-   *
-   * @deprecated Use the `slotProps` prop instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   * @default {}
-   */
-  componentsProps: PropTypes.shape({
-    root: PropTypes.object,
-  }),
-  /**
-   * The container component used when a `ListItemSecondaryAction` is the last child.
-   * @default 'li'
-   * @deprecated Use the `component` or `slots.root` prop instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   */
-  ContainerComponent: elementTypeAcceptingRef,
-  /**
-   * Props applied to the container component if used.
-   * @default {}
-   * @deprecated Use the `slotProps.root` prop instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   */
-  ContainerProps: PropTypes.object,
   /**
    * If `true`, compact vertical padding designed for keyboard and mouse input is used.
    * The prop defaults to the value inherited from the parent List component.
@@ -355,32 +142,9 @@ ListItem.propTypes /* remove-proptypes */ = {
    */
   secondaryAction: PropTypes.node,
   /**
-   * The extra props for the slot components.
-   * You can override the existing props or add new ones.
-   *
-   * @default {}
+   * @ignore
    */
-  slotProps: PropTypes.shape({
-    root: PropTypes.object,
-    secondaryAction: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * The components used for each slot inside.
-   *
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    root: PropTypes.elementType,
-    secondaryAction: PropTypes.elementType,
-  }),
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
+  style: PropTypes.object,
 };
 
 export default ListItem;
