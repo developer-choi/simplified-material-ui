@@ -16,7 +16,6 @@ const List = React.forwardRef(function List(props, ref) {
     className,
     component: Component = 'ul',
     dense = false,
-    disablePadding = false,
     subheader,
     style,
     ...other
@@ -27,16 +26,6 @@ const List = React.forwardRef(function List(props, ref) {
   // 스타일 계산
   const computedStyle = {
     ...baseStyle,
-    // disablePadding이 false면 패딩 추가
-    ...(!disablePadding && {
-      paddingTop: 8,
-      paddingBottom: 8,
-    }),
-    // subheader가 있으면 상단 패딩 제거
-    ...(subheader && {
-      paddingTop: 0,
-    }),
-    // 사용자 style 오버라이드
     ...style,
   };
 

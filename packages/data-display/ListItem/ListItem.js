@@ -25,8 +25,6 @@ const ListItem = React.forwardRef(function ListItem(props, ref) {
     className,
     component: Component = 'li',
     dense = false,
-    disableGutters = false,
-    disablePadding = false,
     divider = false,
     style,
     ...other
@@ -40,9 +38,8 @@ const ListItem = React.forwardRef(function ListItem(props, ref) {
     () => ({
       dense: dense || context.dense || false,
       alignItems,
-      disableGutters,
     }),
-    [alignItems, context.dense, dense, disableGutters],
+    [alignItems, context.dense, dense],
   );
 
   const isDense = childContext.dense;
@@ -53,16 +50,6 @@ const ListItem = React.forwardRef(function ListItem(props, ref) {
     // alignItems
     ...(alignItems === 'flex-start' && {
       alignItems: 'flex-start',
-    }),
-    // 패딩 (disablePadding이 false일 때)
-    ...(!disablePadding && {
-      paddingTop: isDense ? 4 : 8,
-      paddingBottom: isDense ? 4 : 8,
-    }),
-    // 좌우 패딩 (disablePadding과 disableGutters가 둘 다 false일 때)
-    ...(!disablePadding && !disableGutters && {
-      paddingLeft: 16,
-      paddingRight: 16,
     }),
     // 구분선
     ...(divider && {
