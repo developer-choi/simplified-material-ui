@@ -1,7 +1,6 @@
 'use client';
 import * as React from 'react';
 import ListContext from '../List/ListContext';
-import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 
 // 기본 스타일
 const baseStyle = {
@@ -29,7 +28,6 @@ const ListItem = React.forwardRef(function ListItem(props, ref) {
     disableGutters = false,
     disablePadding = false,
     divider = false,
-    secondaryAction,
     style,
     ...other
   } = props;
@@ -66,10 +64,6 @@ const ListItem = React.forwardRef(function ListItem(props, ref) {
       paddingLeft: 16,
       paddingRight: 16,
     }),
-    // secondaryAction이 있으면 오른쪽 여백 추가
-    ...(secondaryAction && {
-      paddingRight: 48,
-    }),
     // 구분선
     ...(divider && {
       borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
@@ -88,9 +82,6 @@ const ListItem = React.forwardRef(function ListItem(props, ref) {
         {...other}
       >
         {children}
-        {secondaryAction && (
-          <ListItemSecondaryAction>{secondaryAction}</ListItemSecondaryAction>
-        )}
       </Component>
     </ListContext.Provider>
   );
