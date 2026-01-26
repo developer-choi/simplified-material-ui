@@ -1,15 +1,12 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import ButtonBase from '../../../form/ButtonBase';
-import useEnhancedEffect from '../utils/useEnhancedEffect';
-import useForkRef from '../utils/useForkRef';
 import listItemButtonClasses, { getListItemButtonUtilityClass } from './listItemButtonClasses';
 
 export const overridesResolver = (props, styles) => {
@@ -136,46 +133,26 @@ const ListItemButtonRoot = styled(ButtonBase, {
 const ListItemButton = React.forwardRef(function ListItemButton(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiListItemButton' });
   const {
-    autoFocus = false,
     component = 'div',
     children,
-    focusVisibleClassName,
-    selected = false,
     className,
     ...other
   } = props;
 
-  const listItemRef = React.useRef(null);
-  useEnhancedEffect(() => {
-    if (autoFocus) {
-      if (listItemRef.current) {
-        listItemRef.current.focus();
-      } else if (process.env.NODE_ENV !== 'production') {
-        console.error(
-          'MUI: Unable to set focus to a ListItemButton whose component has not been rendered.',
-        );
-      }
-    }
-  }, [autoFocus]);
-
   const ownerState = {
     ...props,
-    selected,
   };
 
   const classes = useUtilityClasses(ownerState);
 
-  const handleRef = useForkRef(listItemRef, ref);
-
   return (
     <ListItemButtonRoot
-        ref={handleRef}
+        ref={ref}
         href={other.href || other.to}
         // `ButtonBase` processes `href` or `to` if `component` is set to 'button'
         component={(other.href || other.to) && component === 'div' ? 'button' : component}
-        focusVisibleClassName={clsx(classes.focusVisible, focusVisibleClassName)}
         ownerState={ownerState}
-        className={clsx(classes.root, className)}
+        className={className}
         {...other}
         classes={classes}
       >
