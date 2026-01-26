@@ -57,7 +57,7 @@ import { LinearProgressProps } from '../LinearProgress';
 import { LinkProps } from '../Link';
 import { ListItemAvatarProps } from '../ListItemAvatar';
 import { ListItemIconProps } from '../ListItemIcon';
-import { ListItemProps } from '../ListItem';
+import { ListItemProps } from '../../../data-display/ListItem';
 import { ListItemButtonProps } from '../ListItemButton';
 import { ListItemSecondaryActionProps } from '../ListItemSecondaryAction';
 import { ListItemTextProps } from '../ListItemText';

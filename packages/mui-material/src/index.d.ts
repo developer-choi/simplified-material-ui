@@ -199,8 +199,8 @@ export * from './Link';
 export { default as List } from '../../data-display/List';
 export * from '../../data-display/List';
 
-export { default as ListItem } from './ListItem';
-export * from './ListItem';
+export { default as ListItem } from '../../data-display/ListItem';
+export * from '../../data-display/ListItem';
 
 export { default as ListItemAvatar } from './ListItemAvatar';
 export * from './ListItemAvatar';

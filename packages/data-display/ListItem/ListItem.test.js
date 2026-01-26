@@ -4,9 +4,9 @@ import { createRenderer, reactMajor, screen } from '@mui/internal-test-utils';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
-import ListItem, { listItemClasses as classes } from '@mui/material/ListItem';
-import ListContext from '../../../data-display/List/ListContext';
-import describeConformance from '../../test/describeConformance';
+import ListItem, { listItemClasses as classes } from './index';
+import ListContext from '../List/ListContext';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<ListItem />', () => {
   const { render } = createRenderer();

@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
-import ListContext from '../../../data-display/List/ListContext';
-import ListItemSecondaryAction from '../ListItemSecondaryAction';
+import ListContext from '../List/ListContext';
+import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 
 // 기본 스타일
 const baseStyle = {
