@@ -25,7 +25,6 @@ const ListItem = React.forwardRef(function ListItem(props, ref) {
     className,
     component: Component = 'li',
     dense = false,
-    divider = false,
     style,
     ...other
   } = props;
@@ -50,11 +49,6 @@ const ListItem = React.forwardRef(function ListItem(props, ref) {
     // alignItems
     ...(alignItems === 'flex-start' && {
       alignItems: 'flex-start',
-    }),
-    // 구분선
-    ...(divider && {
-      borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
-      backgroundClip: 'padding-box',
     }),
     // 사용자 style 오버라이드
     ...style,
