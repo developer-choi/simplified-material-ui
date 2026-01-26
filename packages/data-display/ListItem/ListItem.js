@@ -20,7 +20,6 @@ const baseStyle = {
  */
 const ListItem = React.forwardRef(function ListItem(props, ref) {
   const {
-    alignItems = 'center',
     children,
     className,
     component: Component = 'li',
@@ -36,9 +35,8 @@ const ListItem = React.forwardRef(function ListItem(props, ref) {
   const childContext = React.useMemo(
     () => ({
       dense: dense || context.dense || false,
-      alignItems,
     }),
-    [alignItems, context.dense, dense],
+    [context.dense, dense],
   );
 
   const isDense = childContext.dense;
@@ -46,11 +44,6 @@ const ListItem = React.forwardRef(function ListItem(props, ref) {
   // 스타일 계산
   const computedStyle = {
     ...baseStyle,
-    // alignItems
-    ...(alignItems === 'flex-start' && {
-      alignItems: 'flex-start',
-    }),
-    // 사용자 style 오버라이드
     ...style,
   };
 
