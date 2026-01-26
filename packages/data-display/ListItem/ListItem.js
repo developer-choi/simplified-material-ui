@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import ListContext from '../List/ListContext';
 
 // 기본 스타일
 const baseStyle = {
@@ -23,23 +22,9 @@ const ListItem = React.forwardRef(function ListItem(props, ref) {
     children,
     className,
     component: Component = 'li',
-    dense = false,
     style,
     ...other
   } = props;
-
-  // 부모 List의 Context 소비
-  const context = React.useContext(ListContext);
-
-  // 자식에게 전달할 Context 생성
-  const childContext = React.useMemo(
-    () => ({
-      dense: dense || context.dense || false,
-    }),
-    [context.dense, dense],
-  );
-
-  const isDense = childContext.dense;
 
   // 스타일 계산
   const computedStyle = {
@@ -48,8 +33,7 @@ const ListItem = React.forwardRef(function ListItem(props, ref) {
   };
 
   return (
-    <ListContext.Provider value={childContext}>
-      <Component
+    <Component
         ref={ref}
         className={className}
         style={computedStyle}
@@ -57,7 +41,6 @@ const ListItem = React.forwardRef(function ListItem(props, ref) {
       >
         {children}
       </Component>
-    </ListContext.Provider>
   );
 });
 
