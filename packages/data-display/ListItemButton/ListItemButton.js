@@ -1,135 +1,58 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import rootShouldForwardProp from '../styles/rootShouldForwardProp';
-import ButtonBase from '../../../form/ButtonBase';
-import listItemButtonClasses from './listItemButtonClasses';
 
-export const overridesResolver = (props, styles) => {
-  const { ownerState } = props;
-
-  return [
-    styles.root,
-  ];
+// 기본 스타일
+const baseStyle = {
+  display: 'flex',
+  flexGrow: 1,
+  justifyContent: 'flex-start',
+  alignItems: 'center',
+  position: 'relative',
+  textDecoration: 'none',
+  minWidth: 0,
+  boxSizing: 'border-box',
+  textAlign: 'left',
+  paddingTop: 8,
+  paddingBottom: 8,
+  cursor: 'pointer',
+  transition: 'background-color 150ms',
 };
 
-const ListItemButtonRoot = styled(ButtonBase, {
-  shouldForwardProp: (prop) => rootShouldForwardProp(prop) || prop === 'classes',
-  name: 'MuiListItemButton',
-  slot: 'Root',
-  overridesResolver,
-})(
-  memoTheme(({ theme }) => ({
-    display: 'flex',
-    flexGrow: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    position: 'relative',
-    textDecoration: 'none',
-    minWidth: 0,
-    boxSizing: 'border-box',
-    textAlign: 'left',
-    paddingTop: 8,
-    paddingBottom: 8,
-    transition: theme.transitions.create('background-color', {
-      duration: theme.transitions.duration.shortest,
-    }),
-    '&:hover': {
-      textDecoration: 'none',
-      backgroundColor: (theme.vars || theme).palette.action.hover,
-      // Reset on touch devices, it doesn't add specificity
-      '@media (hover: none)': {
-        backgroundColor: 'transparent',
-      },
-    },
-    [`&.${listItemButtonClasses.selected}`]: {
-      backgroundColor: theme.alpha(
-        (theme.vars || theme).palette.primary.main,
-        (theme.vars || theme).palette.action.selectedOpacity,
-      ),
-      [`&.${listItemButtonClasses.focusVisible}`]: {
-        backgroundColor: theme.alpha(
-          (theme.vars || theme).palette.primary.main,
-          `${(theme.vars || theme).palette.action.selectedOpacity} + ${(theme.vars || theme).palette.action.focusOpacity}`,
-        ),
-      },
-    },
-    [`&.${listItemButtonClasses.selected}:hover`]: {
-      backgroundColor: theme.alpha(
-        (theme.vars || theme).palette.primary.main,
-        `${(theme.vars || theme).palette.action.selectedOpacity} + ${(theme.vars || theme).palette.action.hoverOpacity}`,
-      ),
-      // Reset on touch devices, it doesn't add specificity
-      '@media (hover: none)': {
-        backgroundColor: theme.alpha(
-          (theme.vars || theme).palette.primary.main,
-          (theme.vars || theme).palette.action.selectedOpacity,
-        ),
-      },
-    },
-    [`&.${listItemButtonClasses.focusVisible}`]: {
-      backgroundColor: (theme.vars || theme).palette.action.focus,
-    },
-    [`&.${listItemButtonClasses.disabled}`]: {
-      opacity: (theme.vars || theme).palette.action.disabledOpacity,
-    },
-    variants: [
-      {
-        props: ({ ownerState }) => ownerState.divider,
-        style: {
-          borderBottom: `1px solid ${(theme.vars || theme).palette.divider}`,
-          backgroundClip: 'padding-box',
-        },
-      },
-      {
-        props: {
-          alignItems: 'flex-start',
-        },
-        style: {
-          alignItems: 'flex-start',
-        },
-      },
-      {
-        props: ({ ownerState }) => !ownerState.disableGutters,
-        style: {
-          paddingLeft: 16,
-          paddingRight: 16,
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.dense,
-        style: {
-          paddingTop: 4,
-          paddingBottom: 4,
-        },
-      },
-    ],
-  })),
-);
+const disabledStyle = {
+  opacity: 0.5,
+  cursor: 'default',
+};
 
 const ListItemButton = React.forwardRef(function ListItemButton(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiListItemButton' });
   const {
-    component = 'div',
+    component: Component = 'button',
     children,
     className,
+    disabled = false,
+    style,
     ...other
   } = props;
 
+  // 스타일 계산
+  const computedStyle = {
+    ...baseStyle,
+    ...(disabled && disabledStyle),
+    ...style,
+  };
+
   return (
-    <ListItemButtonRoot
-        ref={ref}
-        href={other.href || other.to}
-        // `ButtonBase` processes `href` or `to` if `component` is set to 'button'
-        component={(other.href || other.to) && component === 'div' ? 'button' : component}
-        className={className}
-        {...other}
-      >
-        {children}
-      </ListItemButtonRoot>
+    <Component
+      ref={ref}
+      className={className}
+      style={computedStyle}
+      disabled={disabled}
+      {...other}
+    >
+      {children}
+    </Component>
   );
 });
 
@@ -139,25 +62,10 @@ ListItemButton.propTypes /* remove-proptypes */ = {
   // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
   // └─────────────────────────────────────────────────────────────────────┘
   /**
-   * Defines the `align-items` style property.
-   * @default 'center'
-   */
-  alignItems: PropTypes.oneOf(['center', 'flex-start']),
-  /**
-   * If `true`, the list item is focused during the first mount.
-   * Focus will also be triggered if the value changes from false to true.
-   * @default false
-   */
-  autoFocus: PropTypes.bool,
-  /**
    * The content of the component if a `ListItemSecondaryAction` is used it must
    * be the last child.
    */
   children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
   /**
    * @ignore
    */
@@ -168,44 +76,10 @@ ListItemButton.propTypes /* remove-proptypes */ = {
    */
   component: PropTypes.elementType,
   /**
-   * If `true`, compact vertical padding designed for keyboard and mouse input is used.
-   * The prop defaults to the value inherited from the parent List component.
-   * @default false
-   */
-  dense: PropTypes.bool,
-  /**
    * If `true`, the component is disabled.
    * @default false
    */
   disabled: PropTypes.bool,
-  /**
-   * If `true`, the left and right padding is removed.
-   * @default false
-   */
-  disableGutters: PropTypes.bool,
-  /**
-   * If `true`, a 1px light border is added to the bottom of the list item.
-   * @default false
-   */
-  divider: PropTypes.bool,
-  /**
-   * This prop can help identify which element has keyboard focus.
-   * The class name will be applied when the element gains the focus through keyboard interaction.
-   * It's a polyfill for the [CSS :focus-visible selector](https://drafts.csswg.org/selectors-4/#the-focus-visible-pseudo).
-   * The rationale for using this feature [is explained here](https://github.com/WICG/focus-visible/blob/HEAD/explainer.md).
-   * A [polyfill can be used](https://github.com/WICG/focus-visible) to apply a `focus-visible` class to other components
-   * if needed.
-   */
-  focusVisibleClassName: PropTypes.string,
-  /**
-   * @ignore
-   */
-  href: PropTypes.string,
-  /**
-   * Use to apply selected styling.
-   * @default false
-   */
-  selected: PropTypes.bool,
   /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
@@ -214,6 +88,10 @@ ListItemButton.propTypes /* remove-proptypes */ = {
     PropTypes.func,
     PropTypes.object,
   ]),
+  /**
+   * @ignore
+   */
+  style: PropTypes.object,
 };
 
 export default ListItemButton;
