@@ -1,13 +1,12 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import ButtonBase from '../../../form/ButtonBase';
-import listItemButtonClasses, { getListItemButtonUtilityClass } from './listItemButtonClasses';
+import listItemButtonClasses from './listItemButtonClasses';
 
 export const overridesResolver = (props, styles) => {
   const { ownerState } = props;
@@ -15,25 +14,6 @@ export const overridesResolver = (props, styles) => {
   return [
     styles.root,
   ];
-};
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, disabled, selected } = ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      disabled && 'disabled',
-      selected && 'selected',
-    ],
-  };
-
-  const composedClasses = composeClasses(slots, getListItemButtonUtilityClass, classes);
-
-  return {
-    ...classes,
-    ...composedClasses,
-  };
 };
 
 const ListItemButtonRoot = styled(ButtonBase, {
@@ -139,22 +119,14 @@ const ListItemButton = React.forwardRef(function ListItemButton(inProps, ref) {
     ...other
   } = props;
 
-  const ownerState = {
-    ...props,
-  };
-
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <ListItemButtonRoot
         ref={ref}
         href={other.href || other.to}
         // `ButtonBase` processes `href` or `to` if `component` is set to 'button'
         component={(other.href || other.to) && component === 'div' ? 'button' : component}
-        ownerState={ownerState}
         className={className}
         {...other}
-        classes={classes}
       >
         {children}
       </ListItemButtonRoot>
