@@ -1,84 +1,69 @@
 # MenuItem 컴포넌트
 
-> Menu, Select 등에서 사용되는 클릭 가능한 목록 항목을 ButtonBase 기반으로 단순하게 구현
+> 메뉴의 옵션 아이템을 렌더링하는 최소 단순화 컴포넌트
 
 ---
 
 ## 무슨 기능을 하는가?
 
-단순화된 MenuItem은 **Menu나 Select 내부에서 사용되는 클릭 가능한 목록 항목**을 제공하는 컴포넌트입니다.
+MenuItem은 **메뉴 내에서 클릭 가능한 옵션 아이템을 렌더링하는** 컴포넌트입니다.
 
 ### 핵심 기능 (남은 것)
-1. **클릭 가능한 항목** - ButtonBase를 래핑하여 클릭 이벤트 처리
-2. **선택 상태 표시** - `selected` prop으로 간단한 배경색 표시
-3. **비활성화 상태** - `disabled` prop으로 opacity 조절
+1. **메뉴 아이템 렌더링** - `<li>` 요소로 옵션 표시
+2. **disabled 상태** - 비활성화 지원 (opacity)
+3. **기본 스타일** - flex 레이아웃, 패딩
 
-> **💡 작성 주의**: MenuItem 자체는 ButtonBase를 래핑하여 스타일을 적용하는 간단한 래퍼입니다. Menu나 Select의 드롭다운 기능은 상위 컴포넌트의 책임입니다.
+> **제거된 기능**: ButtonBase, selected, Context, styled 컴포넌트, useUtilityClasses, useDefaultProps, PropTypes
 
 ---
 
 ## 핵심 학습 포인트
 
-### 1. ButtonBase 래핑 패턴
+### 1. React.forwardRef 패턴
 
 ```javascript
 const MenuItem = React.forwardRef(function MenuItem(props, ref) {
-  const {
-    className,
-    selected,
-    disabled,
-    children,
-    style,
-    ...other
-  } = props;
-
-  const baseStyle = {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    // ... 스타일 정의
-    backgroundColor: selected ? '#e3f2fd' : 'transparent',
-    opacity: disabled ? 0.38 : 1,
-    ...style,
-  };
-
-  return (
-    <ButtonBase
-      ref={ref}
-      role="menuitem"
-      component="li"
-      className={className}
-      style={baseStyle}
-      disabled={disabled}
-      {...other}
-    >
-      {children}
-    </ButtonBase>
-  );
+  return <li ref={ref} ... />;
 });
 ```
 
 **학습 가치**:
-- ButtonBase를 래핑하여 특정 용도의 컴포넌트를 만드는 패턴
-- Props를 구조 분해하여 필요한 것만 추출하고 나머지는 spread
-- 인라인 스타일로 조건부 스타일링 (`selected`, `disabled`)
-- `forwardRef`로 ref를 하위 컴포넌트에 전달
+- `forwardRef`: 부모 컴포넌트가 자식의 DOM 요소에 직접 접근 가능
+- ref 전달을 위한 표준 React 패턴
+- Menu 컴포넌트가 포커스 관리를 위해 ref 사용
 
-### 2. 조건부 스타일링
+### 2. 기본 스타일과 사용자 스타일 병합
 
 ```javascript
 const baseStyle = {
+  display: 'flex',
+  justifyContent: 'flex-start',
+  alignItems: 'center',
   // ... 기본 스타일
-  backgroundColor: selected ? '#e3f2fd' : 'transparent',
   opacity: disabled ? 0.38 : 1,
-  ...style,  // 사용자 스타일 오버라이드 허용
+  ...style,
 };
 ```
 
 **학습 가치**:
-- 삼항 연산자로 간단한 조건부 스타일
-- `...style`을 마지막에 배치하여 사용자 커스터마이징 허용
-- 복잡한 theme.alpha() 계산 대신 하드코딩된 값 사용
+- `...(조건 && 값)` 패턴으로 조건부 스타일 추가
+- disabled일 때 opacity 0.38 (Material Design 표준)
+- 사용자 style이 기본 스타일을 덮어씀
+
+### 3. 접근성 속성
+
+```javascript
+<li
+  ref={ref}
+  role="menuitem"
+  {...other}
+>
+```
+
+**학습 가치**:
+- `role="menuitem"`으로 메뉴 아이템임을 표시
+- 스크린 리더기에서 "메뉴 아이템"으로 인식
+- 키보드 네비게이션 지원
 
 ---
 
@@ -87,114 +72,52 @@ const baseStyle = {
 ### 1. 컴포넌트 구조
 
 ```javascript
-// 위치: packages/mui-material/src/MenuItem/MenuItem.js (54줄, 원본 315줄)
-MenuItem (forwardRef)
-  └─> ButtonBase (component="li", role="menuitem")
+// 위치: packages/menu/MenuItem/MenuItem.js (35줄, 원본 54줄)
+MenuItem (React.forwardRef)
+  └─> li
        └─> children
 ```
 
-### 2. 간소화된 스타일링
+### 2. 핵심 상태 (ref, state, 변수)
 
-**원본**: styled component + memoTheme + variants + theme.alpha() 계산
-**수정본**: 인라인 style 객체
+| 이름 | 용도 |
+|------|------|
+| `baseStyle` | 기본 스타일 + disabled 조건부 스타일 + 사용자 style |
 
-```javascript
-const baseStyle = {
-  display: 'flex',
-  justifyContent: 'flex-start',
-  alignItems: 'center',
-  position: 'relative',
-  textDecoration: 'none',
-  minHeight: 48,
-  paddingTop: 6,
-  paddingBottom: 6,
-  paddingLeft: 16,
-  paddingRight: 16,
-  boxSizing: 'border-box',
-  whiteSpace: 'nowrap',
-  fontSize: '1rem',
-  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-  fontWeight: 400,
-  lineHeight: 1.5,
-  letterSpacing: '0.00938em',
-  backgroundColor: selected ? '#e3f2fd' : 'transparent',
-  opacity: disabled ? 0.38 : 1,
-  ...style,
-};
-```
-
-> **💡 원본과의 차이**:
-> - ❌ `styled()` 시스템 제거 → 인라인 스타일로 대체
-> - ❌ `memoTheme()` 제거 → 하드코딩된 값 사용
-> - ❌ `theme.alpha()` 계산 제거 → 단순 배경색 (#e3f2fd)
-> - ❌ variants 배열 제거 → 조건부 스타일은 삼항 연산자로
-> - ❌ hover, focusVisible 복잡한 조합 제거 → ButtonBase 기본 동작에 위임
-
-### 3. 제거된 기능들
-
-**autoFocus 제거**:
-- ❌ `useEnhancedEffect` + `menuItemRef` 제거
-- 자동 포커스는 상위 Menu 컴포넌트의 책임
-
-**ListContext 제거**:
-- ❌ `ListContext.Provider` 제거
-- ❌ `childContext` 메모이제이션 제거
-- ListItemIcon, ListItemText와의 통신 불필요
-
-**Theme 시스템 제거**:
-- ❌ `useDefaultProps` 제거
-- ❌ `useUtilityClasses` 제거
-- ❌ `composeClasses` 제거
-
-### 4. Props (5개만 남음)
+### 3. Props (4개)
 
 | Prop | 타입 | 기본값 | 설명 |
 |------|------|--------|------|
-| `children` | node | - | 메뉴 항목 내용 |
-| `className` | string | - | 추가 CSS 클래스 |
-| `selected` | boolean | false | 선택 상태 (#e3f2fd 배경색) |
-| `disabled` | boolean | false | 비활성화 상태 (opacity 0.38) |
-| `style` | object | - | 인라인 스타일 오버라이드 |
+| `children` | ReactNode | - | 자식 요소 |
+| `className` | string | - | 외부 클래스 |
+| `disabled` | bool | false | 비활성화 |
+| `style` | object | - | 인라인 스타일 |
 
 ---
 
 ## 커밋 히스토리로 보는 단순화 과정
 
-MenuItem은 **13개의 커밋**을 통해 단순화되었습니다.
+MenuItem은 **3개의 커밋**을 통해 단순화되었습니다.
 
-### 1단계: Props 제거 (Commit 1-4)
-- `5486355a` - autoFocus 기능 제거
-  - **이유**: MenuItem의 핵심은 "메뉴 항목"이지 "자동 포커스"가 아님. useEnhancedEffect 등 복잡한 로직 불필요.
-- `c87beb0a` - dense prop 제거
-  - **이유**: 두 가지 크기 모드는 학습에 불필요. 하나의 크기만으로도 충분히 이해 가능.
-- `73e4cabe` - divider prop 제거
-  - **이유**: Divider 컴포넌트를 별도로 사용하면 됨. 메뉴 항목 자체의 책임이 아님.
-- `e672ab63` - disableGutters prop 제거
-  - **이유**: 기본 패딩이 있는 상태가 일반적. 패딩 제거는 특수 케이스.
+### 1단계: selected prop 제거
+- `9ae5e159` - [MenuItem 단순화 1/2] selected 제거
+- **왜 불필요한가**:
+  - 선택 상태는 사용자가 style로 구현 가능
+  - 배경색 `#e3f2fd`는 하드코딩된 값
+  - MenuItem의 핵심 기능이 아님
 
-### 2단계: 스타일링 단순화 (Commit 5-6)
-- `cb0524d0` - selected 복잡한 스타일 조합 단순화
-  - **이유**: theme.alpha() 계산, selected+hover 조합, 미디어 쿼리 등은 학습에 과함. 간단한 배경색만으로도 충분.
-- `926891d7` - focusVisibleClassName 제거
-  - **이유**: CSS :focus-visible 폴리필 관련 고급 기능. MenuItem 이해에 불필요.
+### 2단계: ButtonBase 제거
+- `77a985c7` - [MenuItem 단순화 2/2] ButtonBase 제거
+- **왜 불필요한가**:
+  - ButtonBase는 복잡한 컴포넌트 (Ripple, 포커스 관리 등)
+  - MenuItem의 핵심은 "옵션 아이템"이지 "버튼 기능"이 아님
+  - 외부 의존 제거
 
-### 3단계: Context 및 고정값 (Commit 7-9)
-- `c3a3e43b` - ListContext 제거
-  - **이유**: Context는 React의 별도 주제. dense, disableGutters를 제거했으므로 전달할 값도 없음.
-- `8c811049` - component prop 제거
-  - **이유**: MenuItem은 항상 `<li>` 태그를 사용하는 것이 시맨틱. 고정값으로 충분.
-- `4159f615` - role, tabIndex props 제거
-  - **이유**: role="menuitem"이 항상 적절. tabIndex는 ButtonBase가 자동 처리.
-
-### 4단계: 시스템 제거 (Commit 10-13)
-- `7c12e5f5` - Theme 시스템 제거
-  - **이유**: useDefaultProps, useUtilityClasses, composeClasses 등 테마 시스템은 Material-UI 전체의 주제. 하드코딩된 값으로 충분.
-- `a96fe6e2` - useForkRef 제거
-  - **이유**: ref 병합은 React 고급 주제. 하나의 ref로 충분.
-- `9b03cba9` - styled component 시스템 제거
-  - **이유**: CSS-in-JS는 별도 학습 주제. 인라인 스타일로도 똑같이 동작하며 코드 가독성 향상.
-- `9b8c0197` - PropTypes 제거
-  - **이유**: PropTypes는 타입 검증 도구이지 컴포넌트 로직이 아님. TypeScript로 타입 검증 가능.
+### 3단계: selected 관련 backgroundColor 로직 제거
+- `4e6a18a2` - [MenuItem 단순화 3/3] selected 관련 backgroundColor 로직 제거
+- **왜 불필요한가**:
+  - selected prop은 제거되었으나 backgroundColor 로직이 남아있어서 ReferenceError 발생
+  - 완전히 제거 필요
 
 ---
 
@@ -202,19 +125,11 @@ MenuItem은 **13개의 커밋**을 통해 단순화되었습니다.
 
 | 항목 | 원본 | 수정본 |
 |------|------|--------|
-| **코드 라인** | 315줄 | 54줄 (83% 감소) |
-| **Props 개수** | 10개+ | 5개 |
-| **autoFocus** | ✅ useEnhancedEffect | ❌ |
-| **dense** | ✅ 밀집 모드 | ❌ 일반 모드 고정 |
-| **divider** | ✅ 하단 구분선 | ❌ |
-| **disableGutters** | ✅ 패딩 제거 가능 | ❌ 16px 고정 |
-| **selected 스타일** | ✅ theme.alpha() 계산 | ✅ 간단한 #e3f2fd |
-| **ListContext** | ✅ 하위 전달 | ❌ |
-| **component** | ✅ 커스터마이징 | ❌ li 고정 |
-| **role, tabIndex** | ✅ 커스터마이징 | ❌ 고정값 |
-| **Theme 시스템** | ✅ useDefaultProps 등 | ❌ |
-| **styled() 시스템** | ✅ CSS-in-JS | ❌ 인라인 스타일 |
-| **PropTypes** | ✅ 78줄 | ❌ |
+| **코드 라인** | 54줄 | 35줄 (35% 감소) |
+| **Props 개수** | 5개 | 4개 (-1개) |
+| **외부 의존** | ButtonBase | 제거됨 |
+| **상태 관리** | selected | 제거됨 |
+| **루트 요소** | ButtonBase | li |
 
 ---
 
@@ -222,47 +137,61 @@ MenuItem은 **13개의 커밋**을 통해 단순화되었습니다.
 
 MenuItem을 이해했다면:
 
-1. **ButtonBase** - MenuItem이 래핑하는 기본 컴포넌트. 클릭, 포커스, 접근성 처리 방법 학습
-2. **Menu** - MenuItem을 포함하는 컨테이너. 드롭다운, 위치 지정, 키보드 탐색 학습
-3. **Select** - MenuItem을 사용하는 또 다른 예시. 선택 값 관리 방법 학습
-4. **실전 응용** - 커스텀 메뉴 항목 만들기 (아이콘, 체크박스, 복잡한 레이아웃)
+1. **MenuList** - MenuItem을 감싸는 컨테이너
+2. **Menu** - MenuList를 감싸는 드롭다운 메뉴
 
-**예시: 기본 사용법**
+**예시: 기본 사용**
 ```javascript
-import MenuItem from './MenuItem';
 import Menu from './Menu';
+import MenuItem from './MenuItem';
 
-function MyMenu() {
-  return (
-    <Menu open={true}>
-      <MenuItem>프로필</MenuItem>
-      <MenuItem>설정</MenuItem>
-      <MenuItem disabled>비활성화</MenuItem>
-      <MenuItem selected>선택됨</MenuItem>
-    </Menu>
-  );
-}
+<Menu>
+  <MenuItem>옵션 1</MenuItem>
+  <MenuItem>옵션 2</MenuItem>
+  <MenuItem disabled>비활성화</MenuItem>
+</Menu>
 ```
 
-**예시: 커스터마이징**
+**예시: disabled**
 ```javascript
+<MenuItem disabled>
+  비활성화된 옵션
+</MenuItem>
+```
+
+**예시: 스타일 직접 제어**
+```javascript
+// hover 효과를 CSS로 구현
 <MenuItem
-  selected={true}
   style={{
-    backgroundColor: '#ffeb3b',  // 노란색 배경
-    fontWeight: 'bold'
+    color: 'red',
   }}
+  className="menu-item"  // CSS에서 &:hover 처리
 >
-  강조된 항목
+  빨간색 옵션
 </MenuItem>
 ```
 
-**예시: 아이콘과 함께**
+**예시: 선택 상태 직접 구현**
 ```javascript
-import DeleteIcon from '@mui/icons-material/Delete';
+const [selected, setSelected] = useState('option1');
 
-<MenuItem>
-  <DeleteIcon style={{ marginRight: 8 }} />
-  삭제
-</MenuItem>
+<Menu>
+  <MenuItem
+    style={{
+      backgroundColor: selected === 'option1' ? '#e3f2fd' : 'transparent',
+    }}
+    onClick={() => setSelected('option1')}
+  >
+    옵션 1
+  </MenuItem>
+  <MenuItem
+    style={{
+      backgroundColor: selected === 'option2' ? '#e3f2fd' : 'transparent',
+    }}
+    onClick={() => setSelected('option2')}
+  >
+    옵션 2
+  </MenuItem>
+</Menu>
 ```
