@@ -1,8 +1,6 @@
 'use client';
 import * as React from 'react';
-import ownerDocument from '@mui/material/utils/ownerDocument';
-import getActiveElement from '@mui/material/utils/getActiveElement';
-import useForkRef from '@mui/material/utils/useForkRef';
+
 function nextItem(list, item) {
   if (list === item) {
     return list.firstChild;
@@ -85,7 +83,7 @@ const MenuList = React.forwardRef(function MenuList(props, ref) {
      * or document.body or document.documentElement. Only the first case will
      * trigger this specific handler.
      */
-    const currentFocus = getActiveElement(ownerDocument(list));
+    const currentFocus = document.activeElement;
 
     if (key === 'ArrowDown') {
       // Prevent scroll of the page
@@ -107,12 +105,10 @@ const MenuList = React.forwardRef(function MenuList(props, ref) {
     }
   };
 
-  const handleRef = useForkRef(listRef, ref);
-
   return (
     <ul
       role="menu"
-      ref={handleRef}
+      ref={ref}
       className={className}
       onKeyDown={handleKeyDown}
       style={{
