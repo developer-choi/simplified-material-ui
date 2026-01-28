@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import ButtonBase from '../../form/ButtonBase';
 
 const MenuItem = React.forwardRef(function MenuItem(props, ref) {
   const {
@@ -35,17 +34,15 @@ const MenuItem = React.forwardRef(function MenuItem(props, ref) {
   };
 
   return (
-    <ButtonBase
+    <li
       ref={ref}
-      role="menuitem"
-      component="li"
       className={className}
       style={baseStyle}
-      disabled={disabled}
+      role="menuitem"
       {...other}
     >
       {children}
-    </ButtonBase>
+    </li>
   );
 });
 
