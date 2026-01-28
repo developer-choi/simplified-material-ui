@@ -28,7 +28,6 @@ const MenuItem = React.forwardRef(function MenuItem(props, ref) {
     fontWeight: 400,
     lineHeight: 1.5,
     letterSpacing: '0.00938em',
-    backgroundColor: selected ? '#e3f2fd' : 'transparent',
     opacity: disabled ? 0.38 : 1,
     ...style,
   };
