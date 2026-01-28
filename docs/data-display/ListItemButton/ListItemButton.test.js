@@ -2,11 +2,11 @@ import * as React from 'react';
 import { expect } from 'chai';
 import { act, createRenderer, fireEvent, screen } from '@mui/internal-test-utils';
 import describeSkipIf from '@mui/internal-test-utils/describeSkipIf';
-import ListItemButton, { listItemButtonClasses as classes } from '@mui/material/ListItemButton';
-import ButtonBase from '../../../form/ButtonBase';
+import ListItemButton, { listItemButtonClasses as classes } from 'docs/data-display/ListItemButton/index';
+import ButtonBase from '../../../packages/form/ButtonBase';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import ListContext from '../../../data-display/List/ListContext';
-import describeConformance from '../../test/describeConformance';
+import ListContext from '../../../packages/data-display/List/ListContext';
+import describeConformance from '../../../packages/mui-material/test/describeConformance';
 
 describe('<ListItemButton />', () => {
   const { render } = createRenderer();

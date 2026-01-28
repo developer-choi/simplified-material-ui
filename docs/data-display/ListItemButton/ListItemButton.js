@@ -3,14 +3,14 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
-import rootShouldForwardProp from '../styles/rootShouldForwardProp';
-import ButtonBase from '../../../form/ButtonBase';
-import useEnhancedEffect from '../utils/useEnhancedEffect';
-import useForkRef from '../utils/useForkRef';
-import ListContext from '../../../data-display/List/ListContext';
+import { styled } from '@mui/material/zero-styled';
+import memoTheme from '@mui/material/utils/memoTheme';
+import { useDefaultProps } from '@mui/material/DefaultPropsProvider';
+import rootShouldForwardProp from '@mui/material/styles/rootShouldForwardProp';
+import ButtonBase from '../../../packages/form/ButtonBase';
+import useEnhancedEffect from '@mui/material/utils/useEnhancedEffect';
+import useForkRef from '@mui/material/utils/useForkRef';
+import ListContext from '../../../packages/data-display/List/ListContext';
 import listItemButtonClasses, { getListItemButtonUtilityClass } from './listItemButtonClasses';
 
 export const overridesResolver = (props, styles) => {

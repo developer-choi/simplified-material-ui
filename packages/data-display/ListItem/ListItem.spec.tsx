@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ListItem from './index';
 import { styled } from '@mui/material/styles';
-import ListItemButton from '@mui/material/ListItemButton';
+import ListItemButton from 'docs/data-display/ListItemButton';
 
 // verify that https://github.com/mui/material-ui/issues/19756 already worked.
 function MouseEnterTest() {

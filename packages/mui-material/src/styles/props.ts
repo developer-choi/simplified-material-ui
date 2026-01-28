@@ -58,7 +58,7 @@ import { LinkProps } from '../Link';
 import { ListItemAvatarProps } from '../ListItemAvatar';
 import { ListItemIconProps } from '../ListItemIcon';
 import { ListItemProps } from '../../../data-display/ListItem';
-import { ListItemButtonProps } from '../ListItemButton';
+import { ListItemButtonProps } from 'docs/data-display/ListItemButton';
 import { ListItemSecondaryActionProps } from '../ListItemSecondaryAction';
 import { ListItemTextProps } from '../ListItemText';
 import { ListProps } from '../../../data-display/List';

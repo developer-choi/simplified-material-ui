@@ -60,7 +60,7 @@ import { LinkClassKey } from '../Link';
 import { ListClassKey } from '../../../data-display/List';
 import { ListItemAvatarClassKey } from '../ListItemAvatar';
 import { ListItemClassKey } from '../../../data-display/ListItem';
-import { ListItemButtonClassKey } from '../ListItemButton';
+import { ListItemButtonClassKey } from 'docs/data-display/ListItemButton';
 import { ListItemIconClassKey } from '../ListItemIcon';
 import { ListItemSecondaryActionClassKey } from '../ListItemSecondaryAction';
 import { ListItemTextClassKey } from '../ListItemText';
