@@ -3,8 +3,6 @@ import * as React from 'react';
 import ownerDocument from '@mui/material/utils/ownerDocument';
 import getActiveElement from '@mui/material/utils/getActiveElement';
 import useForkRef from '@mui/material/utils/useForkRef';
-import useEnhancedEffect from '@mui/material/utils/useEnhancedEffect';
-
 function nextItem(list, item) {
   if (list === item) {
     return list.firstChild;
@@ -61,19 +59,12 @@ function moveFocus(list, currentFocus, traversalFunction) {
  */
 const MenuList = React.forwardRef(function MenuList(props, ref) {
   const {
-    autoFocus = false,
     children,
     className,
     onKeyDown,
     ...other
   } = props;
   const listRef = React.useRef(null);
-
-  useEnhancedEffect(() => {
-    if (autoFocus) {
-      listRef.current.focus();
-    }
-  }, [autoFocus]);
 
   const handleKeyDown = (event) => {
     const list = listRef.current;
@@ -124,7 +115,6 @@ const MenuList = React.forwardRef(function MenuList(props, ref) {
       ref={handleRef}
       className={className}
       onKeyDown={handleKeyDown}
-      tabIndex={autoFocus ? 0 : -1}
       style={{
         listStyle: 'none',
         margin: 0,
