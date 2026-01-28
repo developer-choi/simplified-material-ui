@@ -45,7 +45,6 @@ const Menu = React.forwardRef(function Menu(props, ref) {
       {...other}
     >
       <MenuList
-        autoFocus
         onKeyDown={handleListKeyDown}
         style={{ outline: 0 }}
       >
