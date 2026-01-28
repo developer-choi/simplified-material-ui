@@ -5,7 +5,6 @@ import ButtonBase from '../../form/ButtonBase';
 const MenuItem = React.forwardRef(function MenuItem(props, ref) {
   const {
     className,
-    selected,
     disabled,
     children,
     style,
