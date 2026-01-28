@@ -33,12 +33,6 @@ const Menu = React.forwardRef(function Menu(props, ref) {
         vertical: 'top',
         horizontal: 'left',
       }}
-      PaperProps={{
-        style: {
-          maxHeight: 'calc(100% - 96px)',
-          WebkitOverflowScrolling: 'touch',
-        },
-      }}
       open={open}
       ref={ref}
       className={className}
