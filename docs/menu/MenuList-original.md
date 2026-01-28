@@ -15,11 +15,22 @@ MenuList는 **Menu나 Select의 항목 목록을 관리하고 키보드 내비�
 4. **activeItemIndex 계산** - variant에 따라 초기 포커스 항목 결정
 5. **adjustStyleForScrollbar** - 스크롤바 너비만큼 padding/width 조정
 
+> **💡 작성 주의**: 해당 컴포넌트 자체가 하는 일만 작성하세요. 하위 컴포넌트의 기능까지 포함하지 마세요.
+
 ---
 
 ## 내부 구조
 
-### 1. 헬퍼 함수들
+### 1. 컴포넌트 계층
+
+```javascript
+// 위치: packages/mui-material/src/MenuList/MenuList.js (346줄)
+MenuList (React.forwardRef)
+  └─> ul (role="menu")
+       └─> children (MenuItem들)
+```
+
+### 2. 헬퍼 함수들
 
 #### nextItem / previousItem
 ```javascript
@@ -126,7 +137,7 @@ function moveFocus(
 - `disabledItemsFocusable`: disabled 항목도 포커스할지 여부
 - tabindex 속성 확인 (포커스 가능한지)
 
-### 2. 타이핑 검색 (Type-ahead)
+### 3. 타이핑 검색 (Type-ahead)
 
 ```javascript
 const textCriteriaRef = React.useRef({
@@ -177,7 +188,7 @@ if (key.length === 1) {
 - `keys`: 누적된 키 배열 (예: ['a', 'p'] → "ap"로 시작하는 항목 찾기)
 - `previousKeyMatched`: 이전 매칭 성공 여부
 
-### 3. adjustStyleForScrollbar
+### 4. adjustStyleForScrollbar
 
 ```javascript
 React.useImperativeHandle(
@@ -204,7 +215,7 @@ React.useImperativeHandle(
 - RTL 지원: 오른쪽/왼쪽 padding 선택
 - `getScrollbarSize`: 브라우저별 스크롤바 너비 계산
 
-### 4. activeItemIndex 계산 (variant 기반)
+### 5. activeItemIndex 계산 (variant 기반)
 
 ```javascript
 let activeItemIndex = -1;
@@ -271,7 +282,7 @@ const items = React.Children.map(children, (child, index) => {
 - `muiSkipListHighlight`: 특정 항목 건너뛰기 (Divider 등)
 - `React.cloneElement`로 autoFocus, tabIndex props 주입
 
-### 5. 주요 Props
+### 6. 주요 Props
 
 | Prop | 타입 | 기본값 | 설명 |
 |------|------|--------|------|
@@ -285,7 +296,7 @@ const items = React.Children.map(children, (child, index) => {
 | `onKeyDown` | func | - | 추가 키보드 핸들러 |
 | `actions` | ref | - | *private* adjustStyleForScrollbar 접근 |
 
-### 6. 키보드 핸들러
+### 7. 키보드 핸들러
 
 ```javascript
 const handleKeyDown = (event) => {
