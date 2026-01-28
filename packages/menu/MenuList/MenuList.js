@@ -62,10 +62,9 @@ const MenuList = React.forwardRef(function MenuList(props, ref) {
     onKeyDown,
     ...other
   } = props;
-  const listRef = React.useRef(null);
 
   const handleKeyDown = (event) => {
-    const list = listRef.current;
+    const list = event.currentTarget;
     const key = event.key;
     const isModifierKeyPressed = event.ctrlKey || event.metaKey || event.altKey;
 
