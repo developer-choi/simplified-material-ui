@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import TextareaAutosize from '../TextareaAutosize';
 
 /**
  * `InputBase` contains as few styles as possible.
@@ -21,9 +20,6 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
     inputComponent = 'input',
     inputProps: inputPropsProp = {},
     inputRef: inputRefProp,
-    maxRows,
-    minRows,
-    multiline = false,
     name,
     onBlur,
     onChange,
@@ -34,7 +30,6 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
     placeholder,
     readOnly,
     renderSuffix,
-    rows,
     startAdornment,
     type = 'text',
     value: valueProp,
@@ -122,35 +117,6 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
       onClick(event);
     }
   };
-  let InputComponent = inputComponent;
-  let inputProps = inputPropsProp;
-
-  if (multiline && InputComponent === 'input') {
-    if (rows) {
-      if (process.env.NODE_ENV !== 'production') {
-        if (minRows || maxRows) {
-          console.warn(
-            'MUI: You can not use the `minRows` or `maxRows` props when the input `rows` prop is set.',
-          );
-        }
-      }
-      inputProps = {
-        type: undefined,
-        minRows: rows,
-        maxRows: rows,
-        ...inputProps,
-      };
-    } else {
-      inputProps = {
-        type: undefined,
-        maxRows,
-        minRows,
-        ...inputProps,
-      };
-    }
-
-    InputComponent = TextareaAutosize;
-  }
 
   const rootStyle = {
     lineHeight: '1.4375em',
@@ -159,7 +125,6 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
     cursor: fcs.disabled ? 'default' : 'text',
     display: 'inline-flex',
     alignItems: 'center',
-    ...(multiline && { padding: '4px 0 5px' }),
   };
 
   const inputStyle = {
@@ -170,13 +135,12 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
     border: 0,
     boxSizing: 'content-box',
     background: 'none',
-    height: multiline ? 'auto' : '1.4375em',
+    height: '1.4375em',
     margin: 0,
     WebkitTapHighlightColor: 'transparent',
     display: 'block',
     minWidth: 0,
     width: '100%',
-    ...(multiline && { resize: 'none', padding: 0 }),
     ...(type === 'search' && { MozAppearance: 'textfield' }),
   };
 
@@ -189,7 +153,7 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
         style={rootStyle}
       >
         {startAdornment}
-        <InputComponent
+        <input
             aria-invalid={fcs.error}
             aria-describedby={ariaDescribedby}
             autoComplete={autoComplete}
@@ -201,15 +165,14 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
             placeholder={placeholder}
             readOnly={readOnly}
             required={fcs.required}
-            rows={rows}
             value={value}
             onKeyDown={onKeyDown}
             onKeyUp={onKeyUp}
             type={type}
-            {...inputProps}
+            {...inputPropsProp}
             ref={inputRef}
-            className={inputProps.className}
-            style={{ ...inputStyle, ...inputProps.style }}
+            className={inputPropsProp.className}
+            style={{ ...inputStyle, ...inputPropsProp.style }}
             onBlur={handleBlur}
             onChange={handleChange}
             onFocus={handleFocus}
