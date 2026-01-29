@@ -4,22 +4,27 @@
 
 Select 컴포넌트를 단순화하기 위해 의존성이 낮은 컴포넌트부터 순차적으로 분석
 
+## 현재 진행 상황
+
+**완료**: 1~8단계 (Menu 패키지 + Form 기반 컴포넌트)
+**진행 예정**: 9~11단계 (Select 패키지)
+
 ---
 
 ## 의존성 그래프
 
 ```
-Select (mui-material/src/Select)  ← 최종 목표
-├── SelectInput (mui-material/src/Select)
-│   └── Menu (menu/Menu) ← 기반
-│       └── MenuList (menu/MenuList)
-│           └── MenuItem (menu/MenuItem) ← 최하위
-├── FormControl (form/FormControl) ← 기반
-├── InputBase (form/InputBase) ← 기반
-├── Input (form/Input) ← InputBase 기반
-├── FilledInput (form/FilledInput) ← InputBase 기반
-├── OutlinedInput (form/OutlinedInput) ← InputBase 기반
-└── NativeSelectInput (NativeSelect) ← 별도 구현
+Select (packages/mui-material/src/Select/)  ← 최종 목표
+├── SelectInput (packages/mui-material/src/Select/SelectInput.js)
+│   └── Menu (packages/menu/Menu/) ✅ 완료
+│       └── MenuList (packages/menu/MenuList/) ✅ 완료
+│           └── MenuItem (packages/menu/MenuItem/) ✅ 완료
+├── FormControl (packages/form/FormControl/) ✅ 완료
+├── InputBase (packages/form/InputBase/) ✅ 완료
+├── Input (packages/form/Input/) ✅ 완료
+├── FilledInput (packages/form/FilledInput/) ✅ 완료
+├── OutlinedInput (packages/form/OutlinedInput/) ✅ 완료
+└── NativeSelectInput (packages/mui-material/src/NativeSelect/) ❌ 미정
 ```
 
 ---
@@ -68,21 +73,45 @@ Select (mui-material/src/Select)  ← 최종 목표
 
 ---
 
-## 전체 분석 순서 (최종)
+## 전체 분석 순서 (최신화)
 
-```
-1. MenuItem (menu/MenuItem)
-2. MenuList (menu/MenuList)
-3. Menu (menu/Menu)
-4. InputBase (form/InputBase)
-5. FormControl (form/FormControl)
-6. Input (form/Input)
-7. FilledInput (form/FilledInput)
-8. OutlinedInput (form/OutlinedInput)
-9. NativeSelectInput (NativeSelect)
-10. SelectInput (Select/SelectInput.js)
-11. Select (Select/Select.js) ← 최종 목표
-```
+| 순서 | 컴포넌트 | 경로 | 상태 | 문서 |
+|------|---------|------|------|------|
+| 1 | MenuItem | `packages/menu/MenuItem/` | ✅ 완료 | -original.md, -simplified.md |
+| 2 | MenuList | `packages/menu/MenuList/` | ✅ 완료 | -original.md, -simplified.md |
+| 3 | Menu | `packages/menu/Menu/` | ✅ 완료 | -original.md, -simplified.md |
+| 4 | InputBase | `packages/form/InputBase/` | ✅ 완료 | -original.md, -simplified.md |
+| 5 | FormControl | `packages/form/FormControl/` | ✅ 완료 | -original.md, -simplified.md |
+| 6 | Input | `packages/form/Input/` | ✅ 완료 | -original.md, -simplified.md |
+| 7 | FilledInput | `packages/form/FilledInput/` | ✅ 완료 | -original.md, -simplified.md |
+| 8 | OutlinedInput | `packages/form/OutlinedInput/` | ✅ 완료 | -original.md, -simplified.md |
+| 9 | NativeSelectInput | `packages/mui-material/src/NativeSelect/` | ⏸️ 대기 | - |
+| 10 | SelectInput | `packages/mui-material/src/Select/SelectInput.js` | 🎯 다음 | - |
+| 11 | Select | `packages/mui-material/src/Select/Select.js` | ⏸️ 대기 | - |
+
+**범례**:
+- ✅ 완료: 단순화 및 문서화 완료
+- 🎯 다음: 바로 다음에 분석할 컴포넌트
+- ⏸️ 대기: 분석 전
+
+---
+
+## 분석 우선순위 (최신화)
+
+### 높음 (반드시 분석)
+1. **SelectInput** 🎯 - 핵심 로직, Menu를 사용하는 드롭다운 구현
+2. **Select** - 최종 목표, SelectInput 래퍼
+
+### 중간 (이해만)
+3. **NativeSelectInput** - 네이티브 `<select>` 구현 (별도 분석 가능)
+
+### 완료됨 (이미 단순화 완료)
+4. **Menu** ✅ - 드롭다운 표시
+5. **MenuItem** ✅ - 옵션 아이템
+6. **MenuList** ✅ - 옵션 리스트
+7. **FormControl** ✅ - 상태 관리
+8. **InputBase** ✅ - 공통 기반
+9. **Input/FilledInput/OutlinedInput** ✅ - 스타일 변형
 
 ---
 
@@ -124,32 +153,79 @@ Select (mui-material/src/Select)  ← 최종 목표
 
 ---
 
-## 권장 작업流程
+## 권장 작업 흐름
 
-### Phase 1: Menu 패키지 분석 (1~3)
+### ✅ Phase 1: Menu 패키지 분석 (완료)
 ```
 MenuItem → MenuList → Menu
 ```
-- 각각의 original.md, simplified.md 작성
-- 단순화 여부 결정
+- 각각의 original.md, simplified.md 작성 완료
+- 단순화 완료
 
-### Phase 2: Form 기반 분석 (4~8)
+### ✅ Phase 2: Form 기반 분석 (완료)
 ```
 InputBase → FormControl → Input variants
 ```
-- 복잡도가 높으면 스킵 가능
-- 필요한 부분만 참고
+- 각각의 original.md, simplified.md 작성 완료
+- 단순화 완료
 
-### Phase 3: Select 분석 (9~11)
+### 🎯 Phase 3: Select 분석 (진행 예정)
 ```
-NativeSelectInput → SelectInput → Select
+SelectInput → Select
 ```
 - 최종 목표
 - Menu와 Form 기반을 통합
+- NativeSelectInput은 선택 사항 (넣으면 9단계)
 
 ---
 
-## 다음 단계
+## 다음 단계 (현재: 2025-01-29)
 
-1. 이 문서를 `docs/Select-analysis-order.md`로 저장
-2. **MenuItem** 분석 시작 (가장 의존성이 낮음)
+### 🎯 바로 다음: SelectInput 분석
+
+**파일 위치**: `packages/mui-material/src/Select/SelectInput.js`
+
+**왜 SelectInput부터인가?**
+1. Select의 핵심 로직을 담고 있음
+2. Menu를 사용하여 드롭다운 구현
+3. FormControl과 InputBase를 사용하여 상태 관리
+4. Select는 단순히 SelectInput을 감싸는 래퍼
+
+**예상 복잡도**: 높음
+- Menu와의 통합 로직
+- 아이템 선택/해제
+- 포커스 관리
+- multiple 모드 지원
+
+**작업 순서**:
+1. SelectInput.js 파일 분석
+2. `docs/select/SelectInput-original.md` 작성
+3. 단순화 계획 수립
+4. 단순화 실행
+5. `docs/select/SelectInput-simplified.md` 작성
+
+---
+
+## 진행 상황 요약
+
+### 완료된 작업 (1~8단계)
+
+**Menu 패키지 (3개)**:
+- MenuItem: 35줄 (원본 206줄)
+- MenuList: 90줄 (원본 346줄)
+- Menu: 45줄 (원본 383줄)
+
+**Form 기반 (5개)**:
+- InputBase: 190줄 (원본 297줄, 이전 848줄)
+- FormControl: 132줄 (원본 352줄)
+- Input: 94줄
+- FilledInput: 130줄
+- OutlinedInput: 181줄
+
+**총 코드 라인 감소**: 약 2,500줄 → 약 900줄 (64% 감소)
+
+### 남은 작업 (9~11단계)
+
+- NativeSelectInput (선택 사항)
+- SelectInput (필수)
+- Select (필수)
