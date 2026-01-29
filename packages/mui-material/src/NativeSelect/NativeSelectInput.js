@@ -5,6 +5,7 @@ import composeClasses from '@mui/utils/composeClasses';
 import nativeSelectClasses, { getNativeSelectUtilityClasses } from './nativeSelectClasses';
 import { styled } from '../zero-styled';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
+import ArrowDropDownIcon from '../internal/svg-icons/ArrowDropDown';
 
 const useUtilityClasses = (ownerState) => {
   const { classes, disabled, multiple, open, error } = ownerState;
@@ -110,7 +111,6 @@ const NativeSelectInput = React.forwardRef(function NativeSelectInput(props, ref
     className,
     disabled,
     error,
-    IconComponent,
     inputRef,
     ...other
   } = props;
@@ -132,7 +132,7 @@ const NativeSelectInput = React.forwardRef(function NativeSelectInput(props, ref
         {...other}
       />
       {props.multiple ? null : (
-        <NativeSelectIcon as={IconComponent} ownerState={ownerState} className={classes.icon} />
+        <NativeSelectIcon as={ArrowDropDownIcon} ownerState={ownerState} className={classes.icon} />
       )}
     </React.Fragment>
   );
