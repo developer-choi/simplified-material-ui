@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import { isFragment } from 'react-is';
 import useId from '@mui/utils/useId';
 import ownerDocument from '../utils/ownerDocument';
 import Menu from '../../../menu/Menu/Menu';
@@ -279,17 +278,6 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
       return null;
     }
 
-    if (process.env.NODE_ENV !== 'production') {
-      if (isFragment(child)) {
-        console.error(
-          [
-            "MUI: The Select component doesn't accept a Fragment as a child.",
-            'Consider providing an array instead.',
-          ].join('\n'),
-        );
-      }
-    }
-
     let selected;
 
     if (multiple) {
@@ -340,25 +328,6 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
   if (process.env.NODE_ENV !== 'production') {
     // TODO: uncomment once we enable eslint-plugin-react-compiler // eslint-disable-next-line react-compiler/react-compiler
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    React.useEffect(() => {
-      if (!foundMatch && !multiple && value !== '') {
-        const values = childrenArray.map((child) => child.props.value);
-        console.warn(
-          [
-            `MUI: You have provided an out-of-range value \`${value}\` for the select ${
-              name ? `(name="${name}") ` : ''
-            }component.`,
-            "Consider providing a value that matches one of the available options or ''.",
-            `The available values are ${
-              values
-                .filter((x) => x != null)
-                .map((x) => `\`${x}\``)
-                .join(', ') || '""'
-            }.`,
-          ].join('\n'),
-        );
-      }
-    }, [foundMatch, childrenArray, multiple, name, value]);
   }
 
   if (computeDisplay) {
