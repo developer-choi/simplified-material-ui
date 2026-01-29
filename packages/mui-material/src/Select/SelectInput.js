@@ -37,7 +37,6 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
     'aria-describedby': ariaDescribedby,
     'aria-label': ariaLabel,
     autoFocus,
-    autoWidth,
     children,
     className,
     defaultOpen,
@@ -88,7 +87,6 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
   const displayRef = React.useRef(null);
   const [displayNode, setDisplayNode] = React.useState(null);
   const { current: isOpenControlled } = React.useRef(openProp != null);
-  const [menuMinWidthState, setMenuMinWidthState] = React.useState();
 
   const handleRef = useForkRef(ref, inputRefProp);
 
@@ -114,15 +112,6 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
     [value],
   );
 
-  // Resize menu on `defaultOpen` automatic toggle.
-  React.useEffect(() => {
-    if (defaultOpen && openState && displayNode && !isOpenControlled) {
-      setMenuMinWidthState(autoWidth ? null : anchorElement.clientWidth);
-      displayRef.current.focus();
-    }
-    // TODO: uncomment once we enable eslint-plugin-react-compiler // eslint-disable-next-line react-compiler/react-compiler
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [displayNode, autoWidth]);
   // `isOpenControlled` is ignored because the component should never switch between controlled and uncontrolled modes.
   // `defaultOpen` and `openState` are ignored to avoid unnecessary callbacks.
   React.useEffect(() => {
@@ -399,13 +388,6 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
     }
   }
 
-  // Avoid performing a layout computation in the render method.
-  let menuMinWidth = menuMinWidthState;
-
-  if (!autoWidth && isOpenControlled && displayNode) {
-    menuMinWidth = anchorElement.clientWidth;
-  }
-
   let tabIndex;
   if (typeof tabIndexProp !== 'undefined') {
     tabIndex = tabIndexProp;
@@ -510,9 +492,6 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
             ...MenuProps.MenuListProps,
           },
           paper: {
-            style: {
-              minWidth: menuMinWidth,
-            },
             ...MenuProps.PaperProps,
           },
         }}
