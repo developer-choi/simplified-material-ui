@@ -1,8 +1,6 @@
 'use client';
 import * as React from 'react';
 import TextareaAutosize from '../TextareaAutosize';
-import useEnhancedEffect from '../utils/useEnhancedEffect';
-import { isFilled } from './utils';
 
 /**
  * `InputBase` contains as few styles as possible.
@@ -71,20 +69,6 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
     }
   }, [disabled, focused, onBlur]);
 
-  const checkDirty = React.useCallback(
-    (obj) => {
-      // Removed FormControl integration
-      // filled state is no longer tracked
-    },
-    [],
-  );
-
-  useEnhancedEffect(() => {
-    if (isControlled) {
-      checkDirty({ value });
-    }
-  }, [value, checkDirty, isControlled]);
-
   const handleFocus = (event) => {
     if (onFocus) {
       onFocus(event);
@@ -117,10 +101,6 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
             'See https://mui.com/r/input-component-ref-interface for more info.',
         );
       }
-
-      checkDirty({
-        value: element.value,
-      });
     }
 
     if (inputPropsProp.onChange) {
@@ -132,14 +112,6 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
       onChange(event, ...args);
     }
   };
-
-  // Check the input state on mount, in case it was filled by the user
-  // or auto filled by the browser before the hydration (for SSR).
-  React.useEffect(() => {
-    checkDirty(inputRef.current);
-    // TODO: uncomment once we enable eslint-plugin-react-compiler // eslint-disable-next-line react-compiler/react-compiler
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handleClick = (event) => {
     if (inputRef.current && event.currentTarget === event.target) {
