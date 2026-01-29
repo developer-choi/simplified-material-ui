@@ -2,17 +2,16 @@
 import * as React from 'react';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
-import capitalize from '../utils/capitalize';
 import nativeSelectClasses, { getNativeSelectUtilityClasses } from './nativeSelectClasses';
 import { styled } from '../zero-styled';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, variant, disabled, multiple, open, error } = ownerState;
+  const { classes, disabled, multiple, open, error } = ownerState;
 
   const slots = {
-    select: ['select', variant, disabled && 'disabled', multiple && 'multiple', error && 'error'],
-    icon: ['icon', `icon${capitalize(variant)}`, open && 'iconOpen', disabled && 'disabled'],
+    select: ['select', disabled && 'disabled', multiple && 'multiple', error && 'error'],
+    icon: ['icon', open && 'iconOpen', disabled && 'disabled'],
   };
 
   return composeClasses(slots, getNativeSelectUtilityClasses, classes);
@@ -44,43 +43,10 @@ export const StyledSelectSelect = styled('select', {
   '&:not([multiple]) option, &:not([multiple]) optgroup': {
     backgroundColor: (theme.vars || theme).palette.background.paper,
   },
-  variants: [
-    {
-      props: ({ ownerState }) =>
-        ownerState.variant !== 'filled' && ownerState.variant !== 'outlined',
-      style: {
-        // Bump specificity to allow extending custom inputs
-        '&&&': {
-          paddingRight: 24,
-          minWidth: 16, // So it doesn't collapse.
-        },
-      },
-    },
-    {
-      props: {
-        variant: 'filled',
-      },
-      style: {
-        '&&&': {
-          paddingRight: 32,
-        },
-      },
-    },
-    {
-      props: {
-        variant: 'outlined',
-      },
-      style: {
-        borderRadius: (theme.vars || theme).shape.borderRadius,
-        '&:focus': {
-          borderRadius: (theme.vars || theme).shape.borderRadius, // Reset the reset for Chrome style
-        },
-        '&&&': {
-          paddingRight: 32,
-        },
-      },
-    },
-  ],
+  '&&&': {
+    paddingRight: 24,
+    minWidth: 16,
+  },
 }));
 
 const NativeSelectSelect = styled(StyledSelectSelect, {
@@ -121,22 +87,6 @@ export const StyledSelectIcon = styled('svg', {
         transform: 'rotate(180deg)',
       },
     },
-    {
-      props: {
-        variant: 'filled',
-      },
-      style: {
-        right: 7,
-      },
-    },
-    {
-      props: {
-        variant: 'outlined',
-      },
-      style: {
-        right: 7,
-      },
-    },
   ],
 }));
 
@@ -147,7 +97,6 @@ const NativeSelectIcon = styled(StyledSelectIcon, {
     const { ownerState } = props;
     return [
       styles.icon,
-      ownerState.variant && styles[`icon${capitalize(ownerState.variant)}`],
       ownerState.open && styles.iconOpen,
     ];
   },
@@ -163,14 +112,12 @@ const NativeSelectInput = React.forwardRef(function NativeSelectInput(props, ref
     error,
     IconComponent,
     inputRef,
-    variant = 'standard',
     ...other
   } = props;
 
   const ownerState = {
     ...props,
     disabled,
-    variant,
     error,
   };
 

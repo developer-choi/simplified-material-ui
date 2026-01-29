@@ -3,8 +3,6 @@ import * as React from 'react';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import NativeSelectInput from './NativeSelectInput';
-import formControlState from '../../../form/FormControl/formControlState';
-import useFormControl from '../../../form/FormControl/useFormControl';
 import ArrowDropDownIcon from '../internal/svg-icons/ArrowDropDown';
 import Input from '../../../form/Input';
 import { useDefaultProps } from '../DefaultPropsProvider';
@@ -33,16 +31,8 @@ const NativeSelect = React.forwardRef(function NativeSelect(inProps, ref) {
     IconComponent = ArrowDropDownIcon,
     input = defaultInput,
     inputProps,
-    variant,
     ...other
   } = props;
-
-  const muiFormControl = useFormControl();
-  const fcs = formControlState({
-    props,
-    muiFormControl,
-    states: ['variant'],
-  });
 
   const ownerState = { ...props, classes: classesProp };
   const classes = useUtilityClasses(ownerState);
@@ -58,7 +48,6 @@ const NativeSelect = React.forwardRef(function NativeSelect(inProps, ref) {
           children,
           classes: otherClasses,
           IconComponent,
-          variant: fcs.variant,
           type: undefined, // We render a select. We can ignore the type provided by the `Input`.
           ...inputProps,
           ...(input ? input.props.inputProps : {}),
