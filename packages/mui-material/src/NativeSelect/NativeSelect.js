@@ -1,21 +1,8 @@
 'use client';
 import * as React from 'react';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import NativeSelectInput from './NativeSelectInput';
 import Input from '../../../form/Input';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import { getNativeSelectUtilityClasses } from './nativeSelectClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-
-  const slots = {
-    root: ['root'],
-  };
-
-  return composeClasses(slots, getNativeSelectUtilityClasses, classes);
-};
 
 const defaultInput = <Input />;
 /**
@@ -24,17 +11,11 @@ const defaultInput = <Input />;
 const NativeSelect = React.forwardRef(function NativeSelect(inProps, ref) {
   const props = useDefaultProps({ name: 'MuiNativeSelect', props: inProps });
   const {
-    className,
     children,
-    classes: classesProp = {},
     input = defaultInput,
     inputProps,
     ...other
   } = props;
-
-  const ownerState = { ...props, classes: classesProp };
-  const classes = useUtilityClasses(ownerState);
-  const { root, ...otherClasses } = classesProp;
 
   return (
     <React.Fragment>
@@ -44,14 +25,12 @@ const NativeSelect = React.forwardRef(function NativeSelect(inProps, ref) {
         inputComponent: NativeSelectInput,
         inputProps: {
           children,
-          classes: otherClasses,
           type: undefined, // We render a select. We can ignore the type provided by the `Input`.
           ...inputProps,
           ...(input ? input.props.inputProps : {}),
         },
         ref,
         ...other,
-        className: clsx(classes.root, input.props.className, className),
       })}
     </React.Fragment>
   );
