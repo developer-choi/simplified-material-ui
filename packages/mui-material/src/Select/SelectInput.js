@@ -1,7 +1,6 @@
 'use client';
 import * as React from 'react';
 import useId from '@mui/utils/useId';
-import ownerDocument from '../utils/ownerDocument';
 import Menu from '../../../menu/Menu/Menu';
 import { isFilled } from '../../../form/InputBase/utils';
 import useForkRef from '../utils/useForkRef';
@@ -114,7 +113,7 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
     if (!labelId) {
       return undefined;
     }
-    const label = ownerDocument(displayRef.current).getElementById(labelId);
+    const label = document.getElementById(labelId);
     if (label) {
       const handler = () => {
         if (getSelection().isCollapsed) {
