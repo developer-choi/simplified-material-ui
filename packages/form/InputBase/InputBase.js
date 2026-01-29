@@ -1,9 +1,6 @@
 'use client';
 import * as React from 'react';
 import TextareaAutosize from '../TextareaAutosize';
-import formControlState from '../FormControl/formControlState';
-import FormControlContext from '../FormControl/FormControlContext';
-import useFormControl from '../FormControl/useFormControl';
 import useEnhancedEffect from '../utils/useEnhancedEffect';
 import { isFilled } from './utils';
 
@@ -52,53 +49,34 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
   const inputRef = inputRefProp || React.useRef();
 
   const [focused, setFocused] = React.useState(false);
-  const muiFormControl = useFormControl();
 
-  if (process.env.NODE_ENV !== 'production') {
-    // TODO: uncomment once we enable eslint-plugin-react-compiler // eslint-disable-next-line react-compiler/react-compiler
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    React.useEffect(() => {
-      if (muiFormControl) {
-        return muiFormControl.registerEffect();
-      }
+  const fcs = {
+    disabled: disabled || false,
+    error: error || false,
+    required: false,
+    hiddenLabel: false,
+    filled: false,
+  };
 
-      return undefined;
-    }, [muiFormControl]);
-  }
-
-  const fcs = formControlState({
-    props,
-    muiFormControl,
-    states: ['disabled', 'error', 'hiddenLabel', 'required', 'filled'],
-  });
-
-  fcs.focused = muiFormControl ? muiFormControl.focused : focused;
+  fcs.focused = focused;
 
   // The blur won't fire when the disabled state is set on a focused input.
   // We need to book keep the focused state manually.
   React.useEffect(() => {
-    if (!muiFormControl && disabled && focused) {
+    if (disabled && focused) {
       setFocused(false);
       if (onBlur) {
         onBlur();
       }
     }
-  }, [muiFormControl, disabled, focused, onBlur]);
-
-  const onFilled = muiFormControl && muiFormControl.onFilled;
-  const onEmpty = muiFormControl && muiFormControl.onEmpty;
+  }, [disabled, focused, onBlur]);
 
   const checkDirty = React.useCallback(
     (obj) => {
-      if (isFilled(obj)) {
-        if (onFilled) {
-          onFilled();
-        }
-      } else if (onEmpty) {
-        onEmpty();
-      }
+      // Removed FormControl integration
+      // filled state is no longer tracked
     },
-    [onFilled, onEmpty],
+    [],
   );
 
   useEnhancedEffect(() => {
@@ -115,11 +93,7 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
       inputPropsProp.onFocus(event);
     }
 
-    if (muiFormControl && muiFormControl.onFocus) {
-      muiFormControl.onFocus(event);
-    } else {
-      setFocused(true);
-    }
+    setFocused(true);
   };
 
   const handleBlur = (event) => {
@@ -130,11 +104,7 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
       inputPropsProp.onBlur(event);
     }
 
-    if (muiFormControl && muiFormControl.onBlur) {
-      muiFormControl.onBlur(event);
-    } else {
-      setFocused(false);
-    }
+    setFocused(false);
   };
 
   const handleChange = (event, ...args) => {
@@ -210,12 +180,6 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
     InputComponent = TextareaAutosize;
   }
 
-  React.useEffect(() => {
-    if (muiFormControl) {
-      muiFormControl.setAdornedStart(Boolean(startAdornment));
-    }
-  }, [muiFormControl, startAdornment]);
-
   const rootStyle = {
     lineHeight: '1.4375em',
     boxSizing: 'border-box',
@@ -245,8 +209,7 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
   };
 
   return (
-    <React.Fragment>
-      <div
+    <div
         ref={ref}
         onClick={handleClick}
         {...other}
@@ -254,8 +217,7 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
         style={rootStyle}
       >
         {startAdornment}
-        <FormControlContext.Provider value={null}>
-          <InputComponent
+        <InputComponent
             aria-invalid={fcs.error}
             aria-describedby={ariaDescribedby}
             autoComplete={autoComplete}
@@ -280,7 +242,6 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
             onChange={handleChange}
             onFocus={handleFocus}
           />
-        </FormControlContext.Provider>
         {endAdornment}
         {renderSuffix
           ? renderSuffix({
@@ -288,8 +249,8 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
               startAdornment,
             })
           : null}
-      </InputBaseRoot>
-    </React.Fragment>
+      </div>
+    </div>
   );
 });
 
