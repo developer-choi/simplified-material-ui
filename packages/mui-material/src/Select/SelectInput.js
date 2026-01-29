@@ -2,71 +2,14 @@
 import * as React from 'react';
 import { isFragment } from 'react-is';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import useId from '@mui/utils/useId';
 import refType from '@mui/utils/refType';
 import ownerDocument from '../utils/ownerDocument';
-import capitalize from '../utils/capitalize';
 import Menu from '../../../menu/Menu/Menu';
-import { StyledSelectSelect, StyledSelectIcon } from '../NativeSelect/NativeSelectInput';
 import { isFilled } from '../../../form/InputBase/utils';
-import { styled } from '../zero-styled';
-import slotShouldForwardProp from '../styles/slotShouldForwardProp';
 import useForkRef from '../utils/useForkRef';
 import useControlled from '../utils/useControlled';
-import selectClasses, { getSelectUtilityClasses } from './selectClasses';
 
-const SelectSelect = styled(StyledSelectSelect, {
-  name: 'MuiSelect',
-  slot: 'Select',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-    return [
-      // Win specificity over the input base
-      { [`&.${selectClasses.select}`]: styles.select },
-      { [`&.${selectClasses.select}`]: styles[ownerState.variant] },
-      { [`&.${selectClasses.error}`]: styles.error },
-      { [`&.${selectClasses.multiple}`]: styles.multiple },
-    ];
-  },
-})({
-  // Win specificity over the input base
-  [`&.${selectClasses.select}`]: {
-    height: 'auto', // Resets for multiple select with chips
-    minHeight: '1.4375em', // Required for select\text-field height consistency
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-  },
-});
-
-const SelectIcon = styled(StyledSelectIcon, {
-  name: 'MuiSelect',
-  slot: 'Icon',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-    return [
-      styles.icon,
-      ownerState.variant && styles[`icon${capitalize(ownerState.variant)}`],
-      ownerState.open && styles.iconOpen,
-    ];
-  },
-})({});
-
-const SelectNativeInput = styled('input', {
-  shouldForwardProp: (prop) => slotShouldForwardProp(prop) && prop !== 'classes',
-  name: 'MuiSelect',
-  slot: 'NativeInput',
-})({
-  bottom: 0,
-  left: 0,
-  position: 'absolute',
-  opacity: 0,
-  pointerEvents: 'none',
-  width: '100%',
-  boxSizing: 'border-box',
-});
 
 function areEqualValues(a, b) {
   if (typeof b === 'object' && b !== null) {
@@ -81,17 +24,12 @@ function isEmpty(display) {
   return display == null || (typeof display === 'string' && !display.trim());
 }
 
-const useUtilityClasses = (ownerState) => {
-  const { classes, variant, disabled, multiple, open, error } = ownerState;
-
-  const slots = {
-    select: ['select', variant, disabled && 'disabled', multiple && 'multiple', error && 'error'],
-    icon: ['icon', `icon${capitalize(variant)}`, open && 'iconOpen', disabled && 'disabled'],
-    nativeInput: ['nativeInput'],
-  };
-
-  return composeClasses(slots, getSelectUtilityClasses, classes);
-};
+function capitalize(string) {
+  if (typeof string !== 'string') {
+    return string;
+  }
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 /**
  * @ignore - internal component.
@@ -487,8 +425,6 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
     error,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   const paperProps = {
     ...MenuProps.PaperProps,
     ...(typeof MenuProps.slotProps?.paper === 'function'
@@ -507,8 +443,7 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
 
   return (
     <React.Fragment>
-      <SelectSelect
-        as="div"
+      <div
         ref={handleDisplayRef}
         tabIndex={tabIndex}
         role="combobox"
@@ -526,8 +461,19 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
         onBlur={handleBlur}
         onFocus={onFocus}
         {...SelectDisplayProps}
-        ownerState={ownerState}
-        className={clsx(SelectDisplayProps.className, classes.select, className)}
+        style={{
+          height: 'auto',
+          minHeight: '1.4375em',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          cursor: disabled ? 'default' : 'text',
+          position: 'relative',
+          display: 'inline-flex',
+          alignItems: 'center',
+          ...SelectDisplayProps.style,
+        }}
+        className={SelectDisplayProps.className || className}
         // The id is required for proper a11y
         id={buttonId}
       >
@@ -540,8 +486,8 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
         ) : (
           display
         )}
-      </SelectSelect>
-      <SelectNativeInput
+      </div>
+      <input
         aria-invalid={error}
         value={Array.isArray(value) ? value.join(',') : value}
         name={name}
@@ -550,13 +496,20 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
         onChange={handleChange}
         tabIndex={-1}
         disabled={disabled}
-        className={classes.nativeInput}
+        style={{
+          bottom: 0,
+          left: 0,
+          position: 'absolute',
+          opacity: 0,
+          pointerEvents: 'none',
+          width: '100%',
+          boxSizing: 'border-box',
+        }}
         autoFocus={autoFocus}
         required={required}
         {...other}
-        ownerState={ownerState}
       />
-      <SelectIcon as={IconComponent} className={classes.icon} ownerState={ownerState} />
+      <IconComponent />
       <Menu
         id={`menu-${name || ''}`}
         anchorEl={anchorElement}
