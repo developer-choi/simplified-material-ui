@@ -22,13 +22,6 @@ function isEmpty(display) {
   return display == null || (typeof display === 'string' && !display.trim());
 }
 
-function capitalize(string) {
-  if (typeof string !== 'string') {
-    return string;
-  }
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 /**
  * @ignore - internal component.
  */
@@ -67,7 +60,6 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
     // catching `type` from Input which makes no sense for SelectInput
     type,
     value: valueProp,
-    variant = 'standard',
     ...other
   } = props;
 
