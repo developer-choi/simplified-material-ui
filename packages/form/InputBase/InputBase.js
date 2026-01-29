@@ -17,7 +17,6 @@ const InputBase = React.forwardRef(function InputBase(props, ref) {
     endAdornment,
     error,
     id,
-    inputComponent = 'input',
     inputProps: inputPropsProp = {},
     inputRef: inputRefProp,
     name,
