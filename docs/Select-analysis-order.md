@@ -6,16 +6,16 @@ Select 컴포넌트를 단순화하기 위해 의존성이 낮은 컴포넌트�
 
 ## 현재 진행 상황
 
-**완료**: 1~8단계 (Menu 패키지 + Form 기반 컴포넌트)
-**진행 예정**: 9~11단계 (Select 패키지)
+**완료**: 1~9단계 (Menu 패키지 + Form 기반 컴포넌트 + SelectInput)
+**진행 예정**: 10~11단계 (Select 패키지 마무리)
 
 ---
 
 ## 의존성 그래프
 
 ```
-Select (packages/mui-material/src/Select/)  ← 최종 목표
-├── SelectInput (packages/mui-material/src/Select/SelectInput.js)
+Select (packages/mui-material/src/Select/)  ← 최종 목표 🎯
+├── SelectInput (packages/mui-material/src/Select/SelectInput.js) ✅ 완료
 │   └── Menu (packages/menu/Menu/) ✅ 완료
 │       └── MenuList (packages/menu/MenuList/) ✅ 완료
 │           └── MenuItem (packages/menu/MenuItem/) ✅ 완료
@@ -24,7 +24,7 @@ Select (packages/mui-material/src/Select/)  ← 최종 목표
 ├── Input (packages/form/Input/) ✅ 완료
 ├── FilledInput (packages/form/FilledInput/) ✅ 완료
 ├── OutlinedInput (packages/form/OutlinedInput/) ✅ 완료
-└── NativeSelectInput (packages/mui-material/src/NativeSelect/) ❌ 미정
+└── NativeSelectInput (packages/mui-material/src/NativeSelect/) ⏸️ 선택 사항
 ```
 
 ---
@@ -85,27 +85,27 @@ Select (packages/mui-material/src/Select/)  ← 최종 목표
 | 6 | Input | `packages/form/Input/` | ✅ 완료 | -original.md, -simplified.md |
 | 7 | FilledInput | `packages/form/FilledInput/` | ✅ 완료 | -original.md, -simplified.md |
 | 8 | OutlinedInput | `packages/form/OutlinedInput/` | ✅ 완료 | -original.md, -simplified.md |
-| 9 | NativeSelectInput | `packages/mui-material/src/NativeSelect/` | ⏸️ 대기 | - |
-| 10 | SelectInput | `packages/mui-material/src/Select/SelectInput.js` | 🎯 다음 | - |
-| 11 | Select | `packages/mui-material/src/Select/Select.js` | ⏸️ 대기 | - |
+| 9 | SelectInput | `packages/mui-material/src/Select/SelectInput.js` | ✅ 완료 | -original.md, -simplified.md |
+| 10 | NativeSelectInput | `packages/mui-material/src/NativeSelect/` | ⏸️ 선택 사항 | - |
+| 11 | Select | `packages/mui-material/src/Select/Select.js` | 🎯 다음 | - |
 
 **범례**:
 - ✅ 완료: 단순화 및 문서화 완료
 - 🎯 다음: 바로 다음에 분석할 컴포넌트
-- ⏸️ 대기: 분석 전
+- ⏸️ 선택 사항: 분석하지 않아도 됨
 
 ---
 
 ## 분석 우선순위 (최신화)
 
 ### 높음 (반드시 분석)
-1. **SelectInput** 🎯 - 핵심 로직, Menu를 사용하는 드롭다운 구현
-2. **Select** - 최종 목표, SelectInput 래퍼
+1. **Select** 🎯 - 최종 목표, SelectInput 래퍼
 
 ### 중간 (이해만)
-3. **NativeSelectInput** - 네이티브 `<select>` 구현 (별도 분석 가능)
+2. **NativeSelectInput** - 네이티브 `<select>` 구현 (별도 분석 가능)
 
 ### 완료됨 (이미 단순화 완료)
+3. **SelectInput** ✅ - 핵심 로직, Menu를 사용하는 드롭다운 구현 (464줄, 원본 749줄)
 4. **Menu** ✅ - 드롭다운 표시
 5. **MenuItem** ✅ - 옵션 아이템
 6. **MenuList** ✅ - 옵션 리스트
@@ -169,63 +169,64 @@ InputBase → FormControl → Input variants
 - 각각의 original.md, simplified.md 작성 완료
 - 단순화 완료
 
-### 🎯 Phase 3: Select 분석 (진행 예정)
+### 🎯 Phase 3: Select 분석 (진행 중)
 ```
-SelectInput → Select
+SelectInput (완료) → Select (다음)
 ```
 - 최종 목표
 - Menu와 Form 기반을 통합
-- NativeSelectInput은 선택 사항 (넣으면 9단계)
+- NativeSelectInput은 선택 사항
 
 ---
 
 ## 다음 단계 (현재: 2025-01-29)
 
-### 🎯 바로 다음: SelectInput 분석
+### 🎯 바로 다음: Select 분석
 
-**파일 위치**: `packages/mui-material/src/Select/SelectInput.js`
+**파일 위치**: `packages/mui-material/src/Select/Select.js`
 
-**왜 SelectInput부터인가?**
-1. Select의 핵심 로직을 담고 있음
-2. Menu를 사용하여 드롭다운 구현
-3. FormControl과 InputBase를 사용하여 상태 관리
-4. Select는 단순히 SelectInput을 감싸는 래퍼
+**왜 Select인가?**
+1. SelectInput을 감싸는 최종 래퍼 컴포넌트
+2. 사용자 인터페이스 제공
+3. FormControl과 InputBase 통합
+4. NativeSelect와 선택 가능
 
-**예상 복잡도**: 높음
-- Menu와의 통합 로직
-- 아이템 선택/해제
-- 포커스 관리
-- multiple 모드 지원
+**예상 복잡도**: 중간
+- SelectInput 래핑
+- variant에 따른 Input 선택 (Input/FilledInput/OutlinedInput)
+- NativeSelect 조건부 렌더링
 
 **작업 순서**:
-1. SelectInput.js 파일 분석
-2. `docs/select/SelectInput-original.md` 작성
+1. Select.js 파일 분석
+2. `docs/select/Select-original.md` 작성
 3. 단순화 계획 수립
 4. 단순화 실행
-5. `docs/select/SelectInput-simplified.md` 작성
+5. `docs/select/Select-simplified.md` 작성
 
 ---
 
 ## 진행 상황 요약
 
-### 완료된 작업 (1~8단계)
+### 완료된 작업 (1~9단계)
 
 **Menu 패키지 (3개)**:
-- MenuItem: 35줄 (원본 206줄)
-- MenuList: 90줄 (원본 346줄)
-- Menu: 45줄 (원본 383줄)
+- MenuItem: 35줄 (원본 206줄, 83% 감소)
+- MenuList: 90줄 (원본 346줄, 74% 감소)
+- Menu: 45줄 (원본 383줄, 88% 감소)
 
 **Form 기반 (5개)**:
 - InputBase: 190줄 (원본 297줄, 이전 848줄)
-- FormControl: 132줄 (원본 352줄)
+- FormControl: 132줄 (원본 352줄, 62% 감소)
 - Input: 94줄
 - FilledInput: 130줄
 - OutlinedInput: 181줄
 
-**총 코드 라인 감소**: 약 2,500줄 → 약 900줄 (64% 감소)
+**Select 패키지 (1개)**:
+- SelectInput: 464줄 (원본 749줄, **38% 감소**)
 
-### 남은 작업 (9~11단계)
+**총 코드 라인 감소**: 약 2,800줄 → 약 1,300줄 (**54% 감소**)
 
-- NativeSelectInput (선택 사항)
-- SelectInput (필수)
-- Select (필수)
+### 남은 작업 (10~11단계)
+
+- NativeSelectInput (선택 사항 - 스킵 가능)
+- Select (필수 - 최종 목표)
