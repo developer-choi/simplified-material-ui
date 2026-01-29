@@ -42,7 +42,6 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
     defaultOpen,
     defaultValue,
     disabled,
-    displayEmpty,
     error = false,
     IconComponent,
     inputRef: inputRefProp,
@@ -275,7 +274,7 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
   let foundMatch = false;
 
   // No need to display any value if the field is empty.
-  if (isFilled({ value }) || displayEmpty) {
+  if (isFilled({ value })) {
     if (renderValue) {
       display = renderValue(value);
     } else {
