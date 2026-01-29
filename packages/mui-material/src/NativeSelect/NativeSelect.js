@@ -1,13 +1,11 @@
 'use client';
 import * as React from 'react';
 import NativeSelectInput from './NativeSelectInput';
-import { useDefaultProps } from '../DefaultPropsProvider';
 
 /**
  * An alternative to `<Select native />` with a much smaller bundle size footprint.
  */
-const NativeSelect = React.forwardRef(function NativeSelect(inProps, ref) {
-  const props = useDefaultProps({ name: 'MuiNativeSelect', props: inProps });
+const NativeSelect = React.forwardRef(function NativeSelect(props, ref) {
   const {
     children,
     disabled,
