@@ -415,28 +415,6 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
 
   const buttonId = SelectDisplayProps.id || (name ? `mui-component-select-${name}` : undefined);
 
-  const ownerState = {
-    ...props,
-    variant,
-    value,
-    open,
-    error,
-  };
-
-  const paperProps = {
-    ...MenuProps.PaperProps,
-    ...(typeof MenuProps.slotProps?.paper === 'function'
-      ? MenuProps.slotProps.paper(ownerState)
-      : MenuProps.slotProps?.paper),
-  };
-
-  const listProps = {
-    ...MenuProps.MenuListProps,
-    ...(typeof MenuProps.slotProps?.list === 'function'
-      ? MenuProps.slotProps.list(ownerState)
-      : MenuProps.slotProps?.list),
-  };
-
   const listboxId = useId();
 
   return (
@@ -523,21 +501,19 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
         }}
         {...MenuProps}
         slotProps={{
-          ...MenuProps.slotProps,
           list: {
             'aria-labelledby': labelId,
             role: 'listbox',
             'aria-multiselectable': multiple ? 'true' : undefined,
             disableListWrap: true,
             id: listboxId,
-            ...listProps,
+            ...MenuProps.MenuListProps,
           },
           paper: {
-            ...paperProps,
             style: {
               minWidth: menuMinWidth,
-              ...(paperProps != null ? paperProps.style : null),
             },
+            ...MenuProps.PaperProps,
           },
         }}
       >
