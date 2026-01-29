@@ -111,7 +111,6 @@ const NativeSelectInput = React.forwardRef(function NativeSelectInput(props, ref
     className,
     disabled,
     error,
-    inputRef,
     ...other
   } = props;
 
@@ -128,7 +127,7 @@ const NativeSelectInput = React.forwardRef(function NativeSelectInput(props, ref
         ownerState={ownerState}
         className={clsx(classes.select, className)}
         disabled={disabled}
-        ref={inputRef || ref}
+        ref={ref}
         {...other}
       />
       {props.multiple ? null : (
