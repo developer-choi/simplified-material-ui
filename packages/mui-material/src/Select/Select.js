@@ -3,12 +3,10 @@ import * as React from 'react';
 import SelectInput from './SelectInput';
 import ArrowDropDownIcon from '../internal/svg-icons/ArrowDropDown';
 import OutlinedInput from '../../../form/OutlinedInput';
-import { useDefaultProps } from '../DefaultPropsProvider';
 
 const StyledOutlinedInput = OutlinedInput;
 
-const Select = React.forwardRef(function Select(inProps, ref) {
-  const props = useDefaultProps({ name: 'MuiSelect', props: inProps });
+const Select = React.forwardRef(function Select(props, ref) {
   const {
     autoWidth = false,
     children,
