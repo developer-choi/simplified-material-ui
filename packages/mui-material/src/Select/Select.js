@@ -8,7 +8,6 @@ import SelectInput from './SelectInput';
 import formControlState from '../../../form/FormControl/formControlState';
 import useFormControl from '../../../form/FormControl/useFormControl';
 import ArrowDropDownIcon from '../internal/svg-icons/ArrowDropDown';
-import NativeSelectInput from '../NativeSelect/NativeSelectInput';
 import OutlinedInput from '../../../form/OutlinedInput';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import useForkRef from '../utils/useForkRef';
@@ -53,7 +52,6 @@ const Select = React.forwardRef(function Select(inProps, ref) {
     labelId,
     MenuProps,
     multiple = false,
-    native = false,
     onClose,
     onOpen,
     open,
@@ -61,8 +59,6 @@ const Select = React.forwardRef(function Select(inProps, ref) {
     SelectDisplayProps,
     ...other
   } = props;
-
-  const inputComponent = native ? NativeSelectInput : SelectInput;
 
   const muiFormControl = useFormControl();
   const fcs = formControlState({
@@ -86,7 +82,7 @@ const Select = React.forwardRef(function Select(inProps, ref) {
       {React.cloneElement(InputComponent, {
         // Most of the logic is implemented in `SelectInput`.
         // The `Select` component is a simple API wrapper to expose something better to play with.
-        inputComponent,
+        inputComponent: SelectInput,
         inputProps: {
           children,
           error: fcs.error,
@@ -94,25 +90,21 @@ const Select = React.forwardRef(function Select(inProps, ref) {
           variant,
           type: undefined, // We render a select. We can ignore the type provided by the `Input`.
           multiple,
-          ...(native
-            ? { id }
-            : {
-                autoWidth,
-                defaultOpen,
-                displayEmpty,
-                labelId,
-                MenuProps,
-                onClose,
-                onOpen,
-                open,
-                renderValue,
-                SelectDisplayProps: { id, ...SelectDisplayProps },
-              }),
+          autoWidth,
+          defaultOpen,
+          displayEmpty,
+          labelId,
+          MenuProps,
+          onClose,
+          onOpen,
+          open,
+          renderValue,
+          SelectDisplayProps: { id, ...SelectDisplayProps },
           ...inputProps,
           classes: inputProps ? deepmerge(restOfClasses, inputProps.classes) : restOfClasses,
           ...(input ? input.props.inputProps : {}),
         },
-        ...(((multiple && native) || displayEmpty) && variant === 'outlined'
+        ...(displayEmpty && variant === 'outlined'
           ? { notched: true }
           : {}),
         ref: inputComponentRef,
