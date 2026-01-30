@@ -1,8 +1,6 @@
 'use client';
 import * as React from 'react';
 import SelectInput from './SelectInput';
-import formControlState from '../../../form/FormControl/formControlState';
-import useFormControl from '../../../form/FormControl/useFormControl';
 import ArrowDropDownIcon from '../internal/svg-icons/ArrowDropDown';
 import OutlinedInput from '../../../form/OutlinedInput';
 import { useDefaultProps } from '../DefaultPropsProvider';
@@ -32,14 +30,7 @@ const Select = React.forwardRef(function Select(inProps, ref) {
     ...other
   } = props;
 
-  const muiFormControl = useFormControl();
-  const fcs = formControlState({
-    props,
-    muiFormControl,
-    states: ['variant', 'error'],
-  });
-
-  const variant = fcs.variant || 'outlined';
+  const variant = 'outlined';
 
   const InputComponent = <StyledOutlinedInput label={label} />;
 
@@ -51,7 +42,6 @@ const Select = React.forwardRef(function Select(inProps, ref) {
         inputComponent: SelectInput,
         inputProps: {
           children,
-          error: fcs.error,
           IconComponent,
           variant,
           type: undefined, // We render a select. We can ignore the type provided by the `Input`.
