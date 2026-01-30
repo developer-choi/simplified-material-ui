@@ -8,9 +8,7 @@ import SelectInput from './SelectInput';
 import formControlState from '../../../form/FormControl/formControlState';
 import useFormControl from '../../../form/FormControl/useFormControl';
 import ArrowDropDownIcon from '../internal/svg-icons/ArrowDropDown';
-import Input from '../../../form/Input';
 import NativeSelectInput from '../NativeSelect/NativeSelectInput';
-import FilledInput from '../../../form/FilledInput';
 import OutlinedInput from '../../../form/OutlinedInput';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import useForkRef from '../utils/useForkRef';
@@ -36,11 +34,7 @@ const styledRootConfig = {
   shouldForwardProp: (prop) => rootShouldForwardProp(prop) && prop !== 'variant',
 };
 
-const StyledInput = styled(Input, styledRootConfig)('');
-
 const StyledOutlinedInput = styled(OutlinedInput, styledRootConfig)('');
-
-const StyledFilledInput = styled(FilledInput, styledRootConfig)('');
 
 const Select = React.forwardRef(function Select(inProps, ref) {
   const props = useDefaultProps({ name: 'MuiSelect', props: inProps });
@@ -65,7 +59,6 @@ const Select = React.forwardRef(function Select(inProps, ref) {
     open,
     renderValue,
     SelectDisplayProps,
-    variant: variantProp = 'outlined',
     ...other
   } = props;
 
@@ -78,19 +71,13 @@ const Select = React.forwardRef(function Select(inProps, ref) {
     states: ['variant', 'error'],
   });
 
-  const variant = fcs.variant || variantProp;
+  const variant = fcs.variant || 'outlined';
 
   const ownerState = { ...props, variant, classes: classesProp };
   const classes = useUtilityClasses(ownerState);
   const { root, ...restOfClasses } = classes;
 
-  const InputComponent =
-    input ||
-    {
-      standard: <StyledInput ownerState={ownerState} />,
-      outlined: <StyledOutlinedInput label={label} ownerState={ownerState} />,
-      filled: <StyledFilledInput ownerState={ownerState} />,
-    }[variant];
+  const InputComponent = input || <StyledOutlinedInput label={label} ownerState={ownerState} />;
 
   const inputComponentRef = useForkRef(ref, getReactElementRef(InputComponent));
 
