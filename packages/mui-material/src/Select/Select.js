@@ -3,14 +3,12 @@ import * as React from 'react';
 import clsx from 'clsx';
 import deepmerge from '@mui/utils/deepmerge';
 import composeClasses from '@mui/utils/composeClasses';
-import getReactElementRef from '@mui/utils/getReactElementRef';
 import SelectInput from './SelectInput';
 import formControlState from '../../../form/FormControl/formControlState';
 import useFormControl from '../../../form/FormControl/useFormControl';
 import ArrowDropDownIcon from '../internal/svg-icons/ArrowDropDown';
 import OutlinedInput from '../../../form/OutlinedInput';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import useForkRef from '../utils/useForkRef';
 import { styled } from '../zero-styled';
 import rootShouldForwardProp from '../styles/rootShouldForwardProp';
 import { getSelectUtilityClasses } from './selectClasses';
@@ -46,7 +44,6 @@ const Select = React.forwardRef(function Select(inProps, ref) {
     displayEmpty = false,
     IconComponent = ArrowDropDownIcon,
     id,
-    input,
     inputProps,
     label,
     labelId,
@@ -73,9 +70,7 @@ const Select = React.forwardRef(function Select(inProps, ref) {
   const classes = useUtilityClasses(ownerState);
   const { root, ...restOfClasses } = classes;
 
-  const InputComponent = input || <StyledOutlinedInput label={label} ownerState={ownerState} />;
-
-  const inputComponentRef = useForkRef(ref, getReactElementRef(InputComponent));
+  const InputComponent = <StyledOutlinedInput label={label} ownerState={ownerState} />;
 
   return (
     <React.Fragment>
@@ -102,12 +97,11 @@ const Select = React.forwardRef(function Select(inProps, ref) {
           SelectDisplayProps: { id, ...SelectDisplayProps },
           ...inputProps,
           classes: inputProps ? deepmerge(restOfClasses, inputProps.classes) : restOfClasses,
-          ...(input ? input.props.inputProps : {}),
         },
         ...(displayEmpty && variant === 'outlined'
           ? { notched: true }
           : {}),
-        ref: inputComponentRef,
+        ref,
         className: clsx(InputComponent.props.className, className, classes.root),
         // If a custom input is provided via 'input' prop, do not allow 'variant' to be propagated to it's root element. See https://github.com/mui/material-ui/issues/33894.
         ...(!input && { variant }),
