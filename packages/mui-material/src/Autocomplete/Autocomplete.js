@@ -13,7 +13,6 @@ import filledInputClasses from '../../../form/FilledInput/filledInputClasses';
 import ClearIcon from '../internal/svg-icons/Close';
 import ArrowDropDownIcon from '../internal/svg-icons/ArrowDropDown';
 import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import autocompleteClasses from './autocompleteClasses';
 import capitalize from '../utils/capitalize';
 
@@ -214,7 +213,7 @@ const AutocompletePopper = styled(Popper, {
     ];
   },
 })(
-  memoTheme(({ theme }) => ({
+  ({ theme }) => ({
     zIndex: (theme.vars || theme).zIndex.modal,
     variants: [
       {
@@ -231,7 +230,7 @@ const AutocompletePaper = styled(Paper, {
   name: 'MuiAutocomplete',
   slot: 'Paper',
 })(
-  memoTheme(({ theme }) => ({
+  ({ theme }) => ({
     ...theme.typography.body1,
     overflow: 'auto',
   })),
@@ -241,7 +240,7 @@ const AutocompleteLoading = styled('div', {
   name: 'MuiAutocomplete',
   slot: 'Loading',
 })(
-  memoTheme(({ theme }) => ({
+  ({ theme }) => ({
     color: (theme.vars || theme).palette.text.secondary,
     padding: '14px 16px',
   })),
@@ -251,7 +250,7 @@ const AutocompleteNoOptions = styled('div', {
   name: 'MuiAutocomplete',
   slot: 'NoOptions',
 })(
-  memoTheme(({ theme }) => ({
+  ({ theme }) => ({
     color: (theme.vars || theme).palette.text.secondary,
     padding: '14px 16px',
   })),
@@ -261,7 +260,7 @@ const AutocompleteListbox = styled('ul', {
   name: 'MuiAutocomplete',
   slot: 'Listbox',
 })(
-  memoTheme(({ theme }) => ({
+  ({ theme }) => ({
     listStyle: 'none',
     margin: 0,
     padding: '8px 0',
