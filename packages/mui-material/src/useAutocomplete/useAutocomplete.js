@@ -101,7 +101,6 @@ function useAutocomplete(props) {
     getOptionDisabled,
     getOptionKey,
     getOptionLabel: getOptionLabelProp = (option) => option.label ?? option,
-    groupBy,
     handleHomeEndKeys = !props.freeSolo,
     id: idProp,
     includeInputInList = false,
@@ -386,11 +385,8 @@ function useAutocomplete(props) {
       const elementBottom = element.offsetTop + element.offsetHeight;
       if (elementBottom > scrollBottom) {
         listboxNode.scrollTop = elementBottom - listboxNode.clientHeight;
-      } else if (
-        element.offsetTop - element.offsetHeight * (groupBy ? 1.3 : 0) <
-        listboxNode.scrollTop
-      ) {
-        listboxNode.scrollTop = element.offsetTop - element.offsetHeight * (groupBy ? 1.3 : 0);
+      } else if (element.offsetTop < listboxNode.scrollTop) {
+        listboxNode.scrollTop = element.offsetTop;
       }
     }
   });
@@ -1105,40 +1101,7 @@ function useAutocomplete(props) {
   let dirty = freeSolo && inputValue.length > 0;
   dirty = dirty || (multiple ? value.length > 0 : value !== null);
 
-  let groupedOptions = filteredOptions;
-  if (groupBy) {
-    // used to keep track of key and indexes in the result array
-    const indexBy = new Map();
-    let warn = false;
-
-    groupedOptions = filteredOptions.reduce((acc, option, index) => {
-      const group = groupBy(option);
-
-      if (acc.length > 0 && acc[acc.length - 1].group === group) {
-        acc[acc.length - 1].options.push(option);
-      } else {
-        if (process.env.NODE_ENV !== 'production') {
-          if (indexBy.get(group) && !warn) {
-            console.warn(
-              `MUI: The options provided combined with the \`groupBy\` method of ${componentName} returns duplicated headers.`,
-              'You can solve the issue by sorting the options with the output of `groupBy`.',
-            );
-            warn = true;
-          }
-          indexBy.set(group, true);
-        }
-
-        acc.push({
-          key: index,
-          index,
-          group,
-          options: [option],
-        });
-      }
-
-      return acc;
-    }, []);
-  }
+  const groupedOptions = filteredOptions;
 
   if (disabledProp && focused) {
     handleBlur();

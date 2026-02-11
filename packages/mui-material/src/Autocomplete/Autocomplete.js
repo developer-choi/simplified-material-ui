@@ -4,7 +4,6 @@ import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import useAutocomplete, { createFilterOptions } from '../useAutocomplete';
 import Popper from '../../../layout/Popper';
-import ListSubheader from '../ListSubheader';
 import Paper from '../../../surfaces/Paper';
 import IconButton from '../../../form/IconButton';
 import Chip from '../../../data-display/Chip';
@@ -56,8 +55,6 @@ const useUtilityClasses = (ownerState) => {
     loading: ['loading'],
     noOptions: ['noOptions'],
     option: ['option'],
-    groupLabel: ['groupLabel'],
-    groupUl: ['groupUl'],
   };
 
   return composeClasses(slots, getAutocompleteUtilityClass, classes);
@@ -385,27 +382,6 @@ const AutocompleteListbox = styled('ul', {
     },
   })),
 );
-
-const AutocompleteGroupLabel = styled(ListSubheader, {
-  name: 'MuiAutocomplete',
-  slot: 'GroupLabel',
-})(
-  memoTheme(({ theme }) => ({
-    backgroundColor: (theme.vars || theme).palette.background.paper,
-    top: -8,
-  })),
-);
-
-const AutocompleteGroupUl = styled('ul', {
-  name: 'MuiAutocomplete',
-  slot: 'GroupUl',
-})({
-  padding: 0,
-  [`& .${autocompleteClasses.option}`]: {
-    paddingLeft: 24,
-  },
-});
-
 export { createFilterOptions };
 
 const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
@@ -442,7 +418,6 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
     getOptionKey,
     getOptionLabel: getOptionLabelProp,
     isOptionEqualToValue,
-    groupBy,
     handleHomeEndKeys = !props.freeSolo,
     id: idProp,
     includeInputInList = false,
@@ -467,7 +442,6 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
     PopperComponent: PopperComponentProp,
     popupIcon = <ArrowDropDownIcon />,
     readOnly = false,
-    renderGroup: renderGroupProp,
     renderInput,
     renderOption: renderOptionProp,
     renderTags,
@@ -618,22 +592,6 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
     }
   }
 
-  const defaultRenderGroup = (params) => (
-    <li key={params.key}>
-      <AutocompleteGroupLabel
-        className={classes.groupLabel}
-        ownerState={ownerState}
-        component="div"
-      >
-        {params.group}
-      </AutocompleteGroupLabel>
-      <AutocompleteGroupUl className={classes.groupUl} ownerState={ownerState}>
-        {params.children}
-      </AutocompleteGroupUl>
-    </li>
-  );
-
-  const renderGroup = renderGroupProp || defaultRenderGroup;
   const defaultRenderOption = (props2, option) => {
     // Need to clearly apply key because of https://github.com/vercel/next.js/issues/55642
     const { key, ...otherProps } = props2;
@@ -750,18 +708,7 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
             ) : null}
             {groupedOptions.length > 0 ? (
               <ListboxSlot as={ListboxComponentProp} {...listboxProps}>
-                {groupedOptions.map((option, index) => {
-                  if (groupBy) {
-                    return renderGroup({
-                      key: option.key,
-                      group: option.group,
-                      children: option.options.map((option2, index2) =>
-                        renderListOption(option2, option.index + index2),
-                      ),
-                    });
-                  }
-                  return renderListOption(option, index);
-                })}
+                {groupedOptions.map((option, index) => renderListOption(option, index))}
               </ListboxSlot>
             ) : null}
           </AutocompletePaper>
