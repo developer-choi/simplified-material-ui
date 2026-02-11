@@ -19,20 +19,6 @@ import capitalize from '../utils/capitalize';
 const AutocompleteRoot = styled('div', {
   name: 'MuiAutocomplete',
   slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-    const { hasClearIcon, hasPopupIcon, inputFocused } = ownerState;
-
-    return [
-      { [`& .${autocompleteClasses.tag}`]: styles.tag },
-      { [`& .${autocompleteClasses.inputRoot}`]: styles.inputRoot },
-      { [`& .${autocompleteClasses.input}`]: styles.input },
-      { [`& .${autocompleteClasses.input}`]: inputFocused && styles.inputFocused },
-      styles.root,
-      hasPopupIcon && styles.hasPopupIcon,
-      hasClearIcon && styles.hasClearIcon,
-    ];
-  },
 })({
   [`&.${autocompleteClasses.focused} .${autocompleteClasses.clearIndicator}`]: {
     visibility: 'visible',
@@ -182,11 +168,6 @@ const AutocompleteClearIndicator = styled(IconButton, {
 const AutocompletePopupIndicator = styled(IconButton, {
   name: 'MuiAutocomplete',
   slot: 'PopupIndicator',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [styles.popupIndicator, ownerState.popupOpen && styles.popupIndicatorOpen];
-  },
 })({
   padding: 2,
   marginRight: -2,
@@ -203,15 +184,6 @@ const AutocompletePopupIndicator = styled(IconButton, {
 const AutocompletePopper = styled(Popper, {
   name: 'MuiAutocomplete',
   slot: 'Popper',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      { [`& .${autocompleteClasses.option}`]: styles.option },
-      styles.popper,
-      ownerState.disablePortal && styles.popperDisablePortal,
-    ];
-  },
 })(
   ({ theme }) => ({
     zIndex: (theme.vars || theme).zIndex.modal,
