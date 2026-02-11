@@ -18,7 +18,6 @@ import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import autocompleteClasses, { getAutocompleteUtilityClass } from './autocompleteClasses';
 import capitalize from '../utils/capitalize';
-import useSlot from '../utils/useSlot';
 
 const useUtilityClasses = (ownerState) => {
   const {
@@ -448,8 +447,6 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
     renderValue,
     selectOnFocus = !props.freeSolo,
     size = 'medium',
-    slots = {},
-    slotProps = {},
     value: valueProp,
     ...other
   } = props;
@@ -503,50 +500,6 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
 
   const classes = useUtilityClasses(ownerState);
 
-  const externalForwardedProps = {
-    slots: {
-      paper: PaperComponentProp,
-      popper: PopperComponentProp,
-      ...slots,
-    },
-    slotProps: {
-      chip: ChipPropsProp,
-      listbox: ListboxPropsProp,
-      ...componentsProps,
-      ...slotProps,
-    },
-  };
-
-  const [ListboxSlot, listboxProps] = useSlot('listbox', {
-    elementType: AutocompleteListbox,
-    externalForwardedProps,
-    ownerState,
-    className: classes.listbox,
-    additionalProps: otherListboxProps,
-    ref: listboxRef,
-  });
-
-  const [PaperSlot, paperProps] = useSlot('paper', {
-    elementType: Paper,
-    externalForwardedProps,
-    ownerState,
-    className: classes.paper,
-  });
-
-  const [PopperSlot, popperProps] = useSlot('popper', {
-    elementType: Popper,
-    externalForwardedProps,
-    ownerState,
-    className: classes.popper,
-    additionalProps: {
-      disablePortal,
-      style: { width: anchorEl ? anchorEl.clientWidth : null },
-      role: 'presentation',
-      anchorEl,
-      open: popupOpen,
-    },
-  });
-
   let startAdornment;
 
   const getCustomizedItemProps = (params) => ({
@@ -570,7 +523,6 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
               label={getOptionLabel(option)}
               size={size}
               {...customItemProps}
-              {...externalForwardedProps.slotProps.chip}
             />
           );
         });
@@ -618,9 +570,6 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
     );
   };
 
-  const clearIndicatorSlotProps = externalForwardedProps.slotProps.clearIndicator;
-  const popupIndicatorSlotProps = externalForwardedProps.slotProps.popupIndicator;
-
   return (
     <React.Fragment>
       <AutocompleteRoot
@@ -653,8 +602,7 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
                       aria-label={clearText}
                       title={clearText}
                       ownerState={ownerState}
-                      {...clearIndicatorSlotProps}
-                      className={clsx(classes.clearIndicator, clearIndicatorSlotProps?.className)}
+                      className={classes.clearIndicator}
                     >
                       {clearIcon}
                     </AutocompleteClearIndicator>
@@ -667,8 +615,7 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
                       aria-label={popupOpen ? closeText : openText}
                       title={popupOpen ? closeText : openText}
                       ownerState={ownerState}
-                      {...popupIndicatorSlotProps}
-                      className={clsx(classes.popupIndicator, popupIndicatorSlotProps?.className)}
+                      className={classes.popupIndicator}
                     >
                       {popupIcon}
                     </AutocompletePopupIndicator>
@@ -686,8 +633,16 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
         })}
       </AutocompleteRoot>
       {anchorEl ? (
-        <AutocompletePopper as={PopperSlot} {...popperProps}>
-          <AutocompletePaper as={PaperSlot} {...paperProps}>
+        <AutocompletePopper
+          disablePortal={disablePortal}
+          style={{ width: anchorEl ? anchorEl.clientWidth : null }}
+          role="presentation"
+          anchorEl={anchorEl}
+          open={popupOpen}
+          className={classes.popper}
+          ownerState={ownerState}
+        >
+          <AutocompletePaper className={classes.paper} ownerState={ownerState}>
             {loading && groupedOptions.length === 0 ? (
               <AutocompleteLoading className={classes.loading} ownerState={ownerState}>
                 {loadingText}
@@ -707,9 +662,14 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
               </AutocompleteNoOptions>
             ) : null}
             {groupedOptions.length > 0 ? (
-              <ListboxSlot as={ListboxComponentProp} {...listboxProps}>
+              <AutocompleteListbox
+                className={classes.listbox}
+                ownerState={ownerState}
+                ref={listboxRef}
+                {...otherListboxProps}
+              >
                 {groupedOptions.map((option, index) => renderListOption(option, index))}
-              </ListboxSlot>
+              </AutocompleteListbox>
             ) : null}
           </AutocompletePaper>
         </AutocompletePopper>
