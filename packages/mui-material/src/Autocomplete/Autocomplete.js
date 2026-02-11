@@ -15,7 +15,6 @@ import ClearIcon from '../internal/svg-icons/Close';
 import ArrowDropDownIcon from '../internal/svg-icons/ArrowDropDown';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import autocompleteClasses, { getAutocompleteUtilityClass } from './autocompleteClasses';
 import capitalize from '../utils/capitalize';
 
@@ -365,9 +364,7 @@ const AutocompleteListbox = styled('ul', {
 );
 export { createFilterOptions };
 
-const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiAutocomplete' });
-
+const Autocomplete = React.forwardRef(function Autocomplete(props, ref) {
   /* eslint-disable @typescript-eslint/no-unused-vars */
   const {
     ChipProps: ChipPropsProp,
