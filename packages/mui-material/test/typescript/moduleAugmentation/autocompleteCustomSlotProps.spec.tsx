@@ -1,11 +1,11 @@
 import * as React from 'react';
-import Autocomplete from '@mui/material/Autocomplete';
+import Autocomplete from '../../../../form/Autocomplete';
 import Button from '../../../../form/Button';
 import Paper, { PaperProps } from '../../../../surfaces/Paper';
 import Popper, { PopperProps } from '../../../../layout/Popper';
 import TextField from '@mui/material/TextField';
 
-declare module '@mui/material/Autocomplete' {
+declare module '../../../../form/Autocomplete' {
   interface AutocompletePaperSlotPropsOverrides {
     value: Option[];
   }

@@ -8,7 +8,7 @@ import { AccordionSummaryClassKey } from '../../../surfaces/AccordionSummary';
 import { AlertClassKey } from '../Alert';
 import { AlertTitleClassKey } from '../AlertTitle';
 import { AppBarClassKey } from '../../../surfaces/AppBar';
-import { AutocompleteClassKey } from '../Autocomplete';
+import { AutocompleteClassKey } from '../../../form/Autocomplete';
 import { AvatarClassKey } from '../../../data-display/Avatar';
 import { AvatarGroupClassKey } from '../../../data-display/AvatarGroup';
 import { BackdropClassKey } from '../Backdrop';

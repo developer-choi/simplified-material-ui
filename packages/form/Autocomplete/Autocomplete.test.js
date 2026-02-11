@@ -12,16 +12,16 @@ import { spy } from 'sinon';
 import Box from '@mui/system/Box';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
-import Chip, { chipClasses } from '../../../data-display/Chip';
+import Chip, { chipClasses } from '../../data-display/Chip';
 import Autocomplete, {
   autocompleteClasses as classes,
   createFilterOptions,
-} from '@mui/material/Autocomplete';
-import { paperClasses } from '../../../surfaces/Paper';
-import { iconButtonClasses } from '../../../form/IconButton';
-import InputAdornment from '../../../form/InputAdornment';
-import Tooltip from '../../../data-display/Tooltip';
-import describeConformance from '../../test/describeConformance';
+} from './index';
+import { paperClasses } from '../../surfaces/Paper';
+import { iconButtonClasses } from '../IconButton';
+import InputAdornment from '../InputAdornment';
+import Tooltip from '../../data-display/Tooltip';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 function checkHighlightIs(listbox, expected) {
   const focused = listbox.querySelector(`.${classes.focused}`);

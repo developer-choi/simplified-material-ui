@@ -28,8 +28,8 @@ export * from './AlertTitle';
 export { default as AppBar } from '../../surfaces/AppBar';
 export * from '../../surfaces/AppBar';
 
-export { default as Autocomplete } from './Autocomplete';
-export * from './Autocomplete';
+export { default as Autocomplete } from '../../form/Autocomplete';
+export * from '../../form/Autocomplete';
 
 export { default as Avatar } from '../../data-display/Avatar';
 export * from '../../data-display/Avatar';

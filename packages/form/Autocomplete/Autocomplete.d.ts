@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { SxProps } from '@mui/system';
 import { OverridableStringUnion } from '@mui/types';
-import { Theme } from '../styles';
-import { InternalStandardProps as StandardProps } from '../internal';
-import { IconButtonProps } from '../../../form/IconButton';
-import { ChipProps, ChipTypeMap } from '../../../data-display/Chip';
-import { PaperProps } from '../../../surfaces/Paper';
-import { PopperProps } from '../../../layout/Popper';
+import { Theme } from '@mui/material/styles';
+import { InternalStandardProps as StandardProps } from '@mui/material/internal';
+import { IconButtonProps } from '../IconButton';
+import { ChipProps, ChipTypeMap } from '../../data-display/Chip';
+import { PaperProps } from '../../surfaces/Paper';
+import { PopperProps } from '../../layout/Popper';
 import useAutocomplete, {
   AutocompleteChangeDetails,
   AutocompleteChangeReason,
@@ -16,9 +16,9 @@ import useAutocomplete, {
   createFilterOptions,
   UseAutocompleteProps,
   AutocompleteFreeSoloValueMapping,
-} from '../useAutocomplete';
+} from '@mui/material/useAutocomplete';
 import { AutocompleteClasses } from './autocompleteClasses';
-import { CreateSlotsAndSlotProps, SlotProps } from '../utils/types';
+import { CreateSlotsAndSlotProps, SlotProps } from '@mui/material/utils/types';
 
 export interface AutocompletePaperSlotPropsOverrides {}
 export interface AutocompletePopperSlotPropsOverrides {}

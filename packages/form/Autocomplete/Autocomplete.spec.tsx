@@ -4,9 +4,9 @@ import Autocomplete, {
   AutocompleteOwnerState,
   AutocompleteProps,
   AutocompleteRenderGetTagProps,
-} from '@mui/material/Autocomplete';
+} from './index';
 import TextField from '@mui/material/TextField';
-import { ChipTypeMap } from '../../../data-display/Chip';
+import { ChipTypeMap } from '../../data-display/Chip';
 
 interface MyAutocompleteProps<
   T,
