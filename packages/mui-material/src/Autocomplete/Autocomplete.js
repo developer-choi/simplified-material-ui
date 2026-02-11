@@ -1,7 +1,6 @@
 'use client';
 import * as React from 'react';
 import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import useAutocomplete, { createFilterOptions } from '../useAutocomplete';
 import Popper from '../../../layout/Popper';
 import Paper from '../../../surfaces/Paper';
@@ -15,45 +14,8 @@ import ClearIcon from '../internal/svg-icons/Close';
 import ArrowDropDownIcon from '../internal/svg-icons/ArrowDropDown';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import autocompleteClasses, { getAutocompleteUtilityClass } from './autocompleteClasses';
+import autocompleteClasses from './autocompleteClasses';
 import capitalize from '../utils/capitalize';
-
-const useUtilityClasses = (ownerState) => {
-  const {
-    classes,
-    disablePortal,
-    expanded,
-    focused,
-    hasClearIcon,
-    hasPopupIcon,
-    inputFocused,
-    popupOpen,
-  } = ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      expanded && 'expanded',
-      focused && 'focused',
-      hasClearIcon && 'hasClearIcon',
-      hasPopupIcon && 'hasPopupIcon',
-    ],
-    inputRoot: ['inputRoot'],
-    input: ['input', inputFocused && 'inputFocused'],
-    tag: ['tag'],
-    endAdornment: ['endAdornment'],
-    clearIndicator: ['clearIndicator'],
-    popupIndicator: ['popupIndicator', popupOpen && 'popupIndicatorOpen'],
-    popper: ['popper', disablePortal && 'popperDisablePortal'],
-    paper: ['paper'],
-    listbox: ['listbox'],
-    loading: ['loading'],
-    noOptions: ['noOptions'],
-    option: ['option'],
-  };
-
-  return composeClasses(slots, getAutocompleteUtilityClass, classes);
-};
 
 const AutocompleteRoot = styled('div', {
   name: 'MuiAutocomplete',
@@ -452,7 +414,7 @@ const Autocomplete = React.forwardRef(function Autocomplete(props, ref) {
     popupOpen,
   };
 
-  const classes = useUtilityClasses(ownerState);
+  const classes = autocompleteClasses;
 
   let startAdornment;
 
