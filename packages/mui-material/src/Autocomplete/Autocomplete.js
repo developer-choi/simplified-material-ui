@@ -383,11 +383,7 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
     closeText = 'Close',
     componentsProps,
     defaultValue = props.multiple ? [] : null,
-    disableClearable = false,
-    disableCloseOnSelect = false,
     disabled = false,
-    disabledItemsFocusable = false,
-    disableListWrap = false,
     disablePortal = false,
     filterOptions,
     filterSelectedOptions = false,
@@ -450,7 +446,7 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
     groupedOptions,
   } = useAutocomplete({ ...props, componentName: 'Autocomplete' });
 
-  const hasClearIcon = !disableClearable && !disabled && dirty && !readOnly;
+  const hasClearIcon = !disabled && dirty && !readOnly;
   const hasPopupIcon = (!freeSolo || forcePopupIcon === true) && forcePopupIcon !== false;
 
   const { onMouseDown: handleInputMouseDown } = getInputProps();

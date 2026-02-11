@@ -90,11 +90,7 @@ function useAutocomplete(props) {
     clearOnEscape = false,
     componentName = 'useAutocomplete',
     defaultValue = props.multiple ? MULTIPLE_DEFAULT_VALUE : null,
-    disableClearable = false,
-    disableCloseOnSelect = false,
     disabled: disabledProp,
-    disabledItemsFocusable = false,
-    disableListWrap = false,
     filterOptions = defaultFilterOptions,
     filterSelectedOptions = false,
     freeSolo = false,
@@ -292,7 +288,7 @@ function useAutocomplete(props) {
       const option = listboxRef.current.querySelector(`[data-option-index="${nextFocus}"]`);
 
       // Same logic as MenuList.js
-      const nextFocusDisabled = disabledItemsFocusable
+      const nextFocusDisabled = false
         ? false
         : !option || option.disabled || option.getAttribute('aria-disabled') === 'true';
 
@@ -418,7 +414,7 @@ function useAutocomplete(props) {
           return -1;
         }
 
-        if ((disableListWrap && highlightedIndexRef.current !== -1) || Math.abs(diff) > 1) {
+        if (Math.abs(diff) > 1) {
           return 0;
         }
 
@@ -430,7 +426,7 @@ function useAutocomplete(props) {
           return -1;
         }
 
-        if (disableListWrap || Math.abs(diff) > 1) {
+        if (Math.abs(diff) > 1) {
           return maxIndex;
         }
 
@@ -691,7 +687,7 @@ function useAutocomplete(props) {
     resetInputValue(event, newValue, reason);
 
     handleValue(event, newValue, reason, { option });
-    if (!disableCloseOnSelect && (!event || (!event.ctrlKey && !event.metaKey))) {
+    if (!event || (!event.ctrlKey && !event.metaKey)) {
       handleClose(event, reason);
     }
 
@@ -1005,7 +1001,7 @@ function useAutocomplete(props) {
     }
 
     if (newValue === '') {
-      if (!disableClearable && !multiple) {
+      if (!multiple) {
         handleValue(event, null, 'clear');
       }
     } else {
