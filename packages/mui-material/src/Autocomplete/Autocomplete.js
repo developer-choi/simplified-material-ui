@@ -370,15 +370,10 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
   const {
-    autoComplete = false,
-    autoHighlight = false,
-    autoSelect = false,
-    blurOnSelect = false,
     ChipProps: ChipPropsProp,
     className,
     clearIcon = <ClearIcon fontSize="small" />,
     clearOnBlur = !props.freeSolo,
-    clearOnEscape = false,
     clearText = 'Clear',
     closeText = 'Close',
     componentsProps,
@@ -386,7 +381,6 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
     disabled = false,
     disablePortal = false,
     filterOptions,
-    filterSelectedOptions = false,
     forcePopupIcon = 'auto',
     freeSolo = false,
     getLimitTagsText = (more) => `+${more}`,
@@ -394,9 +388,7 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
     getOptionKey,
     getOptionLabel: getOptionLabelProp,
     isOptionEqualToValue,
-    handleHomeEndKeys = !props.freeSolo,
     id: idProp,
-    includeInputInList = false,
     inputValue: inputValueProp,
     limitTags = -1,
     loading = false,
@@ -406,7 +398,6 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
     onChange,
     onInputChange,
     open,
-    openOnFocus = false,
     openText = 'Open',
     options,
     popupIcon = <ArrowDropDownIcon />,
@@ -415,7 +406,6 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
     renderOption: renderOptionProp,
     renderTags,
     renderValue,
-    selectOnFocus = !props.freeSolo,
     value: valueProp,
     ...other
   } = props;

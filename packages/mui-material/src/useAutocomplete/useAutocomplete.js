@@ -82,35 +82,25 @@ function useAutocomplete(props) {
     unstable_isActiveElementInListbox = defaultIsActiveElementInListbox,
     // eslint-disable-next-line @typescript-eslint/naming-convention
     unstable_classNamePrefix = 'Mui',
-    autoComplete = false,
-    autoHighlight = false,
-    autoSelect = false,
-    blurOnSelect = false,
     clearOnBlur = !props.freeSolo,
-    clearOnEscape = false,
     componentName = 'useAutocomplete',
     defaultValue = props.multiple ? MULTIPLE_DEFAULT_VALUE : null,
     disabled: disabledProp,
     filterOptions = defaultFilterOptions,
-    filterSelectedOptions = false,
     freeSolo = false,
     getOptionDisabled,
     getOptionKey,
     getOptionLabel: getOptionLabelProp = (option) => option.label ?? option,
-    handleHomeEndKeys = !props.freeSolo,
     id: idProp,
-    includeInputInList = false,
     inputValue: inputValueProp,
     isOptionEqualToValue = (option, value) => option === value,
     multiple = false,
     onChange,
     onInputChange,
     open: openProp,
-    openOnFocus = false,
     options,
     readOnly = false,
     renderValue,
-    selectOnFocus = !props.freeSolo,
     value: valueProp,
   } = props;
 
@@ -142,7 +132,7 @@ function useAutocomplete(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const [focusedItem, setFocusedItem] = React.useState(-1);
-  const defaultHighlighted = autoHighlight ? 0 : -1;
+  const defaultHighlighted = -1;
   const highlightedIndexRef = React.useRef(defaultHighlighted);
 
   // Calculate the initial inputValue on mount only.
@@ -213,17 +203,7 @@ function useAutocomplete(props) {
 
   const filteredOptions = popupOpen
     ? filterOptions(
-        options.filter((option) => {
-          if (
-            filterSelectedOptions &&
-            (multiple ? value : [value]).some(
-              (value2) => value2 !== null && isOptionEqualToValue(option, value2),
-            )
-          ) {
-            return false;
-          }
-          return true;
-        }),
+        options,
         // we use the empty string to manipulate `filterOptions` to not filter any options
         // i.e. the filter predicate always returns true
         {
@@ -403,10 +383,6 @@ function useAutocomplete(props) {
       const newIndex = highlightedIndexRef.current + diff;
 
       if (newIndex < 0) {
-        if (newIndex === -1 && includeInputInList) {
-          return -1;
-        }
-
         if (Math.abs(diff) > 1) {
           return 0;
         }
@@ -415,10 +391,6 @@ function useAutocomplete(props) {
       }
 
       if (newIndex > maxIndex) {
-        if (newIndex === maxIndex + 1 && includeInputInList) {
-          return -1;
-        }
-
         if (Math.abs(diff) > 1) {
           return maxIndex;
         }
@@ -431,23 +403,6 @@ function useAutocomplete(props) {
 
     const nextIndex = validOptionIndex(getNextIndex(), direction);
     setHighlightedIndex({ index: nextIndex, reason, event });
-
-    // Sync the content of the input with the highlighted option.
-    if (autoComplete && diff !== 'reset') {
-      if (nextIndex === -1) {
-        inputRef.current.value = inputValue;
-      } else {
-        const option = getOptionLabel(filteredOptions[nextIndex]);
-        inputRef.current.value = option;
-
-        // The portion of the selected suggestion that has not been typed by the user,
-        // a completion string, appears inline after the input cursor in the textbox.
-        const index = option.toLowerCase().indexOf(inputValue.toLowerCase());
-        if (index === 0 && inputValue.length > 0) {
-          inputRef.current.setSelectionRange(inputValue.length, option.length);
-        }
-      }
-    }
   });
 
   const filteredOptionsChanged = !areArraysSame({
@@ -676,14 +631,6 @@ function useAutocomplete(props) {
     if (!event || (!event.ctrlKey && !event.metaKey)) {
       handleClose(event, reason);
     }
-
-    if (
-      blurOnSelect === true ||
-      (blurOnSelect === 'touch' && isTouch.current) ||
-      (blurOnSelect === 'mouse' && !isTouch.current)
-    ) {
-      inputRef.current.blur();
-    }
   };
 
   function validItemIndex(index, direction) {
@@ -782,14 +729,14 @@ function useAutocomplete(props) {
     if (event.which !== 229) {
       switch (event.key) {
         case 'Home':
-          if (popupOpen && handleHomeEndKeys) {
+          if (popupOpen) {
             // Prevent scroll of the page
             event.preventDefault();
             changeHighlightedIndex({ diff: 'start', direction: 'next', reason: 'keyboard', event });
           }
           break;
         case 'End':
-          if (popupOpen && handleHomeEndKeys) {
+          if (popupOpen) {
             // Prevent scroll of the page
             event.preventDefault();
             changeHighlightedIndex({
@@ -858,14 +805,6 @@ function useAutocomplete(props) {
             }
 
             selectNewValue(event, option, 'selectOption');
-
-            // Move the selection to the end.
-            if (autoComplete) {
-              inputRef.current.setSelectionRange(
-                inputRef.current.value.length,
-                inputRef.current.value.length,
-              );
-            }
           } else if (freeSolo && inputValue !== '' && inputValueIsSelectedValue === false) {
             if (multiple) {
               // Allow people to add new values before they submit the form.
@@ -881,15 +820,6 @@ function useAutocomplete(props) {
             // Avoid the Modal to handle the event.
             event.stopPropagation();
             handleClose(event, 'escape');
-          } else if (
-            clearOnEscape &&
-            (inputValue !== '' || (multiple && value.length > 0) || renderValue)
-          ) {
-            // Avoid Opera to exit fullscreen mode.
-            event.preventDefault();
-            // Avoid the Modal to handle the event.
-            event.stopPropagation();
-            handleClear(event);
           }
           break;
         case 'Backspace':
@@ -947,9 +877,6 @@ function useAutocomplete(props) {
       focusItem(-1);
     }
 
-    if (openOnFocus && !ignoreFocus.current) {
-      handleOpen(event);
-    }
   };
 
   const handleBlur = (event) => {
@@ -963,11 +890,7 @@ function useAutocomplete(props) {
     firstFocus.current = true;
     ignoreFocus.current = false;
 
-    if (autoSelect && highlightedIndexRef.current !== -1 && popupOpen) {
-      selectNewValue(event, filteredOptions[highlightedIndexRef.current], 'blur');
-    } else if (autoSelect && freeSolo && inputValue !== '') {
-      selectNewValue(event, inputValue, 'blur', 'freeSolo');
-    } else if (clearOnBlur) {
+    if (clearOnBlur) {
       resetInputValue(event, value, 'blur');
     }
 
@@ -1063,14 +986,6 @@ function useAutocomplete(props) {
     }
     inputRef.current.focus();
 
-    if (
-      selectOnFocus &&
-      firstFocus.current &&
-      inputRef.current.selectionEnd - inputRef.current.selectionStart === 0
-    ) {
-      inputRef.current.select();
-    }
-
     firstFocus.current = false;
   };
 
@@ -1110,7 +1025,7 @@ function useAutocomplete(props) {
       // if open then this is handled imperatively so don't let react override
       // only have an opinion about this when closed
       'aria-activedescendant': popupOpen ? '' : null,
-      'aria-autocomplete': autoComplete ? 'both' : 'list',
+      'aria-autocomplete': 'list',
       'aria-controls': listboxAvailable ? `${id}-listbox` : undefined,
       'aria-expanded': listboxAvailable,
       // Disable browser's suggestion that might overlap with the popup.
