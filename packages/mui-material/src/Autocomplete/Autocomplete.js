@@ -25,12 +25,10 @@ const useUtilityClasses = (ownerState) => {
     disablePortal,
     expanded,
     focused,
-    fullWidth,
     hasClearIcon,
     hasPopupIcon,
     inputFocused,
     popupOpen,
-    size,
   } = ownerState;
 
   const slots = {
@@ -38,13 +36,12 @@ const useUtilityClasses = (ownerState) => {
       'root',
       expanded && 'expanded',
       focused && 'focused',
-      fullWidth && 'fullWidth',
       hasClearIcon && 'hasClearIcon',
       hasPopupIcon && 'hasPopupIcon',
     ],
     inputRoot: ['inputRoot'],
     input: ['input', inputFocused && 'inputFocused'],
-    tag: ['tag', `tagSize${capitalize(size)}`],
+    tag: ['tag'],
     endAdornment: ['endAdornment'],
     clearIndicator: ['clearIndicator'],
     popupIndicator: ['popupIndicator', popupOpen && 'popupIndicatorOpen'],
@@ -64,16 +61,14 @@ const AutocompleteRoot = styled('div', {
   slot: 'Root',
   overridesResolver: (props, styles) => {
     const { ownerState } = props;
-    const { fullWidth, hasClearIcon, hasPopupIcon, inputFocused, size } = ownerState;
+    const { hasClearIcon, hasPopupIcon, inputFocused } = ownerState;
 
     return [
       { [`& .${autocompleteClasses.tag}`]: styles.tag },
-      { [`& .${autocompleteClasses.tag}`]: styles[`tagSize${capitalize(size)}`] },
       { [`& .${autocompleteClasses.inputRoot}`]: styles.inputRoot },
       { [`& .${autocompleteClasses.input}`]: styles.input },
       { [`& .${autocompleteClasses.input}`]: inputFocused && styles.inputFocused },
       styles.root,
-      fullWidth && styles.fullWidth,
       hasPopupIcon && styles.hasPopupIcon,
       hasClearIcon && styles.hasClearIcon,
     ];
@@ -185,19 +180,6 @@ const AutocompleteRoot = styled('div', {
     opacity: 0,
   },
   variants: [
-    {
-      props: { fullWidth: true },
-      style: { width: '100%' },
-    },
-    {
-      props: { size: 'small' },
-      style: {
-        [`& .${autocompleteClasses.tag}`]: {
-          margin: 2,
-          maxWidth: 'calc(100% - 4px)',
-        },
-      },
-    },
     {
       props: { inputFocused: true },
       style: {
@@ -411,7 +393,6 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
     filterSelectedOptions = false,
     forcePopupIcon = 'auto',
     freeSolo = false,
-    fullWidth = false,
     getLimitTagsText = (more) => `+${more}`,
     getOptionDisabled,
     getOptionKey,
@@ -422,8 +403,6 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
     includeInputInList = false,
     inputValue: inputValueProp,
     limitTags = -1,
-    ListboxComponent: ListboxComponentProp,
-    ListboxProps: ListboxPropsProp,
     loading = false,
     loadingText = 'Loading…',
     multiple = false,
@@ -437,8 +416,6 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
     openOnFocus = false,
     openText = 'Open',
     options,
-    PaperComponent: PaperComponentProp,
-    PopperComponent: PopperComponentProp,
     popupIcon = <ArrowDropDownIcon />,
     readOnly = false,
     renderInput,
@@ -446,7 +423,6 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
     renderTags,
     renderValue,
     selectOnFocus = !props.freeSolo,
-    size = 'medium',
     value: valueProp,
     ...other
   } = props;
@@ -489,13 +465,11 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
     disablePortal,
     expanded,
     focused,
-    fullWidth,
     getOptionLabel,
     hasClearIcon,
     hasPopupIcon,
     inputFocused: focusedItem === -1,
     popupOpen,
-    size,
   };
 
   const classes = useUtilityClasses(ownerState);
@@ -521,7 +495,6 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
             <Chip
               key={key}
               label={getOptionLabel(option)}
-              size={size}
               {...customItemProps}
             />
           );
@@ -581,8 +554,6 @@ const Autocomplete = React.forwardRef(function Autocomplete(inProps, ref) {
         {renderInput({
           id,
           disabled,
-          fullWidth: true,
-          size: size === 'small' ? 'small' : undefined,
           InputLabelProps: getInputLabelProps(),
           InputProps: {
             ref: setAnchorEl,
