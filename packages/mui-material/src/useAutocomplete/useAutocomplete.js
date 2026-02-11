@@ -104,10 +104,7 @@ function useAutocomplete(props) {
     isOptionEqualToValue = (option, value) => option === value,
     multiple = false,
     onChange,
-    onClose,
-    onHighlightChange,
     onInputChange,
-    onOpen,
     open: openProp,
     openOnFocus = false,
     options,
@@ -321,10 +318,6 @@ function useAutocomplete(props) {
       inputRef.current.removeAttribute('aria-activedescendant');
     } else {
       inputRef.current.setAttribute('aria-activedescendant', `${id}-option-${index}`);
-    }
-
-    if (onHighlightChange && ['mouse', 'keyboard', 'touch'].includes(reason)) {
-      onHighlightChange(event, index === -1 ? null : filteredOptions[index], reason);
     }
 
     if (!listboxRef.current) {
@@ -619,9 +612,6 @@ function useAutocomplete(props) {
     setOpenState(true);
     setInputPristine(true);
 
-    if (onOpen) {
-      onOpen(event);
-    }
   };
 
   const handleClose = (event, reason) => {
@@ -630,10 +620,6 @@ function useAutocomplete(props) {
     }
 
     setOpenState(false);
-
-    if (onClose) {
-      onClose(event, reason);
-    }
   };
 
   const handleValue = (event, newValue, reason, details) => {
