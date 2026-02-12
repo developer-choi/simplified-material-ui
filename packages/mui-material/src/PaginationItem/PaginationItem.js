@@ -24,7 +24,6 @@ const overridesResolver = (props, styles) => {
     styles[`size${capitalize(ownerState.size)}`],
     ownerState.variant === 'text' && styles[`text${capitalize(ownerState.color)}`],
     ownerState.variant === 'outlined' && styles[`outlined${capitalize(ownerState.color)}`],
-    ownerState.shape === 'rounded' && styles.rounded,
     ownerState.type === 'page' && styles.page,
     (ownerState.type === 'start-ellipsis' || ownerState.type === 'end-ellipsis') && styles.ellipsis,
     (ownerState.type === 'previous' || ownerState.type === 'next') && styles.previousNext,
@@ -33,14 +32,13 @@ const overridesResolver = (props, styles) => {
 };
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, color, disabled, selected, size, shape, type, variant } = ownerState;
+  const { classes, color, disabled, selected, size, type, variant } = ownerState;
 
   const slots = {
     root: [
       'root',
       `size${capitalize(size)}`,
       variant,
-      shape,
       color !== 'standard' && `color${capitalize(color)}`,
       color !== 'standard' && `${variant}${capitalize(color)}`,
       disabled && 'disabled',
@@ -138,12 +136,6 @@ const PaginationItemPage = styled(ButtonBase, {
       },
     },
     variants: [
-      {
-        props: { shape: 'rounded' },
-        style: {
-          borderRadius: (theme.vars || theme).shape.borderRadius,
-        },
-      },
       {
         props: { variant: 'outlined' },
         style: {
@@ -248,13 +240,13 @@ const PaginationItem = React.forwardRef(function PaginationItem(inProps, ref) {
     disabled = false,
     page,
     selected = false,
-    shape = 'circular',
     type = 'page',
     variant = 'text',
     ...other
   } = props;
 
   const size = 'medium';
+  const shape = 'circular';
 
   const ownerState = {
     ...props,
