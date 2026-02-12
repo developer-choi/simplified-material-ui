@@ -2,30 +2,15 @@
 import * as React from 'react';
 import paginationItemClasses from './paginationItemClasses';
 import ButtonBase from '../../../form/ButtonBase';
-import capitalize from '../utils/capitalize';
 import FirstPageIcon from '../internal/svg-icons/FirstPage';
 import LastPageIcon from '../internal/svg-icons/LastPage';
 import NavigateBeforeIcon from '../internal/svg-icons/NavigateBefore';
 import NavigateNextIcon from '../internal/svg-icons/NavigateNext';
 import { styled } from '../zero-styled';
 
-const overridesResolver = (props, styles) => {
-  const { ownerState } = props;
-
-  return [
-    styles.root,
-    styles[`size${capitalize(ownerState.size)}`],
-    ownerState.type === 'page' && styles.page,
-    (ownerState.type === 'start-ellipsis' || ownerState.type === 'end-ellipsis') && styles.ellipsis,
-    (ownerState.type === 'previous' || ownerState.type === 'next') && styles.previousNext,
-    (ownerState.type === 'first' || ownerState.type === 'last') && styles.firstLast,
-  ];
-};
-
 const PaginationItemEllipsis = styled('div', {
   name: 'MuiPaginationItem',
   slot: 'Root',
-  overridesResolver,
 })({
   fontSize: '0.875rem',
   fontWeight: 400,
@@ -46,7 +31,6 @@ const PaginationItemEllipsis = styled('div', {
 const PaginationItemPage = styled(ButtonBase, {
   name: 'MuiPaginationItem',
   slot: 'Root',
-  overridesResolver,
 })({
   fontSize: '0.875rem',
   fontWeight: 400,
