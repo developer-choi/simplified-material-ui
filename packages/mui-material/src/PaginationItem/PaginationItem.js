@@ -2,7 +2,6 @@
 import * as React from 'react';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
-import { useRtl } from '@mui/system/RtlProvider';
 import paginationItemClasses, { getPaginationItemUtilityClass } from './paginationItemClasses';
 import ButtonBase from '../../../form/ButtonBase';
 import capitalize from '../utils/capitalize';
@@ -170,24 +169,14 @@ const PaginationItem = React.forwardRef(function PaginationItem(inProps, ref) {
     variant,
   };
 
-  const isRtl = useRtl();
   const classes = useUtilityClasses(ownerState);
-
-  const rtlAwareType = isRtl
-    ? {
-        previous: 'next',
-        next: 'previous',
-        first: 'last',
-        last: 'first',
-      }[type]
-    : type;
 
   const IconComponent = {
     previous: NavigateBeforeIcon,
     next: NavigateNextIcon,
     first: FirstPageIcon,
     last: LastPageIcon,
-  }[rtlAwareType];
+  }[type];
 
   return type === 'start-ellipsis' || type === 'end-ellipsis' ? (
     <PaginationItemEllipsis
