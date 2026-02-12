@@ -92,6 +92,7 @@ import styles from './Modal.module.scss';
 
 simplified 코드가 사용하는 다른 컴포넌트들도 함께 변환해야 합니다:
 
+단순화된 코드 간의 의존 관계를 파악하고, 필요한 것들을 함께 변환하세요.
 - Modal → FocusTrap, Portal, Backdrop 필요
 - Dialog → Modal 필요
 - Drawer → Modal 필요
