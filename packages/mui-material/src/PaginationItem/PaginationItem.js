@@ -79,26 +79,6 @@ const PaginationItemEllipsis = styled('div', {
     [`&.${paginationItemClasses.disabled}`]: {
       opacity: (theme.vars || theme).palette.action.disabledOpacity,
     },
-    variants: [
-      {
-        props: { size: 'small' },
-        style: {
-          minWidth: 26,
-          borderRadius: 26 / 2,
-          margin: '0 1px',
-          padding: '0 4px',
-        },
-      },
-      {
-        props: { size: 'large' },
-        style: {
-          minWidth: 40,
-          borderRadius: 40 / 2,
-          padding: '0 10px',
-          fontSize: theme.typography.pxToRem(15),
-        },
-      },
-    ],
   })),
 );
 
@@ -158,26 +138,6 @@ const PaginationItemPage = styled(ButtonBase, {
       },
     },
     variants: [
-      {
-        props: { size: 'small' },
-        style: {
-          minWidth: 26,
-          height: 26,
-          borderRadius: 26 / 2,
-          margin: '0 1px',
-          padding: '0 4px',
-        },
-      },
-      {
-        props: { size: 'large' },
-        style: {
-          minWidth: 40,
-          height: 40,
-          borderRadius: 40 / 2,
-          padding: '0 10px',
-          fontSize: theme.typography.pxToRem(15),
-        },
-      },
       {
         props: { shape: 'rounded' },
         style: {
@@ -276,20 +236,6 @@ const PaginationItemPageIcon = styled('div', {
   memoTheme(({ theme }) => ({
     fontSize: theme.typography.pxToRem(20),
     margin: '0 -8px',
-    variants: [
-      {
-        props: { size: 'small' },
-        style: {
-          fontSize: theme.typography.pxToRem(18),
-        },
-      },
-      {
-        props: { size: 'large' },
-        style: {
-          fontSize: theme.typography.pxToRem(22),
-        },
-      },
-    ],
   })),
 );
 
@@ -303,11 +249,12 @@ const PaginationItem = React.forwardRef(function PaginationItem(inProps, ref) {
     page,
     selected = false,
     shape = 'circular',
-    size = 'medium',
     type = 'page',
     variant = 'text',
     ...other
   } = props;
+
+  const size = 'medium';
 
   const ownerState = {
     ...props,
