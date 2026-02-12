@@ -11,7 +11,6 @@ import FirstPageIcon from '../internal/svg-icons/FirstPage';
 import LastPageIcon from '../internal/svg-icons/LastPage';
 import NavigateBeforeIcon from '../internal/svg-icons/NavigateBefore';
 import NavigateNextIcon from '../internal/svg-icons/NavigateNext';
-import useSlot from '../utils/useSlot';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
@@ -300,14 +299,11 @@ const PaginationItem = React.forwardRef(function PaginationItem(inProps, ref) {
     className,
     color = 'standard',
     component,
-    components = {},
     disabled = false,
     page,
     selected = false,
     shape = 'circular',
     size = 'medium',
-    slots = {},
-    slotProps = {},
     type = 'page',
     variant = 'text',
     ...other
@@ -327,40 +323,6 @@ const PaginationItem = React.forwardRef(function PaginationItem(inProps, ref) {
   const isRtl = useRtl();
   const classes = useUtilityClasses(ownerState);
 
-  const externalForwardedProps = {
-    slots: {
-      previous: slots.previous ?? components.previous,
-      next: slots.next ?? components.next,
-      first: slots.first ?? components.first,
-      last: slots.last ?? components.last,
-    },
-    slotProps,
-  };
-
-  const [PreviousSlot, previousSlotProps] = useSlot('previous', {
-    elementType: NavigateBeforeIcon,
-    externalForwardedProps,
-    ownerState,
-  });
-
-  const [NextSlot, nextSlotProps] = useSlot('next', {
-    elementType: NavigateNextIcon,
-    externalForwardedProps,
-    ownerState,
-  });
-
-  const [FirstSlot, firstSlotProps] = useSlot('first', {
-    elementType: FirstPageIcon,
-    externalForwardedProps,
-    ownerState,
-  });
-
-  const [LastSlot, lastSlotProps] = useSlot('last', {
-    elementType: LastPageIcon,
-    externalForwardedProps,
-    ownerState,
-  });
-
   const rtlAwareType = isRtl
     ? {
         previous: 'next',
@@ -370,18 +332,11 @@ const PaginationItem = React.forwardRef(function PaginationItem(inProps, ref) {
       }[type]
     : type;
 
-  const IconSlot = {
-    previous: PreviousSlot,
-    next: NextSlot,
-    first: FirstSlot,
-    last: LastSlot,
-  }[rtlAwareType];
-
-  const iconSlotProps = {
-    previous: previousSlotProps,
-    next: nextSlotProps,
-    first: firstSlotProps,
-    last: lastSlotProps,
+  const IconComponent = {
+    previous: NavigateBeforeIcon,
+    next: NavigateNextIcon,
+    first: FirstPageIcon,
+    last: LastPageIcon,
   }[rtlAwareType];
 
   return type === 'start-ellipsis' || type === 'end-ellipsis' ? (
@@ -402,8 +357,8 @@ const PaginationItem = React.forwardRef(function PaginationItem(inProps, ref) {
       {...other}
     >
       {type === 'page' && page}
-      {IconSlot ? (
-        <PaginationItemPageIcon {...iconSlotProps} className={classes.icon} as={IconSlot} />
+      {IconComponent ? (
+        <PaginationItemPageIcon className={classes.icon} as={IconComponent} />
       ) : null}
     </PaginationItemPage>
   );
