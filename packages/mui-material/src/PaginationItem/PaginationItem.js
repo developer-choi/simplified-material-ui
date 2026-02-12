@@ -11,7 +11,6 @@ import NavigateBeforeIcon from '../internal/svg-icons/NavigateBefore';
 import NavigateNextIcon from '../internal/svg-icons/NavigateNext';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 
 const overridesResolver = (props, styles) => {
   const { ownerState } = props;
@@ -142,7 +141,6 @@ const PaginationItemPageIcon = styled('div', {
 );
 
 const PaginationItem = React.forwardRef(function PaginationItem(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiPaginationItem' });
   const {
     className,
     component,
@@ -151,7 +149,7 @@ const PaginationItem = React.forwardRef(function PaginationItem(inProps, ref) {
     selected = false,
     type = 'page',
     ...other
-  } = props;
+  } = inProps;
 
   const size = 'medium';
   const shape = 'circular';
@@ -159,7 +157,7 @@ const PaginationItem = React.forwardRef(function PaginationItem(inProps, ref) {
   const variant = 'text';
 
   const ownerState = {
-    ...props,
+    ...inProps,
     color,
     disabled,
     selected,
