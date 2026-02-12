@@ -8,7 +8,6 @@ import LastPageIcon from '../internal/svg-icons/LastPage';
 import NavigateBeforeIcon from '../internal/svg-icons/NavigateBefore';
 import NavigateNextIcon from '../internal/svg-icons/NavigateNext';
 import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 
 const overridesResolver = (props, styles) => {
   const { ownerState } = props;
@@ -27,91 +26,80 @@ const PaginationItemEllipsis = styled('div', {
   name: 'MuiPaginationItem',
   slot: 'Root',
   overridesResolver,
-})(
-  memoTheme(({ theme }) => ({
-    ...theme.typography.body2,
-    borderRadius: 32 / 2,
-    textAlign: 'center',
-    boxSizing: 'border-box',
-    minWidth: 32,
-    padding: '0 6px',
-    margin: '0 3px',
-    color: (theme.vars || theme).palette.text.primary,
-    height: 'auto',
-    [`&.${paginationItemClasses.disabled}`]: {
-      opacity: (theme.vars || theme).palette.action.disabledOpacity,
-    },
-  })),
-);
+})({
+  fontSize: '0.875rem',
+  fontWeight: 400,
+  lineHeight: 1.43,
+  borderRadius: 32 / 2,
+  textAlign: 'center',
+  boxSizing: 'border-box',
+  minWidth: 32,
+  padding: '0 6px',
+  margin: '0 3px',
+  color: 'rgba(0, 0, 0, 0.87)',
+  height: 'auto',
+  [`&.${paginationItemClasses.disabled}`]: {
+    opacity: 0.38,
+  },
+});
 
 const PaginationItemPage = styled(ButtonBase, {
   name: 'MuiPaginationItem',
   slot: 'Root',
   overridesResolver,
-})(
-  memoTheme(({ theme }) => ({
-    ...theme.typography.body2,
-    borderRadius: 32 / 2,
-    textAlign: 'center',
-    boxSizing: 'border-box',
-    minWidth: 32,
-    height: 32,
-    padding: '0 6px',
-    margin: '0 3px',
-    color: (theme.vars || theme).palette.text.primary,
-    [`&.${paginationItemClasses.focusVisible}`]: {
-      backgroundColor: (theme.vars || theme).palette.action.focus,
+})({
+  fontSize: '0.875rem',
+  fontWeight: 400,
+  lineHeight: 1.43,
+  borderRadius: 32 / 2,
+  textAlign: 'center',
+  boxSizing: 'border-box',
+  minWidth: 32,
+  height: 32,
+  padding: '0 6px',
+  margin: '0 3px',
+  color: 'rgba(0, 0, 0, 0.87)',
+  [`&.${paginationItemClasses.focusVisible}`]: {
+    backgroundColor: 'rgba(0, 0, 0, 0.12)',
+  },
+  [`&.${paginationItemClasses.disabled}`]: {
+    opacity: 0.38,
+  },
+  transition: 'color 250ms, background-color 250ms',
+  '&:hover': {
+    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+    // Reset on touch devices, it doesn't add specificity
+    '@media (hover: none)': {
+      backgroundColor: 'transparent',
     },
-    [`&.${paginationItemClasses.disabled}`]: {
-      opacity: (theme.vars || theme).palette.action.disabledOpacity,
-    },
-    transition: theme.transitions.create(['color', 'background-color'], {
-      duration: theme.transitions.duration.short,
-    }),
+  },
+  [`&.${paginationItemClasses.selected}`]: {
+    backgroundColor: 'rgba(0, 0, 0, 0.08)',
     '&:hover': {
-      backgroundColor: (theme.vars || theme).palette.action.hover,
+      backgroundColor: 'rgba(0, 0, 0, 0.12)',
       // Reset on touch devices, it doesn't add specificity
       '@media (hover: none)': {
-        backgroundColor: 'transparent',
+        backgroundColor: 'rgba(0, 0, 0, 0.08)',
       },
     },
-    [`&.${paginationItemClasses.selected}`]: {
-      backgroundColor: (theme.vars || theme).palette.action.selected,
-      '&:hover': {
-        backgroundColor: theme.alpha(
-          (theme.vars || theme).palette.action.selected,
-          `${(theme.vars || theme).palette.action.selectedOpacity} + ${(theme.vars || theme).palette.action.hoverOpacity}`,
-        ),
-        // Reset on touch devices, it doesn't add specificity
-        '@media (hover: none)': {
-          backgroundColor: (theme.vars || theme).palette.action.selected,
-        },
-      },
-      [`&.${paginationItemClasses.focusVisible}`]: {
-        backgroundColor: theme.alpha(
-          (theme.vars || theme).palette.action.selected,
-          `${(theme.vars || theme).palette.action.selectedOpacity} + ${(theme.vars || theme).palette.action.focusOpacity}`,
-        ),
-      },
-      [`&.${paginationItemClasses.disabled}`]: {
-        opacity: 1,
-        color: (theme.vars || theme).palette.action.disabled,
-        backgroundColor: (theme.vars || theme).palette.action.selected,
-      },
+    [`&.${paginationItemClasses.focusVisible}`]: {
+      backgroundColor: 'rgba(0, 0, 0, 0.2)',
     },
-    variants: [],
-  })),
-);
+    [`&.${paginationItemClasses.disabled}`]: {
+      opacity: 1,
+      color: 'rgba(0, 0, 0, 0.26)',
+      backgroundColor: 'rgba(0, 0, 0, 0.08)',
+    },
+  },
+});
 
 const PaginationItemPageIcon = styled('div', {
   name: 'MuiPaginationItem',
   slot: 'Icon',
-})(
-  memoTheme(({ theme }) => ({
-    fontSize: theme.typography.pxToRem(20),
-    margin: '0 -8px',
-  })),
-);
+})({
+  fontSize: '1.25rem',
+  margin: '0 -8px',
+});
 
 const PaginationItem = React.forwardRef(function PaginationItem(inProps, ref) {
   const {
