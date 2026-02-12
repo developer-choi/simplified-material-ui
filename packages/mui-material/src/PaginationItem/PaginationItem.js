@@ -1,8 +1,6 @@
 'use client';
 import * as React from 'react';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
-import paginationItemClasses, { getPaginationItemUtilityClass } from './paginationItemClasses';
+import paginationItemClasses from './paginationItemClasses';
 import ButtonBase from '../../../form/ButtonBase';
 import capitalize from '../utils/capitalize';
 import FirstPageIcon from '../internal/svg-icons/FirstPage';
@@ -23,31 +21,6 @@ const overridesResolver = (props, styles) => {
     (ownerState.type === 'previous' || ownerState.type === 'next') && styles.previousNext,
     (ownerState.type === 'first' || ownerState.type === 'last') && styles.firstLast,
   ];
-};
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, disabled, selected, size, type } = ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      `size${capitalize(size)}`,
-      disabled && 'disabled',
-      selected && 'selected',
-      {
-        page: 'page',
-        first: 'firstLast',
-        last: 'firstLast',
-        'start-ellipsis': 'ellipsis',
-        'end-ellipsis': 'ellipsis',
-        previous: 'previousNext',
-        next: 'previousNext',
-      }[type],
-    ],
-    icon: ['icon'],
-  };
-
-  return composeClasses(slots, getPaginationItemUtilityClass, classes);
 };
 
 const PaginationItemEllipsis = styled('div', {
@@ -167,8 +140,6 @@ const PaginationItem = React.forwardRef(function PaginationItem(inProps, ref) {
     variant,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   const IconComponent = {
     previous: NavigateBeforeIcon,
     next: NavigateNextIcon,
@@ -180,7 +151,7 @@ const PaginationItem = React.forwardRef(function PaginationItem(inProps, ref) {
     <PaginationItemEllipsis
       ref={ref}
       ownerState={ownerState}
-      className={clsx(classes.root, className)}
+      className={className}
     >
       …
     </PaginationItemEllipsis>
@@ -190,12 +161,12 @@ const PaginationItem = React.forwardRef(function PaginationItem(inProps, ref) {
       ownerState={ownerState}
       component={component}
       disabled={disabled}
-      className={clsx(classes.root, className)}
+      className={className}
       {...other}
     >
       {type === 'page' && page}
       {IconComponent ? (
-        <PaginationItemPageIcon className={classes.icon} as={IconComponent} />
+        <PaginationItemPageIcon as={IconComponent} />
       ) : null}
     </PaginationItemPage>
   );
