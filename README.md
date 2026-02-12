@@ -39,6 +39,6 @@ MUI를 벤치마킹하여, 중복코드를 줄이고 확장 가능한 컴포넌�
   * **결과:** 모든 오버레이 컴포넌트에서 딤(Dim) 처리, 스크롤 잠금, 포커스 트랩 등의 동작을 일관되게 유지할 수 있습니다.
 
 ## 문서 종류
-- [컴포넌트 간소화 프롬프트](docs/requirement.md)
+- [컴포넌트 간소화 프롬프트](instructions/requirement.md)
 - [컴포넌트 원본 분석결과 설명서](docs/modal/Dialog-original.md)
 - [컴포넌트 간소화 설명서](docs/modal/Dialog-simplified.md)
