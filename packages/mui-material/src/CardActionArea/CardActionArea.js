@@ -5,7 +5,6 @@ import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import cardActionAreaClasses, { getCardActionAreaUtilityClass } from './cardActionAreaClasses';
 import ButtonBase from '../../../form/ButtonBase';
 
@@ -62,8 +61,7 @@ const CardActionAreaFocusHighlight = styled('span', {
   })),
 );
 
-const CardActionArea = React.forwardRef(function CardActionArea(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiCardActionArea' });
+const CardActionArea = React.forwardRef(function CardActionArea(props, ref) {
   const {
     children,
     className,
