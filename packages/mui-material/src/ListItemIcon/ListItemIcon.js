@@ -5,7 +5,6 @@ import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import { getListItemIconUtilityClass } from './listItemIconClasses';
 import ListContext from '../../../data-display/List/ListContext';
 
@@ -49,12 +48,7 @@ const ListItemIconRoot = styled('div', {
 /**
  * A simple wrapper to apply `List` styles to an `Icon` or `SvgIcon`.
  */
-const ListItemIcon = React.forwardRef(function ListItemIcon(inProps, ref) {
-  const props = useDefaultProps({
-    props: inProps,
-    name: 'MuiListItemIcon',
-  });
-
+const ListItemIcon = React.forwardRef(function ListItemIcon(props, ref) {
   const { className, ...other } = props;
   const context = React.useContext(ListContext);
   const ownerState = { ...props, alignItems: context.alignItems };
