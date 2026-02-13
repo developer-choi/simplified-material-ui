@@ -6,7 +6,6 @@ import { getPaginationUtilityClass } from './paginationClasses';
 import usePagination from '../usePagination';
 import PaginationItem from '../PaginationItem';
 import { styled } from '../zero-styled';
-import { useDefaultProps } from '../DefaultPropsProvider';
 
 const useUtilityClasses = (ownerState) => {
   const { classes } = ownerState;
@@ -47,7 +46,6 @@ function defaultGetAriaLabel(type, page, selected) {
 }
 
 const Pagination = React.forwardRef(function Pagination(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiPagination' });
   const {
     boundaryCount = 1,
     className,
@@ -63,12 +61,12 @@ const Pagination = React.forwardRef(function Pagination(inProps, ref) {
     showLastButton = false,
     siblingCount = 1,
     ...other
-  } = props;
+  } = inProps;
 
-  const { items } = usePagination({ ...props, componentName: 'Pagination' });
+  const { items } = usePagination({ ...inProps, componentName: 'Pagination' });
 
   const ownerState = {
-    ...props,
+    ...inProps,
     boundaryCount,
     count,
     defaultPage,
