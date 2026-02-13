@@ -252,7 +252,6 @@ const ButtonGroup = React.forwardRef(function ButtonGroup(inProps, ref) {
   const {
     children,
     className,
-    component = 'div',
     ...other
   } = props;
   const variant = 'outlined';
@@ -263,7 +262,6 @@ const ButtonGroup = React.forwardRef(function ButtonGroup(inProps, ref) {
   const ownerState = {
     ...props,
     color,
-    component,
     orientation,
     size,
     variant,
@@ -307,7 +305,6 @@ const ButtonGroup = React.forwardRef(function ButtonGroup(inProps, ref) {
 
   return (
     <ButtonGroupRoot
-      as={component}
       role="group"
       className={clsx(classes.root, className)}
       ref={ref}
