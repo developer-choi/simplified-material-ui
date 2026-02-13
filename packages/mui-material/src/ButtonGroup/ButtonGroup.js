@@ -264,9 +264,9 @@ const ButtonGroup = React.forwardRef(function ButtonGroup(inProps, ref) {
     fullWidth = false,
     orientation = 'horizontal',
     size = 'medium',
-    variant = 'outlined',
     ...other
   } = props;
+  const variant = 'outlined';
 
   const ownerState = {
     ...props,
