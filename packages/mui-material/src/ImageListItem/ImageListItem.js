@@ -1,24 +1,6 @@
 'use client';
-import composeClasses from '@mui/utils/composeClasses';
-import integerPropType from '@mui/utils/integerPropType';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
 import * as React from 'react';
-import { isFragment } from 'react-is';
 import ImageListContext from '../ImageList/ImageListContext';
-import isMuiElement from '../utils/isMuiElement';
-import { getImageListItemUtilityClass } from './imageListItemClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, variant } = ownerState;
-
-  const slots = {
-    root: ['root', variant],
-    img: ['img'],
-  };
-
-  return composeClasses(slots, getImageListItemUtilityClass, classes);
-};
 
 const ImageListItem = React.forwardRef(function ImageListItem(props, ref) {
   const { children, className, cols = 1, component = 'li', rows = 1, style, ...other } = props;
@@ -62,24 +44,12 @@ const ImageListItem = React.forwardRef(function ImageListItem(props, ref) {
     display: 'block',
   };
 
-  const ownerState = {
-    ...props,
-    cols,
-    component,
-    gap,
-    rowHeight,
-    rows,
-    variant,
-  };
-
-  const classes = useUtilityClasses(ownerState);
-
   const Component = component;
 
   return (
     <Component
       ref={ref}
-      className={clsx(classes.root, classes[variant], className)}
+      className={className}
       style={itemStyle}
       {...other}
     >
@@ -88,20 +58,12 @@ const ImageListItem = React.forwardRef(function ImageListItem(props, ref) {
           return null;
         }
 
-        if (process.env.NODE_ENV !== 'production') {
-          if (isFragment(child)) {
-            console.error(
-              [
-                "MUI: The ImageListItem component doesn't accept a Fragment as a child.",
-                'Consider providing an array instead.',
-              ].join('\n'),
-            );
-          }
-        }
-
-        if (child.type === 'img' || isMuiElement(child, ['Image'])) {
+        if (child.type === 'img') {
           return React.cloneElement(child, {
-            className: clsx(classes.img, child.props.className),
+            style: {
+              ...imgStyles,
+              ...child.props.style,
+            },
           });
         }
 
@@ -110,51 +72,5 @@ const ImageListItem = React.forwardRef(function ImageListItem(props, ref) {
     </Component>
   );
 });
-
-ImageListItem.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * The content of the component, normally an `<img>`.
-   */
-  children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * Width of the item in number of grid columns.
-   * @default 1
-   */
-  cols: integerPropType,
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
-  /**
-   * Height of the item in number of grid rows.
-   * @default 1
-   */
-  rows: integerPropType,
-  /**
-   * @ignore
-   */
-  style: PropTypes.object,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-};
 
 export default ImageListItem;
