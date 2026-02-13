@@ -3,7 +3,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
-import { styled } from '../zero-styled';
 import { getCardActionsUtilityClass } from './cardActionsClasses';
 
 const useUtilityClasses = (ownerState) => {
@@ -16,30 +15,6 @@ const useUtilityClasses = (ownerState) => {
   return composeClasses(slots, getCardActionsUtilityClass, classes);
 };
 
-const CardActionsRoot = styled('div', {
-  name: 'MuiCardActions',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [styles.root, !ownerState.disableSpacing && styles.spacing];
-  },
-})({
-  display: 'flex',
-  alignItems: 'center',
-  padding: 8,
-  variants: [
-    {
-      props: { disableSpacing: false },
-      style: {
-        '& > :not(style) ~ :not(style)': {
-          marginLeft: 8,
-        },
-      },
-    },
-  ],
-});
-
 const CardActions = React.forwardRef(function CardActions(props, ref) {
   const { disableSpacing = false, className, ...other } = props;
 
@@ -47,11 +22,18 @@ const CardActions = React.forwardRef(function CardActions(props, ref) {
 
   const classes = useUtilityClasses(ownerState);
 
+  const styles = {
+    display: 'flex',
+    alignItems: 'center',
+    padding: 8,
+    gap: disableSpacing ? 0 : 8,
+  };
+
   return (
-    <CardActionsRoot
-      className={clsx(classes.root, className)}
-      ownerState={ownerState}
+    <div
       ref={ref}
+      className={clsx(classes.root, className)}
+      style={styles}
       {...other}
     />
   );
