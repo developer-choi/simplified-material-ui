@@ -3,7 +3,6 @@ import * as React from 'react';
 import { isFragment } from 'react-is';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
-import useSlotProps from '@mui/utils/useSlotProps';
 import { styled } from '../zero-styled';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import Typography from '../Typography';
@@ -81,8 +80,6 @@ const Breadcrumbs = React.forwardRef(function Breadcrumbs(inProps, ref) {
     children,
     className,
     component = 'nav',
-    slots = {},
-    slotProps = {},
     expandText = 'Show path',
     itemsAfterCollapse = 1,
     itemsBeforeCollapse = 1,
@@ -105,12 +102,6 @@ const Breadcrumbs = React.forwardRef(function Breadcrumbs(inProps, ref) {
   };
 
   const classes = useUtilityClasses(ownerState);
-
-  const collapsedIconSlotProps = useSlotProps({
-    elementType: slots.CollapsedIcon,
-    externalSlotProps: slotProps.collapsedIcon,
-    ownerState,
-  });
 
   const listRef = React.useRef(null);
   const renderItemsBeforeAndAfter = (allItems) => {
@@ -146,8 +137,6 @@ const Breadcrumbs = React.forwardRef(function Breadcrumbs(inProps, ref) {
       <BreadcrumbCollapsed
         aria-label={expandText}
         key="ellipsis"
-        slots={{ CollapsedIcon: slots.CollapsedIcon }}
-        slotProps={{ collapsedIcon: collapsedIconSlotProps }}
         onClick={handleClickExpand}
       />,
       ...allItems.slice(allItems.length - itemsAfterCollapse, allItems.length),
