@@ -254,8 +254,6 @@ const ButtonGroup = React.forwardRef(function ButtonGroup(inProps, ref) {
     children,
     className,
     component = 'div',
-    disableFocusRipple = false,
-    disableRipple = false,
     fullWidth = false,
     ...other
   } = props;
@@ -268,8 +266,6 @@ const ButtonGroup = React.forwardRef(function ButtonGroup(inProps, ref) {
     ...props,
     color,
     component,
-    disableFocusRipple,
-    disableRipple,
     fullWidth,
     orientation,
     size,
@@ -282,16 +278,12 @@ const ButtonGroup = React.forwardRef(function ButtonGroup(inProps, ref) {
     () => ({
       className: classes.grouped,
       color,
-      disableFocusRipple,
-      disableRipple,
       fullWidth,
       size,
       variant,
     }),
     [
       color,
-      disableFocusRipple,
-      disableRipple,
       fullWidth,
       size,
       variant,
