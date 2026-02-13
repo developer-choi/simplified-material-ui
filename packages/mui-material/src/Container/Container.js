@@ -1,26 +1,116 @@
 'use client';
+import * as React from 'react';
 import PropTypes from 'prop-types';
-import { createContainer } from '@mui/system';
+import clsx from 'clsx';
 import capitalize from '../utils/capitalize';
 import styled from '../styles/styled';
 import { useDefaultProps } from '../DefaultPropsProvider';
+import composeClasses from '@mui/utils/composeClasses';
+import generateUtilityClass from '@mui/utils/generateUtilityClass';
 
-const Container = createContainer({
-  createStyledComponent: styled('div', {
-    name: 'MuiContainer',
-    slot: 'Root',
-    overridesResolver: (props, styles) => {
-      const { ownerState } = props;
+const useUtilityClasses = (ownerState) => {
+  const getContainerUtilityClass = (slot) => {
+    return generateUtilityClass('MuiContainer', slot);
+  };
+  const { classes, fixed, disableGutters, maxWidth } = ownerState;
 
-      return [
-        styles.root,
-        styles[`maxWidth${capitalize(String(ownerState.maxWidth))}`],
-        ownerState.fixed && styles.fixed,
-        ownerState.disableGutters && styles.disableGutters,
-      ];
+  const slots = {
+    root: [
+      'root',
+      maxWidth && `maxWidth${capitalize(String(maxWidth))}`,
+      fixed && 'fixed',
+      disableGutters && 'disableGutters',
+    ],
+  };
+
+  return composeClasses(slots, getContainerUtilityClass, classes);
+};
+
+const ContainerRoot = styled('div', {
+  name: 'MuiContainer',
+  slot: 'Root',
+  overridesResolver: (props, styles) => {
+    const { ownerState } = props;
+
+    return [
+      styles.root,
+      styles[`maxWidth${capitalize(String(ownerState.maxWidth))}`],
+      ownerState.fixed && styles.fixed,
+      ownerState.disableGutters && styles.disableGutters,
+    ];
+  },
+})(({ theme, ownerState }) => ({
+  width: '100%',
+  marginLeft: 'auto',
+  boxSizing: 'border-box',
+  marginRight: 'auto',
+  ...(!ownerState.disableGutters && {
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    [theme.breakpoints.up('sm')]: {
+      paddingLeft: theme.spacing(3),
+      paddingRight: theme.spacing(3),
     },
   }),
-  useThemeProps: (inProps) => useDefaultProps({ props: inProps, name: 'MuiContainer' }),
+}),
+({ theme, ownerState }) =>
+  ownerState.fixed &&
+  Object.keys(theme.breakpoints.values).reduce((acc, breakpointValueKey) => {
+    const breakpoint = breakpointValueKey;
+    const value = theme.breakpoints.values[breakpoint];
+
+    if (value !== 0) {
+      acc[theme.breakpoints.up(breakpoint)] = {
+        maxWidth: `${value}${theme.breakpoints.unit}`,
+      };
+    }
+    return acc;
+  }, {}),
+({ theme, ownerState }) => ({
+  ...(ownerState.maxWidth === 'xs' && {
+    [theme.breakpoints.up('xs')]: {
+      maxWidth: Math.max(theme.breakpoints.values.xs, 444),
+    },
+  }),
+  ...(ownerState.maxWidth &&
+    ownerState.maxWidth !== 'xs' && {
+      [theme.breakpoints.up(ownerState.maxWidth)]: {
+        maxWidth: `${theme.breakpoints.values[ownerState.maxWidth]}${theme.breakpoints.unit}`,
+      },
+    }),
+}));
+
+const Container = React.forwardRef(function Container(inProps, ref) {
+  const props = useDefaultProps({ props: inProps, name: 'MuiContainer' });
+  const {
+    className,
+    component = 'div',
+    disableGutters = false,
+    fixed = false,
+    maxWidth = 'lg',
+    classes: classesProp,
+    ...other
+  } = props;
+
+  const ownerState = {
+    ...props,
+    component,
+    disableGutters,
+    fixed,
+    maxWidth,
+  };
+
+  const classes = useUtilityClasses(ownerState);
+
+  return (
+    <ContainerRoot
+      as={component}
+      ownerState={ownerState}
+      className={clsx(classes.root, className)}
+      ref={ref}
+      {...other}
+    />
+  );
 });
 
 Container.propTypes /* remove-proptypes */ = {
