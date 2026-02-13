@@ -4,10 +4,10 @@ import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrow
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import PaginationItem, { paginationItemClasses as classes } from '@mui/material/PaginationItem';
-import ButtonBase from '../../../form/ButtonBase';
+import PaginationItem, { paginationItemClasses as classes } from './index';
+import ButtonBase from '../../form/ButtonBase';
 import RtlProvider from '@mui/system/RtlProvider';
-import describeConformance from '../../test/describeConformance';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<PaginationItem />', () => {
   const { render } = createRenderer();

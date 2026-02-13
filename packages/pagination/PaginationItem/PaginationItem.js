@@ -1,12 +1,12 @@
 'use client';
 import * as React from 'react';
 import paginationItemClasses from './paginationItemClasses';
-import ButtonBase from '../../../form/ButtonBase';
-import FirstPageIcon from '../internal/svg-icons/FirstPage';
-import LastPageIcon from '../internal/svg-icons/LastPage';
-import NavigateBeforeIcon from '../internal/svg-icons/NavigateBefore';
-import NavigateNextIcon from '../internal/svg-icons/NavigateNext';
-import { styled } from '../zero-styled';
+import ButtonBase from '../../form/ButtonBase';
+import FirstPageIcon from '@mui/material/internal/svg-icons/FirstPage';
+import LastPageIcon from '@mui/material/internal/svg-icons/LastPage';
+import NavigateBeforeIcon from '@mui/material/internal/svg-icons/NavigateBefore';
+import NavigateNextIcon from '@mui/material/internal/svg-icons/NavigateNext';
+import { styled } from '@mui/material/zero-styled';
 
 const PaginationItemEllipsis = styled('div', {
   name: 'MuiPaginationItem',

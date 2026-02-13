@@ -1,8 +1,8 @@
 'use client';
 import * as React from 'react';
-import usePagination from '../usePagination';
+import usePagination from '@mui/material/usePagination';
 import PaginationItem from '../PaginationItem';
-import { styled } from '../zero-styled';
+import { styled } from '@mui/material/zero-styled';
 
 const PaginationRoot = styled('nav', {
   name: 'MuiPagination',

@@ -244,11 +244,11 @@ export * from './NoSsr';
 export { default as OutlinedInput } from '../../form/OutlinedInput';
 export * from '../../form/OutlinedInput';
 
-export { default as Pagination } from './Pagination';
-export * from './Pagination';
+export { default as Pagination } from '../../pagination/Pagination';
+export * from '../../pagination/Pagination';
 
-export { default as PaginationItem } from './PaginationItem';
-export * from './PaginationItem';
+export { default as PaginationItem } from '../../pagination/PaginationItem';
+export * from '../../pagination/PaginationItem';
 
 export { default as Paper } from '../../surfaces/Paper';
 export * from '../../surfaces/Paper';

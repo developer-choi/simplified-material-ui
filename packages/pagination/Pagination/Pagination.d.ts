@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { OverridableStringUnion } from '@mui/types';
 import { SxProps } from '@mui/system';
-import { Theme } from '../styles';
-import { InternalStandardProps as StandardProps } from '../internal';
-import { UsePaginationItem, UsePaginationProps } from '../usePagination/usePagination';
+import { Theme } from '@mui/material/styles';
+import { InternalStandardProps as StandardProps } from '@mui/material/internal';
+import { UsePaginationItem, UsePaginationProps } from '@mui/material/usePagination/usePagination';
 import { PaginationClasses } from './paginationClasses';
 
 export interface PaginationRenderItemParams extends UsePaginationItem {

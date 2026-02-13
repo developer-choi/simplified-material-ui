@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { OverridableStringUnion } from '@mui/types';
 import { SxProps } from '@mui/system';
-import { OverridableComponent, OverrideProps } from '../OverridableComponent';
-import { Theme } from '../styles';
-import { UsePaginationItem } from '../usePagination/usePagination';
+import { OverridableComponent, OverrideProps } from '@mui/material/OverridableComponent';
+import { Theme } from '@mui/material/styles';
+import { UsePaginationItem } from '@mui/material/usePagination/usePagination';
 import { PaginationItemClasses } from './paginationItemClasses';
-import { CreateSlotsAndSlotProps, SlotProps } from '../utils/types';
+import { CreateSlotsAndSlotProps, SlotProps } from '@mui/material/utils/types';
 
 export interface PaginationItemPropsVariantOverrides {}
 
