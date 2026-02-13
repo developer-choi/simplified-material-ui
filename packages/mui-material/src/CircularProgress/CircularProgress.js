@@ -3,13 +3,9 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import chainPropTypes from '@mui/utils/chainPropTypes';
-import composeClasses from '@mui/utils/composeClasses';
 import { keyframes, css, styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
-import capitalize from '../utils/capitalize';
 import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
-import { getCircularProgressUtilityClass } from './circularProgressClasses';
 
 const SIZE = 44;
 
@@ -57,18 +53,6 @@ const dashAnimation =
       `
     : null;
 
-const useUtilityClasses = (ownerState) => {
-  const { classes, variant, color, disableShrink } = ownerState;
-
-  const slots = {
-    root: ['root', variant, `color${capitalize(color)}`],
-    svg: ['svg'],
-    track: ['track'],
-    circle: ['circle', `circle${capitalize(variant)}`, disableShrink && 'circleDisableShrink'],
-  };
-
-  return composeClasses(slots, getCircularProgressUtilityClass, classes);
-};
 
 const CircularProgressRoot = styled('span', {
   name: 'MuiCircularProgress',
@@ -184,8 +168,7 @@ const CircularProgressTrack = styled('circle', {
  * you should use `aria-describedby` to point to the progress bar, and set the `aria-busy`
  * attribute to `true` on that region until it has finished loading.
  */
-const CircularProgress = React.forwardRef(function CircularProgress(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiCircularProgress' });
+const CircularProgress = React.forwardRef(function CircularProgress(props, ref) {
   const {
     className,
     style,
@@ -210,7 +193,12 @@ const CircularProgress = React.forwardRef(function CircularProgress(inProps, ref
     enableTrackSlot,
   };
 
-  const classes = useUtilityClasses(ownerState);
+  const classes = {
+    root: 'MuiCircularProgress-root',
+    svg: 'MuiCircularProgress-svg',
+    track: 'MuiCircularProgress-track',
+    circle: 'MuiCircularProgress-circle',
+  };
 
   const circleStyle = {};
   const rootStyle = {};
