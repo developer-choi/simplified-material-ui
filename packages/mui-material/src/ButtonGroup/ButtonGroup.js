@@ -48,7 +48,7 @@ const overridesResolver = (props, styles) => {
 };
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, color, fullWidth, orientation, variant } =
+  const { classes, color, orientation, variant } =
     ownerState;
 
   const slots = {
@@ -56,7 +56,6 @@ const useUtilityClasses = (ownerState) => {
       'root',
       variant,
       orientation,
-      fullWidth && 'fullWidth',
       `color${capitalize(color)}`,
     ],
     grouped: [
@@ -254,7 +253,6 @@ const ButtonGroup = React.forwardRef(function ButtonGroup(inProps, ref) {
     children,
     className,
     component = 'div',
-    fullWidth = false,
     ...other
   } = props;
   const variant = 'outlined';
@@ -266,7 +264,6 @@ const ButtonGroup = React.forwardRef(function ButtonGroup(inProps, ref) {
     ...props,
     color,
     component,
-    fullWidth,
     orientation,
     size,
     variant,
@@ -278,13 +275,11 @@ const ButtonGroup = React.forwardRef(function ButtonGroup(inProps, ref) {
     () => ({
       className: classes.grouped,
       color,
-      fullWidth,
       size,
       variant,
     }),
     [
       color,
-      fullWidth,
       size,
       variant,
       classes.grouped,
