@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import ListContext from '../../../data-display/List/ListContext';
-import { styled } from '../zero-styled';
 import { getListItemAvatarUtilityClass } from './listItemAvatarClasses';
 
 const useUtilityClasses = (ownerState) => {
@@ -17,43 +16,25 @@ const useUtilityClasses = (ownerState) => {
   return composeClasses(slots, getListItemAvatarUtilityClass, classes);
 };
 
-const ListItemAvatarRoot = styled('div', {
-  name: 'MuiListItemAvatar',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [styles.root, ownerState.alignItems === 'flex-start' && styles.alignItemsFlexStart];
-  },
-})({
-  minWidth: 56,
-  flexShrink: 0,
-  variants: [
-    {
-      props: {
-        alignItems: 'flex-start',
-      },
-      style: {
-        marginTop: 8,
-      },
-    },
-  ],
-});
-
-/**
- * A simple wrapper to apply `List` styles to an `Avatar`.
- */
 const ListItemAvatar = React.forwardRef(function ListItemAvatar(props, ref) {
   const { className, ...other } = props;
   const context = React.useContext(ListContext);
-  const ownerState = { ...props, alignItems: context.alignItems };
+  const { alignItems } = context;
+
+  const style = {
+    minWidth: 56,
+    flexShrink: 0,
+    marginTop: alignItems === 'flex-start' ? 8 : undefined,
+  };
+
+  const ownerState = { ...props, alignItems };
   const classes = useUtilityClasses(ownerState);
 
   return (
-    <ListItemAvatarRoot
-      className={clsx(classes.root, className)}
-      ownerState={ownerState}
+    <div
       ref={ref}
+      style={style}
+      className={clsx(classes.root, className)}
       {...other}
     />
   );
