@@ -5,7 +5,6 @@ import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import capitalize from '../utils/capitalize';
 import { getListSubheaderUtilityClass } from './listSubheaderClasses';
 
@@ -91,8 +90,7 @@ const ListSubheaderRoot = styled('li', {
   })),
 );
 
-const ListSubheader = React.forwardRef(function ListSubheader(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiListSubheader' });
+const ListSubheader = React.forwardRef(function ListSubheader(props, ref) {
   const {
     className,
     color = 'default',
