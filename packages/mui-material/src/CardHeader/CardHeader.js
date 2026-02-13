@@ -6,7 +6,6 @@ import Typography, { typographyClasses } from '../Typography';
 import { styled } from '../zero-styled';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import cardHeaderClasses, { getCardHeaderUtilityClass } from './cardHeaderClasses';
-import useSlot from '../utils/useSlot';
 
 const useUtilityClasses = (ownerState) => {
   const { classes } = ownerState;
@@ -83,8 +82,6 @@ const CardHeader = React.forwardRef(function CardHeader(inProps, ref) {
     subheaderTypographyProps,
     title: titleProp,
     titleTypographyProps,
-    slots = {},
-    slotProps = {},
     ...other
   } = props;
 
@@ -96,88 +93,44 @@ const CardHeader = React.forwardRef(function CardHeader(inProps, ref) {
 
   const classes = useUtilityClasses(ownerState);
 
-  const externalForwardedProps = {
-    slots,
-    slotProps: {
-      title: titleTypographyProps,
-      subheader: subheaderTypographyProps,
-      ...slotProps,
-    },
-  };
-
   let title = titleProp;
-  const [TitleSlot, titleSlotProps] = useSlot('title', {
-    className: classes.title,
-    elementType: Typography,
-    externalForwardedProps,
-    ownerState,
-    additionalProps: {
-      variant: avatar ? 'body2' : 'h5',
-      component: 'span',
-    },
-  });
   if (title != null && title.type !== Typography && !disableTypography) {
-    title = <TitleSlot {...titleSlotProps}>{title}</TitleSlot>;
+    title = (
+      <Typography
+        className={classes.title}
+        variant={avatar ? 'body2' : 'h5'}
+        component="span"
+        {...titleTypographyProps}
+      >
+        {title}
+      </Typography>
+    );
   }
 
   let subheader = subheaderProp;
-  const [SubheaderSlot, subheaderSlotProps] = useSlot('subheader', {
-    className: classes.subheader,
-    elementType: Typography,
-    externalForwardedProps,
-    ownerState,
-    additionalProps: {
-      variant: avatar ? 'body2' : 'body1',
-      color: 'textSecondary',
-      component: 'span',
-    },
-  });
   if (subheader != null && subheader.type !== Typography && !disableTypography) {
-    subheader = <SubheaderSlot {...subheaderSlotProps}>{subheader}</SubheaderSlot>;
+    subheader = (
+      <Typography
+        className={classes.subheader}
+        variant={avatar ? 'body2' : 'body1'}
+        color="textSecondary"
+        component="span"
+        {...subheaderTypographyProps}
+      >
+        {subheader}
+      </Typography>
+    );
   }
 
-  const [RootSlot, rootSlotProps] = useSlot('root', {
-    ref,
-    className: classes.root,
-    elementType: CardHeaderRoot,
-    externalForwardedProps: {
-      ...externalForwardedProps,
-      ...other,
-      component,
-    },
-    ownerState,
-  });
-
-  const [AvatarSlot, avatarSlotProps] = useSlot('avatar', {
-    className: classes.avatar,
-    elementType: CardHeaderAvatar,
-    externalForwardedProps,
-    ownerState,
-  });
-
-  const [ContentSlot, contentSlotProps] = useSlot('content', {
-    className: classes.content,
-    elementType: CardHeaderContent,
-    externalForwardedProps,
-    ownerState,
-  });
-
-  const [ActionSlot, actionSlotProps] = useSlot('action', {
-    className: classes.action,
-    elementType: CardHeaderAction,
-    externalForwardedProps,
-    ownerState,
-  });
-
   return (
-    <RootSlot {...rootSlotProps}>
-      {avatar && <AvatarSlot {...avatarSlotProps}>{avatar}</AvatarSlot>}
-      <ContentSlot {...contentSlotProps}>
+    <CardHeaderRoot ref={ref} as={component} className={classes.root} {...other}>
+      {avatar && <CardHeaderAvatar className={classes.avatar}>{avatar}</CardHeaderAvatar>}
+      <CardHeaderContent className={classes.content}>
         {title}
         {subheader}
-      </ContentSlot>
-      {action && <ActionSlot {...actionSlotProps}>{action}</ActionSlot>}
-    </RootSlot>
+      </CardHeaderContent>
+      {action && <CardHeaderAction className={classes.action}>{action}</CardHeaderAction>}
+    </CardHeaderRoot>
   );
 });
 
