@@ -4,7 +4,6 @@ import integerPropType from '@mui/utils/integerPropType';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import * as React from 'react';
-import { styled } from '../zero-styled';
 import { getImageListUtilityClass } from './imageListClasses';
 import ImageListContext from './ImageListContext';
 
@@ -17,33 +16,6 @@ const useUtilityClasses = (ownerState) => {
 
   return composeClasses(slots, getImageListUtilityClass, classes);
 };
-
-const ImageListRoot = styled('ul', {
-  name: 'MuiImageList',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [styles.root, styles[ownerState.variant]];
-  },
-})({
-  display: 'grid',
-  overflowY: 'auto',
-  listStyle: 'none',
-  padding: 0,
-  // Add iOS momentum scrolling for iOS < 13.0
-  WebkitOverflowScrolling: 'touch',
-  variants: [
-    {
-      props: {
-        variant: 'masonry',
-      },
-      style: {
-        display: 'block',
-      },
-    },
-  ],
-});
 
 const ImageList = React.forwardRef(function ImageList(props, ref) {
   const {
@@ -63,26 +35,40 @@ const ImageList = React.forwardRef(function ImageList(props, ref) {
     [rowHeight, gap, variant],
   );
 
-  const style =
+  const baseStyles = {
+    display: variant === 'masonry' ? 'block' : 'grid',
+    overflowY: 'auto',
+    listStyle: 'none',
+    padding: 0,
+    WebkitOverflowScrolling: 'touch',
+  };
+
+  const layoutStyle =
     variant === 'masonry'
-      ? { columnCount: cols, columnGap: gap, ...styleProp }
-      : { gridTemplateColumns: `repeat(${cols}, 1fr)`, gap, ...styleProp };
+      ? { columnCount: cols, columnGap: gap }
+      : { gridTemplateColumns: `repeat(${cols}, 1fr)`, gap };
+
+  const finalStyle = {
+    ...baseStyles,
+    ...layoutStyle,
+    ...styleProp,
+  };
 
   const ownerState = { ...props, component, gap, rowHeight, variant };
 
   const classes = useUtilityClasses(ownerState);
 
+  const Component = component;
+
   return (
-    <ImageListRoot
-      as={component}
-      className={clsx(classes.root, classes[variant], className)}
+    <Component
       ref={ref}
-      style={style}
-      ownerState={ownerState}
+      className={clsx(classes.root, classes[variant], className)}
+      style={finalStyle}
       {...other}
     >
       <ImageListContext.Provider value={contextValue}>{children}</ImageListContext.Provider>
-    </ImageListRoot>
+    </Component>
   );
 });
 
