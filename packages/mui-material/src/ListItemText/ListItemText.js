@@ -6,7 +6,6 @@ import composeClasses from '@mui/utils/composeClasses';
 import Typography, { typographyClasses } from '../Typography';
 import ListContext from '../../../data-display/List/ListContext';
 import { styled } from '../zero-styled';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import listItemTextClasses, { getListItemTextUtilityClass } from './listItemTextClasses';
 import useSlot from '../utils/useSlot';
 
@@ -65,8 +64,7 @@ const ListItemTextRoot = styled('div', {
   ],
 });
 
-const ListItemText = React.forwardRef(function ListItemText(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiListItemText' });
+const ListItemText = React.forwardRef(function ListItemText(props, ref) {
   const {
     children,
     className,
