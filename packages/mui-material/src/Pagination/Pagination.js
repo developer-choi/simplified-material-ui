@@ -7,9 +7,6 @@ import { styled } from '../zero-styled';
 const PaginationRoot = styled('nav', {
   name: 'MuiPagination',
   slot: 'Root',
-  overridesResolver: (props, styles) => {
-    return [styles.root];
-  },
 })({});
 
 const PaginationUl = styled('ul', {
