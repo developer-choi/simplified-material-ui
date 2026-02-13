@@ -3,10 +3,9 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
-import Typography, { typographyClasses } from '../Typography';
+import Typography from '../Typography';
 import ListContext from '../../../data-display/List/ListContext';
-import { styled } from '../zero-styled';
-import listItemTextClasses, { getListItemTextUtilityClass } from './listItemTextClasses';
+import { getListItemTextUtilityClass } from './listItemTextClasses';
 import useSlot from '../utils/useSlot';
 
 const useUtilityClasses = (ownerState) => {
@@ -20,49 +19,6 @@ const useUtilityClasses = (ownerState) => {
 
   return composeClasses(slots, getListItemTextUtilityClass, classes);
 };
-
-const ListItemTextRoot = styled('div', {
-  name: 'MuiListItemText',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      { [`& .${listItemTextClasses.primary}`]: styles.primary },
-      { [`& .${listItemTextClasses.secondary}`]: styles.secondary },
-      styles.root,
-      ownerState.inset && styles.inset,
-      ownerState.primary && ownerState.secondary && styles.multiline,
-      ownerState.dense && styles.dense,
-    ];
-  },
-})({
-  flex: '1 1 auto',
-  minWidth: 0,
-  marginTop: 4,
-  marginBottom: 4,
-  [`.${typographyClasses.root}:where(& .${listItemTextClasses.primary})`]: {
-    display: 'block',
-  },
-  [`.${typographyClasses.root}:where(& .${listItemTextClasses.secondary})`]: {
-    display: 'block',
-  },
-  variants: [
-    {
-      props: ({ ownerState }) => ownerState.primary && ownerState.secondary,
-      style: {
-        marginTop: 6,
-        marginBottom: 6,
-      },
-    },
-    {
-      props: ({ ownerState }) => ownerState.inset,
-      style: {
-        paddingLeft: 56,
-      },
-    },
-  ],
-});
 
 const ListItemText = React.forwardRef(function ListItemText(props, ref) {
   const {
@@ -103,16 +59,16 @@ const ListItemText = React.forwardRef(function ListItemText(props, ref) {
     },
   };
 
-  const [RootSlot, rootSlotProps] = useSlot('root', {
-    className: clsx(classes.root, className),
-    elementType: ListItemTextRoot,
-    externalForwardedProps: {
-      ...externalForwardedProps,
-      ...other,
-    },
-    ownerState,
-    ref,
-  });
+  const hasSecondary = !!secondary;
+  const marginValue = primary && hasSecondary ? 6 : 4;
+
+  const rootStyle = {
+    flex: '1 1 auto',
+    minWidth: 0,
+    marginTop: marginValue,
+    marginBottom: marginValue,
+    ...(inset && { paddingLeft: 56 }),
+  };
 
   const [PrimarySlot, primarySlotProps] = useSlot('primary', {
     className: classes.primary,
@@ -148,10 +104,15 @@ const ListItemText = React.forwardRef(function ListItemText(props, ref) {
   }
 
   return (
-    <RootSlot {...rootSlotProps}>
+    <div
+      ref={ref}
+      style={rootStyle}
+      className={clsx(classes.root, className)}
+      {...other}
+    >
       {primary}
       {secondary}
-    </RootSlot>
+    </div>
   );
 });
 
