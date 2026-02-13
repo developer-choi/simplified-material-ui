@@ -1,33 +1,16 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import chainPropTypes from '@mui/utils/chainPropTypes';
-import composeClasses from '@mui/utils/composeClasses';
 import Paper from '../../../surfaces/Paper';
-import { getCardUtilityClass } from './cardClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-
-  const slots = {
-    root: ['root'],
-  };
-
-  return composeClasses(slots, getCardUtilityClass, classes);
-};
 
 const Card = React.forwardRef(function Card(props, ref) {
   const { className, raised = false, style, ...other } = props;
 
-  const ownerState = { ...props, raised };
-
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <Paper
       ref={ref}
-      className={clsx(classes.root, className)}
+      className={className}
       style={{ overflow: 'hidden', ...style }}
       elevation={raised ? 8 : 1}
       {...other}
