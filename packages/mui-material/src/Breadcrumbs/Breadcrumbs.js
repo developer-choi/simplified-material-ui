@@ -1,9 +1,7 @@
 'use client';
 import * as React from 'react';
 import { isFragment } from 'react-is';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import integerPropType from '@mui/utils/integerPropType';
 import composeClasses from '@mui/utils/composeClasses';
 import useSlotProps from '@mui/utils/useSlotProps';
 import { styled } from '../zero-styled';
@@ -199,81 +197,5 @@ const Breadcrumbs = React.forwardRef(function Breadcrumbs(inProps, ref) {
     </BreadcrumbsRoot>
   );
 });
-
-Breadcrumbs.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * The content of the component.
-   */
-  children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
-  /**
-   * Override the default label for the expand button.
-   *
-   * For localization purposes, you can use the provided [translations](https://mui.com/material-ui/guides/localization/).
-   * @default 'Show path'
-   */
-  expandText: PropTypes.string,
-  /**
-   * If max items is exceeded, the number of items to show after the ellipsis.
-   * @default 1
-   */
-  itemsAfterCollapse: integerPropType,
-  /**
-   * If max items is exceeded, the number of items to show before the ellipsis.
-   * @default 1
-   */
-  itemsBeforeCollapse: integerPropType,
-  /**
-   * Specifies the maximum number of breadcrumbs to display. When there are more
-   * than the maximum number, only the first `itemsBeforeCollapse` and last `itemsAfterCollapse`
-   * will be shown, with an ellipsis in between.
-   * @default 8
-   */
-  maxItems: integerPropType,
-  /**
-   * Custom separator node.
-   * @default '/'
-   */
-  separator: PropTypes.node,
-  /**
-   * The props used for each slot inside the Breadcumb.
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    collapsedIcon: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * The components used for each slot inside the Breadcumb.
-   * Either a string to use a HTML element or a component.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    CollapsedIcon: PropTypes.elementType,
-  }),
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-};
 
 export default Breadcrumbs;
