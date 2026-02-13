@@ -8,7 +8,6 @@ import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import cardActionAreaClasses, { getCardActionAreaUtilityClass } from './cardActionAreaClasses';
 import ButtonBase from '../../../form/ButtonBase';
-import useSlot from '../utils/useSlot';
 
 const useUtilityClasses = (ownerState) => {
   const { classes } = ownerState;
@@ -69,47 +68,22 @@ const CardActionArea = React.forwardRef(function CardActionArea(inProps, ref) {
     children,
     className,
     focusVisibleClassName,
-    slots = {},
-    slotProps = {},
     ...other
   } = props;
 
   const ownerState = props;
   const classes = useUtilityClasses(ownerState);
 
-  const externalForwardedProps = {
-    slots,
-    slotProps,
-  };
-
-  const [RootSlot, rootProps] = useSlot('root', {
-    elementType: CardActionAreaRoot,
-    externalForwardedProps: {
-      ...externalForwardedProps,
-      ...other,
-    },
-    shouldForwardComponentProp: true,
-    ownerState,
-    ref,
-    className: clsx(classes.root, className),
-    additionalProps: {
-      focusVisibleClassName: clsx(focusVisibleClassName, classes.focusVisible),
-    },
-  });
-
-  const [FocusHighlightSlot, focusHighlightProps] = useSlot('focusHighlight', {
-    elementType: CardActionAreaFocusHighlight,
-    externalForwardedProps,
-    ownerState,
-    ref,
-    className: classes.focusHighlight,
-  });
-
   return (
-    <RootSlot {...rootProps}>
+    <CardActionAreaRoot
+      ref={ref}
+      className={clsx(classes.root, className)}
+      focusVisibleClassName={clsx(focusVisibleClassName, classes.focusVisible)}
+      {...other}
+    >
       {children}
-      <FocusHighlightSlot {...focusHighlightProps} />
-    </RootSlot>
+      <CardActionAreaFocusHighlight className={classes.focusHighlight} />
+    </CardActionAreaRoot>
   );
 });
 
@@ -134,22 +108,6 @@ CardActionArea.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   focusVisibleClassName: PropTypes.string,
-  /**
-   * The props used for each slot inside.
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    focusHighlight: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * The components used for each slot inside.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    focusHighlight: PropTypes.elementType,
-    root: PropTypes.elementType,
-  }),
   /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
