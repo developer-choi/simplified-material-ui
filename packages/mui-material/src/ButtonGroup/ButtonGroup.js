@@ -2,14 +2,10 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import getValidReactChildren from '@mui/utils/getValidReactChildren';
-import capitalize from '../utils/capitalize';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
-import { useDefaultProps } from '../DefaultPropsProvider';
-import buttonGroupClasses, { getButtonGroupUtilityClass } from './buttonGroupClasses';
 import ButtonGroupContext from './ButtonGroupContext';
 import ButtonGroupButtonContext from './ButtonGroupButtonContext';
 
@@ -47,31 +43,6 @@ const overridesResolver = (props, styles) => {
   ];
 };
 
-const useUtilityClasses = (ownerState) => {
-  const { classes, color, orientation, variant } =
-    ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      variant,
-      orientation,
-      `color${capitalize(color)}`,
-    ],
-    grouped: [
-      'grouped',
-      `grouped${capitalize(orientation)}`,
-      `grouped${capitalize(variant)}`,
-      `grouped${capitalize(variant)}${capitalize(orientation)}`,
-      `grouped${capitalize(variant)}${capitalize(color)}`,
-    ],
-    firstButton: ['firstButton'],
-    lastButton: ['lastButton'],
-    middleButton: ['middleButton'],
-  };
-
-  return composeClasses(slots, getButtonGroupUtilityClass, classes);
-};
 
 const ButtonGroupRoot = styled('div', {
   name: 'MuiButtonGroup',
@@ -247,8 +218,7 @@ const ButtonGroupRoot = styled('div', {
   })),
 );
 
-const ButtonGroup = React.forwardRef(function ButtonGroup(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiButtonGroup' });
+const ButtonGroup = React.forwardRef(function ButtonGroup(props, ref) {
   const {
     children,
     className,
@@ -267,7 +237,13 @@ const ButtonGroup = React.forwardRef(function ButtonGroup(inProps, ref) {
     variant,
   };
 
-  const classes = useUtilityClasses(ownerState);
+  const classes = {
+    root: 'MuiButtonGroup-root',
+    grouped: 'MuiButtonGroup-grouped',
+    firstButton: 'MuiButtonGroup-firstButton',
+    lastButton: 'MuiButtonGroup-lastButton',
+    middleButton: 'MuiButtonGroup-middleButton',
+  };
 
   const context = React.useMemo(
     () => ({
