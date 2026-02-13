@@ -7,7 +7,6 @@ import * as React from 'react';
 import { isFragment } from 'react-is';
 import ImageListContext from '../ImageList/ImageListContext';
 import { styled } from '../zero-styled';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import isMuiElement from '../utils/isMuiElement';
 import imageListItemClasses, { getImageListItemUtilityClass } from './imageListItemClasses';
 
@@ -80,13 +79,7 @@ const ImageListItemRoot = styled('li', {
   ],
 });
 
-const ImageListItem = React.forwardRef(function ImageListItem(inProps, ref) {
-  const props = useDefaultProps({
-    props: inProps,
-    name: 'MuiImageListItem',
-  });
-
-  // TODO: - Use jsdoc @default?: "cols rows default values are for docs only"
+const ImageListItem = React.forwardRef(function ImageListItem(props, ref) {
   const { children, className, cols = 1, component = 'li', rows = 1, style, ...other } = props;
 
   const { rowHeight = 'auto', gap, variant } = React.useContext(ImageListContext);
