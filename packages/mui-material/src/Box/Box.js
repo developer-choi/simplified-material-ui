@@ -1,22 +1,12 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { unstable_ClassNameGenerator as ClassNameGenerator } from '../className';
-import boxClasses from './boxClasses';
 
 const Box = React.forwardRef(function Box(props, ref) {
   const { className, children, ...other } = props;
 
   return (
-    <div
-      ref={ref}
-      className={clsx(
-        className,
-        ClassNameGenerator.generate ? ClassNameGenerator.generate(boxClasses.root) : boxClasses.root,
-      )}
-      {...other}
-    >
+    <div ref={ref} className={className} {...other}>
       {children}
     </div>
   );
