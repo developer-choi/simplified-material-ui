@@ -194,10 +194,10 @@ const CircularProgress = React.forwardRef(function CircularProgress(inProps, ref
     size = 40,
     style,
     thickness = 3.6,
-    value = 0,
-    variant = 'indeterminate',
     ...other
   } = props;
+  const variant = 'indeterminate';
+  const value = 0;
 
   const ownerState = {
     ...props,
@@ -215,14 +215,6 @@ const CircularProgress = React.forwardRef(function CircularProgress(inProps, ref
   const circleStyle = {};
   const rootStyle = {};
   const rootProps = {};
-
-  if (variant === 'determinate') {
-    const circumference = 2 * Math.PI * ((SIZE - thickness) / 2);
-    circleStyle.strokeDasharray = circumference.toFixed(3);
-    rootProps['aria-valuenow'] = Math.round(value);
-    circleStyle.strokeDashoffset = `${(((100 - value) / 100) * circumference).toFixed(3)}px`;
-    rootStyle.transform = 'rotate(-90deg)';
-  }
 
   return (
     <CircularProgressRoot
