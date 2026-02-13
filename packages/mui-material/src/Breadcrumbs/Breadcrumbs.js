@@ -4,7 +4,6 @@ import { isFragment } from 'react-is';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import Typography from '../Typography';
 import BreadcrumbCollapsed from './BreadcrumbCollapsed';
 import breadcrumbsClasses, { getBreadcrumbsUtilityClass } from './breadcrumbsClasses';
@@ -74,8 +73,7 @@ function insertSeparators(items, className, separator, ownerState) {
   }, []);
 }
 
-const Breadcrumbs = React.forwardRef(function Breadcrumbs(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiBreadcrumbs' });
+const Breadcrumbs = React.forwardRef(function Breadcrumbs(props, ref) {
   const {
     children,
     className,
