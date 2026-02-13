@@ -3,246 +3,89 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import chainPropTypes from '@mui/utils/chainPropTypes';
-import { keyframes, css, styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
-import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
 
 const SIZE = 44;
 
-const circularRotateKeyframe = keyframes`
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-`;
-
-const circularDashKeyframe = keyframes`
-  0% {
-    stroke-dasharray: 1px, 200px;
-    stroke-dashoffset: 0;
-  }
-
-  50% {
-    stroke-dasharray: 100px, 200px;
-    stroke-dashoffset: -15px;
-  }
-
-  100% {
-    stroke-dasharray: 1px, 200px;
-    stroke-dashoffset: -126px;
-  }
-`;
-
-// This implementation is for supporting both Styled-components v4+ and Pigment CSS.
-// A global animation has to be created here for Styled-components v4+ (https://github.com/styled-components/styled-components/blob/main/packages/styled-components/src/utils/errors.md#12).
-// which can be done by checking typeof indeterminate1Keyframe !== 'string' (at runtime, Pigment CSS transform keyframes`` to a string).
-const rotateAnimation =
-  typeof circularRotateKeyframe !== 'string'
-    ? css`
-        animation: ${circularRotateKeyframe} 1.4s linear infinite;
-      `
-    : null;
-
-const dashAnimation =
-  typeof circularDashKeyframe !== 'string'
-    ? css`
-        animation: ${circularDashKeyframe} 1.4s ease-in-out infinite;
-      `
-    : null;
-
-
-const CircularProgressRoot = styled('span', {
-  name: 'MuiCircularProgress',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.root,
-      styles[ownerState.variant],
-      styles[`color${capitalize(ownerState.color)}`],
-    ];
-  },
-})(
-  memoTheme(({ theme }) => ({
-    display: 'inline-block',
-    variants: [
-      {
-        props: {
-          variant: 'determinate',
-        },
-        style: {
-          transition: theme.transitions.create('transform'),
-        },
-      },
-      {
-        props: {
-          variant: 'indeterminate',
-        },
-        style: rotateAnimation || {
-          animation: `${circularRotateKeyframe} 1.4s linear infinite`,
-        },
-      },
-      ...Object.entries(theme.palette)
-        .filter(createSimplePaletteValueFilter())
-        .map(([color]) => ({
-          props: { color },
-          style: {
-            color: (theme.vars || theme).palette[color].main,
-          },
-        })),
-    ],
-  })),
-);
-
-const CircularProgressSVG = styled('svg', {
-  name: 'MuiCircularProgress',
-  slot: 'Svg',
-})({
-  display: 'block', // Keeps the progress centered
-});
-
-const CircularProgressCircle = styled('circle', {
-  name: 'MuiCircularProgress',
-  slot: 'Circle',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.circle,
-      styles[`circle${capitalize(ownerState.variant)}`],
-      ownerState.disableShrink && styles.circleDisableShrink,
-    ];
-  },
-})(
-  memoTheme(({ theme }) => ({
-    stroke: 'currentColor',
-    variants: [
-      {
-        props: {
-          variant: 'determinate',
-        },
-        style: {
-          transition: theme.transitions.create('stroke-dashoffset'),
-        },
-      },
-      {
-        props: {
-          variant: 'indeterminate',
-        },
-        style: {
-          // Some default value that looks fine waiting for the animation to kicks in.
-          strokeDasharray: '80px, 200px',
-          strokeDashoffset: 0, // Add the unit to fix a Edge 16 and below bug.
-        },
-      },
-      {
-        props: ({ ownerState }) =>
-          ownerState.variant === 'indeterminate' && !ownerState.disableShrink,
-        style: dashAnimation || {
-          // At runtime for Pigment CSS, `bufferAnimation` will be null and the generated keyframe will be used.
-          animation: `${circularDashKeyframe} 1.4s ease-in-out infinite`,
-        },
-      },
-    ],
-  })),
-);
-
-const CircularProgressTrack = styled('circle', {
-  name: 'MuiCircularProgress',
-  slot: 'Track',
-})(
-  memoTheme(({ theme }) => ({
-    stroke: 'currentColor',
-    opacity: (theme.vars || theme).palette.action.activatedOpacity,
-  })),
-);
-
-/**
- * ## ARIA
- *
- * If the progress bar is describing the loading progress of a particular region of a page,
- * you should use `aria-describedby` to point to the progress bar, and set the `aria-busy`
- * attribute to `true` on that region until it has finished loading.
- */
 const CircularProgress = React.forwardRef(function CircularProgress(props, ref) {
   const {
     className,
     style,
     ...other
   } = props;
-  const variant = 'indeterminate';
-  const value = 0;
-  const color = 'primary';
+
   const size = 40;
   const thickness = 3.6;
-  const disableShrink = false;
-  const enableTrackSlot = false;
 
-  const ownerState = {
-    ...props,
-    color,
-    disableShrink,
-    size,
-    thickness,
-    value,
-    variant,
-    enableTrackSlot,
+  const circleStyle = {
+    stroke: '#1976d2',
+    strokeDasharray: '80px, 200px',
+    strokeDashoffset: 0,
   };
 
-  const classes = {
-    root: 'MuiCircularProgress-root',
-    svg: 'MuiCircularProgress-svg',
-    track: 'MuiCircularProgress-track',
-    circle: 'MuiCircularProgress-circle',
+  const rootStyle = {
+    display: 'inline-block',
+    width: size,
+    height: size,
+    animation: 'MuiCircularProgress-keyframes-circular-rotate 1.4s linear infinite',
+    ...style,
   };
 
-  const circleStyle = {};
-  const rootStyle = {};
-  const rootProps = {};
+  const circleAnimationStyle = {
+    ...circleStyle,
+    animation: 'MuiCircularProgress-keyframes-circular-dash 1.4s ease-in-out infinite',
+  };
 
   return (
-    <CircularProgressRoot
-      className={clsx(classes.root, className)}
-      style={{ width: size, height: size, ...rootStyle, ...style }}
-      ownerState={ownerState}
-      ref={ref}
-      role="progressbar"
-      {...rootProps}
-      {...other}
-    >
-      <CircularProgressSVG
-        className={classes.svg}
-        ownerState={ownerState}
-        viewBox={`${SIZE / 2} ${SIZE / 2} ${SIZE} ${SIZE}`}
+    <>
+      <style>{`
+        @keyframes MuiCircularProgress-keyframes-circular-rotate {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+
+        @keyframes MuiCircularProgress-keyframes-circular-dash {
+          0% {
+            stroke-dasharray: 1px, 200px;
+            stroke-dashoffset: 0;
+          }
+          50% {
+            stroke-dasharray: 100px, 200px;
+            stroke-dashoffset: -15px;
+          }
+          100% {
+            stroke-dasharray: 1px, 200px;
+            stroke-dashoffset: -126px;
+          }
+        }
+      `}</style>
+      <span
+        className={clsx('MuiCircularProgress-root', className)}
+        style={rootStyle}
+        ref={ref}
+        role="progressbar"
+        {...other}
       >
-        {enableTrackSlot ? (
-          <CircularProgressTrack
-            className={classes.track}
-            ownerState={ownerState}
+        <svg
+          className="MuiCircularProgress-svg"
+          viewBox={`${SIZE / 2} ${SIZE / 2} ${SIZE} ${SIZE}`}
+          style={{ display: 'block' }}
+        >
+          <circle
+            className="MuiCircularProgress-circle"
             cx={SIZE}
             cy={SIZE}
             r={(SIZE - thickness) / 2}
             fill="none"
             strokeWidth={thickness}
-            aria-hidden="true"
+            style={circleAnimationStyle}
           />
-        ) : null}
-        <CircularProgressCircle
-          className={classes.circle}
-          style={circleStyle}
-          ownerState={ownerState}
-          cx={SIZE}
-          cy={SIZE}
-          r={(SIZE - thickness) / 2}
-          fill="none"
-          strokeWidth={thickness}
-        />
-      </CircularProgressSVG>
-    </CircularProgressRoot>
+        </svg>
+      </span>
+    </>
   );
 });
 
