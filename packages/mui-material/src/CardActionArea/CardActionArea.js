@@ -3,8 +3,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import cardActionAreaClasses, { getCardActionAreaUtilityClass } from './cardActionAreaClasses';
 import ButtonBase from '../../../form/ButtonBase';
 
@@ -19,32 +17,14 @@ const useUtilityClasses = (ownerState) => {
   return composeClasses(slots, getCardActionAreaUtilityClass, classes);
 };
 
-const CardActionAreaRoot = styled(ButtonBase, {
-  name: 'MuiCardActionArea',
-  slot: 'Root',
-})(
-  memoTheme(({ theme }) => ({
+const styles = {
+  root: {
     display: 'block',
     textAlign: 'inherit',
-    borderRadius: 'inherit', // for Safari to work https://github.com/mui/material-ui/issues/36285.
+    borderRadius: 'inherit',
     width: '100%',
-    [`&:hover .${cardActionAreaClasses.focusHighlight}`]: {
-      opacity: (theme.vars || theme).palette.action.hoverOpacity,
-      '@media (hover: none)': {
-        opacity: 0,
-      },
-    },
-    [`&.${cardActionAreaClasses.focusVisible} .${cardActionAreaClasses.focusHighlight}`]: {
-      opacity: (theme.vars || theme).palette.action.focusOpacity,
-    },
-  })),
-);
-
-const CardActionAreaFocusHighlight = styled('span', {
-  name: 'MuiCardActionArea',
-  slot: 'FocusHighlight',
-})(
-  memoTheme(({ theme }) => ({
+  },
+  focusHighlight: {
     overflow: 'hidden',
     pointerEvents: 'none',
     position: 'absolute',
@@ -55,11 +35,9 @@ const CardActionAreaFocusHighlight = styled('span', {
     borderRadius: 'inherit',
     opacity: 0,
     backgroundColor: 'currentcolor',
-    transition: theme.transitions.create('opacity', {
-      duration: theme.transitions.duration.short,
-    }),
-  })),
-);
+    transition: 'opacity 250ms',
+  },
+};
 
 const CardActionArea = React.forwardRef(function CardActionArea(props, ref) {
   const {
@@ -73,15 +51,32 @@ const CardActionArea = React.forwardRef(function CardActionArea(props, ref) {
   const classes = useUtilityClasses(ownerState);
 
   return (
-    <CardActionAreaRoot
+    <ButtonBase
       ref={ref}
       className={clsx(classes.root, className)}
+      style={styles.root}
       focusVisibleClassName={clsx(focusVisibleClassName, classes.focusVisible)}
+      onMouseEnter={(e) => {
+        const highlight = e.currentTarget.querySelector('[data-focus-highlight]');
+        if (highlight) highlight.style.opacity = '0.04';
+      }}
+      onMouseLeave={(e) => {
+        const highlight = e.currentTarget.querySelector('[data-focus-highlight]');
+        if (highlight) highlight.style.opacity = '0';
+      }}
+      onFocus={(e) => {
+        const highlight = e.currentTarget.querySelector('[data-focus-highlight]');
+        if (highlight) highlight.style.opacity = '0.12';
+      }}
+      onBlur={(e) => {
+        const highlight = e.currentTarget.querySelector('[data-focus-highlight]');
+        if (highlight) highlight.style.opacity = '0';
+      }}
       {...other}
     >
       {children}
-      <CardActionAreaFocusHighlight className={classes.focusHighlight} />
-    </CardActionAreaRoot>
+      <span data-focus-highlight style={styles.focusHighlight} className={classes.focusHighlight} />
+    </ButtonBase>
   );
 });
 
