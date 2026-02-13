@@ -6,9 +6,8 @@ import PropTypes from 'prop-types';
 import * as React from 'react';
 import { isFragment } from 'react-is';
 import ImageListContext from '../ImageList/ImageListContext';
-import { styled } from '../zero-styled';
 import isMuiElement from '../utils/isMuiElement';
-import imageListItemClasses, { getImageListItemUtilityClass } from './imageListItemClasses';
+import { getImageListItemUtilityClass } from './imageListItemClasses';
 
 const useUtilityClasses = (ownerState) => {
   const { classes, variant } = ownerState;
@@ -20,64 +19,6 @@ const useUtilityClasses = (ownerState) => {
 
   return composeClasses(slots, getImageListItemUtilityClass, classes);
 };
-
-const ImageListItemRoot = styled('li', {
-  name: 'MuiImageListItem',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      { [`& .${imageListItemClasses.img}`]: styles.img },
-      styles.root,
-      styles[ownerState.variant],
-    ];
-  },
-})({
-  display: 'block',
-  position: 'relative',
-  [`& .${imageListItemClasses.img}`]: {
-    objectFit: 'cover',
-    width: '100%',
-    height: '100%',
-    display: 'block',
-  },
-  variants: [
-    {
-      props: {
-        variant: 'standard',
-      },
-      style: {
-        // For titlebar under list item
-        display: 'flex',
-        flexDirection: 'column',
-      },
-    },
-    {
-      props: {
-        variant: 'woven',
-      },
-      style: {
-        height: '100%',
-        alignSelf: 'center',
-        '&:nth-of-type(even)': {
-          height: '70%',
-        },
-      },
-    },
-    {
-      props: {
-        variant: 'standard',
-      },
-      style: {
-        [`& .${imageListItemClasses.img}`]: {
-          height: 'auto',
-          flexGrow: 1,
-        },
-      },
-    },
-  ],
-});
 
 const ImageListItem = React.forwardRef(function ImageListItem(props, ref) {
   const { children, className, cols = 1, component = 'li', rows = 1, style, ...other } = props;
@@ -91,6 +32,36 @@ const ImageListItem = React.forwardRef(function ImageListItem(props, ref) {
     height = rowHeight * rows + gap * (rows - 1);
   }
 
+  const baseStyles = {
+    display: variant === 'standard' ? 'flex' : 'block',
+    flexDirection: variant === 'standard' ? 'column' : undefined,
+    position: 'relative',
+  };
+
+  const wovenStyles = variant === 'woven' ? {
+    height: '100%',
+    alignSelf: 'center',
+  } : {};
+
+  const itemStyle = {
+    ...baseStyles,
+    ...wovenStyles,
+    height,
+    gridColumnEnd: variant !== 'masonry' ? `span ${cols}` : undefined,
+    gridRowEnd: variant !== 'masonry' ? `span ${rows}` : undefined,
+    marginBottom: variant === 'masonry' ? gap : undefined,
+    breakInside: variant === 'masonry' ? 'avoid' : undefined,
+    ...style,
+  };
+
+  const imgStyles = {
+    objectFit: 'cover',
+    width: '100%',
+    height: variant === 'standard' ? 'auto' : '100%',
+    flexGrow: variant === 'standard' ? 1 : undefined,
+    display: 'block',
+  };
+
   const ownerState = {
     ...props,
     cols,
@@ -103,20 +74,13 @@ const ImageListItem = React.forwardRef(function ImageListItem(props, ref) {
 
   const classes = useUtilityClasses(ownerState);
 
+  const Component = component;
+
   return (
-    <ImageListItemRoot
-      as={component}
-      className={clsx(classes.root, classes[variant], className)}
+    <Component
       ref={ref}
-      style={{
-        height,
-        gridColumnEnd: variant !== 'masonry' ? `span ${cols}` : undefined,
-        gridRowEnd: variant !== 'masonry' ? `span ${rows}` : undefined,
-        marginBottom: variant === 'masonry' ? gap : undefined,
-        breakInside: variant === 'masonry' ? 'avoid' : undefined,
-        ...style,
-      }}
-      ownerState={ownerState}
+      className={clsx(classes.root, classes[variant], className)}
+      style={itemStyle}
       {...other}
     >
       {React.Children.map(children, (child) => {
@@ -143,7 +107,7 @@ const ImageListItem = React.forwardRef(function ImageListItem(props, ref) {
 
         return child;
       })}
-    </ImageListItemRoot>
+    </Component>
   );
 });
 
