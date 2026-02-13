@@ -67,17 +67,9 @@ const ContainerRoot = styled('div', {
     return acc;
   }, {}),
 ({ theme, ownerState }) => ({
-  ...(ownerState.maxWidth === 'xs' && {
-    [theme.breakpoints.up('xs')]: {
-      maxWidth: Math.max(theme.breakpoints.values.xs, 444),
-    },
-  }),
-  ...(ownerState.maxWidth &&
-    ownerState.maxWidth !== 'xs' && {
-      [theme.breakpoints.up(ownerState.maxWidth)]: {
-        maxWidth: `${theme.breakpoints.values[ownerState.maxWidth]}${theme.breakpoints.unit}`,
-      },
-    }),
+  [theme.breakpoints.up('lg')]: {
+    maxWidth: `${theme.breakpoints.values.lg}${theme.breakpoints.unit}`,
+  },
 }));
 
 const Container = React.forwardRef(function Container(inProps, ref) {
@@ -87,10 +79,11 @@ const Container = React.forwardRef(function Container(inProps, ref) {
     component = 'div',
     disableGutters = false,
     fixed = false,
-    maxWidth = 'lg',
     classes: classesProp,
     ...other
   } = props;
+
+  const maxWidth = 'lg';
 
   const ownerState = {
     ...props,
@@ -144,16 +137,6 @@ Container.propTypes /* remove-proptypes */ = {
    * @default false
    */
   fixed: PropTypes.bool,
-  /**
-   * Determine the max-width of the container.
-   * The container width grows with the size of the screen.
-   * Set to `false` to disable `maxWidth`.
-   * @default 'lg'
-   */
-  maxWidth: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl', false]),
-    PropTypes.string,
-  ]),
   /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
