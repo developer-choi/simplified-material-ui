@@ -3,7 +3,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
-import { styled } from '../zero-styled';
 import ListContext from '../../../data-display/List/ListContext';
 import { getListItemSecondaryActionClassesUtilityClass } from './listItemSecondaryActionClasses';
 
@@ -17,29 +16,6 @@ const useUtilityClasses = (ownerState) => {
   return composeClasses(slots, getListItemSecondaryActionClassesUtilityClass, classes);
 };
 
-const ListItemSecondaryActionRoot = styled('div', {
-  name: 'MuiListItemSecondaryAction',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [styles.root, ownerState.disableGutters && styles.disableGutters];
-  },
-})({
-  position: 'absolute',
-  right: 16,
-  top: '50%',
-  transform: 'translateY(-50%)',
-  variants: [
-    {
-      props: ({ ownerState }) => ownerState.disableGutters,
-      style: {
-        right: 0,
-      },
-    },
-  ],
-});
-
 /**
  * Must be used as the last child of ListItem to function properly.
  *
@@ -48,14 +24,23 @@ const ListItemSecondaryActionRoot = styled('div', {
 const ListItemSecondaryAction = React.forwardRef(function ListItemSecondaryAction(props, ref) {
   const { className, ...other } = props;
   const context = React.useContext(ListContext);
-  const ownerState = { ...props, disableGutters: context.disableGutters };
+  const { disableGutters } = context;
+
+  const style = {
+    position: 'absolute',
+    right: disableGutters ? 0 : 16,
+    top: '50%',
+    transform: 'translateY(-50%)',
+  };
+
+  const ownerState = { ...props, disableGutters };
   const classes = useUtilityClasses(ownerState);
 
   return (
-    <ListItemSecondaryActionRoot
-      className={clsx(classes.root, className)}
-      ownerState={ownerState}
+    <div
       ref={ref}
+      style={style}
+      className={clsx(classes.root, className)}
       {...other}
     />
   );
