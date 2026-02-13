@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import { createRenderer } from '@mui/internal-test-utils';
 import ImageListItemBar, {
   imageListItemBarClasses as classes,
-} from '@mui/material/ImageListItemBar';
-import describeConformance from '../../test/describeConformance';
+} from './index';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<ImageListItemBar />', () => {
   const { render } = createRenderer();

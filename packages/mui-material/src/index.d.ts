@@ -169,14 +169,14 @@ export * from '../../data-display/Icon';
 export { default as IconButton } from '../../form/IconButton';
 export * from '../../form/IconButton';
 
-export { default as ImageList } from './ImageList';
-export * from './ImageList';
+export { default as ImageList } from '../../data-display/ImageList';
+export * from '../../data-display/ImageList';
 
-export { default as ImageListItem } from './ImageListItem';
-export * from './ImageListItem';
+export { default as ImageListItem } from '../../data-display/ImageListItem';
+export * from '../../data-display/ImageListItem';
 
-export { default as ImageListItemBar } from './ImageListItemBar';
-export * from './ImageListItemBar';
+export { default as ImageListItemBar } from '../../data-display/ImageListItemBar';
+export * from '../../data-display/ImageListItemBar';
 
 export { default as Input } from '../../form/Input';
 export * from '../../form/Input';

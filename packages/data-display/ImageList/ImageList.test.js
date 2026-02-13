@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createRenderer, screen } from '@mui/internal-test-utils';
-import ImageList, { imageListClasses as classes } from '@mui/material/ImageList';
-import describeConformance from '../../test/describeConformance';
+import ImageList, { imageListClasses as classes } from './index';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 const itemsData = [
   {
