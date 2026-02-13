@@ -1,4 +1,4 @@
-import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Breadcrumbs from './index';
 import SvgIcon from '@mui/material/SvgIcon';
 
 function SampleIcon() {

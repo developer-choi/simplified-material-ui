@@ -52,8 +52,8 @@ export * from '../../navigation/BottomNavigationAction';
 export { default as Box } from './Box';
 export * from './Box';
 
-export { default as Breadcrumbs } from './Breadcrumbs';
-export * from './Breadcrumbs';
+export { default as Breadcrumbs } from '../../navigation/Breadcrumbs';
+export * from '../../navigation/Breadcrumbs';
 
 export { default as Button } from '../../form/Button';
 export * from '../../form/Button';

@@ -1,7 +1,7 @@
 'use client';
-import { styled } from '../zero-styled';
-import MoreHorizIcon from '../internal/svg-icons/MoreHoriz';
-import ButtonBase from '../../../form/ButtonBase';
+import { styled } from '@mui/material/zero-styled';
+import MoreHorizIcon from '@mui/material/internal/svg-icons/MoreHoriz';
+import ButtonBase from '../../form/ButtonBase';
 
 const BreadcrumbCollapsedButton = styled(ButtonBase, {
   name: 'MuiBreadcrumbCollapsed',

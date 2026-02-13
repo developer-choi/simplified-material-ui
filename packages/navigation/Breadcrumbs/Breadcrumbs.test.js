@@ -5,10 +5,10 @@ import {
   screen,
   strictModeDoubleLoggingSuppressed,
 } from '@mui/internal-test-utils';
-import Breadcrumbs, { breadcrumbsClasses as classes } from '@mui/material/Breadcrumbs';
+import Breadcrumbs, { breadcrumbsClasses as classes } from './index';
 import Typography from '@mui/material/Typography';
-import FirstPageIcon from '../internal/svg-icons/FirstPage';
-import describeConformance from '../../test/describeConformance';
+import FirstPageIcon from '@mui/material/internal/svg-icons/FirstPage';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<Breadcrumbs />', () => {
   const { render } = createRenderer();

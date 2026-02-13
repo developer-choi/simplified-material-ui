@@ -1,8 +1,8 @@
 'use client';
 import * as React from 'react';
 import { isFragment } from 'react-is';
-import { styled } from '../zero-styled';
-import Typography from '../Typography';
+import { styled } from '@mui/material/zero-styled';
+import Typography from '@mui/material/Typography';
 import BreadcrumbCollapsed from './BreadcrumbCollapsed';
 
 const BreadcrumbsRoot = styled(Typography, {

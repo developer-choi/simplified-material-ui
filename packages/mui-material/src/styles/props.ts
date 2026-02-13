@@ -8,7 +8,7 @@ import { BackdropProps } from '../Backdrop';
 import { BadgeProps } from '../../../data-display/Badge';
 import { BottomNavigationActionProps } from '../../../navigation/BottomNavigationAction';
 import { BottomNavigationProps } from '../../../navigation/BottomNavigation';
-import { BreadcrumbsProps } from '../Breadcrumbs';
+import { BreadcrumbsProps } from '../../../navigation/Breadcrumbs';
 import { ButtonBaseProps } from '../../../form/ButtonBase';
 import { ButtonGroupProps } from '../ButtonGroup';
 import { ButtonProps } from '../../../form/Button';
