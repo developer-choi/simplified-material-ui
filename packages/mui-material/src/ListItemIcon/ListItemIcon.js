@@ -3,8 +3,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import { getListItemIconUtilityClass } from './listItemIconClasses';
 import ListContext from '../../../data-display/List/ListContext';
 
@@ -18,33 +16,6 @@ const useUtilityClasses = (ownerState) => {
   return composeClasses(slots, getListItemIconUtilityClass, classes);
 };
 
-const ListItemIconRoot = styled('div', {
-  name: 'MuiListItemIcon',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [styles.root, ownerState.alignItems === 'flex-start' && styles.alignItemsFlexStart];
-  },
-})(
-  memoTheme(({ theme }) => ({
-    minWidth: 56,
-    color: (theme.vars || theme).palette.action.active,
-    flexShrink: 0,
-    display: 'inline-flex',
-    variants: [
-      {
-        props: {
-          alignItems: 'flex-start',
-        },
-        style: {
-          marginTop: 8,
-        },
-      },
-    ],
-  })),
-);
-
 /**
  * A simple wrapper to apply `List` styles to an `Icon` or `SvgIcon`.
  */
@@ -53,12 +24,21 @@ const ListItemIcon = React.forwardRef(function ListItemIcon(props, ref) {
   const context = React.useContext(ListContext);
   const ownerState = { ...props, alignItems: context.alignItems };
   const classes = useUtilityClasses(ownerState);
+  const { alignItems } = context;
+
+  const style = {
+    minWidth: 56,
+    color: 'rgba(0, 0, 0, 0.54)',
+    flexShrink: 0,
+    display: 'inline-flex',
+    marginTop: alignItems === 'flex-start' ? 8 : undefined,
+  };
 
   return (
-    <ListItemIconRoot
-      className={clsx(classes.root, className)}
-      ownerState={ownerState}
+    <div
       ref={ref}
+      style={style}
+      className={clsx(classes.root, className)}
       {...other}
     />
   );
