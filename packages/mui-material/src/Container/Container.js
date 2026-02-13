@@ -44,14 +44,12 @@ const ContainerRoot = styled('div', {
   marginLeft: 'auto',
   boxSizing: 'border-box',
   marginRight: 'auto',
-  ...(!ownerState.disableGutters && {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-    [theme.breakpoints.up('sm')]: {
-      paddingLeft: theme.spacing(3),
-      paddingRight: theme.spacing(3),
-    },
-  }),
+  paddingLeft: theme.spacing(2),
+  paddingRight: theme.spacing(2),
+  [theme.breakpoints.up('sm')]: {
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
+  },
 }), ({ theme, ownerState }) => ({
   [theme.breakpoints.up('lg')]: {
     maxWidth: `${theme.breakpoints.values.lg}${theme.breakpoints.unit}`,
@@ -63,13 +61,13 @@ const Container = React.forwardRef(function Container(inProps, ref) {
   const {
     className,
     component = 'div',
-    disableGutters = false,
     classes: classesProp,
     ...other
   } = props;
 
   const maxWidth = 'lg';
   const fixed = false;
+  const disableGutters = false;
 
   const ownerState = {
     ...props,
@@ -110,11 +108,6 @@ Container.propTypes /* remove-proptypes */ = {
    * Either a string to use a HTML element or a component.
    */
   component: PropTypes.elementType,
-  /**
-   * If `true`, the left and right padding is removed.
-   * @default false
-   */
-  disableGutters: PropTypes.bool,
   /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
