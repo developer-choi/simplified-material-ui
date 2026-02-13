@@ -3,7 +3,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
-import { styled } from '../zero-styled';
 import { getCardContentUtilityClass } from './cardContentClasses';
 
 const useUtilityClasses = (ownerState) => {
@@ -16,16 +15,6 @@ const useUtilityClasses = (ownerState) => {
   return composeClasses(slots, getCardContentUtilityClass, classes);
 };
 
-const CardContentRoot = styled('div', {
-  name: 'MuiCardContent',
-  slot: 'Root',
-})({
-  padding: 16,
-  '&:last-child': {
-    paddingBottom: 24,
-  },
-});
-
 const CardContent = React.forwardRef(function CardContent(props, ref) {
   const { className, component = 'div', ...other } = props;
 
@@ -33,12 +22,17 @@ const CardContent = React.forwardRef(function CardContent(props, ref) {
 
   const classes = useUtilityClasses(ownerState);
 
+  const styles = {
+    padding: 16,
+  };
+
+  const Component = component;
+
   return (
-    <CardContentRoot
-      as={component}
-      className={clsx(classes.root, className)}
-      ownerState={ownerState}
+    <Component
       ref={ref}
+      className={clsx(classes.root, className)}
+      style={styles}
       {...other}
     />
   );
