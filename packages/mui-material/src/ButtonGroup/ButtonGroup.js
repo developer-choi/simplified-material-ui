@@ -255,7 +255,6 @@ const ButtonGroup = React.forwardRef(function ButtonGroup(inProps, ref) {
   const {
     children,
     className,
-    color = 'primary',
     component = 'div',
     disabled = false,
     disableElevation = false,
@@ -267,6 +266,7 @@ const ButtonGroup = React.forwardRef(function ButtonGroup(inProps, ref) {
   } = props;
   const variant = 'outlined';
   const orientation = 'horizontal';
+  const color = 'primary';
 
   const ownerState = {
     ...props,
