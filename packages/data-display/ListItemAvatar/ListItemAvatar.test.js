@@ -1,19 +1,19 @@
 import { createRenderer } from '@mui/internal-test-utils';
-import ListItemIcon, { listItemIconClasses as classes } from '@mui/material/ListItemIcon';
-import describeConformance from '../../test/describeConformance';
+import ListItemAvatar, { listItemAvatarClasses as classes } from './index';
+import describeConformance from '../../mui-material/test/describeConformance';
 
-describe('<ListItemIcon />', () => {
+describe('<ListItemAvatar />', () => {
   const { render } = createRenderer();
 
   describeConformance(
-    <ListItemIcon>
+    <ListItemAvatar>
       <div />
-    </ListItemIcon>,
+    </ListItemAvatar>,
     () => ({
       classes,
       inheritComponent: 'div',
       render,
-      muiName: 'MuiListItemIcon',
+      muiName: 'MuiListItemAvatar',
       refInstanceof: window.HTMLDivElement,
       skip: ['componentProp', 'componentsProp', 'themeVariants'],
     }),

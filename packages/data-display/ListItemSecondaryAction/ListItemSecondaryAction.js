@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import ListContext from '../../../data-display/List/ListContext';
+import ListContext from '../List/ListContext';
 
 /**
  * Must be used as the last child of ListItem to function properly.

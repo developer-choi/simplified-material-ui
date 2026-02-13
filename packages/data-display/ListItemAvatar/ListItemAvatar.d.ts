@@ -1,6 +1,6 @@
 import { SxProps } from '@mui/system';
-import { Theme } from '../styles';
-import { InternalStandardProps as StandardProps } from '../internal';
+import { Theme } from '@mui/material/styles';
+import { InternalStandardProps as StandardProps } from '@mui/material/internal';
 import { ListItemAvatarClasses } from './listItemAvatarClasses';
 
 export interface ListItemAvatarProps extends StandardProps<React.HTMLAttributes<HTMLDivElement>> {

@@ -11,7 +11,7 @@ import {
 } from '@mui/internal-test-utils';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import MenuItem, { menuItemClasses } from '../../../menu/MenuItem';
-import ListSubheader from '@mui/material/ListSubheader';
+import ListSubheader from '../../../data-display/ListSubheader';
 import InputBase from '../../../form/InputBase';
 import OutlinedInput from '../../../form/OutlinedInput';
 import InputLabel from '../../../form/InputLabel';

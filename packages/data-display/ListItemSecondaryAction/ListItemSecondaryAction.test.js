@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import { createRenderer, screen } from '@mui/internal-test-utils';
-import ListItem from '../../../data-display/ListItem';
+import ListItem from '../ListItem';
 import ListItemSecondaryAction, {
   listItemSecondaryActionClasses as classes,
-} from '@mui/material/ListItemSecondaryAction';
-import describeConformance from '../../test/describeConformance';
+} from './index';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<ListItemSecondaryAction />', () => {
   const { render } = createRenderer();

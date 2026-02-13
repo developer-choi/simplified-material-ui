@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
-import Typography from '../Typography';
-import ListContext from '../../../data-display/List/ListContext';
+import Typography from '@mui/material/Typography';
+import ListContext from '../List/ListContext';
 
 const ListItemText = React.forwardRef(function ListItemText(props, ref) {
   const {

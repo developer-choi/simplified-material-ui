@@ -198,23 +198,23 @@ export * from '../../data-display/List';
 export { default as ListItem } from '../../data-display/ListItem';
 export * from '../../data-display/ListItem';
 
-export { default as ListItemAvatar } from './ListItemAvatar';
-export * from './ListItemAvatar';
+export { default as ListItemAvatar } from '../../data-display/ListItemAvatar';
+export * from '../../data-display/ListItemAvatar';
 
 export { default as ListItemButton } from 'docs/data-display/ListItemButton';
 export * from 'docs/data-display/ListItemButton';
 
-export { default as ListItemIcon } from './ListItemIcon';
-export * from './ListItemIcon';
+export { default as ListItemIcon } from '../../data-display/ListItemIcon';
+export * from '../../data-display/ListItemIcon';
 
-export { default as ListItemSecondaryAction } from './ListItemSecondaryAction';
-export * from './ListItemSecondaryAction';
+export { default as ListItemSecondaryAction } from '../../data-display/ListItemSecondaryAction';
+export * from '../../data-display/ListItemSecondaryAction';
 
-export { default as ListItemText } from './ListItemText';
-export * from './ListItemText';
+export { default as ListItemText } from '../../data-display/ListItemText';
+export * from '../../data-display/ListItemText';
 
-export { default as ListSubheader } from './ListSubheader';
-export * from './ListSubheader';
+export { default as ListSubheader } from '../../data-display/ListSubheader';
+export * from '../../data-display/ListSubheader';
 
 export { default as Menu } from '../../menu/Menu';
 export * from '../../menu/Menu';
