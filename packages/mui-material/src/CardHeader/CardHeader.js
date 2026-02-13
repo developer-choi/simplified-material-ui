@@ -3,7 +3,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import composeClasses from '@mui/utils/composeClasses';
 import Typography, { typographyClasses } from '../Typography';
-import { styled } from '../zero-styled';
 import cardHeaderClasses, { getCardHeaderUtilityClass } from './cardHeaderClasses';
 
 const useUtilityClasses = (ownerState) => {
@@ -21,54 +20,28 @@ const useUtilityClasses = (ownerState) => {
   return composeClasses(slots, getCardHeaderUtilityClass, classes);
 };
 
-const CardHeaderRoot = styled('div', {
-  name: 'MuiCardHeader',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    return [
-      { [`& .${cardHeaderClasses.title}`]: styles.title },
-      { [`& .${cardHeaderClasses.subheader}`]: styles.subheader },
-      styles.root,
-    ];
+const styles = {
+  root: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: 16,
   },
-})({
-  display: 'flex',
-  alignItems: 'center',
-  padding: 16,
-});
-
-const CardHeaderAvatar = styled('div', {
-  name: 'MuiCardHeader',
-  slot: 'Avatar',
-})({
-  display: 'flex',
-  flex: '0 0 auto',
-  marginRight: 16,
-});
-
-const CardHeaderAction = styled('div', {
-  name: 'MuiCardHeader',
-  slot: 'Action',
-})({
-  flex: '0 0 auto',
-  alignSelf: 'flex-start',
-  marginTop: -4,
-  marginRight: -8,
-  marginBottom: -4,
-});
-
-const CardHeaderContent = styled('div', {
-  name: 'MuiCardHeader',
-  slot: 'Content',
-})({
-  flex: '1 1 auto',
-  [`.${typographyClasses.root}:where(& .${cardHeaderClasses.title})`]: {
-    display: 'block',
+  avatar: {
+    display: 'flex',
+    flex: '0 0 auto',
+    marginRight: 16,
   },
-  [`.${typographyClasses.root}:where(& .${cardHeaderClasses.subheader})`]: {
-    display: 'block',
+  action: {
+    flex: '0 0 auto',
+    alignSelf: 'flex-start',
+    marginTop: -4,
+    marginRight: -8,
+    marginBottom: -4,
   },
-});
+  content: {
+    flex: '1 1 auto',
+  },
+};
 
 const CardHeader = React.forwardRef(function CardHeader(props, ref) {
   const {
@@ -116,15 +89,17 @@ const CardHeader = React.forwardRef(function CardHeader(props, ref) {
     );
   }
 
+  const Component = component;
+
   return (
-    <CardHeaderRoot ref={ref} as={component} className={classes.root} {...other}>
-      {avatar && <CardHeaderAvatar className={classes.avatar}>{avatar}</CardHeaderAvatar>}
-      <CardHeaderContent className={classes.content}>
+    <Component ref={ref} className={classes.root} style={styles.root} {...other}>
+      {avatar && <div className={classes.avatar} style={styles.avatar}>{avatar}</div>}
+      <div className={classes.content} style={styles.content}>
         {title}
         {subheader}
-      </CardHeaderContent>
-      {action && <CardHeaderAction className={classes.action}>{action}</CardHeaderAction>}
-    </CardHeaderRoot>
+      </div>
+      {action && <div className={classes.action} style={styles.action}>{action}</div>}
+    </Component>
   );
 });
 
