@@ -320,4 +320,4 @@ function Dialog({ children, 'aria-labelledby': ariaLabelledBy }) {
 
 ---
 
-> 공통 삭제 패턴(Disable/Enable Props, Ref 처리, 브라우저 호환성, Interval/Polling, 특수 케이스, 알고리즘, 유틸리티 함수, Deprecated Props, 메타데이터)은 `../format/common-patterns.md`를 참고하세요.
+> 공통 삭제 패턴(Disable/Enable Props, Ref 처리, 브라우저 호환성, Interval/Polling, 특수 케이스, 알고리즘, 유틸리티 함수, Deprecated Props, 메타데이터)은 ai-contexts의 `common-simplification-patterns.md`를 참고하세요.
