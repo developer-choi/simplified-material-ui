@@ -261,12 +261,12 @@ const ButtonGroup = React.forwardRef(function ButtonGroup(inProps, ref) {
     disableFocusRipple = false,
     disableRipple = false,
     fullWidth = false,
-    size = 'medium',
     ...other
   } = props;
   const variant = 'outlined';
   const orientation = 'horizontal';
   const color = 'primary';
+  const size = 'medium';
 
   const ownerState = {
     ...props,
