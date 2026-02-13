@@ -188,16 +188,16 @@ const CircularProgress = React.forwardRef(function CircularProgress(inProps, ref
   const props = useDefaultProps({ props: inProps, name: 'MuiCircularProgress' });
   const {
     className,
-    color = 'primary',
-    disableShrink = false,
-    enableTrackSlot = false,
-    size = 40,
     style,
-    thickness = 3.6,
     ...other
   } = props;
   const variant = 'indeterminate';
   const value = 0;
+  const color = 'primary';
+  const size = 40;
+  const thickness = 3.6;
+  const disableShrink = false;
+  const enableTrackSlot = false;
 
   const ownerState = {
     ...props,
