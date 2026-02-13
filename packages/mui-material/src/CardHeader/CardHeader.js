@@ -1,24 +1,6 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import composeClasses from '@mui/utils/composeClasses';
-import Typography, { typographyClasses } from '../Typography';
-import cardHeaderClasses, { getCardHeaderUtilityClass } from './cardHeaderClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-
-  const slots = {
-    root: ['root'],
-    avatar: ['avatar'],
-    action: ['action'],
-    content: ['content'],
-    title: ['title'],
-    subheader: ['subheader'],
-  };
-
-  return composeClasses(slots, getCardHeaderUtilityClass, classes);
-};
+import Typography from '../Typography';
 
 const styles = {
   root: {
@@ -54,19 +36,10 @@ const CardHeader = React.forwardRef(function CardHeader(props, ref) {
     ...other
   } = props;
 
-  const ownerState = {
-    ...props,
-    component,
-    disableTypography,
-  };
-
-  const classes = useUtilityClasses(ownerState);
-
   let title = titleProp;
   if (title != null && title.type !== Typography && !disableTypography) {
     title = (
       <Typography
-        className={classes.title}
         variant={avatar ? 'body2' : 'h5'}
         component="span"
       >
@@ -79,7 +52,6 @@ const CardHeader = React.forwardRef(function CardHeader(props, ref) {
   if (subheader != null && subheader.type !== Typography && !disableTypography) {
     subheader = (
       <Typography
-        className={classes.subheader}
         variant={avatar ? 'body2' : 'body1'}
         color="textSecondary"
         component="span"
@@ -92,103 +64,15 @@ const CardHeader = React.forwardRef(function CardHeader(props, ref) {
   const Component = component;
 
   return (
-    <Component ref={ref} className={classes.root} style={styles.root} {...other}>
-      {avatar && <div className={classes.avatar} style={styles.avatar}>{avatar}</div>}
-      <div className={classes.content} style={styles.content}>
+    <Component ref={ref} style={styles.root} {...other}>
+      {avatar && <div style={styles.avatar}>{avatar}</div>}
+      <div style={styles.content}>
         {title}
         {subheader}
       </div>
-      {action && <div className={classes.action} style={styles.action}>{action}</div>}
+      {action && <div style={styles.action}>{action}</div>}
     </Component>
   );
 });
-
-CardHeader.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * The action to display in the card header.
-   */
-  action: PropTypes.node,
-  /**
-   * The Avatar element to display.
-   */
-  avatar: PropTypes.node,
-  /**
-   * @ignore
-   */
-  children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
-  /**
-   * If `true`, `subheader` and `title` won't be wrapped by a Typography component.
-   * This can be useful to render an alternative Typography variant by wrapping
-   * the `title` text, and optional `subheader` text
-   * with the Typography component.
-   * @default false
-   */
-  disableTypography: PropTypes.bool,
-  /**
-   * The props used for each slot inside.
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    action: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    avatar: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    content: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    subheader: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    title: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * The components used for each slot inside.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    action: PropTypes.elementType,
-    avatar: PropTypes.elementType,
-    content: PropTypes.elementType,
-    root: PropTypes.elementType,
-    subheader: PropTypes.elementType,
-    title: PropTypes.elementType,
-  }),
-  /**
-   * The content of the component.
-   */
-  subheader: PropTypes.node,
-  /**
-   * These props will be forwarded to the subheader
-   * (as long as disableTypography is not `true`).
-   * @deprecated Use `slotProps.subheader` instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   */
-  subheaderTypographyProps: PropTypes.object,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-  /**
-   * The content of the component.
-   */
-  title: PropTypes.node,
-  /**
-   * These props will be forwarded to the title
-   * (as long as disableTypography is not `true`).
-   * @deprecated Use `slotProps.title` instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   */
-  titleTypographyProps: PropTypes.object,
-};
 
 export default CardHeader;
