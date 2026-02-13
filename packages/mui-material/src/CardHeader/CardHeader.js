@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import composeClasses from '@mui/utils/composeClasses';
 import Typography, { typographyClasses } from '../Typography';
 import { styled } from '../zero-styled';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import cardHeaderClasses, { getCardHeaderUtilityClass } from './cardHeaderClasses';
 
 const useUtilityClasses = (ownerState) => {
@@ -71,17 +70,14 @@ const CardHeaderContent = styled('div', {
   },
 });
 
-const CardHeader = React.forwardRef(function CardHeader(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiCardHeader' });
+const CardHeader = React.forwardRef(function CardHeader(props, ref) {
   const {
     action,
     avatar,
     component = 'div',
     disableTypography = false,
     subheader: subheaderProp,
-    subheaderTypographyProps,
     title: titleProp,
-    titleTypographyProps,
     ...other
   } = props;
 
@@ -100,7 +96,6 @@ const CardHeader = React.forwardRef(function CardHeader(inProps, ref) {
         className={classes.title}
         variant={avatar ? 'body2' : 'h5'}
         component="span"
-        {...titleTypographyProps}
       >
         {title}
       </Typography>
@@ -115,7 +110,6 @@ const CardHeader = React.forwardRef(function CardHeader(inProps, ref) {
         variant={avatar ? 'body2' : 'body1'}
         color="textSecondary"
         component="span"
-        {...subheaderTypographyProps}
       >
         {subheader}
       </Typography>
