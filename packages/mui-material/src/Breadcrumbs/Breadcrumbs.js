@@ -1,25 +1,9 @@
 'use client';
 import * as React from 'react';
 import { isFragment } from 'react-is';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import Typography from '../Typography';
 import BreadcrumbCollapsed from './BreadcrumbCollapsed';
-import breadcrumbsClasses, { getBreadcrumbsUtilityClass } from './breadcrumbsClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-
-  const slots = {
-    root: ['root'],
-    li: ['li'],
-    ol: ['ol'],
-    separator: ['separator'],
-  };
-
-  return composeClasses(slots, getBreadcrumbsUtilityClass, classes);
-};
 
 const BreadcrumbsRoot = styled(Typography, {
   name: 'MuiBreadcrumbs',
@@ -51,7 +35,7 @@ const BreadcrumbsSeparator = styled('li', {
   marginRight: 8,
 });
 
-function insertSeparators(items, className, separator, ownerState) {
+function insertSeparators(items, separator, ownerState) {
   return items.reduce((acc, current, index) => {
     if (index < items.length - 1) {
       acc = acc.concat(
@@ -59,7 +43,6 @@ function insertSeparators(items, className, separator, ownerState) {
         <BreadcrumbsSeparator
           aria-hidden
           key={`separator-${index}`}
-          className={className}
           ownerState={ownerState}
         >
           {separator}
@@ -98,8 +81,6 @@ const Breadcrumbs = React.forwardRef(function Breadcrumbs(props, ref) {
     maxItems,
     separator,
   };
-
-  const classes = useUtilityClasses(ownerState);
 
   const listRef = React.useRef(null);
   const renderItemsBeforeAndAfter = (allItems) => {
@@ -157,7 +138,7 @@ const Breadcrumbs = React.forwardRef(function Breadcrumbs(props, ref) {
       return React.isValidElement(child);
     })
     .map((child, index) => (
-      <li className={classes.li} key={`child-${index}`}>
+      <li key={`child-${index}`}>
         {child}
       </li>
     ));
@@ -167,16 +148,15 @@ const Breadcrumbs = React.forwardRef(function Breadcrumbs(props, ref) {
       ref={ref}
       component={component}
       color="textSecondary"
-      className={clsx(classes.root, className)}
+      className={className}
       ownerState={ownerState}
       {...other}
     >
-      <BreadcrumbsOl className={classes.ol} ref={listRef} ownerState={ownerState}>
+      <BreadcrumbsOl ref={listRef} ownerState={ownerState}>
         {insertSeparators(
           expanded || (maxItems && allItems.length <= maxItems)
             ? allItems
             : renderItemsBeforeAndAfter(allItems),
-          classes.separator,
           separator,
           ownerState,
         )}
