@@ -1,22 +1,8 @@
 'use client';
 import * as React from 'react';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
-import { getPaginationUtilityClass } from './paginationClasses';
 import usePagination from '../usePagination';
 import PaginationItem from '../PaginationItem';
 import { styled } from '../zero-styled';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-
-  const slots = {
-    root: ['root'],
-    ul: ['ul'],
-  };
-
-  return composeClasses(slots, getPaginationUtilityClass, classes);
-};
 
 const PaginationRoot = styled('nav', {
   name: 'MuiPagination',
@@ -79,17 +65,15 @@ const Pagination = React.forwardRef(function Pagination(inProps, ref) {
     siblingCount,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <PaginationRoot
       aria-label="pagination navigation"
-      className={clsx(classes.root, className)}
+      className={className}
       ownerState={ownerState}
       ref={ref}
       {...other}
     >
-      <PaginationUl className={classes.ul} ownerState={ownerState}>
+      <PaginationUl ownerState={ownerState}>
         {items.map((item, index) => (
           <li key={index}>
             <PaginationItem
