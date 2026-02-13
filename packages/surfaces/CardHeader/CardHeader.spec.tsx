@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import CardHeader, { CardHeaderProps, CardHeaderTypeMap } from '@mui/material/CardHeader';
+import CardHeader, { CardHeaderProps, CardHeaderTypeMap } from './index';
 
 const CustomComponent: React.FC<{ stringProp: string; numberProp: number }> =
   function CustomComponent() {

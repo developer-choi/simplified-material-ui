@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { createRenderer } from '@mui/internal-test-utils';
-import CardActionArea, { cardActionAreaClasses as classes } from '@mui/material/CardActionArea';
-import ButtonBase from '../../../form/ButtonBase';
-import describeConformance from '../../test/describeConformance';
+import CardActionArea, { cardActionAreaClasses as classes } from './index';
+import ButtonBase from '../../form/ButtonBase';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 const CustomButtonBase = React.forwardRef(({ focusVisibleClassName, ...props }, ref) => {
   return <ButtonBase {...props} ref={ref} />;

@@ -1,6 +1,6 @@
 import { createRenderer } from '@mui/internal-test-utils';
-import CardContent, { cardContentClasses as classes } from '@mui/material/CardContent';
-import describeConformance from '../../test/describeConformance';
+import CardContent, { cardContentClasses as classes } from './index';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<CardContent />', () => {
   const { render } = createRenderer();

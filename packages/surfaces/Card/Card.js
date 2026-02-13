@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import Paper from '../../../surfaces/Paper';
+import Paper from '../Paper';
 
 const Card = React.forwardRef(function Card(props, ref) {
   const { className, raised = false, style, ...other } = props;

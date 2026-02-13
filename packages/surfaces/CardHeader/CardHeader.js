@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import Typography from '../Typography';
+import Typography from '@mui/material/Typography';
 
 const styles = {
   root: {

@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { SxProps } from '@mui/system';
-import { SlotProps, CreateSlotsAndSlotProps } from '../utils/types';
-import { Theme } from '../styles';
+import { SlotProps, CreateSlotsAndSlotProps } from '@mui/material/utils/types';
+import { Theme } from '@mui/material/styles';
 import {
   ButtonBaseProps,
   ButtonBaseTypeMap,
   ExtendButtonBase,
   ExtendButtonBaseTypeMap,
-} from '../../../form/ButtonBase';
-import { OverrideProps } from '../OverridableComponent';
+} from '../../form/ButtonBase';
+import { OverrideProps } from '@mui/material/OverridableComponent';
 import { CardActionAreaClasses } from './cardActionAreaClasses';
 
 export interface CardActionAreaSlots {

@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import ButtonBase from '../../../form/ButtonBase';
+import ButtonBase from '../../form/ButtonBase';
 
 const styles = {
   root: {

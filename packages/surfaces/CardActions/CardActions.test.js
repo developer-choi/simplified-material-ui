@@ -1,8 +1,8 @@
 import { createRenderer } from '@mui/internal-test-utils';
-import CardActions, { cardActionsClasses as classes } from '@mui/material/CardActions';
-import Button from '../../../form/Button';
+import CardActions, { cardActionsClasses as classes } from './index';
+import Button from '../../form/Button';
 import { expect } from 'chai';
-import describeConformance from '../../test/describeConformance';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<CardActions />', () => {
   const { render } = createRenderer();

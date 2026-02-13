@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { SxProps } from '@mui/system';
-import { TypographyProps } from '../Typography';
-import { OverridableComponent, OverrideProps } from '../OverridableComponent';
-import { Theme } from '../styles';
-import { CreateSlotsAndSlotProps, SlotProps } from '../utils/types';
+import { TypographyProps } from '@mui/material/Typography';
+import { OverridableComponent, OverrideProps } from '@mui/material/OverridableComponent';
+import { Theme } from '@mui/material/styles';
+import { CreateSlotsAndSlotProps, SlotProps } from '@mui/material/utils/types';
 import { CardHeaderClasses } from './cardHeaderClasses';
 
 export interface CardHeaderRootSlotPropsOverrides {}

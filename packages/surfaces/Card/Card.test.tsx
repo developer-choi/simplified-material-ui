@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import { createRenderer } from '@mui/internal-test-utils';
-import Card, { cardClasses as classes } from '@mui/material/Card';
-import Paper from '../../../surfaces/Paper';
-import describeConformance from '../../test/describeConformance';
+import Card, { cardClasses as classes } from './index';
+import Paper from '../Paper';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<Card />', () => {
   const { render } = createRenderer();

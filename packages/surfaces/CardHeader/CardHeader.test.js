@@ -1,11 +1,11 @@
 import { expect } from 'chai';
 import { createRenderer } from '@mui/internal-test-utils';
 import { typographyClasses } from '@mui/material/Typography';
-import Avatar from '../../../data-display/Avatar';
-import IconButton from '../../../form/IconButton';
-import CardHeader, { cardHeaderClasses as classes } from '@mui/material/CardHeader';
+import Avatar from '../../data-display/Avatar';
+import IconButton from '../../form/IconButton';
+import CardHeader, { cardHeaderClasses as classes } from './index';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import describeConformance from '../../test/describeConformance';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<CardHeader />', () => {
   const { render } = createRenderer();
