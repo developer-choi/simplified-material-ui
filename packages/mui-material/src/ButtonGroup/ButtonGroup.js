@@ -48,7 +48,7 @@ const overridesResolver = (props, styles) => {
 };
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, color, disabled, disableElevation, fullWidth, orientation, variant } =
+  const { classes, color, fullWidth, orientation, variant } =
     ownerState;
 
   const slots = {
@@ -57,7 +57,6 @@ const useUtilityClasses = (ownerState) => {
       variant,
       orientation,
       fullWidth && 'fullWidth',
-      disableElevation && 'disableElevation',
       `color${capitalize(color)}`,
     ],
     grouped: [
@@ -66,7 +65,6 @@ const useUtilityClasses = (ownerState) => {
       `grouped${capitalize(variant)}`,
       `grouped${capitalize(variant)}${capitalize(orientation)}`,
       `grouped${capitalize(variant)}${capitalize(color)}`,
-      disabled && 'disabled',
     ],
     firstButton: ['firstButton'],
     lastButton: ['lastButton'],
@@ -256,8 +254,6 @@ const ButtonGroup = React.forwardRef(function ButtonGroup(inProps, ref) {
     children,
     className,
     component = 'div',
-    disabled = false,
-    disableElevation = false,
     disableFocusRipple = false,
     disableRipple = false,
     fullWidth = false,
@@ -272,8 +268,6 @@ const ButtonGroup = React.forwardRef(function ButtonGroup(inProps, ref) {
     ...props,
     color,
     component,
-    disabled,
-    disableElevation,
     disableFocusRipple,
     disableRipple,
     fullWidth,
@@ -288,8 +282,6 @@ const ButtonGroup = React.forwardRef(function ButtonGroup(inProps, ref) {
     () => ({
       className: classes.grouped,
       color,
-      disabled,
-      disableElevation,
       disableFocusRipple,
       disableRipple,
       fullWidth,
@@ -298,8 +290,6 @@ const ButtonGroup = React.forwardRef(function ButtonGroup(inProps, ref) {
     }),
     [
       color,
-      disabled,
-      disableElevation,
       disableFocusRipple,
       disableRipple,
       fullWidth,
