@@ -3,8 +3,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import capitalize from '../utils/capitalize';
 import { getListSubheaderUtilityClass } from './listSubheaderClasses';
 
@@ -24,72 +22,6 @@ const useUtilityClasses = (ownerState) => {
   return composeClasses(slots, getListSubheaderUtilityClass, classes);
 };
 
-const ListSubheaderRoot = styled('li', {
-  name: 'MuiListSubheader',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.root,
-      ownerState.color !== 'default' && styles[`color${capitalize(ownerState.color)}`],
-      !ownerState.disableGutters && styles.gutters,
-      ownerState.inset && styles.inset,
-      !ownerState.disableSticky && styles.sticky,
-    ];
-  },
-})(
-  memoTheme(({ theme }) => ({
-    boxSizing: 'border-box',
-    lineHeight: '48px',
-    listStyle: 'none',
-    color: (theme.vars || theme).palette.text.secondary,
-    fontFamily: theme.typography.fontFamily,
-    fontWeight: theme.typography.fontWeightMedium,
-    fontSize: theme.typography.pxToRem(14),
-    variants: [
-      {
-        props: {
-          color: 'primary',
-        },
-        style: {
-          color: (theme.vars || theme).palette.primary.main,
-        },
-      },
-      {
-        props: {
-          color: 'inherit',
-        },
-        style: {
-          color: 'inherit',
-        },
-      },
-      {
-        props: ({ ownerState }) => !ownerState.disableGutters,
-        style: {
-          paddingLeft: 16,
-          paddingRight: 16,
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.inset,
-        style: {
-          paddingLeft: 72,
-        },
-      },
-      {
-        props: ({ ownerState }) => !ownerState.disableSticky,
-        style: {
-          position: 'sticky',
-          top: 0,
-          zIndex: 1,
-          backgroundColor: (theme.vars || theme).palette.background.paper,
-        },
-      },
-    ],
-  })),
-);
-
 const ListSubheader = React.forwardRef(function ListSubheader(props, ref) {
   const {
     className,
@@ -100,6 +32,47 @@ const ListSubheader = React.forwardRef(function ListSubheader(props, ref) {
     inset = false,
     ...other
   } = props;
+
+  const Component = component;
+
+  const baseStyle = {
+    boxSizing: 'border-box',
+    lineHeight: '48px',
+    listStyle: 'none',
+    fontFamily: 'Roboto, "Helvetica Neue", Arial, sans-serif',
+    fontWeight: 500,
+    fontSize: '14px',
+  };
+
+  const colorStyle =
+    color === 'primary'
+      ? { color: '#1976d2' }
+      : color === 'inherit'
+        ? { color: 'inherit' }
+        : { color: 'rgba(0, 0, 0, 0.6)' };
+
+  const gutterStyle = !disableGutters
+    ? { paddingLeft: 16, paddingRight: 16 }
+    : {};
+
+  const insetStyle = inset ? { paddingLeft: 72 } : {};
+
+  const stickyStyle = !disableSticky
+    ? {
+        position: 'sticky',
+        top: 0,
+        zIndex: 1,
+        backgroundColor: '#fff',
+      }
+    : {};
+
+  const style = {
+    ...baseStyle,
+    ...colorStyle,
+    ...gutterStyle,
+    ...insetStyle,
+    ...stickyStyle,
+  };
 
   const ownerState = {
     ...props,
@@ -113,11 +86,10 @@ const ListSubheader = React.forwardRef(function ListSubheader(props, ref) {
   const classes = useUtilityClasses(ownerState);
 
   return (
-    <ListSubheaderRoot
-      as={component}
-      className={clsx(classes.root, className)}
+    <Component
       ref={ref}
-      ownerState={ownerState}
+      style={style}
+      className={clsx(classes.root, className)}
       {...other}
     />
   );
