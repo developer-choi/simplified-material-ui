@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import { getCardActionsUtilityClass } from './cardActionsClasses';
 
 const useUtilityClasses = (ownerState) => {
@@ -41,12 +40,7 @@ const CardActionsRoot = styled('div', {
   ],
 });
 
-const CardActions = React.forwardRef(function CardActions(inProps, ref) {
-  const props = useDefaultProps({
-    props: inProps,
-    name: 'MuiCardActions',
-  });
-
+const CardActions = React.forwardRef(function CardActions(props, ref) {
   const { disableSpacing = false, className, ...other } = props;
 
   const ownerState = { ...props, disableSpacing };
