@@ -59,7 +59,6 @@ const Pagination = React.forwardRef(function Pagination(inProps, ref) {
     hidePrevButton = false,
     onChange,
     page,
-    renderItem = (item) => <PaginationItem {...item} />,
     showFirstButton = false,
     showLastButton = false,
     siblingCount = 1,
@@ -77,7 +76,6 @@ const Pagination = React.forwardRef(function Pagination(inProps, ref) {
     getItemAriaLabel,
     hideNextButton,
     hidePrevButton,
-    renderItem,
     showFirstButton,
     showLastButton,
     siblingCount,
@@ -96,10 +94,10 @@ const Pagination = React.forwardRef(function Pagination(inProps, ref) {
       <PaginationUl className={classes.ul} ownerState={ownerState}>
         {items.map((item, index) => (
           <li key={index}>
-            {renderItem({
-              ...item,
-              'aria-label': getItemAriaLabel(item.type, item.page, item.selected),
-            })}
+            <PaginationItem
+              {...item}
+              aria-label={getItemAriaLabel(item.type, item.page, item.selected)}
+            />
           </li>
         ))}
       </PaginationUl>
