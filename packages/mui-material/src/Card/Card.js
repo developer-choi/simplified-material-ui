@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import chainPropTypes from '@mui/utils/chainPropTypes';
 import composeClasses from '@mui/utils/composeClasses';
-import { styled } from '../zero-styled';
 import Paper from '../../../surfaces/Paper';
 import { getCardUtilityClass } from './cardClasses';
 
@@ -18,26 +17,19 @@ const useUtilityClasses = (ownerState) => {
   return composeClasses(slots, getCardUtilityClass, classes);
 };
 
-const CardRoot = styled(Paper, {
-  name: 'MuiCard',
-  slot: 'Root',
-})({
-  overflow: 'hidden',
-});
-
 const Card = React.forwardRef(function Card(props, ref) {
-  const { className, raised = false, ...other } = props;
+  const { className, raised = false, style, ...other } = props;
 
   const ownerState = { ...props, raised };
 
   const classes = useUtilityClasses(ownerState);
 
   return (
-    <CardRoot
-      className={clsx(classes.root, className)}
-      elevation={raised ? 8 : undefined}
+    <Paper
       ref={ref}
-      ownerState={ownerState}
+      className={clsx(classes.root, className)}
+      style={{ overflow: 'hidden', ...style }}
+      elevation={raised ? 8 : 1}
       {...other}
     />
   );
