@@ -4,8 +4,25 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import chainPropTypes from '@mui/utils/chainPropTypes';
 import composeClasses from '@mui/utils/composeClasses';
-import { styled } from '../zero-styled';
 import { getCardMediaUtilityClass } from './cardMediaClasses';
+
+const MEDIA_COMPONENTS = ['video', 'audio', 'picture', 'iframe', 'img'];
+const IMAGE_COMPONENTS = ['picture', 'img'];
+
+const styles = {
+  root: {
+    display: 'block',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+  },
+  media: {
+    width: '100%',
+  },
+  img: {
+    objectFit: 'cover',
+  },
+};
 
 const useUtilityClasses = (ownerState) => {
   const { classes, isMediaComponent, isImageComponent } = ownerState;
@@ -17,68 +34,42 @@ const useUtilityClasses = (ownerState) => {
   return composeClasses(slots, getCardMediaUtilityClass, classes);
 };
 
-const CardMediaRoot = styled('div', {
-  name: 'MuiCardMedia',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-    const { isMediaComponent, isImageComponent } = ownerState;
-
-    return [styles.root, isMediaComponent && styles.media, isImageComponent && styles.img];
-  },
-})({
-  display: 'block',
-  backgroundSize: 'cover',
-  backgroundRepeat: 'no-repeat',
-  backgroundPosition: 'center',
-  variants: [
-    {
-      props: { isMediaComponent: true },
-      style: {
-        width: '100%',
-      },
-    },
-    {
-      props: { isImageComponent: true },
-      style: {
-        objectFit: 'cover',
-      },
-    },
-  ],
-});
-
-const MEDIA_COMPONENTS = ['video', 'audio', 'picture', 'iframe', 'img'];
-const IMAGE_COMPONENTS = ['picture', 'img'];
-
 const CardMedia = React.forwardRef(function CardMedia(props, ref) {
   const { children, className, component = 'div', image, src, style, ...other } = props;
 
   const isMediaComponent = MEDIA_COMPONENTS.includes(component);
-  const composedStyle =
-    !isMediaComponent && image ? { backgroundImage: `url("${image}")`, ...style } : style;
+  const isImageComponent = IMAGE_COMPONENTS.includes(component);
+
+  const composedStyle = {
+    ...styles.root,
+    ...(isMediaComponent && styles.media),
+    ...(isImageComponent && styles.img),
+    ...(!isMediaComponent && image && { backgroundImage: `url("${image}")` }),
+    ...style,
+  };
 
   const ownerState = {
     ...props,
     component,
     isMediaComponent,
-    isImageComponent: IMAGE_COMPONENTS.includes(component),
+    isImageComponent,
   };
 
   const classes = useUtilityClasses(ownerState);
 
+  const Component = component;
+
   return (
-    <CardMediaRoot
-      className={clsx(classes.root, className)}
-      as={component}
-      role={!isMediaComponent && image ? 'img' : undefined}
+    <Component
       ref={ref}
+      className={clsx(classes.root, className)}
+      role={!isMediaComponent && image ? 'img' : undefined}
       style={composedStyle}
-      ownerState={ownerState}
       src={isMediaComponent ? image || src : undefined}
       {...other}
     >
       {children}
-    </CardMediaRoot>
+    </Component>
   );
 });
 
