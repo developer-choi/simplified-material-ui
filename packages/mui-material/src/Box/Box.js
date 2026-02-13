@@ -6,11 +6,10 @@ import { unstable_ClassNameGenerator as ClassNameGenerator } from '../className'
 import boxClasses from './boxClasses';
 
 const Box = React.forwardRef(function Box(props, ref) {
-  const { className, component = 'div', children, ...other } = props;
-  const Component = component;
+  const { className, children, ...other } = props;
 
   return (
-    <Component
+    <div
       ref={ref}
       className={clsx(
         className,
@@ -19,7 +18,7 @@ const Box = React.forwardRef(function Box(props, ref) {
       {...other}
     >
       {children}
-    </Component>
+    </div>
   );
 });
 
