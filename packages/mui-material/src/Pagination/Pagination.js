@@ -9,10 +9,10 @@ import { styled } from '../zero-styled';
 import { useDefaultProps } from '../DefaultPropsProvider';
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, variant } = ownerState;
+  const { classes } = ownerState;
 
   const slots = {
-    root: ['root', variant],
+    root: ['root'],
     ul: ['ul'],
   };
 
@@ -23,9 +23,7 @@ const PaginationRoot = styled('nav', {
   name: 'MuiPagination',
   slot: 'Root',
   overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [styles.root, styles[ownerState.variant]];
+    return [styles.root];
   },
 })({});
 
@@ -53,7 +51,6 @@ const Pagination = React.forwardRef(function Pagination(inProps, ref) {
   const {
     boundaryCount = 1,
     className,
-    color = 'standard',
     count = 1,
     defaultPage = 1,
     disabled = false,
@@ -63,12 +60,9 @@ const Pagination = React.forwardRef(function Pagination(inProps, ref) {
     onChange,
     page,
     renderItem = (item) => <PaginationItem {...item} />,
-    shape = 'circular',
     showFirstButton = false,
     showLastButton = false,
     siblingCount = 1,
-    size = 'medium',
-    variant = 'text',
     ...other
   } = props;
 
@@ -77,7 +71,6 @@ const Pagination = React.forwardRef(function Pagination(inProps, ref) {
   const ownerState = {
     ...props,
     boundaryCount,
-    color,
     count,
     defaultPage,
     disabled,
@@ -85,12 +78,9 @@ const Pagination = React.forwardRef(function Pagination(inProps, ref) {
     hideNextButton,
     hidePrevButton,
     renderItem,
-    shape,
     showFirstButton,
     showLastButton,
     siblingCount,
-    size,
-    variant,
   };
 
   const classes = useUtilityClasses(ownerState);
@@ -108,11 +98,7 @@ const Pagination = React.forwardRef(function Pagination(inProps, ref) {
           <li key={index}>
             {renderItem({
               ...item,
-              color,
               'aria-label': getItemAriaLabel(item.type, item.page, item.selected),
-              shape,
-              size,
-              variant,
             })}
           </li>
         ))}
