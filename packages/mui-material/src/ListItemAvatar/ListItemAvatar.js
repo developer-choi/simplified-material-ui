@@ -5,7 +5,6 @@ import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import ListContext from '../../../data-display/List/ListContext';
 import { styled } from '../zero-styled';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import { getListItemAvatarUtilityClass } from './listItemAvatarClasses';
 
 const useUtilityClasses = (ownerState) => {
@@ -44,12 +43,7 @@ const ListItemAvatarRoot = styled('div', {
 /**
  * A simple wrapper to apply `List` styles to an `Avatar`.
  */
-const ListItemAvatar = React.forwardRef(function ListItemAvatar(inProps, ref) {
-  const props = useDefaultProps({
-    props: inProps,
-    name: 'MuiListItemAvatar',
-  });
-
+const ListItemAvatar = React.forwardRef(function ListItemAvatar(props, ref) {
   const { className, ...other } = props;
   const context = React.useContext(ListContext);
   const ownerState = { ...props, alignItems: context.alignItems };
