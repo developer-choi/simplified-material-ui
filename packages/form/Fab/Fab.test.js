@@ -1,11 +1,11 @@
 import { expect } from 'chai';
 import { createRenderer, screen } from '@mui/internal-test-utils';
 import describeSkipIf from '@mui/internal-test-utils/describeSkipIf';
-import Fab, { fabClasses as classes } from '@mui/material/Fab';
-import ButtonBase, { touchRippleClasses } from '../../../form/ButtonBase';
-import Icon from '../../../data-display/Icon';
-import describeConformance from '../../test/describeConformance';
-import * as ripple from '../../test/ripple';
+import Fab, { fabClasses as classes } from './index';
+import ButtonBase, { touchRippleClasses } from '../ButtonBase';
+import Icon from '../../data-display/Icon';
+import describeConformance from '../../mui-material/test/describeConformance';
+import * as ripple from '../../mui-material/test/ripple';
 
 describe('<Fab />', () => {
   const { render, renderToString } = createRenderer();

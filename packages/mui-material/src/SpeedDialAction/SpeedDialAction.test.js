@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { createRenderer, fireEvent, screen } from '@mui/internal-test-utils';
 import Icon from '../../../data-display/Icon';
 import Tooltip from '../../../data-display/Tooltip';
-import { fabClasses } from '@mui/material/Fab';
+import { fabClasses } from '../../../form/Fab';
 import SpeedDialAction, { speedDialActionClasses as classes } from '@mui/material/SpeedDialAction';
 import describeConformance from '../../test/describeConformance';
 

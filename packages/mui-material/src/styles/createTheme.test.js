@@ -6,7 +6,7 @@ import {
   darken as systemDarken,
 } from '@mui/system/colorManipulator';
 import Button from '../../../form/Button';
-import Box from '@mui/material/Box';
+import Box from '../../../layout/Box';
 import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
 import { deepOrange, green, grey } from '@mui/material/colors';
 import createPalette from './createPalette';

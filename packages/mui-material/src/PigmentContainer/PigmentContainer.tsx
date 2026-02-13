@@ -9,7 +9,7 @@ import composeClasses from '@mui/utils/composeClasses';
 import generateUtilityClass from '@mui/utils/generateUtilityClass';
 import { SxProps, Breakpoint } from '@mui/system';
 import { Theme } from '../styles';
-import { ContainerClasses } from '../Container/containerClasses';
+import { ContainerClasses } from '../../../layout/Container/containerClasses';
 
 export interface PigmentContainerOwnProps {
   children?: React.ReactNode;

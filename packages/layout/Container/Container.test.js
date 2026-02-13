@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createRenderer } from '@mui/internal-test-utils';
-import Container, { containerClasses as classes } from '@mui/material/Container';
-import describeConformance from '../../test/describeConformance';
+import Container, { containerClasses as classes } from './index';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<Container />', () => {
   const { render } = createRenderer();

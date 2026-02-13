@@ -3,11 +3,11 @@ import { expect } from 'chai';
 import { createRenderer, screen } from '@mui/internal-test-utils';
 import FormControlLabel, {
   formControlLabelClasses as classes,
-} from '@mui/material/FormControlLabel';
-import Checkbox from '../../../form/Checkbox';
-import FormControl from '../../../form/FormControl';
+} from './index';
+import Checkbox from '../Checkbox';
+import FormControl from '../FormControl';
 import Typography from '@mui/material/Typography';
-import describeConformance from '../../test/describeConformance';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<FormControlLabel />', () => {
   const { render } = createRenderer();

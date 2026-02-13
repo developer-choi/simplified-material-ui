@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Container from '@mui/material/Container';
+import Container from '../../../../layout/Container';
 import Dialog from '../../../../modal/Dialog';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 

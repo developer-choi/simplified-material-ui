@@ -49,8 +49,8 @@ export * from '../../navigation/BottomNavigation';
 export { default as BottomNavigationAction } from '../../navigation/BottomNavigationAction';
 export * from '../../navigation/BottomNavigationAction';
 
-export { default as Box } from './Box';
-export * from './Box';
+export { default as Box } from '../../layout/Box';
+export * from '../../layout/Box';
 
 export { default as Breadcrumbs } from '../../navigation/Breadcrumbs';
 export * from '../../navigation/Breadcrumbs';
@@ -61,8 +61,8 @@ export * from '../../form/Button';
 export { default as ButtonBase } from '../../form/ButtonBase';
 export * from '../../form/ButtonBase';
 
-export { default as ButtonGroup } from './ButtonGroup';
-export * from './ButtonGroup';
+export { default as ButtonGroup } from '../../button/ButtonGroup';
+export * from '../../button/ButtonGroup';
 
 export { default as Card } from '../../surfaces/Card';
 export * from '../../surfaces/Card';
@@ -88,8 +88,8 @@ export * from '../../form/Checkbox';
 export { default as Chip } from '../../data-display/Chip';
 export * from '../../data-display/Chip';
 
-export { default as CircularProgress } from './CircularProgress';
-export * from './CircularProgress';
+export { default as CircularProgress } from '../../feedback/CircularProgress';
+export * from '../../feedback/CircularProgress';
 
 export { default as ClickAwayListener } from '../../utils/ClickAwayListener';
 export * from '../../utils/ClickAwayListener';
@@ -97,8 +97,8 @@ export * from '../../utils/ClickAwayListener';
 export { default as Collapse } from '../../utils/Collapse';
 export * from '../../utils/Collapse';
 
-export { default as Container } from './Container';
-export * from './Container';
+export { default as Container } from '../../layout/Container';
+export * from '../../layout/Container';
 
 export { default as CssBaseline } from './CssBaseline';
 export * from './CssBaseline';
@@ -127,8 +127,8 @@ export * from '../../data-display/Divider';
 export { default as Drawer } from './Drawer';
 export * from './Drawer';
 
-export { default as Fab } from './Fab';
-export * from './Fab';
+export { default as Fab } from '../../form/Fab';
+export * from '../../form/Fab';
 
 export { default as Fade } from '../../utils/Fade';
 export * from '../../utils/Fade';
@@ -139,8 +139,8 @@ export * from '../../form/FilledInput';
 export { default as FormControl } from '../../form/FormControl';
 export * from '../../form/FormControl';
 
-export { default as FormControlLabel } from './FormControlLabel';
-export * from './FormControlLabel';
+export { default as FormControlLabel } from '../../form/FormControlLabel';
+export * from '../../form/FormControlLabel';
 
 export { default as FormGroup } from '../../form/FormGroup';
 export * from '../../form/FormGroup';

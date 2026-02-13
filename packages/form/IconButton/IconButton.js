@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { unstable_useId as useId } from '@mui/material/utils';
 import ButtonBase from '../ButtonBase';
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from '../../feedback/CircularProgress';
 
 // 색상 매핑 (하드코딩)
 const colorMap = {

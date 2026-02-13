@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Box, { BoxProps } from '@mui/material/Box';
+import Box, { BoxProps } from '../../../layout/Box';
 import Stack from '@mui/material/Stack';
 
 const Stage: React.FC<React.PropsWithChildren<BoxProps>> = ({ children, ...props }) => {

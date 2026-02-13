@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createTheme, styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
+import Box from '../../../../layout/Box';
 
 interface CustomNode {
   background: string;

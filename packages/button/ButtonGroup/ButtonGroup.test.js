@@ -1,11 +1,11 @@
 import { expect } from 'chai';
 import { createRenderer, screen } from '@mui/internal-test-utils';
-import ButtonGroup, { buttonGroupClasses as classes } from '@mui/material/ButtonGroup';
+import ButtonGroup, { buttonGroupClasses as classes } from './index';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import Button, { buttonClasses } from '../../../form/Button';
+import Button, { buttonClasses } from '../../form/Button';
 import ButtonGroupContext from './ButtonGroupContext';
-import describeConformance from '../../test/describeConformance';
-import * as ripple from '../../test/ripple';
+import describeConformance from '../../mui-material/test/describeConformance';
+import * as ripple from '../../mui-material/test/ripple';
 
 describe('<ButtonGroup />', () => {
   const { render } = createRenderer();

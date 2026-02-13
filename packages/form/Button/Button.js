@@ -4,9 +4,9 @@ import clsx from 'clsx';
 import resolveProps from '@mui/utils/resolveProps';
 import { unstable_useId as useId } from '@mui/material/utils';
 import ButtonBase from '../ButtonBase';
-import CircularProgress from '@mui/material/CircularProgress';
-import ButtonGroupContext from '@mui/material/ButtonGroup/ButtonGroupContext';
-import ButtonGroupButtonContext from '@mui/material/ButtonGroup/ButtonGroupButtonContext';
+import CircularProgress from '../../feedback/CircularProgress';
+import ButtonGroupContext from '../../button/ButtonGroup/ButtonGroupContext';
+import ButtonGroupButtonContext from '../../button/ButtonGroup/ButtonGroupButtonContext';
 
 // 스타일 계산 함수
 const getButtonStyles = (variant, color, size, loading) => {

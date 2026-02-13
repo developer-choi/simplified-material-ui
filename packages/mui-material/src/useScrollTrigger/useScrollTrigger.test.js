@@ -4,8 +4,8 @@ import { expect } from 'chai';
 import { act, createRenderer, RenderCounter, screen } from '@mui/internal-test-utils';
 import describeSkipIf from '@mui/internal-test-utils/describeSkipIf';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
+import Container from '../../../layout/Container';
+import Box from '../../../layout/Box';
 
 describe('useScrollTrigger', () => {
   const { render } = createRenderer();

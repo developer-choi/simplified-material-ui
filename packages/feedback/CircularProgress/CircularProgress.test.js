@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import { createRenderer } from '@mui/internal-test-utils';
 import CircularProgress, {
   circularProgressClasses as classes,
-} from '@mui/material/CircularProgress';
-import describeConformance from '../../test/describeConformance';
+} from './index';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<CircularProgress />', () => {
   const { render } = createRenderer();

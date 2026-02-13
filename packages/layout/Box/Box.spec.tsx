@@ -1,6 +1,6 @@
 import { Box as SystemBox, BoxProps as SystemBoxProps, createBox } from '@mui/system';
 import { expectType } from '@mui/types';
-import Box, { BoxProps as MaterialBoxProps } from '@mui/material/Box';
+import Box, { BoxProps as MaterialBoxProps } from './index';
 import { createTheme } from '@mui/material/styles';
 
 function ThemeValuesCanBeSpread() {

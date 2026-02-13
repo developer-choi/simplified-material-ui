@@ -2,7 +2,7 @@ import * as React from 'react';
 import { SxProps } from '@mui/system';
 import { Theme } from '../styles';
 import { InternalStandardProps as StandardProps } from '../internal';
-import { FabProps } from '../Fab';
+import { FabProps } from '../../../form/Fab';
 import { TooltipProps } from '../../../data-display/Tooltip';
 import { SpeedDialActionClasses } from './speedDialActionClasses';
 import { CreateSlotsAndSlotProps, SlotProps } from '../utils/types';

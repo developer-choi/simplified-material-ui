@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { OverridableStringUnion } from '@mui/types';
 import { SxProps } from '@mui/system';
-import { PropTypes, Theme } from '../styles';
-import { ExtendButtonBase, ExtendButtonBaseTypeMap } from '../../../form/ButtonBase';
-import { OverrideProps } from '../OverridableComponent';
+import { PropTypes, Theme } from '@mui/material/styles';
+import { ExtendButtonBase, ExtendButtonBaseTypeMap } from '../ButtonBase';
+import { OverrideProps } from '@mui/material/OverridableComponent';
 import { FabClasses } from './fabClasses';
 
 export interface FabPropsVariantOverrides {}

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { expect } from 'chai';
 import { createRenderer, screen, fireEvent } from '@mui/internal-test-utils';
-import Box from '@mui/material/Box';
+import Box from '../../../layout/Box';
 import {
   CssVarsProvider,
   extendTheme,
