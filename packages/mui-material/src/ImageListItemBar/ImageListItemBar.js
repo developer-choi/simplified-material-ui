@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import * as React from 'react';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import capitalize from '../utils/capitalize';
 import { getImageListItemBarUtilityClass } from './imageListItemBarClasses';
 
@@ -181,12 +180,7 @@ const ImageListItemBarActionIcon = styled('div', {
   ],
 });
 
-const ImageListItemBar = React.forwardRef(function ImageListItemBar(inProps, ref) {
-  const props = useDefaultProps({
-    props: inProps,
-    name: 'MuiImageListItemBar',
-  });
-
+const ImageListItemBar = React.forwardRef(function ImageListItemBar(props, ref) {
   const {
     actionIcon,
     actionPosition = 'right',
