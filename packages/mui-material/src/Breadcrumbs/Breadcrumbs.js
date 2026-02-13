@@ -8,9 +8,6 @@ import BreadcrumbCollapsed from './BreadcrumbCollapsed';
 const BreadcrumbsRoot = styled(Typography, {
   name: 'MuiBreadcrumbs',
   slot: 'Root',
-  overridesResolver: (props, styles) => {
-    return [{ [`& .${breadcrumbsClasses.li}`]: styles.li }, styles.root];
-  },
 })({});
 
 const BreadcrumbsOl = styled('ol', {
