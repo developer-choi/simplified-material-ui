@@ -1,24 +1,7 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import Typography from '../Typography';
 import ListContext from '../../../data-display/List/ListContext';
-import { getListItemTextUtilityClass } from './listItemTextClasses';
-import useSlot from '../utils/useSlot';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, inset, primary, secondary, dense } = ownerState;
-
-  const slots = {
-    root: ['root', inset && 'inset', dense && 'dense', primary && secondary && 'multiline'],
-    primary: ['primary'],
-    secondary: ['secondary'],
-  };
-
-  return composeClasses(slots, getListItemTextUtilityClass, classes);
-};
 
 const ListItemText = React.forwardRef(function ListItemText(props, ref) {
   const {
@@ -27,37 +10,13 @@ const ListItemText = React.forwardRef(function ListItemText(props, ref) {
     disableTypography = false,
     inset = false,
     primary: primaryProp,
-    primaryTypographyProps,
     secondary: secondaryProp,
-    secondaryTypographyProps,
-    slots = {},
-    slotProps = {},
     ...other
   } = props;
   const { dense } = React.useContext(ListContext);
 
   let primary = primaryProp != null ? primaryProp : children;
   let secondary = secondaryProp;
-
-  const ownerState = {
-    ...props,
-    disableTypography,
-    inset,
-    primary: !!primary,
-    secondary: !!secondary,
-    dense,
-  };
-
-  const classes = useUtilityClasses(ownerState);
-
-  const externalForwardedProps = {
-    slots,
-    slotProps: {
-      primary: primaryTypographyProps,
-      secondary: secondaryTypographyProps,
-      ...slotProps,
-    },
-  };
 
   const hasSecondary = !!secondary;
   const marginValue = primary && hasSecondary ? 6 : 4;
@@ -70,36 +29,27 @@ const ListItemText = React.forwardRef(function ListItemText(props, ref) {
     ...(inset && { paddingLeft: 56 }),
   };
 
-  const [PrimarySlot, primarySlotProps] = useSlot('primary', {
-    className: classes.primary,
-    elementType: Typography,
-    externalForwardedProps,
-    ownerState,
-  });
-  const [SecondarySlot, secondarySlotProps] = useSlot('secondary', {
-    className: classes.secondary,
-    elementType: Typography,
-    externalForwardedProps,
-    ownerState,
-  });
-
   if (primary != null && primary.type !== Typography && !disableTypography) {
     primary = (
-      <PrimarySlot
+      <Typography
         variant={dense ? 'body2' : 'body1'}
-        component={primarySlotProps?.variant ? undefined : 'span'}
-        {...primarySlotProps}
+        component="span"
+        style={{ display: 'block' }}
       >
         {primary}
-      </PrimarySlot>
+      </Typography>
     );
   }
 
   if (secondary != null && secondary.type !== Typography && !disableTypography) {
     secondary = (
-      <SecondarySlot variant="body2" color="textSecondary" {...secondarySlotProps}>
+      <Typography
+        variant="body2"
+        color="textSecondary"
+        style={{ display: 'block' }}
+      >
         {secondary}
-      </SecondarySlot>
+      </Typography>
     );
   }
 
@@ -107,7 +57,7 @@ const ListItemText = React.forwardRef(function ListItemText(props, ref) {
     <div
       ref={ref}
       style={rootStyle}
-      className={clsx(classes.root, className)}
+      className={className}
       {...other}
     >
       {primary}
@@ -115,84 +65,5 @@ const ListItemText = React.forwardRef(function ListItemText(props, ref) {
     </div>
   );
 });
-
-ListItemText.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * Alias for the `primary` prop.
-   */
-  children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * If `true`, the children won't be wrapped by a Typography component.
-   * This can be useful to render an alternative Typography variant by wrapping
-   * the `children` (or `primary`) text, and optional `secondary` text
-   * with the Typography component.
-   * @default false
-   */
-  disableTypography: PropTypes.bool,
-  /**
-   * If `true`, the children are indented.
-   * This should be used if there is no left avatar or left icon.
-   * @default false
-   */
-  inset: PropTypes.bool,
-  /**
-   * The main content element.
-   */
-  primary: PropTypes.node,
-  /**
-   * These props will be forwarded to the primary typography component
-   * (as long as disableTypography is not `true`).
-   * @deprecated Use `slotProps.primary` instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   */
-  primaryTypographyProps: PropTypes.object,
-  /**
-   * The secondary content element.
-   */
-  secondary: PropTypes.node,
-  /**
-   * These props will be forwarded to the secondary typography component
-   * (as long as disableTypography is not `true`).
-   * @deprecated Use `slotProps.secondary` instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   */
-  secondaryTypographyProps: PropTypes.object,
-  /**
-   * The props used for each slot inside.
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    primary: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    secondary: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * The components used for each slot inside.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    primary: PropTypes.elementType,
-    root: PropTypes.elementType,
-    secondary: PropTypes.elementType,
-  }),
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-};
 
 export default ListItemText;
