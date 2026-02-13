@@ -60,11 +60,11 @@ const Container = React.forwardRef(function Container(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiContainer' });
   const {
     className,
-    component = 'div',
     classes: classesProp,
     ...other
   } = props;
 
+  const component = 'div';
   const maxWidth = 'lg';
   const fixed = false;
   const disableGutters = false;
@@ -103,11 +103,6 @@ Container.propTypes /* remove-proptypes */ = {
    * Override or extend the styles applied to the component.
    */
   classes: PropTypes.object,
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
   /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
