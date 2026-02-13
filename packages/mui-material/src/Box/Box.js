@@ -1,35 +1,25 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import styled from '@mui/styled-engine';
-import styleFunctionSx, { extendSxProp } from '@mui/system/styleFunctionSx';
-import useTheme from '@mui/system/useTheme';
 import clsx from 'clsx';
 import { unstable_ClassNameGenerator as ClassNameGenerator } from '../className';
-import { createTheme } from '../styles';
 import boxClasses from './boxClasses';
 
-const defaultTheme = createTheme();
-
-const BoxRoot = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'theme' && prop !== 'sx' && prop !== 'as',
-})(styleFunctionSx);
-
-const Box = React.forwardRef(function Box(inProps, ref) {
-  const theme = useTheme(defaultTheme);
-  const { className, component = 'div', ...other } = extendSxProp(inProps);
+const Box = React.forwardRef(function Box(props, ref) {
+  const { className, component = 'div', children, ...other } = props;
+  const Component = component;
 
   return (
-    <BoxRoot
-      as={component}
+    <Component
       ref={ref}
       className={clsx(
         className,
         ClassNameGenerator.generate ? ClassNameGenerator.generate(boxClasses.root) : boxClasses.root,
       )}
-      theme={theme}
       {...other}
-    />
+    >
+      {children}
+    </Component>
   );
 });
 
