@@ -52,21 +52,7 @@ const ContainerRoot = styled('div', {
       paddingRight: theme.spacing(3),
     },
   }),
-}),
-({ theme, ownerState }) =>
-  ownerState.fixed &&
-  Object.keys(theme.breakpoints.values).reduce((acc, breakpointValueKey) => {
-    const breakpoint = breakpointValueKey;
-    const value = theme.breakpoints.values[breakpoint];
-
-    if (value !== 0) {
-      acc[theme.breakpoints.up(breakpoint)] = {
-        maxWidth: `${value}${theme.breakpoints.unit}`,
-      };
-    }
-    return acc;
-  }, {}),
-({ theme, ownerState }) => ({
+}), ({ theme, ownerState }) => ({
   [theme.breakpoints.up('lg')]: {
     maxWidth: `${theme.breakpoints.values.lg}${theme.breakpoints.unit}`,
   },
@@ -78,12 +64,12 @@ const Container = React.forwardRef(function Container(inProps, ref) {
     className,
     component = 'div',
     disableGutters = false,
-    fixed = false,
     classes: classesProp,
     ...other
   } = props;
 
   const maxWidth = 'lg';
+  const fixed = false;
 
   const ownerState = {
     ...props,
@@ -129,14 +115,6 @@ Container.propTypes /* remove-proptypes */ = {
    * @default false
    */
   disableGutters: PropTypes.bool,
-  /**
-   * Set the max-width to match the min-width of the current breakpoint.
-   * This is useful if you'd prefer to design for a fixed set of sizes
-   * instead of trying to accommodate a fully fluid viewport.
-   * It's fluid by default.
-   * @default false
-   */
-  fixed: PropTypes.bool,
   /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
