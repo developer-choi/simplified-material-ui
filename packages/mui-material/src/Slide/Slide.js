@@ -1,8 +1,6 @@
 'use client';
 import * as React from 'react';
 import { Transition } from 'react-transition-group';
-import getReactElementRef from '@mui/utils/getReactElementRef';
-import useForkRef from '../utils/useForkRef';
 import { reflow } from '../transitions/utils';
 // Translate the node so it can't be seen on the screen.
 // Later, we're going to translate the node back to its original location with `none`.
@@ -53,11 +51,7 @@ export function setTranslateValue(direction, node) {
   }
 }
 
-/**
- * The Slide transition is used by the [Drawer](/material-ui/react-drawer/) component.
- * It uses [react-transition-group](https://github.com/reactjs/react-transition-group) internally.
- */
-const Slide = React.forwardRef(function Slide(props, ref) {
+function Slide(props) {
   const timeout = { enter: 225, exit: 195 };
 
   const {
@@ -67,17 +61,16 @@ const Slide = React.forwardRef(function Slide(props, ref) {
     ...other
   } = props;
 
-  const childrenRef = React.useRef(null);
-  const handleRef = useForkRef(getReactElementRef(children), childrenRef, ref);
+  const nodeRef = React.useRef(null);
 
   const handleEnter = () => {
-    const node = childrenRef.current;
+    const node = nodeRef.current;
     setTranslateValue(direction, node);
     reflow(node);
   };
 
   const handleEntering = () => {
-    const node = childrenRef.current;
+    const node = nodeRef.current;
     node.style.webkitTransition = `transform ${timeout.enter}ms cubic-bezier(0, 0, 0.2, 1) 0ms`;
     node.style.transition = `transform ${timeout.enter}ms cubic-bezier(0, 0, 0.2, 1) 0ms`;
     node.style.webkitTransform = 'none';
@@ -85,7 +78,7 @@ const Slide = React.forwardRef(function Slide(props, ref) {
   };
 
   const handleExit = () => {
-    const node = childrenRef.current;
+    const node = nodeRef.current;
     node.style.webkitTransition = `transform ${timeout.exit}ms cubic-bezier(0.4, 0, 0.6, 1) 0ms`;
     node.style.transition = `transform ${timeout.exit}ms cubic-bezier(0.4, 0, 0.6, 1) 0ms`;
 
@@ -93,15 +86,15 @@ const Slide = React.forwardRef(function Slide(props, ref) {
   };
 
   const handleExited = () => {
-    const node = childrenRef.current;
+    const node = nodeRef.current;
     // No need for transitions when the component is hidden
     node.style.webkitTransition = '';
     node.style.transition = '';
   };
 
   const updatePosition = React.useCallback(() => {
-    if (childrenRef.current) {
-      setTranslateValue(direction, childrenRef.current);
+    if (nodeRef.current) {
+      setTranslateValue(direction, nodeRef.current);
     }
   }, [direction]);
 
@@ -112,8 +105,8 @@ const Slide = React.forwardRef(function Slide(props, ref) {
     }
 
     const handleResize = () => {
-      if (childrenRef.current) {
-        setTranslateValue(direction, childrenRef.current);
+      if (nodeRef.current) {
+        setTranslateValue(direction, nodeRef.current);
       }
     };
 
@@ -133,7 +126,7 @@ const Slide = React.forwardRef(function Slide(props, ref) {
 
   return (
     <Transition
-      nodeRef={childrenRef}
+      nodeRef={nodeRef}
       onEnter={handleEnter}
       onEntering={handleEntering}
       onExit={handleExit}
@@ -143,19 +136,17 @@ const Slide = React.forwardRef(function Slide(props, ref) {
       timeout={timeout}
       {...other}
     >
-      {/* Ensure "ownerState" is not forwarded to the child DOM element when a direct HTML element is used. This avoids unexpected behavior since "ownerState" is intended for internal styling, component props and not as a DOM attribute. */}
-      {(state, { ownerState, ...restChildProps }) => {
+      {(state) => {
         return React.cloneElement(children, {
-          ref: handleRef,
+          ref: nodeRef,
           style: {
             visibility: state === 'exited' && !inProp ? 'hidden' : undefined,
             ...children.props.style,
           },
-          ...restChildProps,
         });
       }}
     </Transition>
   );
-});
+}
 
 export default Slide;
