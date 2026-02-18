@@ -3,7 +3,6 @@ import * as React from 'react';
 import useId from '@mui/utils/useId';
 import Menu from '../../../menu/Menu/Menu';
 import { isFilled } from '../../../form/InputBase/utils';
-import useForkRef from '../utils/useForkRef';
 import useControlled from '../utils/useControlled';
 
 
@@ -23,7 +22,7 @@ function isEmpty(display) {
 /**
  * @ignore - internal component.
  */
-const SelectInput = React.forwardRef(function SelectInput(props, ref) {
+function SelectInput(props) {
   const {
     'aria-describedby': ariaDescribedby,
     'aria-label': ariaLabel,
@@ -35,7 +34,6 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
     disabled,
     error = false,
     IconComponent,
-    inputRef: inputRefProp,
     labelId,
     MenuProps = {},
     multiple,
@@ -77,8 +75,6 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
   const [displayNode, setDisplayNode] = React.useState(null);
   const { current: isOpenControlled } = React.useRef(openProp != null);
 
-  const handleRef = useForkRef(ref, inputRefProp);
-
   const handleDisplayRef = React.useCallback((node) => {
     displayRef.current = node;
 
@@ -88,18 +84,6 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
   }, []);
 
   const anchorElement = displayNode?.parentNode;
-
-  React.useImperativeHandle(
-    handleRef,
-    () => ({
-      focus: () => {
-        displayRef.current.focus();
-      },
-      node: inputRef.current,
-      value,
-    }),
-    [value],
-  );
 
   // `isOpenControlled` is ignored because the component should never switch between controlled and uncontrolled modes.
   // `defaultOpen` and `openState` are ignored to avoid unnecessary callbacks.
@@ -459,6 +443,6 @@ const SelectInput = React.forwardRef(function SelectInput(props, ref) {
       </Menu>
     </React.Fragment>
   );
-});
+}
 
 export default SelectInput;
