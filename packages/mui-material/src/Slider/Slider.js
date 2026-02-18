@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import { useRtl } from '@mui/system/RtlProvider';
 import { useSlider, valueToPercent } from './useSlider';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
@@ -495,14 +494,10 @@ export const SliderMarkLabel = styled('span', {
 
 
 const Slider = React.forwardRef(function Slider(props, ref) {
-  const isRtl = useRtl();
-
   const {
     'aria-label': ariaLabel,
     'aria-valuetext': ariaValuetext,
     'aria-labelledby': ariaLabelledby,
-    // eslint-disable-next-line react/prop-types
-    component = 'span',
     color = 'primary',
     disableSwap = false,
     disabled = false,
@@ -529,7 +524,6 @@ const Slider = React.forwardRef(function Slider(props, ref) {
 
   const ownerState = {
     ...props,
-    isRtl,
     max,
     min,
     disabled,
