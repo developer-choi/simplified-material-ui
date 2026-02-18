@@ -1,8 +1,6 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import integerPropType from '@mui/utils/integerPropType';
 import composeClasses from '@mui/utils/composeClasses';
 import Paper from '../../../surfaces/Paper';
 import capitalize from '../utils/capitalize';
@@ -245,81 +243,5 @@ const MobileStepper = React.forwardRef(function MobileStepper(inProps, ref) {
     </RootSlot>
   );
 });
-
-MobileStepper.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * Set the active step (zero based index).
-   * Defines which dot is highlighted when the variant is 'dots'.
-   * @default 0
-   */
-  activeStep: integerPropType,
-  /**
-   * A back button element. For instance, it can be a `Button` or an `IconButton`.
-   */
-  backButton: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * Props applied to the `LinearProgress` element.
-   * @deprecated Use `slotProps.progress` instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   */
-  LinearProgressProps: PropTypes.object,
-  /**
-   * A next button element. For instance, it can be a `Button` or an `IconButton`.
-   */
-  nextButton: PropTypes.node,
-  /**
-   * Set the positioning type.
-   * @default 'bottom'
-   */
-  position: PropTypes.oneOf(['bottom', 'static', 'top']),
-  /**
-   * The props used for each slot inside.
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    dot: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    dots: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    progress: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * The components used for each slot inside.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    dot: PropTypes.elementType,
-    dots: PropTypes.elementType,
-    progress: PropTypes.elementType,
-    root: PropTypes.elementType,
-  }),
-  /**
-   * The total steps.
-   */
-  steps: integerPropType.isRequired,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-  /**
-   * The variant to use.
-   * @default 'dots'
-   */
-  variant: PropTypes.oneOf(['dots', 'progress', 'text']),
-};
 
 export default MobileStepper;
