@@ -11,7 +11,7 @@ import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import slotShouldForwardProp from '../styles/slotShouldForwardProp';
 import ratingClasses from './ratingClasses';
-import useSlot from '../utils/useSlot';
+
 
 function getDecimalPrecision(num) {
   const decimalPart = num.toString().split('.')[1];
@@ -164,11 +164,6 @@ const RatingDecimal = styled('span', {
   ],
 });
 
-function IconContainer(props) {
-  const { value, ...other } = props;
-  return <span {...other} />;
-}
-
 
 function RatingItem(props) {
   const {
@@ -179,7 +174,6 @@ function RatingItem(props) {
     highlightSelectedOnly,
     hover,
     icon,
-    IconContainerComponent,
     isActive,
     itemValue,
     labelProps,
@@ -192,8 +186,6 @@ function RatingItem(props) {
     ownerState,
     ratingValue,
     ratingValueRounded,
-    slots = {},
-    slotProps = {},
   } = props;
 
   const isFilled = highlightSelectedOnly ? itemValue === ratingValue : itemValue <= ratingValue;
@@ -207,44 +199,19 @@ function RatingItem(props) {
   // More details: https://github.com/mui/material-ui/issues/40997
   const id = `${name}-${useId()}`;
 
-  const externalForwardedProps = {
-    slots,
-    slotProps,
+  const iconOwnerState = {
+    ...ownerState,
+    iconEmpty: !isFilled,
+    iconFilled: isFilled,
+    iconHover: isHovered,
+    iconFocus: isFocused,
+    iconActive: isActive,
   };
 
-  const [IconSlot, iconSlotProps] = useSlot('icon', {
-    elementType: RatingIcon,
-    externalForwardedProps,
-    ownerState: {
-      ...ownerState,
-      iconEmpty: !isFilled,
-      iconFilled: isFilled,
-      iconHover: isHovered,
-      iconFocus: isFocused,
-      iconActive: isActive,
-    },
-    additionalProps: {
-      value: itemValue,
-    },
-    internalForwardedProps: {
-      // TODO: remove this in v7 because `IconContainerComponent` is deprecated
-      // only forward if `slots.icon` is NOT provided
-      as: IconContainerComponent,
-    },
-  });
-
-  const [LabelSlot, labelSlotProps] = useSlot('label', {
-    elementType: RatingLabel,
-    externalForwardedProps,
-    ownerState: { ...ownerState, emptyValueFocused: undefined },
-    additionalProps: {
-      style: labelProps?.style,
-      htmlFor: id,
-    },
-  });
-
   const container = (
-    <IconSlot {...iconSlotProps}>{emptyIcon && !isFilled ? emptyIcon : icon}</IconSlot>
+    <RatingIcon ownerState={iconOwnerState} value={itemValue}>
+      {emptyIcon && !isFilled ? emptyIcon : icon}
+    </RatingIcon>
   );
 
   if (readOnly) {
@@ -253,10 +220,10 @@ function RatingItem(props) {
 
   return (
     <React.Fragment>
-      <LabelSlot {...labelSlotProps}>
+      <RatingLabel ownerState={{ ...ownerState, emptyValueFocused: undefined }} style={labelProps?.style} htmlFor={id}>
         {container}
         <span style={visuallyHidden}>{getLabelText(itemValue)}</span>
-      </LabelSlot>
+      </RatingLabel>
       <input
         style={visuallyHidden}
         onFocus={onFocus}
@@ -292,7 +259,6 @@ const Rating = React.forwardRef(function Rating(props, ref) {
     getLabelText = defaultLabelText,
     highlightSelectedOnly = false,
     icon = defaultIcon,
-    IconContainerComponent = IconContainer,
     max = 5,
     name: nameProp,
     onChange,
@@ -303,8 +269,6 @@ const Rating = React.forwardRef(function Rating(props, ref) {
     readOnly = false,
     size = 'medium',
     value: valueProp,
-    slots = {},
-    slotProps = {},
     ...other
   } = props;
 
@@ -463,58 +427,22 @@ const Rating = React.forwardRef(function Rating(props, ref) {
     focusVisible,
     getLabelText,
     icon,
-    IconContainerComponent,
     max,
     precision,
     readOnly,
     size,
   };
 
-  const externalForwardedProps = {
-    slots,
-    slotProps,
-  };
-
-  const [RootSlot, rootSlotProps] = useSlot('root', {
-    ref: handleRef,
-    elementType: RatingRoot,
-    externalForwardedProps: {
-      ...externalForwardedProps,
-      ...other,
-      component,
-    },
-    getSlotProps: (handlers) => ({
-      ...handlers,
-      onMouseMove: (event) => {
-        handleMouseMove(event);
-        handlers.onMouseMove?.(event);
-      },
-      onMouseLeave: (event) => {
-        handleMouseLeave(event);
-        handlers.onMouseLeave?.(event);
-      },
-    }),
-    ownerState,
-    additionalProps: {
-      role: readOnly ? 'img' : null,
-      'aria-label': readOnly ? getLabelText(value) : null,
-    },
-  });
-
-  const [LabelSlot, labelSlotProps] = useSlot('label', {
-    elementType: RatingLabel,
-    externalForwardedProps,
-    ownerState,
-  });
-
-  const [DecimalSlot, decimalSlotProps] = useSlot('decimal', {
-    elementType: RatingDecimal,
-    externalForwardedProps,
-    ownerState,
-  });
-
   return (
-    <RootSlot {...rootSlotProps}>
+    <RatingRoot
+      ref={handleRef}
+      ownerState={ownerState}
+      role={readOnly ? 'img' : null}
+      aria-label={readOnly ? getLabelText(value) : null}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      {...other}
+    >
       {Array.from(new Array(max)).map((_, index) => {
         const itemValue = index + 1;
 
@@ -526,7 +454,6 @@ const Rating = React.forwardRef(function Rating(props, ref) {
           highlightSelectedOnly,
           hover,
           icon,
-          IconContainerComponent,
           name,
           onBlur: handleBlur,
           onChange: handleChange,
@@ -536,17 +463,15 @@ const Rating = React.forwardRef(function Rating(props, ref) {
           ratingValueRounded: valueRounded,
           readOnly,
           ownerState,
-          slots,
-          slotProps,
         };
 
         const isActive = itemValue === Math.ceil(value) && (hover !== -1 || focus !== -1);
         if (precision < 1) {
           const items = Array.from(new Array(1 / precision));
           return (
-            <DecimalSlot
-              {...decimalSlotProps}
+            <RatingDecimal
               key={itemValue}
+              ownerState={ownerState}
               iconActive={isActive}
             >
               {items.map(($, indexDecimal) => {
@@ -578,7 +503,7 @@ const Rating = React.forwardRef(function Rating(props, ref) {
                   />
                 );
               })}
-            </DecimalSlot>
+            </RatingDecimal>
           );
         }
 
@@ -592,7 +517,7 @@ const Rating = React.forwardRef(function Rating(props, ref) {
         );
       })}
       {!readOnly && !disabled && (
-        <LabelSlot {...labelSlotProps}>
+        <RatingLabel ownerState={ownerState}>
           <input
             style={visuallyHidden}
             value=""
@@ -605,9 +530,9 @@ const Rating = React.forwardRef(function Rating(props, ref) {
             onChange={handleChange}
           />
           <span style={visuallyHidden}>{emptyLabelText}</span>
-        </LabelSlot>
+        </RatingLabel>
       )}
-    </RootSlot>
+    </RatingRoot>
   );
 });
 
