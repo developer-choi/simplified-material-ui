@@ -2,7 +2,6 @@
 import * as React from 'react';
 import { Transition } from 'react-transition-group';
 import getReactElementRef from '@mui/utils/getReactElementRef';
-import debounce from '../utils/debounce';
 import useForkRef from '../utils/useForkRef';
 import { reflow } from '../transitions/utils';
 // Translate the node so it can't be seen on the screen.
@@ -112,15 +111,14 @@ const Slide = React.forwardRef(function Slide(props, ref) {
       return undefined;
     }
 
-    const handleResize = debounce(() => {
+    const handleResize = () => {
       if (childrenRef.current) {
         setTranslateValue(direction, childrenRef.current);
       }
-    });
+    };
 
     window.addEventListener('resize', handleResize);
     return () => {
-      handleResize.clear();
       window.removeEventListener('resize', handleResize);
     };
   }, [direction, inProp]);
