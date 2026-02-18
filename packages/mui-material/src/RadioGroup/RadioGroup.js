@@ -1,23 +1,11 @@
 'use client';
 import * as React from 'react';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import FormGroup from '../../../form/FormGroup';
-import { getRadioGroupUtilityClass } from './radioGroupClasses';
 import useForkRef from '../utils/useForkRef';
 import useControlled from '../utils/useControlled';
 import RadioGroupContext from './RadioGroupContext';
 import useId from '../utils/useId';
 
-const useUtilityClasses = (props) => {
-  const { classes, row, error } = props;
-
-  const slots = {
-    root: ['root', row && 'row', error && 'error'],
-  };
-
-  return composeClasses(slots, getRadioGroupUtilityClass, classes);
-};
 
 const RadioGroup = React.forwardRef(function RadioGroup(props, ref) {
   const {
@@ -25,7 +13,6 @@ const RadioGroup = React.forwardRef(function RadioGroup(props, ref) {
     // eslint-disable-next-line react/prop-types
     actions,
     children,
-    className,
     defaultValue,
     name: nameProp,
     onChange,
@@ -33,8 +20,6 @@ const RadioGroup = React.forwardRef(function RadioGroup(props, ref) {
     ...other
   } = props;
   const rootRef = React.useRef(null);
-
-  const classes = useUtilityClasses(props);
 
   const [value, setValueState] = useControlled({
     controlled: valueProp,
@@ -84,7 +69,6 @@ const RadioGroup = React.forwardRef(function RadioGroup(props, ref) {
       <FormGroup
         role="radiogroup"
         ref={handleRef}
-        className={clsx(classes.root, className)}
         {...other}
       >
         {children}
