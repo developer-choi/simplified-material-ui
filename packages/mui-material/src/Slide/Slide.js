@@ -5,20 +5,16 @@ import getReactElementRef from '@mui/utils/getReactElementRef';
 import debounce from '../utils/debounce';
 import useForkRef from '../utils/useForkRef';
 import { reflow } from '../transitions/utils';
-import { ownerWindow } from '../utils';
-
 // Translate the node so it can't be seen on the screen.
 // Later, we're going to translate the node back to its original location with `none`.
-function getTranslateValue(direction, node, resolvedContainer) {
+function getTranslateValue(direction, node) {
   const rect = node.getBoundingClientRect();
-  const containerRect = resolvedContainer && resolvedContainer.getBoundingClientRect();
-  const containerWindow = ownerWindow(node);
   let transform;
 
   if (node.fakeTransform) {
     transform = node.fakeTransform;
   } else {
-    const computedStyle = containerWindow.getComputedStyle(node);
+    const computedStyle = window.getComputedStyle(node);
     transform =
       computedStyle.getPropertyValue('-webkit-transform') ||
       computedStyle.getPropertyValue('transform');
@@ -34,42 +30,23 @@ function getTranslateValue(direction, node, resolvedContainer) {
   }
 
   if (direction === 'left') {
-    if (containerRect) {
-      return `translateX(${containerRect.right + offsetX - rect.left}px)`;
-    }
-
-    return `translateX(${containerWindow.innerWidth + offsetX - rect.left}px)`;
+    return `translateX(${window.innerWidth + offsetX - rect.left}px)`;
   }
 
   if (direction === 'right') {
-    if (containerRect) {
-      return `translateX(-${rect.right - containerRect.left - offsetX}px)`;
-    }
-
     return `translateX(-${rect.left + rect.width - offsetX}px)`;
   }
 
   if (direction === 'up') {
-    if (containerRect) {
-      return `translateY(${containerRect.bottom + offsetY - rect.top}px)`;
-    }
-    return `translateY(${containerWindow.innerHeight + offsetY - rect.top}px)`;
+    return `translateY(${window.innerHeight + offsetY - rect.top}px)`;
   }
 
   // direction === 'down'
-  if (containerRect) {
-    return `translateY(-${rect.top - containerRect.top + rect.height - offsetY}px)`;
-  }
   return `translateY(-${rect.top + rect.height - offsetY}px)`;
 }
 
-function resolveContainer(containerPropProp) {
-  return typeof containerPropProp === 'function' ? containerPropProp() : containerPropProp;
-}
-
-export function setTranslateValue(direction, node, containerProp) {
-  const resolvedContainer = resolveContainer(containerProp);
-  const transform = getTranslateValue(direction, node, resolvedContainer);
+export function setTranslateValue(direction, node) {
+  const transform = getTranslateValue(direction, node);
 
   if (transform) {
     node.style.webkitTransform = transform;
@@ -86,7 +63,6 @@ const Slide = React.forwardRef(function Slide(props, ref) {
 
   const {
     children,
-    container: containerProp,
     direction = 'down',
     in: inProp,
     ...other
@@ -97,7 +73,7 @@ const Slide = React.forwardRef(function Slide(props, ref) {
 
   const handleEnter = () => {
     const node = childrenRef.current;
-    setTranslateValue(direction, node, containerProp);
+    setTranslateValue(direction, node);
     reflow(node);
   };
 
@@ -114,7 +90,7 @@ const Slide = React.forwardRef(function Slide(props, ref) {
     node.style.webkitTransition = `transform ${timeout.exit}ms cubic-bezier(0.4, 0, 0.6, 1) 0ms`;
     node.style.transition = `transform ${timeout.exit}ms cubic-bezier(0.4, 0, 0.6, 1) 0ms`;
 
-    setTranslateValue(direction, node, containerProp);
+    setTranslateValue(direction, node);
   };
 
   const handleExited = () => {
@@ -126,9 +102,9 @@ const Slide = React.forwardRef(function Slide(props, ref) {
 
   const updatePosition = React.useCallback(() => {
     if (childrenRef.current) {
-      setTranslateValue(direction, childrenRef.current, containerProp);
+      setTranslateValue(direction, childrenRef.current);
     }
-  }, [direction, containerProp]);
+  }, [direction]);
 
   React.useEffect(() => {
     // Skip configuration where the position is screen size invariant.
@@ -138,17 +114,16 @@ const Slide = React.forwardRef(function Slide(props, ref) {
 
     const handleResize = debounce(() => {
       if (childrenRef.current) {
-        setTranslateValue(direction, childrenRef.current, containerProp);
+        setTranslateValue(direction, childrenRef.current);
       }
     });
 
-    const containerWindow = ownerWindow(childrenRef.current);
-    containerWindow.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize);
     return () => {
       handleResize.clear();
-      containerWindow.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', handleResize);
     };
-  }, [direction, inProp, containerProp]);
+  }, [direction, inProp]);
 
   React.useEffect(() => {
     if (!inProp) {
