@@ -10,6 +10,7 @@
 - [x] FormControlLabel
 - [x] Grow
 - [x] LinearProgress
+- [x] Slide
 
 ## 다음 분석 목록 📋
 
@@ -18,7 +19,7 @@
 - [ ] GridLegacy (Grid 분석 후)
 
 ### Transitions
-- [ ] Slide
+- [x] Slide
 
 ### Progress Indicators
 
@@ -47,8 +48,8 @@
 
 ## 분석 우선순위
 
-1. **현재 진행 중**: Slide (Transitions)
-2. **다음**: Link, Grid 등
+1. **현재 진행 중**: Link (Navigation)
+2. **다음**: Grid, MobileStepper 등
 
 ---
 
