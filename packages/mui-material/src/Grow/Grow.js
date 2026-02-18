@@ -3,7 +3,6 @@ import * as React from 'react';
 import getReactElementRef from '@mui/utils/getReactElementRef';
 import { Transition } from 'react-transition-group';
 import { useTheme } from '../zero-styled';
-import { getTransitionProps, reflow } from '../transitions/utils';
 import useForkRef from '../utils/useForkRef';
 
 function getScale(value) {
@@ -37,11 +36,8 @@ const isWebKit154 =
  */
 const Grow = React.forwardRef(function Grow(props, ref) {
   const {
-    appear = true,
     children,
-    easing,
     in: inProp,
-    style,
     ...other
   } = props;
   const timeout = 300;
@@ -50,60 +46,27 @@ const Grow = React.forwardRef(function Grow(props, ref) {
   const nodeRef = React.useRef(null);
   const handleRef = useForkRef(nodeRef, getReactElementRef(children), ref);
 
-  const handleEnter = (maybeIsAppearing) => {
+  const handleEnter = () => {
     const node = nodeRef.current;
-
-    const {
-      duration: transitionDuration,
-      delay,
-      easing: transitionTimingFunction,
-    } = getTransitionProps(
-      { style, timeout, easing },
-      {
-        mode: 'enter',
-      },
-    );
-
-    const duration = transitionDuration;
+    const duration = timeout;
 
     node.style.transition = [
-      theme.transitions.create('opacity', {
-        duration,
-        delay,
-      }),
+      theme.transitions.create('opacity', { duration }),
       theme.transitions.create('transform', {
         duration: isWebKit154 ? duration : duration * 0.666,
-        delay,
-        easing: transitionTimingFunction,
       }),
     ].join(',');
   };
 
   const handleExit = () => {
     const node = nodeRef.current;
-
-    const {
-      duration: transitionDuration,
-      delay,
-      easing: transitionTimingFunction,
-    } = getTransitionProps(
-      { style, timeout, easing },
-      {
-        mode: 'exit',
-      },
-    );
-
-    const duration = transitionDuration;
+    const duration = timeout;
 
     node.style.transition = [
-      theme.transitions.create('opacity', {
-        duration,
-        delay,
-      }),
+      theme.transitions.create('opacity', { duration }),
       theme.transitions.create('transform', {
         duration: isWebKit154 ? duration : duration * 0.666,
-        delay: isWebKit154 ? delay : delay || duration * 0.333,
-        easing: transitionTimingFunction,
+        delay: duration * 0.333,
       }),
     ].join(',');
 
@@ -113,7 +76,7 @@ const Grow = React.forwardRef(function Grow(props, ref) {
 
   return (
     <Transition
-      appear={appear}
+      appear
       in={inProp}
       nodeRef={nodeRef}
       onEnter={handleEnter}
@@ -129,7 +92,6 @@ const Grow = React.forwardRef(function Grow(props, ref) {
             transform: getScale(0.75),
             visibility: state === 'exited' && !inProp ? 'hidden' : undefined,
             ...styles[state],
-            ...style,
             ...children.props.style,
           },
           ref: handleRef,
