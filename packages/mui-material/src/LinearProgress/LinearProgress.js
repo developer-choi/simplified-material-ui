@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import { useRtl } from '@mui/system/RtlProvider';
 import { keyframes, css, styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 const TRANSITION_DURATION = 4; // seconds
@@ -242,8 +241,6 @@ const LinearProgress = React.forwardRef(function LinearProgress(props, ref) {
     variant,
   };
 
-  const isRtl = useRtl();
-
   const rootProps = {};
   const inlineStyles = { bar1: {}, bar2: {} };
 
@@ -252,10 +249,7 @@ const LinearProgress = React.forwardRef(function LinearProgress(props, ref) {
       rootProps['aria-valuenow'] = Math.round(value);
       rootProps['aria-valuemin'] = 0;
       rootProps['aria-valuemax'] = 100;
-      let transform = value - 100;
-      if (isRtl) {
-        transform = -transform;
-      }
+      const transform = value - 100;
       inlineStyles.bar1.transform = `translateX(${transform}%)`;
     } else if (process.env.NODE_ENV !== 'production') {
       console.error(
@@ -266,10 +260,7 @@ const LinearProgress = React.forwardRef(function LinearProgress(props, ref) {
   }
   if (variant === 'buffer') {
     if (valueBuffer !== undefined) {
-      let transform = (valueBuffer || 0) - 100;
-      if (isRtl) {
-        transform = -transform;
-      }
+      const transform = (valueBuffer || 0) - 100;
       inlineStyles.bar2.transform = `translateX(${transform}%)`;
     } else if (process.env.NODE_ENV !== 'production') {
       console.error(
