@@ -1,14 +1,12 @@
 'use client';
 import * as React from 'react';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import isFocusVisible from '@mui/utils/isFocusVisible';
 import capitalize from '../utils/capitalize';
 import { styled, useTheme } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
 import Typography from '../Typography';
-import linkClasses, { getLinkUtilityClass } from './linkClasses';
+import linkClasses from './linkClasses';
 import getTextDecoration from './getTextDecoration';
 
 const v6Colors = {
@@ -23,20 +21,6 @@ const v6Colors = {
   textDisabled: true,
 };
 
-const useUtilityClasses = (ownerState) => {
-  const { classes, component, focusVisible, underline } = ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      `underline${capitalize(underline)}`,
-      component === 'button' && 'button',
-      focusVisible && 'focusVisible',
-    ],
-  };
-
-  return composeClasses(slots, getLinkUtilityClass, classes);
-};
 
 const LinkRoot = styled(Typography, {
   name: 'MuiLink',
@@ -162,12 +146,10 @@ const Link = React.forwardRef(function Link(props, ref) {
   const theme = useTheme();
 
   const {
-    className,
     color = 'primary',
     component = 'a',
     onBlur,
     onFocus,
-    TypographyClasses,
     underline = 'always',
     variant = 'inherit',
     sx,
@@ -201,13 +183,9 @@ const Link = React.forwardRef(function Link(props, ref) {
     variant,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <LinkRoot
       color={color}
-      className={clsx(classes.root, className)}
-      classes={TypographyClasses}
       component={component}
       onBlur={handleBlur}
       onFocus={handleFocus}
