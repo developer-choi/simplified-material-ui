@@ -28,7 +28,6 @@ function SelectInput(props) {
     'aria-label': ariaLabel,
     autoFocus,
     children,
-    className,
     defaultOpen,
     defaultValue,
     disabled,
@@ -42,9 +41,7 @@ function SelectInput(props) {
     onChange,
     onClose,
     onFocus,
-    // eslint-disable-next-line react/prop-types
     onKeyDown,
-    // eslint-disable-next-line react/prop-types
     onMouseDown,
     onOpen,
     open: openProp,
@@ -93,25 +90,6 @@ function SelectInput(props) {
     }
   }, [autoFocus]);
 
-  React.useEffect(() => {
-    if (!labelId) {
-      return undefined;
-    }
-    const label = document.getElementById(labelId);
-    if (label) {
-      const handler = () => {
-        if (getSelection().isCollapsed) {
-          displayRef.current.focus();
-        }
-      };
-      label.addEventListener('click', handler);
-      return () => {
-        label.removeEventListener('click', handler);
-      };
-    }
-    return undefined;
-  }, [labelId]);
-
   const update = (open, event) => {
     if (open) {
       if (onOpen) {
@@ -122,7 +100,6 @@ function SelectInput(props) {
     }
 
     if (!isOpenControlled) {
-      setMenuMinWidthState(autoWidth ? null : anchorElement.clientWidth);
       setOpenState(open);
     }
   };
@@ -239,8 +216,6 @@ function SelectInput(props) {
     }
   };
 
-  delete other['aria-invalid'];
-
   let display;
   let displaySingle;
   const displayMultiple = [];
@@ -308,11 +283,6 @@ function SelectInput(props) {
     });
   });
 
-  if (process.env.NODE_ENV !== 'production') {
-    // TODO: uncomment once we enable eslint-plugin-react-compiler // eslint-disable-next-line react-compiler/react-compiler
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-  }
-
   if (computeDisplay) {
     if (multiple) {
       if (displayMultiple.length === 0) {
@@ -374,7 +344,6 @@ function SelectInput(props) {
           alignItems: 'center',
           ...SelectDisplayProps.style,
         }}
-        className={SelectDisplayProps.className || className}
         // The id is required for proper a11y
         id={buttonId}
       >
