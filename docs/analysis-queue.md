@@ -9,6 +9,7 @@
 - [x] Fab
 - [x] FormControlLabel
 - [x] Grow
+- [x] LinearProgress
 
 ## 다음 분석 목록 📋
 
@@ -20,7 +21,6 @@
 - [ ] Slide
 
 ### Progress Indicators
-- [ ] LinearProgress
 
 ### Navigation
 - [ ] Link
@@ -47,9 +47,8 @@
 
 ## 분석 우선순위
 
-1. **현재 진행 중**: LinearProgress (Progress Indicators)
-2. **다음**: Slide (Transitions)
-3. **이후**: Link, Grid 등
+1. **현재 진행 중**: Slide (Transitions)
+2. **다음**: Link, Grid 등
 
 ---
 
