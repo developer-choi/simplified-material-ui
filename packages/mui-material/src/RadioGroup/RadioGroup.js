@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import FormGroup from '../../../form/FormGroup';
@@ -93,41 +92,5 @@ const RadioGroup = React.forwardRef(function RadioGroup(props, ref) {
     </RadioGroupContext.Provider>
   );
 });
-
-RadioGroup.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * The content of the component.
-   */
-  children: PropTypes.node,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * The default value. Use when the component is not controlled.
-   */
-  defaultValue: PropTypes.any,
-  /**
-   * The name used to reference the value of the control.
-   * If you don't provide this prop, it falls back to a randomly generated name.
-   */
-  name: PropTypes.string,
-  /**
-   * Callback fired when a radio button is selected.
-   *
-   * @param {React.ChangeEvent<HTMLInputElement>} event The event source of the callback.
-   * @param {string} value The value of the selected radio button.
-   * You can pull out the new value by accessing `event.target.value` (string).
-   */
-  onChange: PropTypes.func,
-  /**
-   * Value of the selected radio button. The DOM API casts this to a string.
-   */
-  value: PropTypes.any,
-};
 
 export default RadioGroup;
