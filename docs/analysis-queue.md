@@ -9,6 +9,7 @@
 - [x] Fab
 - [x] FormControlLabel
 - [x] Grow
+- [x] Link
 - [x] LinearProgress
 - [x] Slide
 
@@ -24,7 +25,7 @@
 ### Progress Indicators
 
 ### Navigation
-- [ ] Link
+- [x] Link
 - [ ] MobileStepper
 
 ### Inputs
@@ -48,8 +49,8 @@
 
 ## 분석 우선순위
 
-1. **현재 진행 중**: Link (Navigation)
-2. **다음**: Grid, MobileStepper 등
+1. **현재 진행 중**: MobileStepper (Navigation)
+2. **다음**: Grid, NativeSelect 등
 
 ---
 
