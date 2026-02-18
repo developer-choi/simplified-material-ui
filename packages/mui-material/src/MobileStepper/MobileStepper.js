@@ -1,38 +1,15 @@
 'use client';
 import * as React from 'react';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import Paper from '../../../surfaces/Paper';
-import capitalize from '../utils/capitalize';
 import LinearProgress from '../LinearProgress';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import slotShouldForwardProp from '../styles/slotShouldForwardProp';
-import { getMobileStepperUtilityClass } from './mobileStepperClasses';
 import useSlot from '../utils/useSlot';
 
-const useUtilityClasses = (ownerState) => {
-  const { classes, position } = ownerState;
-
-  const slots = {
-    root: ['root', `position${capitalize(position)}`],
-    dots: ['dots'],
-    dot: ['dot'],
-    dotActive: ['dotActive'],
-    progress: ['progress'],
-  };
-
-  return composeClasses(slots, getMobileStepperUtilityClass, classes);
-};
 
 const MobileStepperRoot = styled(Paper, {
   name: 'MuiMobileStepper',
   slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [styles.root, styles[`position${capitalize(ownerState.position)}`]];
-  },
 })(
   memoTheme(({ theme }) => ({
     display: 'flex',
@@ -81,12 +58,7 @@ const MobileStepperDots = styled('div', {
 const MobileStepperDot = styled('div', {
   name: 'MuiMobileStepper',
   slot: 'Dot',
-  shouldForwardProp: (prop) => slotShouldForwardProp(prop) && prop !== 'dotActive',
-  overridesResolver: (props, styles) => {
-    const { dotActive } = props;
-
-    return [styles.dot, dotActive && styles.dotActive];
-  },
+  shouldForwardProp: (prop) => prop !== 'dotActive',
 })(
   memoTheme(({ theme }) => ({
     variants: [
@@ -131,7 +103,6 @@ const MobileStepper = React.forwardRef(function MobileStepper(props, ref) {
   const {
     activeStep = 0,
     backButton,
-    className,
     LinearProgressProps,
     nextButton,
     position = 'bottom',
@@ -158,8 +129,6 @@ const MobileStepper = React.forwardRef(function MobileStepper(props, ref) {
     }
   }
 
-  const classes = useUtilityClasses(ownerState);
-
   const externalForwardedProps = {
     slots,
     slotProps: {
@@ -172,7 +141,6 @@ const MobileStepper = React.forwardRef(function MobileStepper(props, ref) {
     ref,
     elementType: MobileStepperRoot,
     shouldForwardComponentProp: true,
-    className: clsx(classes.root, className),
     externalForwardedProps: {
       ...externalForwardedProps,
       ...other,
@@ -185,7 +153,6 @@ const MobileStepper = React.forwardRef(function MobileStepper(props, ref) {
   });
 
   const [DotsSlot, dotsSlotProps] = useSlot('dots', {
-    className: classes.dots,
     elementType: MobileStepperDots,
     externalForwardedProps,
     ownerState,
@@ -198,7 +165,6 @@ const MobileStepper = React.forwardRef(function MobileStepper(props, ref) {
   });
 
   const [ProgressSlot, progressSlotProps] = useSlot('progress', {
-    className: classes.progress,
     elementType: MobileStepperProgress,
     shouldForwardComponentProp: true,
     externalForwardedProps,
@@ -224,11 +190,6 @@ const MobileStepper = React.forwardRef(function MobileStepper(props, ref) {
             <DotSlot
               key={index}
               {...dotSlotProps}
-              className={clsx(
-                classes.dot,
-                { [classes.dotActive]: index === activeStep },
-                dotSlotProps.className,
-              )}
               dotActive={index === activeStep}
             />
           ))}
