@@ -35,7 +35,7 @@
 - [x] NativeSelect
 - [x] RadioGroup
 - [x] Rating
-- [ ] Select
+- [x] Select
 - [ ] Slider
 
 ### Feedback
