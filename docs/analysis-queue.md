@@ -32,7 +32,7 @@
 
 
 ### Inputs
-- [ ] NativeSelect
+- [x] NativeSelect
 - [x] RadioGroup
 - [x] Rating
 - [ ] Select
