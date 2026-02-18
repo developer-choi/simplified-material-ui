@@ -8,7 +8,7 @@ import isHostComponent from '@mui/utils/isHostComponent';
 import { useSlider, valueToPercent } from './useSlider';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
+
 import slotShouldForwardProp from '../styles/slotShouldForwardProp';
 import shouldSpreadAdditionalProps from '../utils/shouldSpreadAdditionalProps';
 import capitalize from '../utils/capitalize';
@@ -550,9 +550,7 @@ const useUtilityClasses = (ownerState) => {
 
 const Forward = ({ children }) => children;
 
-const Slider = React.forwardRef(function Slider(inputProps, ref) {
-  const props = useDefaultProps({ props: inputProps, name: 'MuiSlider' });
-
+const Slider = React.forwardRef(function Slider(props, ref) {
   const isRtl = useRtl();
 
   const {
