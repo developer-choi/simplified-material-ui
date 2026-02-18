@@ -7,7 +7,6 @@ import capitalize from '../utils/capitalize';
 import { styled, useTheme } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import Typography from '../Typography';
 import linkClasses, { getLinkUtilityClass } from './linkClasses';
 import getTextDecoration from './getTextDecoration';
@@ -159,11 +158,7 @@ const LinkRoot = styled(Typography, {
   }),
 );
 
-const Link = React.forwardRef(function Link(inProps, ref) {
-  const props = useDefaultProps({
-    props: inProps,
-    name: 'MuiLink',
-  });
+const Link = React.forwardRef(function Link(props, ref) {
   const theme = useTheme();
 
   const {
