@@ -98,7 +98,7 @@ const MobileStepperProgress = styled(LinearProgress, {
   ],
 });
 
-const MobileStepper = React.forwardRef(function MobileStepper(props, ref) {
+function MobileStepper(props) {
   const {
     activeStep = 0,
     backButton,
@@ -126,7 +126,7 @@ const MobileStepper = React.forwardRef(function MobileStepper(props, ref) {
   }
 
   return (
-    <MobileStepperRoot ref={ref} square elevation={0} ownerState={ownerState} {...other}>
+    <MobileStepperRoot square elevation={0} ownerState={ownerState} {...other}>
       {backButton}
       {variant === 'text' && (
         <React.Fragment>
@@ -157,6 +157,6 @@ const MobileStepper = React.forwardRef(function MobileStepper(props, ref) {
       {nextButton}
     </MobileStepperRoot>
   );
-});
+}
 
 export default MobileStepper;
