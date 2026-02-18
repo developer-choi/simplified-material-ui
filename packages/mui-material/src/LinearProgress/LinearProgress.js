@@ -6,7 +6,6 @@ import { useRtl } from '@mui/system/RtlProvider';
 import { keyframes, css, styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import capitalize from '../utils/capitalize';
 import { getLinearProgressUtilityClass } from './linearProgressClasses';
 
@@ -389,8 +388,7 @@ const LinearProgressBar2 = styled('span', {
  * you should use `aria-describedby` to point to the progress bar, and set the `aria-busy`
  * attribute to `true` on that region until it has finished loading.
  */
-const LinearProgress = React.forwardRef(function LinearProgress(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiLinearProgress' });
+const LinearProgress = React.forwardRef(function LinearProgress(props, ref) {
   const {
     className,
     color = 'primary',
