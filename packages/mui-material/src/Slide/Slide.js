@@ -95,7 +95,6 @@ const Slide = React.forwardRef(function Slide(props, ref) {
   };
 
   const {
-    addEndListener,
     appear = true,
     children,
     container: containerProp,
@@ -155,13 +154,6 @@ const Slide = React.forwardRef(function Slide(props, ref) {
     node.style.transition = '';
   };
 
-  const handleAddEndListener = (next) => {
-    if (addEndListener) {
-      // Old call signature before `react-transition-group` implemented `nodeRef`
-      addEndListener(childrenRef.current, next);
-    }
-  };
-
   const updatePosition = React.useCallback(() => {
     if (childrenRef.current) {
       setTranslateValue(direction, childrenRef.current, containerProp);
@@ -203,7 +195,6 @@ const Slide = React.forwardRef(function Slide(props, ref) {
       onEntering={handleEntering}
       onExit={handleExit}
       onExited={handleExited}
-      addEndListener={handleAddEndListener}
       appear={appear}
       in={inProp}
       timeout={timeout}
