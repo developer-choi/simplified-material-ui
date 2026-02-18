@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import useTimeout from '@mui/utils/useTimeout';
 import getReactElementRef from '@mui/utils/getReactElementRef';
 import { Transition } from 'react-transition-group';
 import { useTheme } from '../zero-styled';
@@ -38,17 +37,14 @@ const isWebKit154 =
  */
 const Grow = React.forwardRef(function Grow(props, ref) {
   const {
-    addEndListener,
     appear = true,
     children,
     easing,
     in: inProp,
     style,
-    timeout = 'auto',
     ...other
   } = props;
-  const timer = useTimeout();
-  const autoTimeout = React.useRef();
+  const timeout = 300;
   const theme = useTheme();
 
   const nodeRef = React.useRef(null);
@@ -68,13 +64,7 @@ const Grow = React.forwardRef(function Grow(props, ref) {
       },
     );
 
-    let duration;
-    if (timeout === 'auto') {
-      duration = theme.transitions.getAutoHeightDuration(node.clientHeight);
-      autoTimeout.current = duration;
-    } else {
-      duration = transitionDuration;
-    }
+    const duration = transitionDuration;
 
     node.style.transition = [
       theme.transitions.create('opacity', {
@@ -103,13 +93,7 @@ const Grow = React.forwardRef(function Grow(props, ref) {
       },
     );
 
-    let duration;
-    if (timeout === 'auto') {
-      duration = theme.transitions.getAutoHeightDuration(node.clientHeight);
-      autoTimeout.current = duration;
-    } else {
-      duration = transitionDuration;
-    }
+    const duration = transitionDuration;
 
     node.style.transition = [
       theme.transitions.create('opacity', {
@@ -127,16 +111,6 @@ const Grow = React.forwardRef(function Grow(props, ref) {
     node.style.transform = getScale(0.75);
   };
 
-  const handleAddEndListener = (next) => {
-    if (timeout === 'auto') {
-      timer.start(autoTimeout.current || 0, next);
-    }
-    if (addEndListener) {
-      // Old call signature before `react-transition-group` implemented `nodeRef`
-      addEndListener(nodeRef.current, next);
-    }
-  };
-
   return (
     <Transition
       appear={appear}
@@ -144,8 +118,7 @@ const Grow = React.forwardRef(function Grow(props, ref) {
       nodeRef={nodeRef}
       onEnter={handleEnter}
       onExit={handleExit}
-      addEndListener={handleAddEndListener}
-      timeout={timeout === 'auto' ? null : timeout}
+      timeout={timeout}
       {...other}
     >
       {/* Ensure "ownerState" is not forwarded to the child DOM element when a direct HTML element is used. This avoids unexpected behavior since "ownerState" is intended for internal styling, component props and not as a DOM attribute. */}
