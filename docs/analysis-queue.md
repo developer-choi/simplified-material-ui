@@ -10,6 +10,7 @@
 - [x] FormControlLabel
 - [x] Grow
 - [x] Link
+- [x] MobileStepper
 - [x] LinearProgress
 - [x] Slide
 
@@ -26,7 +27,8 @@
 
 ### Navigation
 - [x] Link
-- [ ] MobileStepper
+- [x] MobileStepper
+
 
 ### Inputs
 - [ ] NativeSelect
@@ -49,8 +51,8 @@
 
 ## 분석 우선순위
 
-1. **현재 진행 중**: MobileStepper (Navigation)
-2. **다음**: Grid, NativeSelect 등
+1. **현재 진행 중**: Grid (Layout) 또는 NativeSelect (Inputs)
+2. **다음**: RadioGroup, Rating 등
 
 ---
 
