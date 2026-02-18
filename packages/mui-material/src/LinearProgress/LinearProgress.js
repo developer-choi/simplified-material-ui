@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import { keyframes, css, styled } from '../zero-styled';
+import { keyframes, styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 const TRANSITION_DURATION = 4; // seconds
 const indeterminate1Keyframe = keyframes`
@@ -20,15 +20,6 @@ const indeterminate1Keyframe = keyframes`
   }
 `;
 
-// This implementation is for supporting both Styled-components v4+ and Pigment CSS.
-// A global animation has to be created here for Styled-components v4+ (https://github.com/styled-components/styled-components/blob/main/packages/styled-components/src/utils/errors.md#12).
-// which can be done by checking typeof indeterminate1Keyframe !== 'string' (at runtime, Pigment CSS transform keyframes`` to a string).
-const indeterminate1Animation =
-  typeof indeterminate1Keyframe !== 'string'
-    ? css`
-        animation: ${indeterminate1Keyframe} 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
-      `
-    : null;
 
 const indeterminate2Keyframe = keyframes`
   0% {
@@ -46,12 +37,7 @@ const indeterminate2Keyframe = keyframes`
     right: -8%;
   }
 `;
-const indeterminate2Animation =
-  typeof indeterminate2Keyframe !== 'string'
-    ? css`
-        animation: ${indeterminate2Keyframe} 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) 1.15s infinite;
-      `
-    : null;
+
 
 const bufferKeyframe = keyframes`
   0% {
@@ -69,12 +55,7 @@ const bufferKeyframe = keyframes`
     background-position: -200px -23px;
   }
 `;
-const bufferAnimation =
-  typeof bufferKeyframe !== 'string'
-    ? css`
-        animation: ${bufferKeyframe} 3s infinite linear;
-      `
-    : null;
+
 
 
 const LinearProgressRoot = styled('span', {
@@ -118,7 +99,7 @@ const LinearProgressDashed = styled('span', {
     backgroundPosition: '0 -23px',
     backgroundImage: `radial-gradient(rgba(25, 118, 210, 0.38) 0%, rgba(25, 118, 210, 0.38) 16%, transparent 42%)`,
   })),
-  bufferAnimation || {
+  {
     animation: `${bufferKeyframe} 3s infinite linear`,
   },
 );
@@ -168,7 +149,7 @@ const LinearProgressBar1 = styled('span', {
       },
       {
         props: { variant: 'indeterminate' },
-        style: indeterminate1Animation || {
+        style: {
           animation: `${indeterminate1Keyframe} 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite`,
         },
       },
@@ -214,7 +195,7 @@ const LinearProgressBar2 = styled('span', {
       },
       {
         props: { variant: 'indeterminate' },
-        style: indeterminate2Animation || {
+        style: {
           animation: `${indeterminate2Keyframe} 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) 1.15s infinite`,
         },
       },
