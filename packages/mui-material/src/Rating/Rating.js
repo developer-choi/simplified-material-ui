@@ -11,7 +11,6 @@ import Star from '../internal/svg-icons/Star';
 import StarBorder from '../internal/svg-icons/StarBorder';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import slotShouldForwardProp from '../styles/slotShouldForwardProp';
 import ratingClasses, { getRatingUtilityClass } from './ratingClasses';
 import useSlot from '../utils/useSlot';
@@ -328,8 +327,7 @@ function defaultLabelText(value) {
   return `${value || '0'} Star${value !== 1 ? 's' : ''}`;
 }
 
-const Rating = React.forwardRef(function Rating(inProps, ref) {
-  const props = useDefaultProps({ name: 'MuiRating', props: inProps });
+const Rating = React.forwardRef(function Rating(props, ref) {
   const {
     component = 'span',
     className,
