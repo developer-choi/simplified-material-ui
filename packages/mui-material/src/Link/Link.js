@@ -61,7 +61,6 @@ const LinkRoot = styled(Typography, {
 const Link = React.forwardRef(function Link(props, ref) {
   const {
     underline = 'always',
-    sx,
     ...other
   } = props;
 
@@ -90,7 +89,6 @@ const Link = React.forwardRef(function Link(props, ref) {
       ref={ref}
       ownerState={ownerState}
       {...other}
-      sx={Array.isArray(sx) ? sx : [sx]}
     />
   );
 });
