@@ -1,18 +1,16 @@
 'use client';
 import * as React from 'react';
-import clsx from 'clsx';
 import clamp from '@mui/utils/clamp';
 import visuallyHidden from '@mui/utils/visuallyHidden';
-import composeClasses from '@mui/utils/composeClasses';
 import { useRtl } from '@mui/system/RtlProvider';
 import isFocusVisible from '@mui/utils/isFocusVisible';
-import { capitalize, useForkRef, useControlled, unstable_useId as useId } from '../utils';
+import { useForkRef, useControlled, unstable_useId as useId } from '../utils';
 import Star from '../internal/svg-icons/Star';
 import StarBorder from '../internal/svg-icons/StarBorder';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import slotShouldForwardProp from '../styles/slotShouldForwardProp';
-import ratingClasses, { getRatingUtilityClass } from './ratingClasses';
+import ratingClasses from './ratingClasses';
 import useSlot from '../utils/useSlot';
 
 function getDecimalPrecision(num) {
@@ -29,45 +27,10 @@ function roundValueToPrecision(value, precision) {
   return Number(nearest.toFixed(getDecimalPrecision(precision)));
 }
 
-const useUtilityClasses = (ownerState) => {
-  const { classes, size, readOnly, disabled, emptyValueFocused, focusVisible } = ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      `size${capitalize(size)}`,
-      disabled && 'disabled',
-      focusVisible && 'focusVisible',
-      readOnly && 'readOnly',
-    ],
-    label: ['label', 'pristine'],
-    labelEmptyValue: [emptyValueFocused && 'labelEmptyValueActive'],
-    icon: ['icon'],
-    iconEmpty: ['iconEmpty'],
-    iconFilled: ['iconFilled'],
-    iconHover: ['iconHover'],
-    iconFocus: ['iconFocus'],
-    iconActive: ['iconActive'],
-    decimal: ['decimal'],
-    visuallyHidden: ['visuallyHidden'],
-  };
-
-  return composeClasses(slots, getRatingUtilityClass, classes);
-};
 
 const RatingRoot = styled('span', {
   name: 'MuiRating',
   slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      { [`& .${ratingClasses.visuallyHidden}`]: styles.visuallyHidden },
-      styles.root,
-      styles[`size${capitalize(ownerState.size)}`],
-      ownerState.readOnly && styles.readOnly,
-    ];
-  },
 })(
   memoTheme(({ theme }) => ({
     display: 'inline-flex',
@@ -209,7 +172,6 @@ function IconContainer(props) {
 
 function RatingItem(props) {
   const {
-    classes,
     disabled,
     emptyIcon,
     focus,
@@ -252,13 +214,6 @@ function RatingItem(props) {
 
   const [IconSlot, iconSlotProps] = useSlot('icon', {
     elementType: RatingIcon,
-    className: clsx(classes.icon, {
-      [classes.iconEmpty]: !isFilled,
-      [classes.iconFilled]: isFilled,
-      [classes.iconHover]: isHovered,
-      [classes.iconFocus]: isFocused,
-      [classes.iconActive]: isActive,
-    }),
     externalForwardedProps,
     ownerState: {
       ...ownerState,
@@ -300,10 +255,10 @@ function RatingItem(props) {
     <React.Fragment>
       <LabelSlot {...labelSlotProps}>
         {container}
-        <span className={classes.visuallyHidden}>{getLabelText(itemValue)}</span>
+        <span style={visuallyHidden}>{getLabelText(itemValue)}</span>
       </LabelSlot>
       <input
-        className={classes.visuallyHidden}
+        style={visuallyHidden}
         onFocus={onFocus}
         onBlur={onBlur}
         onChange={onChange}
@@ -330,7 +285,6 @@ function defaultLabelText(value) {
 const Rating = React.forwardRef(function Rating(props, ref) {
   const {
     component = 'span',
-    className,
     defaultValue = null,
     disabled = false,
     emptyIcon = defaultEmptyIcon,
@@ -516,8 +470,6 @@ const Rating = React.forwardRef(function Rating(props, ref) {
     size,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   const externalForwardedProps = {
     slots,
     slotProps,
@@ -525,7 +477,6 @@ const Rating = React.forwardRef(function Rating(props, ref) {
 
   const [RootSlot, rootSlotProps] = useSlot('root', {
     ref: handleRef,
-    className: clsx(classes.root, className),
     elementType: RatingRoot,
     externalForwardedProps: {
       ...externalForwardedProps,
@@ -551,14 +502,12 @@ const Rating = React.forwardRef(function Rating(props, ref) {
   });
 
   const [LabelSlot, labelSlotProps] = useSlot('label', {
-    className: clsx(classes.label, classes.labelEmptyValue),
     elementType: RatingLabel,
     externalForwardedProps,
     ownerState,
   });
 
   const [DecimalSlot, decimalSlotProps] = useSlot('decimal', {
-    className: classes.decimal,
     elementType: RatingDecimal,
     externalForwardedProps,
     ownerState,
@@ -570,7 +519,6 @@ const Rating = React.forwardRef(function Rating(props, ref) {
         const itemValue = index + 1;
 
         const ratingItemProps = {
-          classes,
           disabled,
           emptyIcon,
           focus,
@@ -599,7 +547,6 @@ const Rating = React.forwardRef(function Rating(props, ref) {
             <DecimalSlot
               {...decimalSlotProps}
               key={itemValue}
-              className={clsx(decimalSlotProps.className, { [classes.iconActive]: isActive })}
               iconActive={isActive}
             >
               {items.map(($, indexDecimal) => {
@@ -647,7 +594,7 @@ const Rating = React.forwardRef(function Rating(props, ref) {
       {!readOnly && !disabled && (
         <LabelSlot {...labelSlotProps}>
           <input
-            className={classes.visuallyHidden}
+            style={visuallyHidden}
             value=""
             id={`${name}-empty`}
             type="radio"
@@ -657,7 +604,7 @@ const Rating = React.forwardRef(function Rating(props, ref) {
             onBlur={() => setEmptyValueFocused(false)}
             onChange={handleChange}
           />
-          <span className={classes.visuallyHidden}>{emptyLabelText}</span>
+          <span style={visuallyHidden}>{emptyLabelText}</span>
         </LabelSlot>
       )}
     </RootSlot>
