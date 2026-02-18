@@ -102,12 +102,6 @@ const Slide = React.forwardRef(function Slide(props, ref) {
     direction = 'down',
     easing: easingProp = defaultEasing,
     in: inProp,
-    onEnter,
-    onEntered,
-    onEntering,
-    onExit,
-    onExited,
-    onExiting,
     style,
     timeout = defaultTimeout,
     ...other
@@ -116,32 +110,17 @@ const Slide = React.forwardRef(function Slide(props, ref) {
   const childrenRef = React.useRef(null);
   const handleRef = useForkRef(getReactElementRef(children), childrenRef, ref);
 
-  const normalizedTransitionCallback = (callback) => (isAppearing) => {
-    if (callback) {
-      // onEnterXxx and onExitXxx callbacks have a different arguments.length value.
-      if (isAppearing === undefined) {
-        callback(childrenRef.current);
-      } else {
-        callback(childrenRef.current, isAppearing);
-      }
-    }
-  };
-
-  const handleEnter = normalizedTransitionCallback((node, isAppearing) => {
+  const handleEnter = () => {
+    const node = childrenRef.current;
     setTranslateValue(direction, node, containerProp);
     reflow(node);
+  };
 
-    if (onEnter) {
-      onEnter(node, isAppearing);
-    }
-  });
-
-  const handleEntering = normalizedTransitionCallback((node, isAppearing) => {
+  const handleEntering = () => {
+    const node = childrenRef.current;
     const transitionProps = getTransitionProps(
       { timeout, style, easing: easingProp },
-      {
-        mode: 'enter',
-      },
+      { mode: 'enter' },
     );
 
     node.style.webkitTransition = theme.transitions.create('-webkit-transform', {
@@ -154,41 +133,27 @@ const Slide = React.forwardRef(function Slide(props, ref) {
 
     node.style.webkitTransform = 'none';
     node.style.transform = 'none';
-    if (onEntering) {
-      onEntering(node, isAppearing);
-    }
-  });
+  };
 
-  const handleEntered = normalizedTransitionCallback(onEntered);
-  const handleExiting = normalizedTransitionCallback(onExiting);
-
-  const handleExit = normalizedTransitionCallback((node) => {
+  const handleExit = () => {
+    const node = childrenRef.current;
     const transitionProps = getTransitionProps(
       { timeout, style, easing: easingProp },
-      {
-        mode: 'exit',
-      },
+      { mode: 'exit' },
     );
 
     node.style.webkitTransition = theme.transitions.create('-webkit-transform', transitionProps);
     node.style.transition = theme.transitions.create('transform', transitionProps);
 
     setTranslateValue(direction, node, containerProp);
+  };
 
-    if (onExit) {
-      onExit(node);
-    }
-  });
-
-  const handleExited = normalizedTransitionCallback((node) => {
+  const handleExited = () => {
+    const node = childrenRef.current;
     // No need for transitions when the component is hidden
     node.style.webkitTransition = '';
     node.style.transition = '';
-
-    if (onExited) {
-      onExited(node);
-    }
-  });
+  };
 
   const handleAddEndListener = (next) => {
     if (addEndListener) {
@@ -235,11 +200,9 @@ const Slide = React.forwardRef(function Slide(props, ref) {
     <Transition
       nodeRef={childrenRef}
       onEnter={handleEnter}
-      onEntered={handleEntered}
       onEntering={handleEntering}
       onExit={handleExit}
       onExited={handleExited}
-      onExiting={handleExiting}
       addEndListener={handleAddEndListener}
       appear={appear}
       in={inProp}
