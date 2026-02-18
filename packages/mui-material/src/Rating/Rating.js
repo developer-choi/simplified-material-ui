@@ -2,7 +2,7 @@
 import * as React from 'react';
 import clamp from '@mui/utils/clamp';
 import visuallyHidden from '@mui/utils/visuallyHidden';
-import { useRtl } from '@mui/system/RtlProvider';
+
 import isFocusVisible from '@mui/utils/isFocusVisible';
 import { useForkRef, useControlled, unstable_useId as useId } from '../utils';
 import Star from '../internal/svg-icons/Star';
@@ -251,7 +251,6 @@ function defaultLabelText(value) {
 
 const Rating = React.forwardRef(function Rating(props, ref) {
   const {
-    component = 'span',
     defaultValue = null,
     disabled = false,
     emptyIcon = defaultEmptyIcon,
@@ -281,7 +280,6 @@ const Rating = React.forwardRef(function Rating(props, ref) {
   });
 
   const valueRounded = roundValueToPrecision(valueDerived, precision);
-  const isRtl = useRtl();
   const [{ hover, focus }, setState] = React.useState({
     hover: -1,
     focus: -1,
@@ -306,15 +304,9 @@ const Rating = React.forwardRef(function Rating(props, ref) {
     }
 
     const rootNode = rootRef.current;
-    const { right, left, width: containerWidth } = rootNode.getBoundingClientRect();
+    const { left, width: containerWidth } = rootNode.getBoundingClientRect();
 
-    let percent;
-
-    if (isRtl) {
-      percent = (right - event.clientX) / containerWidth;
-    } else {
-      percent = (event.clientX - left) / containerWidth;
-    }
+    const percent = (event.clientX - left) / containerWidth;
 
     let newHover = roundValueToPrecision(max * percent + precision / 2, precision);
     newHover = clamp(newHover, precision, max);
@@ -418,7 +410,6 @@ const Rating = React.forwardRef(function Rating(props, ref) {
 
   const ownerState = {
     ...props,
-    component,
     defaultValue,
     disabled,
     emptyIcon,
