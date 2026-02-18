@@ -1,497 +1,11 @@
 'use client';
 import * as React from 'react';
 import { useSlider, valueToPercent } from './useSlider';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
-
-import slotShouldForwardProp from '../styles/slotShouldForwardProp';
-import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
-import BaseSliderValueLabel from './SliderValueLabel';
-import sliderClasses from './sliderClasses';
+import SliderValueLabel from './SliderValueLabel';
 
 function Identity(x) {
   return x;
 }
-
-export const SliderRoot = styled('span', {
-  name: 'MuiSlider',
-  slot: 'Root',
-})(
-  memoTheme(({ theme }) => ({
-    borderRadius: 12,
-    boxSizing: 'content-box',
-    display: 'inline-block',
-    position: 'relative',
-    cursor: 'pointer',
-    touchAction: 'none',
-    WebkitTapHighlightColor: 'transparent',
-    '@media print': {
-      colorAdjust: 'exact',
-    },
-    [`&.${sliderClasses.disabled}`]: {
-      pointerEvents: 'none',
-      cursor: 'default',
-      color: (theme.vars || theme).palette.grey[400],
-    },
-    [`&.${sliderClasses.dragging}`]: {
-      [`& .${sliderClasses.thumb}, & .${sliderClasses.track}`]: {
-        transition: 'none',
-      },
-    },
-    variants: [
-      ...Object.entries(theme.palette)
-        .filter(createSimplePaletteValueFilter())
-        .map(([color]) => ({
-          props: { color },
-          style: {
-            color: (theme.vars || theme).palette[color].main,
-          },
-        })),
-      {
-        props: { orientation: 'horizontal' },
-        style: {
-          height: 4,
-          width: '100%',
-          padding: '13px 0',
-          // The primary input mechanism of the device includes a pointing device of limited accuracy.
-          '@media (pointer: coarse)': {
-            // Reach 42px touch target, about ~8mm on screen.
-            padding: '20px 0',
-          },
-        },
-      },
-      {
-        props: { orientation: 'horizontal', size: 'small' },
-        style: {
-          height: 2,
-        },
-      },
-      {
-        props: { orientation: 'horizontal', marked: true },
-        style: {
-          marginBottom: 20,
-        },
-      },
-      {
-        props: { orientation: 'vertical' },
-        style: {
-          height: '100%',
-          width: 4,
-          padding: '0 13px',
-          // The primary input mechanism of the device includes a pointing device of limited accuracy.
-          '@media (pointer: coarse)': {
-            // Reach 42px touch target, about ~8mm on screen.
-            padding: '0 20px',
-          },
-        },
-      },
-      {
-        props: { orientation: 'vertical', size: 'small' },
-        style: {
-          width: 2,
-        },
-      },
-      {
-        props: { orientation: 'vertical', marked: true },
-        style: {
-          marginRight: 44,
-        },
-      },
-    ],
-  })),
-);
-
-export const SliderRail = styled('span', {
-  name: 'MuiSlider',
-  slot: 'Rail',
-})({
-  display: 'block',
-  position: 'absolute',
-  borderRadius: 'inherit',
-  backgroundColor: 'currentColor',
-  opacity: 0.38,
-  variants: [
-    {
-      props: { orientation: 'horizontal' },
-      style: {
-        width: '100%',
-        height: 'inherit',
-        top: '50%',
-        transform: 'translateY(-50%)',
-      },
-    },
-    {
-      props: { orientation: 'vertical' },
-      style: {
-        height: '100%',
-        width: 'inherit',
-        left: '50%',
-        transform: 'translateX(-50%)',
-      },
-    },
-    {
-      props: { track: 'inverted' },
-      style: {
-        opacity: 1,
-      },
-    },
-  ],
-});
-
-export const SliderTrack = styled('span', {
-  name: 'MuiSlider',
-  slot: 'Track',
-})(
-  memoTheme(({ theme }) => {
-    return {
-      display: 'block',
-      position: 'absolute',
-      borderRadius: 'inherit',
-      border: '1px solid currentColor',
-      backgroundColor: 'currentColor',
-      transition: theme.transitions.create(['left', 'width', 'bottom', 'height'], {
-        duration: theme.transitions.duration.shortest,
-      }),
-      variants: [
-        {
-          props: { size: 'small' },
-          style: {
-            border: 'none',
-          },
-        },
-        {
-          props: { orientation: 'horizontal' },
-          style: {
-            height: 'inherit',
-            top: '50%',
-            transform: 'translateY(-50%)',
-          },
-        },
-        {
-          props: { orientation: 'vertical' },
-          style: {
-            width: 'inherit',
-            left: '50%',
-            transform: 'translateX(-50%)',
-          },
-        },
-        {
-          props: { track: false },
-          style: {
-            display: 'none',
-          },
-        },
-        ...Object.entries(theme.palette)
-          .filter(createSimplePaletteValueFilter())
-          .map(([color]) => ({
-            props: { color, track: 'inverted' },
-            style: {
-              ...(theme.vars
-                ? {
-                    backgroundColor: theme.vars.palette.Slider[`${color}Track`],
-                    borderColor: theme.vars.palette.Slider[`${color}Track`],
-                  }
-                : {
-                    backgroundColor: theme.lighten(theme.palette[color].main, 0.62),
-                    borderColor: theme.lighten(theme.palette[color].main, 0.62),
-                    ...theme.applyStyles('dark', {
-                      backgroundColor: theme.darken(theme.palette[color].main, 0.5),
-                    }),
-                    ...theme.applyStyles('dark', {
-                      borderColor: theme.darken(theme.palette[color].main, 0.5),
-                    }),
-                  }),
-            },
-          })),
-      ],
-    };
-  }),
-);
-
-export const SliderThumb = styled('span', {
-  name: 'MuiSlider',
-  slot: 'Thumb',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-    return [
-      styles.thumb,
-      styles[`thumbColor${capitalize(ownerState.color)}`],
-      ownerState.size !== 'medium' && styles[`thumbSize${capitalize(ownerState.size)}`],
-    ];
-  },
-})(
-  memoTheme(({ theme }) => ({
-    position: 'absolute',
-    width: 20,
-    height: 20,
-    boxSizing: 'border-box',
-    borderRadius: '50%',
-    outline: 0,
-    backgroundColor: 'currentColor',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    transition: theme.transitions.create(['box-shadow', 'left', 'bottom'], {
-      duration: theme.transitions.duration.shortest,
-    }),
-    '&::before': {
-      position: 'absolute',
-      content: '""',
-      borderRadius: 'inherit',
-      width: '100%',
-      height: '100%',
-      boxShadow: (theme.vars || theme).shadows[2],
-    },
-    '&::after': {
-      position: 'absolute',
-      content: '""',
-      borderRadius: '50%',
-      // 42px is the hit target
-      width: 42,
-      height: 42,
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-    },
-    [`&.${sliderClasses.disabled}`]: {
-      '&:hover': {
-        boxShadow: 'none',
-      },
-    },
-    variants: [
-      {
-        props: { size: 'small' },
-        style: {
-          width: 12,
-          height: 12,
-          '&::before': {
-            boxShadow: 'none',
-          },
-        },
-      },
-      {
-        props: { orientation: 'horizontal' },
-        style: {
-          top: '50%',
-          transform: 'translate(-50%, -50%)',
-        },
-      },
-      {
-        props: { orientation: 'vertical' },
-        style: {
-          left: '50%',
-          transform: 'translate(-50%, 50%)',
-        },
-      },
-      ...Object.entries(theme.palette)
-        .filter(createSimplePaletteValueFilter())
-        .map(([color]) => ({
-          props: { color },
-          style: {
-            [`&:hover, &.${sliderClasses.focusVisible}`]: {
-              boxShadow: `0px 0px 0px 8px ${theme.alpha((theme.vars || theme).palette[color].main, 0.16)}`,
-              '@media (hover: none)': {
-                boxShadow: 'none',
-              },
-            },
-            [`&.${sliderClasses.active}`]: {
-              boxShadow: `0px 0px 0px 14px ${theme.alpha((theme.vars || theme).palette[color].main, 0.16)}`,
-            },
-          },
-        })),
-    ],
-  })),
-);
-
-const SliderValueLabel = styled(BaseSliderValueLabel, {
-  name: 'MuiSlider',
-  slot: 'ValueLabel',
-})(
-  memoTheme(({ theme }) => ({
-    zIndex: 1,
-    whiteSpace: 'nowrap',
-    ...theme.typography.body2,
-    fontWeight: 500,
-    transition: theme.transitions.create(['transform'], {
-      duration: theme.transitions.duration.shortest,
-    }),
-    position: 'absolute',
-    backgroundColor: (theme.vars || theme).palette.grey[600],
-    borderRadius: 2,
-    color: (theme.vars || theme).palette.common.white,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '0.25rem 0.75rem',
-    variants: [
-      {
-        props: { orientation: 'horizontal' },
-        style: {
-          transform: 'translateY(-100%) scale(0)',
-          top: '-10px',
-          transformOrigin: 'bottom center',
-          '&::before': {
-            position: 'absolute',
-            content: '""',
-            width: 8,
-            height: 8,
-            transform: 'translate(-50%, 50%) rotate(45deg)',
-            backgroundColor: 'inherit',
-            bottom: 0,
-            left: '50%',
-          },
-          [`&.${sliderClasses.valueLabelOpen}`]: {
-            transform: 'translateY(-100%) scale(1)',
-          },
-        },
-      },
-      {
-        props: { orientation: 'vertical' },
-        style: {
-          transform: 'translateY(-50%) scale(0)',
-          right: '30px',
-          top: '50%',
-          transformOrigin: 'right center',
-          '&::before': {
-            position: 'absolute',
-            content: '""',
-            width: 8,
-            height: 8,
-            transform: 'translate(-50%, -50%) rotate(45deg)',
-            backgroundColor: 'inherit',
-            right: -8,
-            top: '50%',
-          },
-          [`&.${sliderClasses.valueLabelOpen}`]: {
-            transform: 'translateY(-50%) scale(1)',
-          },
-        },
-      },
-      {
-        props: { size: 'small' },
-        style: {
-          fontSize: theme.typography.pxToRem(12),
-          padding: '0.25rem 0.5rem',
-        },
-      },
-      {
-        props: { orientation: 'vertical', size: 'small' },
-        style: {
-          right: '20px',
-        },
-      },
-    ],
-  })),
-);
-
-SliderValueLabel.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * @ignore
-   */
-  children: PropTypes.element.isRequired,
-  /**
-   * @ignore
-   */
-  index: PropTypes.number.isRequired,
-  /**
-   * @ignore
-   */
-  open: PropTypes.bool.isRequired,
-  /**
-   * @ignore
-   */
-  value: PropTypes.node,
-};
-
-export { SliderValueLabel };
-
-export const SliderMark = styled('span', {
-  name: 'MuiSlider',
-  slot: 'Mark',
-  shouldForwardProp: (prop) => slotShouldForwardProp(prop) && prop !== 'markActive',
-  overridesResolver: (props, styles) => {
-    const { markActive } = props;
-
-    return [styles.mark, markActive && styles.markActive];
-  },
-})(
-  memoTheme(({ theme }) => ({
-    position: 'absolute',
-    width: 2,
-    height: 2,
-    borderRadius: 1,
-    backgroundColor: 'currentColor',
-    variants: [
-      {
-        props: { orientation: 'horizontal' },
-        style: {
-          top: '50%',
-          transform: 'translate(-1px, -50%)',
-        },
-      },
-      {
-        props: { orientation: 'vertical' },
-        style: {
-          left: '50%',
-          transform: 'translate(-50%, 1px)',
-        },
-      },
-      {
-        props: { markActive: true },
-        style: {
-          backgroundColor: (theme.vars || theme).palette.background.paper,
-          opacity: 0.8,
-        },
-      },
-    ],
-  })),
-);
-
-export const SliderMarkLabel = styled('span', {
-  name: 'MuiSlider',
-  slot: 'MarkLabel',
-  shouldForwardProp: (prop) => slotShouldForwardProp(prop) && prop !== 'markLabelActive',
-})(
-  memoTheme(({ theme }) => ({
-    ...theme.typography.body2,
-    color: (theme.vars || theme).palette.text.secondary,
-    position: 'absolute',
-    whiteSpace: 'nowrap',
-    variants: [
-      {
-        props: { orientation: 'horizontal' },
-        style: {
-          top: 30,
-          transform: 'translateX(-50%)',
-          '@media (pointer: coarse)': {
-            top: 40,
-          },
-        },
-      },
-      {
-        props: { orientation: 'vertical' },
-        style: {
-          left: 36,
-          transform: 'translateY(50%)',
-          '@media (pointer: coarse)': {
-            left: 44,
-          },
-        },
-      },
-      {
-        props: { markLabelActive: true },
-        style: {
-          color: (theme.vars || theme).palette.text.primary,
-        },
-      },
-    ],
-  })),
-);
-
 
 function Slider(props) {
   const {
@@ -562,21 +76,71 @@ function Slider(props) {
   ownerState.dragging = dragging;
   ownerState.focusedThumbIndex = focusedThumbIndex;
 
+  const horizontal = orientation === 'horizontal';
+  const small = size === 'small';
+
   return (
-    <SliderRoot {...getRootProps()} ownerState={ownerState} {...other}>
-      <SliderRail ownerState={ownerState} />
-      <SliderTrack
+    <span
+      {...getRootProps()}
+      style={{
+        borderRadius: 12,
+        boxSizing: 'content-box',
+        display: 'inline-block',
+        position: 'relative',
+        cursor: disabled ? 'default' : 'pointer',
+        touchAction: 'none',
+        WebkitTapHighlightColor: 'transparent',
+        color: '#1976d2',
+        ...(horizontal
+          ? {
+              height: small ? 2 : 4,
+              width: '100%',
+              padding: '13px 0',
+              ...(ownerState.marked && { marginBottom: 20 }),
+            }
+          : {
+              height: '100%',
+              width: small ? 2 : 4,
+              padding: '0 13px',
+              ...(ownerState.marked && { marginRight: 44 }),
+            }),
+        ...(disabled && { opacity: 0.38, pointerEvents: 'none' }),
+      }}
+      {...other}
+    >
+      {/* Rail */}
+      <span
         style={{
+          display: 'block',
+          position: 'absolute',
+          borderRadius: 'inherit',
+          backgroundColor: 'currentColor',
+          opacity: track === 'inverted' ? 1 : 0.38,
+          ...(horizontal
+            ? { width: '100%', height: 'inherit', top: '50%', transform: 'translateY(-50%)' }
+            : { height: '100%', width: 'inherit', left: '50%', transform: 'translateX(-50%)' }),
+        }}
+      />
+      {/* Track */}
+      <span
+        style={{
+          display: track === false ? 'none' : 'block',
+          position: 'absolute',
+          borderRadius: 'inherit',
+          border: small ? 'none' : '1px solid currentColor',
+          backgroundColor: 'currentColor',
+          ...(horizontal
+            ? { height: 'inherit', top: '50%', transform: 'translateY(-50%)' }
+            : { width: 'inherit', left: '50%', transform: 'translateX(-50%)' }),
           ...axisProps[axis].offset(trackOffset),
           ...axisProps[axis].leap(trackLeap),
         }}
-        ownerState={ownerState}
       />
       {marks
         .filter((mark) => mark.value >= min && mark.value <= max)
         .map((mark, index) => {
           const percent = valueToPercent(mark.value, min, max);
-          const style = axisProps[axis].offset(percent);
+          const markStyle = axisProps[axis].offset(percent);
 
           let markActive;
           if (track === false) {
@@ -595,37 +159,67 @@ function Slider(props) {
 
           return (
             <React.Fragment key={index}>
-              <SliderMark
+              {/* Mark */}
+              <span
                 data-index={index}
-                markActive={markActive}
-                ownerState={ownerState}
-                style={style}
+                style={{
+                  position: 'absolute',
+                  width: 2,
+                  height: 2,
+                  borderRadius: 1,
+                  backgroundColor: markActive ? '#fff' : 'currentColor',
+                  opacity: markActive ? 0.8 : 1,
+                  ...(horizontal
+                    ? { top: '50%', transform: 'translate(-1px, -50%)' }
+                    : { left: '50%', transform: 'translate(-50%, 1px)' }),
+                  ...markStyle,
+                }}
               />
               {mark.label != null ? (
-                <SliderMarkLabel
+                /* Mark Label */
+                <span
                   aria-hidden
                   data-index={index}
-                  markLabelActive={markActive}
-                  ownerState={ownerState}
-                  style={style}
+                  style={{
+                    fontSize: '0.875rem',
+                    color: markActive ? 'rgba(0,0,0,0.87)' : 'rgba(0,0,0,0.6)',
+                    position: 'absolute',
+                    whiteSpace: 'nowrap',
+                    ...(horizontal
+                      ? { top: 30, transform: 'translateX(-50%)' }
+                      : { left: 36, transform: 'translateY(50%)' }),
+                    ...markStyle,
+                  }}
                 >
                   {mark.label}
-                </SliderMarkLabel>
+                </span>
               ) : null}
             </React.Fragment>
           );
         })}
       {values.map((value, index) => {
         const percent = valueToPercent(value, min, max);
-        const style = axisProps[axis].offset(percent);
+        const thumbStyle = axisProps[axis].offset(percent);
 
         const thumbNode = (
-          <SliderThumb
+          <span
             data-index={index}
-            ownerState={ownerState}
             {...getThumbProps()}
             style={{
-              ...style,
+              position: 'absolute',
+              width: small ? 12 : 20,
+              height: small ? 12 : 20,
+              boxSizing: 'border-box',
+              borderRadius: '50%',
+              outline: 0,
+              backgroundColor: 'currentColor',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              ...(horizontal
+                ? { top: '50%', transform: 'translate(-50%, -50%)' }
+                : { left: '50%', transform: 'translate(-50%, 50%)' }),
+              ...thumbStyle,
               ...getThumbStyle(index),
             }}
           >
@@ -640,7 +234,7 @@ function Slider(props) {
               value={values[index]}
               {...getHiddenInputProps()}
             />
-          </SliderThumb>
+          </span>
         );
 
         return valueLabelDisplay !== 'off' ? (
@@ -656,15 +250,13 @@ function Slider(props) {
             index={index}
             open={open === index || active === index || valueLabelDisplay === 'on'}
             disabled={disabled}
-            ownerState={ownerState}
           >
             {thumbNode}
           </SliderValueLabel>
         ) : React.cloneElement(thumbNode, { key: index });
       })}
-    </SliderRoot>
+    </span>
   );
 }
-
 
 export default Slider;
