@@ -2,24 +2,10 @@
 import * as React from 'react';
 import isFocusVisible from '@mui/utils/isFocusVisible';
 import capitalize from '../utils/capitalize';
-import { styled, useTheme } from '../zero-styled';
+import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
 import Typography from '../Typography';
 import linkClasses from './linkClasses';
-import getTextDecoration from './getTextDecoration';
-
-const v6Colors = {
-  primary: true,
-  secondary: true,
-  error: true,
-  info: true,
-  success: true,
-  warning: true,
-  textPrimary: true,
-  textSecondary: true,
-  textDisabled: true,
-};
 
 
 const LinkRoot = styled(Typography, {
@@ -69,48 +55,6 @@ const LinkRoot = styled(Typography, {
           },
         },
         {
-          props: ({ underline, ownerState }) =>
-            underline === 'always' && ownerState.color !== 'inherit',
-          style: {
-            textDecorationColor: 'var(--Link-underlineColor)',
-          },
-        },
-        {
-          props: ({ underline, ownerState }) =>
-            underline === 'always' && ownerState.color === 'inherit',
-          style: theme.colorSpace
-            ? {
-                textDecorationColor: theme.alpha('currentColor', 0.4),
-              }
-            : null,
-        },
-        ...Object.entries(theme.palette)
-          .filter(createSimplePaletteValueFilter())
-          .map(([color]) => ({
-            props: { underline: 'always', color },
-            style: {
-              '--Link-underlineColor': theme.alpha((theme.vars || theme).palette[color].main, 0.4),
-            },
-          })),
-        {
-          props: { underline: 'always', color: 'textPrimary' },
-          style: {
-            '--Link-underlineColor': theme.alpha((theme.vars || theme).palette.text.primary, 0.4),
-          },
-        },
-        {
-          props: { underline: 'always', color: 'textSecondary' },
-          style: {
-            '--Link-underlineColor': theme.alpha((theme.vars || theme).palette.text.secondary, 0.4),
-          },
-        },
-        {
-          props: { underline: 'always', color: 'textDisabled' },
-          style: {
-            '--Link-underlineColor': (theme.vars || theme).palette.text.disabled,
-          },
-        },
-        {
           props: {
             component: 'button',
           },
@@ -143,10 +87,7 @@ const LinkRoot = styled(Typography, {
 );
 
 const Link = React.forwardRef(function Link(props, ref) {
-  const theme = useTheme();
-
   const {
-    color = 'primary',
     component = 'a',
     onBlur,
     onFocus,
@@ -176,7 +117,6 @@ const Link = React.forwardRef(function Link(props, ref) {
 
   const ownerState = {
     ...props,
-    color,
     component,
     focusVisible,
     underline,
@@ -185,7 +125,6 @@ const Link = React.forwardRef(function Link(props, ref) {
 
   return (
     <LinkRoot
-      color={color}
       component={component}
       onBlur={handleBlur}
       onFocus={handleFocus}
@@ -193,18 +132,7 @@ const Link = React.forwardRef(function Link(props, ref) {
       ownerState={ownerState}
       variant={variant}
       {...other}
-      sx={[
-        ...(v6Colors[color] === undefined ? [{ color }] : []),
-        ...(Array.isArray(sx) ? sx : [sx]),
-      ]}
-      style={{
-        ...other.style,
-        ...(underline === 'always' &&
-          color !== 'inherit' &&
-          !v6Colors[color] && {
-            '--Link-underlineColor': getTextDecoration({ theme, ownerState }),
-          }),
-      }}
+      sx={Array.isArray(sx) ? sx : [sx]}
     />
   );
 });
