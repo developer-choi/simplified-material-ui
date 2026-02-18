@@ -84,17 +84,13 @@ export function setTranslateValue(direction, node, containerProp) {
  */
 const Slide = React.forwardRef(function Slide(props, ref) {
   const theme = useTheme();
-  const defaultTimeout = {
-    enter: theme.transitions.duration.enteringScreen,
-    exit: theme.transitions.duration.leavingScreen,
-  };
+  const timeout = { enter: 225, exit: 195 };
 
   const {
     children,
     container: containerProp,
     direction = 'down',
     in: inProp,
-    timeout = defaultTimeout,
     ...other
   } = props;
 
