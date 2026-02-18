@@ -2,7 +2,6 @@
 import * as React from 'react';
 import getReactElementRef from '@mui/utils/getReactElementRef';
 import { Transition } from 'react-transition-group';
-import { useTheme } from '../zero-styled';
 import useForkRef from '../utils/useForkRef';
 
 function getScale(value) {
@@ -32,34 +31,18 @@ const Grow = React.forwardRef(function Grow(props, ref) {
     ...other
   } = props;
   const timeout = 300;
-  const theme = useTheme();
 
   const nodeRef = React.useRef(null);
   const handleRef = useForkRef(nodeRef, getReactElementRef(children), ref);
 
   const handleEnter = () => {
     const node = nodeRef.current;
-    const duration = timeout;
-
-    node.style.transition = [
-      theme.transitions.create('opacity', { duration }),
-      theme.transitions.create('transform', {
-        duration: duration * 0.666,
-      }),
-    ].join(',');
+    node.style.transition = 'opacity 300ms ease-in-out, transform 200ms ease-in-out';
   };
 
   const handleExit = () => {
     const node = nodeRef.current;
-    const duration = timeout;
-
-    node.style.transition = [
-      theme.transitions.create('opacity', { duration }),
-      theme.transitions.create('transform', {
-        duration: duration * 0.666,
-        delay: duration * 0.333,
-      }),
-    ].join(',');
+    node.style.transition = 'opacity 300ms ease-in-out, transform 200ms ease-in-out 100ms';
 
     node.style.opacity = 0;
     node.style.transform = getScale(0.75);
