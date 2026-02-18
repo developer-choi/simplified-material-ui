@@ -4,7 +4,6 @@ import { Transition } from 'react-transition-group';
 import getReactElementRef from '@mui/utils/getReactElementRef';
 import debounce from '../utils/debounce';
 import useForkRef from '../utils/useForkRef';
-import { useTheme } from '../zero-styled';
 import { reflow } from '../transitions/utils';
 import { ownerWindow } from '../utils';
 
@@ -83,7 +82,6 @@ export function setTranslateValue(direction, node, containerProp) {
  * It uses [react-transition-group](https://github.com/reactjs/react-transition-group) internally.
  */
 const Slide = React.forwardRef(function Slide(props, ref) {
-  const theme = useTheme();
   const timeout = { enter: 225, exit: 195 };
 
   const {
@@ -105,28 +103,16 @@ const Slide = React.forwardRef(function Slide(props, ref) {
 
   const handleEntering = () => {
     const node = childrenRef.current;
-    node.style.webkitTransition = theme.transitions.create('-webkit-transform', {
-      duration: timeout.enter,
-      easing: theme.transitions.easing.easeOut,
-    });
-    node.style.transition = theme.transitions.create('transform', {
-      duration: timeout.enter,
-      easing: theme.transitions.easing.easeOut,
-    });
+    node.style.webkitTransition = `transform ${timeout.enter}ms cubic-bezier(0, 0, 0.2, 1) 0ms`;
+    node.style.transition = `transform ${timeout.enter}ms cubic-bezier(0, 0, 0.2, 1) 0ms`;
     node.style.webkitTransform = 'none';
     node.style.transform = 'none';
   };
 
   const handleExit = () => {
     const node = childrenRef.current;
-    node.style.webkitTransition = theme.transitions.create('-webkit-transform', {
-      duration: timeout.exit,
-      easing: theme.transitions.easing.sharp,
-    });
-    node.style.transition = theme.transitions.create('transform', {
-      duration: timeout.exit,
-      easing: theme.transitions.easing.sharp,
-    });
+    node.style.webkitTransition = `transform ${timeout.exit}ms cubic-bezier(0.4, 0, 0.6, 1) 0ms`;
+    node.style.transition = `transform ${timeout.exit}ms cubic-bezier(0.4, 0, 0.6, 1) 0ms`;
 
     setTranslateValue(direction, node, containerProp);
   };
