@@ -43,12 +43,6 @@ const Grow = React.forwardRef(function Grow(props, ref) {
     children,
     easing,
     in: inProp,
-    onEnter,
-    onEntered,
-    onEntering,
-    onExit,
-    onExited,
-    onExiting,
     style,
     timeout = 'auto',
     ...other
@@ -60,23 +54,8 @@ const Grow = React.forwardRef(function Grow(props, ref) {
   const nodeRef = React.useRef(null);
   const handleRef = useForkRef(nodeRef, getReactElementRef(children), ref);
 
-  const normalizedTransitionCallback = (callback) => (maybeIsAppearing) => {
-    if (callback) {
-      const node = nodeRef.current;
-
-      // onEnterXxx and onExitXxx callbacks have a different arguments.length value.
-      if (maybeIsAppearing === undefined) {
-        callback(node);
-      } else {
-        callback(node, maybeIsAppearing);
-      }
-    }
-  };
-
-  const handleEntering = normalizedTransitionCallback(onEntering);
-
-  const handleEnter = normalizedTransitionCallback((node, isAppearing) => {
-    reflow(node); // So the animation always start from the start.
+  const handleEnter = (maybeIsAppearing) => {
+    const node = nodeRef.current;
 
     const {
       duration: transitionDuration,
@@ -108,17 +87,11 @@ const Grow = React.forwardRef(function Grow(props, ref) {
         easing: transitionTimingFunction,
       }),
     ].join(',');
+  };
 
-    if (onEnter) {
-      onEnter(node, isAppearing);
-    }
-  });
+  const handleExit = () => {
+    const node = nodeRef.current;
 
-  const handleEntered = normalizedTransitionCallback(onEntered);
-
-  const handleExiting = normalizedTransitionCallback(onExiting);
-
-  const handleExit = normalizedTransitionCallback((node) => {
     const {
       duration: transitionDuration,
       delay,
@@ -152,13 +125,7 @@ const Grow = React.forwardRef(function Grow(props, ref) {
 
     node.style.opacity = 0;
     node.style.transform = getScale(0.75);
-
-    if (onExit) {
-      onExit(node);
-    }
-  });
-
-  const handleExited = normalizedTransitionCallback(onExited);
+  };
 
   const handleAddEndListener = (next) => {
     if (timeout === 'auto') {
@@ -176,11 +143,7 @@ const Grow = React.forwardRef(function Grow(props, ref) {
       in={inProp}
       nodeRef={nodeRef}
       onEnter={handleEnter}
-      onEntered={handleEntered}
-      onEntering={handleEntering}
       onExit={handleExit}
-      onExited={handleExited}
-      onExiting={handleExiting}
       addEndListener={handleAddEndListener}
       timeout={timeout === 'auto' ? null : timeout}
       {...other}
