@@ -20,15 +20,6 @@ const styles = {
   },
 };
 
-/*
- TODO v6: remove
- Conditionally apply a workaround for the CSS transition bug in Safari 15.4 / WebKit browsers.
- */
-const isWebKit154 =
-  typeof navigator !== 'undefined' &&
-  /^((?!chrome|android).)*(safari|mobile)/i.test(navigator.userAgent) &&
-  /(os |version\/)15(.|_)4/i.test(navigator.userAgent);
-
 /**
  * The Grow transition is used by the [Tooltip](/material-ui/react-tooltip/) and
  * [Popover](/material-ui/react-popover/) components.
@@ -53,7 +44,7 @@ const Grow = React.forwardRef(function Grow(props, ref) {
     node.style.transition = [
       theme.transitions.create('opacity', { duration }),
       theme.transitions.create('transform', {
-        duration: isWebKit154 ? duration : duration * 0.666,
+        duration: duration * 0.666,
       }),
     ].join(',');
   };
@@ -65,7 +56,7 @@ const Grow = React.forwardRef(function Grow(props, ref) {
     node.style.transition = [
       theme.transitions.create('opacity', { duration }),
       theme.transitions.create('transform', {
-        duration: isWebKit154 ? duration : duration * 0.666,
+        duration: duration * 0.666,
         delay: duration * 0.333,
       }),
     ].join(',');
