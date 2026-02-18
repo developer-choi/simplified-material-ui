@@ -4,7 +4,7 @@ import clamp from '@mui/utils/clamp';
 import visuallyHidden from '@mui/utils/visuallyHidden';
 
 import isFocusVisible from '@mui/utils/isFocusVisible';
-import { useForkRef, useControlled, unstable_useId as useId } from '../utils';
+import { useControlled, unstable_useId as useId } from '../utils';
 import Star from '../internal/svg-icons/Star';
 import StarBorder from '../internal/svg-icons/StarBorder';
 import { styled } from '../zero-styled';
@@ -249,7 +249,7 @@ function defaultLabelText(value) {
   return `${value || '0'} Star${value !== 1 ? 's' : ''}`;
 }
 
-const Rating = React.forwardRef(function Rating(props, ref) {
+function Rating(props) {
   const {
     defaultValue = null,
     disabled = false,
@@ -296,7 +296,6 @@ const Rating = React.forwardRef(function Rating(props, ref) {
   const [focusVisible, setFocusVisible] = React.useState(false);
 
   const rootRef = React.useRef();
-  const handleRef = useForkRef(rootRef, ref);
 
   const handleMouseMove = (event) => {
     if (onMouseMove) {
@@ -426,7 +425,7 @@ const Rating = React.forwardRef(function Rating(props, ref) {
 
   return (
     <RatingRoot
-      ref={handleRef}
+      ref={rootRef}
       ownerState={ownerState}
       role={readOnly ? 'img' : null}
       aria-label={readOnly ? getLabelText(value) : null}
@@ -525,6 +524,6 @@ const Rating = React.forwardRef(function Rating(props, ref) {
       )}
     </RatingRoot>
   );
-});
+}
 
 export default Rating;
