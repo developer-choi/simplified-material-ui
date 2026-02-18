@@ -10,7 +10,7 @@ import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import InputBase from '../../../form/InputBase';
 import MenuItem from '../../../menu/MenuItem';
-import Select from '../Select';
+import Select from '../../../form/Select';
 import TableCell from '../TableCell';
 import Toolbar from '../Toolbar';
 import TablePaginationActions from '../TablePaginationActions';

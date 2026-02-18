@@ -9,7 +9,7 @@ declare module '../../../../feedback/CircularProgress' {
     dashed: true;
   }
 }
-declare module '@mui/material/LinearProgress' {
+declare module '../../../../feedback/LinearProgress' {
   interface LinearProgressPropsColorOverrides {
     customLinearColor: true;
   }

@@ -156,8 +156,8 @@ export { default as GridLegacy } from './GridLegacy';
 export { default as Grid } from './Grid';
 export * from './Grid';
 
-export { default as Grow } from './Grow';
-export * from './Grow';
+export { default as Grow } from '../../utils/Grow';
+export * from '../../utils/Grow';
 
 export { default as Icon } from '../../data-display/Icon';
 export * from '../../data-display/Icon';
@@ -186,11 +186,11 @@ export * from '../../form/InputBase';
 export { default as InputLabel } from '../../form/InputLabel';
 export * from '../../form/InputLabel';
 
-export { default as LinearProgress } from './LinearProgress';
-export * from './LinearProgress';
+export { default as LinearProgress } from '../../feedback/LinearProgress';
+export * from '../../feedback/LinearProgress';
 
-export { default as Link } from './Link';
-export * from './Link';
+export { default as Link } from '../../navigation/Link';
+export * from '../../navigation/Link';
 
 export { default as List } from '../../data-display/List';
 export * from '../../data-display/List';
@@ -225,14 +225,14 @@ export * from '../../menu/MenuItem';
 export { default as MenuList } from '../../menu/MenuList';
 export * from '../../menu/MenuList';
 
-export { default as MobileStepper } from './MobileStepper';
-export * from './MobileStepper';
+export { default as MobileStepper } from '../../navigation/MobileStepper';
+export * from '../../navigation/MobileStepper';
 
 export { default as Modal } from './Modal';
 export * from './Modal';
 
-export { default as NativeSelect } from './NativeSelect';
-export * from './NativeSelect';
+export { default as NativeSelect } from '../../form/NativeSelect';
+export * from '../../form/NativeSelect';
 
 export { default as NoSsr } from './NoSsr';
 export * from './NoSsr';
@@ -261,26 +261,26 @@ export * from './Portal';
 export { default as Radio } from '../../form/Radio';
 export * from '../../form/Radio';
 
-export { default as RadioGroup } from './RadioGroup';
-export * from './RadioGroup';
+export { default as RadioGroup } from '../../form/RadioGroup';
+export * from '../../form/RadioGroup';
 
-export { default as Rating } from './Rating';
-export * from './Rating';
+export { default as Rating } from '../../form/Rating';
+export * from '../../form/Rating';
 
 export { default as ScopedCssBaseline } from './ScopedCssBaseline';
 export * from './ScopedCssBaseline';
 
-export { default as Select } from './Select';
-export * from './Select';
+export { default as Select } from '../../form/Select';
+export * from '../../form/Select';
 
 export { default as Skeleton } from '../../feedback/Skeleton';
 export * from '../../feedback/Skeleton';
 
-export { default as Slide } from './Slide';
-export * from './Slide';
+export { default as Slide } from '../../utils/Slide';
+export * from '../../utils/Slide';
 
-export { default as Slider } from './Slider';
-export * from './Slider';
+export { default as Slider } from '../../form/Slider';
+export * from '../../form/Slider';
 
 export { default as Snackbar } from './Snackbar';
 export * from './Snackbar';

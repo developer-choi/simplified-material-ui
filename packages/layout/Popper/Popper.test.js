@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { createRenderer, fireEvent, screen } from '@mui/internal-test-utils';
 import { ThemeProvider } from '@mui/system';
 import createTheme from '@mui/system/createTheme';
-import Grow from '@mui/material/Grow';
+import Grow from '../../utils/Grow';
 import Popper from './index';
 import describeConformance from '../../mui-material/test/describeConformance';
 

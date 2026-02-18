@@ -3,8 +3,8 @@ import { mergeSlotProps } from '@mui/material/utils';
 import StepContent, { StepContentProps } from '@mui/material/StepContent';
 import Fade from '../../../utils/Fade';
 import Collapse from '../../../utils/Collapse';
-import Grow from '@mui/material/Grow';
-import Slide from '@mui/material/Slide';
+import Grow from '../../../utils/Grow';
+import Slide from '../../../utils/Slide';
 import Zoom from '@mui/material/Zoom';
 
 <StepContent TransitionComponent={Fade}>Step Content</StepContent>;

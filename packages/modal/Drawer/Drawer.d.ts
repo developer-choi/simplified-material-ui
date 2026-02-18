@@ -5,7 +5,7 @@ import { InternalStandardProps as StandardProps } from '@mui/material/internal';
 import { CreateSlotsAndSlotProps, SlotProps } from '@mui/material/utils/types';
 import { ModalProps } from '../Modal';
 import { BackdropProps } from '../Backdrop';
-import { SlideProps } from '@mui/material/Slide';
+import { SlideProps } from '../../utils/Slide';
 import { PaperProps } from '../../surfaces/Paper';
 import { TransitionProps } from '@mui/material/transitions/transition';
 import { DrawerClasses } from './drawerClasses';

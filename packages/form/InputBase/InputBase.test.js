@@ -7,7 +7,7 @@ import { ThemeProvider } from '@emotion/react';
 import FormControl, { useFormControl } from '../FormControl';
 import InputAdornment from '../InputAdornment';
 import TextField from '@mui/material/TextField';
-import Select from '@mui/material/Select';
+import Select from '../Select';
 import InputBase, { inputBaseClasses as classes } from './index';
 import { createTheme } from '@mui/material/styles';
 import describeConformance from '../../mui-material/test/describeConformance';

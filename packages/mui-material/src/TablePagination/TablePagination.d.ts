@@ -8,7 +8,7 @@ import {
 } from '../TablePaginationActions';
 import { TableCellProps } from '../TableCell';
 import { IconButtonProps } from '../../../form/IconButton';
-import { SelectProps } from '../Select';
+import { SelectProps } from '../../../form/Select';
 import { TablePaginationClasses } from './tablePaginationClasses';
 import { CreateSlotsAndSlotProps, SlotProps } from '../utils/types';
 import { ToolbarProps } from '../Toolbar';

@@ -4,7 +4,7 @@ import SwitchBase from '@mui/material/internal/SwitchBase';
 import RadioButtonIcon from './RadioButtonIcon';
 import createChainedFunction from '@mui/material/utils/createChainedFunction';
 import useFormControl from '../FormControl/useFormControl';
-import useRadioGroup from '@mui/material/RadioGroup/useRadioGroup';
+import useRadioGroup from '../RadioGroup/useRadioGroup';
 
 function areEqualValues(a, b) {
   if (typeof b === 'object' && b !== null) {

@@ -10,7 +10,7 @@ import { InputProps as StandardInputProps } from '../../../form/Input';
 import { FilledInputProps } from '../../../form/FilledInput';
 import { OutlinedInputProps } from '../../../form/OutlinedInput';
 import { InputLabelProps } from '../../../form/InputLabel';
-import { SelectProps } from '../Select';
+import { SelectProps } from '../../../form/Select';
 import { TextFieldClasses } from './textFieldClasses';
 import { CreateSlotsAndSlotProps, SlotProps } from '../utils/types';
 

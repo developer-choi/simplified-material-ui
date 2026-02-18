@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Link as ReactRouterLink, LinkProps } from 'react-router';
 import { expectType } from '@mui/types';
 import Button, { ButtonProps } from './index';
-import MaterialUiLink, { LinkProps as MaterialUiLinkProps } from '@mui/material/Link';
+import MaterialUiLink, { LinkProps as MaterialUiLinkProps } from '../../navigation/Link';
 
 const log = console.log;
 

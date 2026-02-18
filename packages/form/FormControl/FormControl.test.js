@@ -4,7 +4,7 @@ import { spy } from 'sinon';
 import { act, createRenderer } from '@mui/internal-test-utils';
 import FormControl, { formControlClasses as classes } from './index';
 import Input from '../Input';
-import Select from '@mui/material/Select';
+import Select from '../Select';
 import useFormControl from './useFormControl';
 import describeConformance from '../../mui-material/test/describeConformance';
 
