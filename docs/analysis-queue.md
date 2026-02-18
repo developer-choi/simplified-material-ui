@@ -8,6 +8,7 @@
 - [x] Container
 - [x] Fab
 - [x] FormControlLabel
+- [x] Grow
 
 ## 다음 분석 목록 📋
 
@@ -16,7 +17,6 @@
 - [ ] GridLegacy (Grid 분석 후)
 
 ### Transitions
-- [ ] Grow
 - [ ] Slide
 
 ### Progress Indicators
@@ -47,8 +47,8 @@
 
 ## 분석 우선순위
 
-1. **현재 진행 중**: Grow (Transitions)
-2. **다음**: LinearProgress (Progress Indicators)
+1. **현재 진행 중**: LinearProgress (Progress Indicators)
+2. **다음**: Slide (Transitions)
 3. **이후**: Link, Grid 등
 
 ---
