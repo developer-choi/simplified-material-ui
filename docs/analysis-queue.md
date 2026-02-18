@@ -34,7 +34,7 @@
 ### Inputs
 - [ ] NativeSelect
 - [x] RadioGroup
-- [ ] Rating
+- [x] Rating
 - [ ] Select
 - [ ] Slider
 
@@ -52,8 +52,8 @@
 
 ## 분석 우선순위
 
-1. **현재 진행 중**: Rating (Inputs)
-2. **다음**: Select, Slider 등
+1. **현재 진행 중**: -
+2. **다음**: NativeSelect, Select, Slider 등
 
 ---
 
