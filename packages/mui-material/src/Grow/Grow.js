@@ -1,8 +1,6 @@
 'use client';
 import * as React from 'react';
-import getReactElementRef from '@mui/utils/getReactElementRef';
 import { Transition } from 'react-transition-group';
-import useForkRef from '../utils/useForkRef';
 
 function getScale(value) {
   return `scale(${value}, ${value ** 2})`;
@@ -19,12 +17,7 @@ const styles = {
   },
 };
 
-/**
- * The Grow transition is used by the [Tooltip](/material-ui/react-tooltip/) and
- * [Popover](/material-ui/react-popover/) components.
- * It uses [react-transition-group](https://github.com/reactjs/react-transition-group) internally.
- */
-const Grow = React.forwardRef(function Grow(props, ref) {
+function Grow(props) {
   const {
     children,
     in: inProp,
@@ -33,7 +26,6 @@ const Grow = React.forwardRef(function Grow(props, ref) {
   const timeout = 300;
 
   const nodeRef = React.useRef(null);
-  const handleRef = useForkRef(nodeRef, getReactElementRef(children), ref);
 
   const handleEnter = () => {
     const node = nodeRef.current;
@@ -58,8 +50,7 @@ const Grow = React.forwardRef(function Grow(props, ref) {
       timeout={timeout}
       {...other}
     >
-      {/* Ensure "ownerState" is not forwarded to the child DOM element when a direct HTML element is used. This avoids unexpected behavior since "ownerState" is intended for internal styling, component props and not as a DOM attribute. */}
-      {(state, { ownerState, ...restChildProps }) => {
+      {(state) => {
         return React.cloneElement(children, {
           style: {
             opacity: 0,
@@ -68,12 +59,11 @@ const Grow = React.forwardRef(function Grow(props, ref) {
             ...styles[state],
             ...children.props.style,
           },
-          ref: handleRef,
-          ...restChildProps,
+          ref: nodeRef,
         });
       }}
     </Transition>
   );
-});
+}
 
 export default Grow;
