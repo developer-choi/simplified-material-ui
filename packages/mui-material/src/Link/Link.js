@@ -58,7 +58,7 @@ const LinkRoot = styled(Typography, {
   }),
 );
 
-const Link = React.forwardRef(function Link(props, ref) {
+function Link(props) {
   const {
     underline = 'always',
     ...other
@@ -86,11 +86,10 @@ const Link = React.forwardRef(function Link(props, ref) {
     <LinkRoot
       onBlur={handleBlur}
       onFocus={handleFocus}
-      ref={ref}
       ownerState={ownerState}
       {...other}
     />
   );
-});
+}
 
 export default Link;
