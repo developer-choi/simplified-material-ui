@@ -1,14 +1,10 @@
 'use client';
 import * as React from 'react';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { useRtl } from '@mui/system/RtlProvider';
 import { keyframes, css, styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
 import capitalize from '../utils/capitalize';
-import { getLinearProgressUtilityClass } from './linearProgressClasses';
-
 const TRANSITION_DURATION = 4; // seconds
 const indeterminate1Keyframe = keyframes`
   0% {
@@ -82,33 +78,6 @@ const bufferAnimation =
         animation: ${bufferKeyframe} 3s infinite linear;
       `
     : null;
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, variant, color } = ownerState;
-
-  const slots = {
-    root: ['root', `color${capitalize(color)}`, variant],
-    dashed: ['dashed', `dashedColor${capitalize(color)}`],
-    bar1: [
-      'bar',
-      'bar1',
-      `barColor${capitalize(color)}`,
-      (variant === 'indeterminate' || variant === 'query') && 'bar1Indeterminate',
-      variant === 'determinate' && 'bar1Determinate',
-      variant === 'buffer' && 'bar1Buffer',
-    ],
-    bar2: [
-      'bar',
-      'bar2',
-      variant !== 'buffer' && `barColor${capitalize(color)}`,
-      variant === 'buffer' && `color${capitalize(color)}`,
-      (variant === 'indeterminate' || variant === 'query') && 'bar2Indeterminate',
-      variant === 'buffer' && 'bar2Buffer',
-    ],
-  };
-
-  return composeClasses(slots, getLinearProgressUtilityClass, classes);
-};
 
 const getColorShade = (theme, color) => {
   if (theme.vars) {
@@ -390,7 +359,6 @@ const LinearProgressBar2 = styled('span', {
  */
 const LinearProgress = React.forwardRef(function LinearProgress(props, ref) {
   const {
-    className,
     color = 'primary',
     value,
     valueBuffer,
@@ -403,7 +371,6 @@ const LinearProgress = React.forwardRef(function LinearProgress(props, ref) {
     variant,
   };
 
-  const classes = useUtilityClasses(ownerState);
   const isRtl = useRtl();
 
   const rootProps = {};
@@ -443,7 +410,6 @@ const LinearProgress = React.forwardRef(function LinearProgress(props, ref) {
 
   return (
     <LinearProgressRoot
-      className={clsx(classes.root, className)}
       ownerState={ownerState}
       role="progressbar"
       {...rootProps}
@@ -451,16 +417,14 @@ const LinearProgress = React.forwardRef(function LinearProgress(props, ref) {
       {...other}
     >
       {variant === 'buffer' ? (
-        <LinearProgressDashed className={classes.dashed} ownerState={ownerState} />
+        <LinearProgressDashed ownerState={ownerState} />
       ) : null}
       <LinearProgressBar1
-        className={classes.bar1}
         ownerState={ownerState}
         style={inlineStyles.bar1}
       />
       {variant === 'determinate' ? null : (
         <LinearProgressBar2
-          className={classes.bar2}
           ownerState={ownerState}
           style={inlineStyles.bar2}
         />
