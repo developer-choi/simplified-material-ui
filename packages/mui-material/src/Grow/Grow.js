@@ -1,8 +1,6 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import useTimeout from '@mui/utils/useTimeout';
-import elementAcceptingRef from '@mui/utils/elementAcceptingRef';
 import getReactElementRef from '@mui/utils/getReactElementRef';
 import { Transition } from 'react-transition-group';
 import { useTheme } from '../zero-styled';
@@ -207,91 +205,5 @@ const Grow = React.forwardRef(function Grow(props, ref) {
     </TransitionComponent>
   );
 });
-
-Grow.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * Add a custom transition end trigger. Called with the transitioning DOM
-   * node and a done callback. Allows for more fine grained transition end
-   * logic. Note: Timeouts are still used as a fallback if provided.
-   */
-  addEndListener: PropTypes.func,
-  /**
-   * Perform the enter transition when it first mounts if `in` is also `true`.
-   * Set this to `false` to disable this behavior.
-   * @default true
-   */
-  appear: PropTypes.bool,
-  /**
-   * A single child content element.
-   */
-  children: elementAcceptingRef.isRequired,
-  /**
-   * The transition timing function.
-   * You may specify a single easing or a object containing enter and exit values.
-   */
-  easing: PropTypes.oneOfType([
-    PropTypes.shape({
-      enter: PropTypes.string,
-      exit: PropTypes.string,
-    }),
-    PropTypes.string,
-  ]),
-  /**
-   * If `true`, the component will transition in.
-   */
-  in: PropTypes.bool,
-  /**
-   * @ignore
-   */
-  onEnter: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onEntered: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onEntering: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onExit: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onExited: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onExiting: PropTypes.func,
-  /**
-   * @ignore
-   */
-  style: PropTypes.object,
-  /**
-   * The duration for the transition, in milliseconds.
-   * You may specify a single timeout for all transitions, or individually with an object.
-   *
-   * Set to 'auto' to automatically calculate transition time based on height.
-   * @default 'auto'
-   */
-  timeout: PropTypes.oneOfType([
-    PropTypes.oneOf(['auto']),
-    PropTypes.number,
-    PropTypes.shape({
-      appear: PropTypes.number,
-      enter: PropTypes.number,
-      exit: PropTypes.number,
-    }),
-  ]),
-};
-
-if (Grow) {
-  Grow.muiSupportAuto = true;
-}
 
 export default Grow;
