@@ -9,9 +9,6 @@ import useId from '../utils/useId';
 
 const RadioGroup = React.forwardRef(function RadioGroup(props, ref) {
   const {
-    // private
-    // eslint-disable-next-line react/prop-types
-    actions,
     children,
     defaultValue,
     name: nameProp,
@@ -19,7 +16,6 @@ const RadioGroup = React.forwardRef(function RadioGroup(props, ref) {
     value: valueProp,
     ...other
   } = props;
-  const rootRef = React.useRef(null);
 
   const [value, setValueState] = useControlled({
     controlled: valueProp,
@@ -27,25 +23,7 @@ const RadioGroup = React.forwardRef(function RadioGroup(props, ref) {
     name: 'RadioGroup',
   });
 
-  React.useImperativeHandle(
-    actions,
-    () => ({
-      focus: () => {
-        let input = rootRef.current.querySelector('input:not(:disabled):checked');
-
-        if (!input) {
-          input = rootRef.current.querySelector('input:not(:disabled)');
-        }
-
-        if (input) {
-          input.focus();
-        }
-      },
-    }),
-    [],
-  );
-
-  const handleRef = useForkRef(ref, rootRef);
+  const handleRef = ref;
 
   const name = useId(nameProp);
 
