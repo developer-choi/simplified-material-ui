@@ -1,10 +1,8 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import clamp from '@mui/utils/clamp';
 import visuallyHidden from '@mui/utils/visuallyHidden';
-import chainPropTypes from '@mui/utils/chainPropTypes';
 import composeClasses from '@mui/utils/composeClasses';
 import { useRtl } from '@mui/system/RtlProvider';
 import isFocusVisible from '@mui/utils/isFocusVisible';
@@ -209,9 +207,6 @@ function IconContainer(props) {
   return <span {...other} />;
 }
 
-IconContainer.propTypes = {
-  value: PropTypes.number.isRequired,
-};
 
 function RatingItem(props) {
   const {
@@ -325,31 +320,6 @@ function RatingItem(props) {
   );
 }
 
-RatingItem.propTypes = {
-  classes: PropTypes.object.isRequired,
-  disabled: PropTypes.bool.isRequired,
-  emptyIcon: PropTypes.node,
-  focus: PropTypes.number.isRequired,
-  getLabelText: PropTypes.func.isRequired,
-  highlightSelectedOnly: PropTypes.bool.isRequired,
-  hover: PropTypes.number.isRequired,
-  icon: PropTypes.node,
-  IconContainerComponent: PropTypes.elementType.isRequired,
-  isActive: PropTypes.bool.isRequired,
-  itemValue: PropTypes.number.isRequired,
-  labelProps: PropTypes.object,
-  name: PropTypes.string,
-  onBlur: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
-  onClick: PropTypes.func.isRequired,
-  onFocus: PropTypes.func.isRequired,
-  ownerState: PropTypes.object.isRequired,
-  ratingValue: PropTypes.number,
-  ratingValueRounded: PropTypes.number,
-  readOnly: PropTypes.bool.isRequired,
-  slotProps: PropTypes.object,
-  slots: PropTypes.object,
-};
 
 const defaultIcon = <Star fontSize="inherit" />;
 const defaultEmptyIcon = <StarBorder fontSize="inherit" />;
@@ -695,171 +665,5 @@ const Rating = React.forwardRef(function Rating(inProps, ref) {
     </RootSlot>
   );
 });
-
-Rating.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * @ignore
-   */
-  children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
-  /**
-   * The default value. Use when the component is not controlled.
-   * @default null
-   */
-  defaultValue: PropTypes.number,
-  /**
-   * If `true`, the component is disabled.
-   * @default false
-   */
-  disabled: PropTypes.bool,
-  /**
-   * The icon to display when empty.
-   * @default <StarBorder fontSize="inherit" />
-   */
-  emptyIcon: PropTypes.node,
-  /**
-   * The label read when the rating input is empty.
-   * @default 'Empty'
-   */
-  emptyLabelText: PropTypes.node,
-  /**
-   * Accepts a function which returns a string value that provides a user-friendly name for the current value of the rating.
-   * This is important for screen reader users.
-   *
-   * For localization purposes, you can use the provided [translations](https://mui.com/material-ui/guides/localization/).
-   * @param {number} value The rating label's value to format.
-   * @returns {string}
-   * @default function defaultLabelText(value) {
-   *   return `${value || '0'} Star${value !== 1 ? 's' : ''}`;
-   * }
-   */
-  getLabelText: PropTypes.func,
-  /**
-   * If `true`, only the selected icon will be highlighted.
-   * @default false
-   */
-  highlightSelectedOnly: PropTypes.bool,
-  /**
-   * The icon to display.
-   * @default <Star fontSize="inherit" />
-   */
-  icon: PropTypes.node,
-  /**
-   * The component containing the icon.
-   * @deprecated Use `slotProps.icon.component` instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   * @default function IconContainer(props) {
-   *   const { value, ...other } = props;
-   *   return <span {...other} />;
-   * }
-   */
-  IconContainerComponent: PropTypes.elementType,
-  /**
-   * Maximum rating.
-   * @default 5
-   */
-  max: PropTypes.number,
-  /**
-   * The name attribute of the radio `input` elements.
-   * This input `name` should be unique within the page.
-   * Being unique within a form is insufficient since the `name` is used to generate IDs.
-   */
-  name: PropTypes.string,
-  /**
-   * Callback fired when the value changes.
-   * @param {React.SyntheticEvent} event The event source of the callback.
-   * @param {number|null} value The new value.
-   */
-  onChange: PropTypes.func,
-  /**
-   * Callback function that is fired when the hover state changes.
-   * @param {React.SyntheticEvent} event The event source of the callback.
-   * @param {number} value The new value.
-   */
-  onChangeActive: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onMouseLeave: PropTypes.func,
-  /**
-   * @ignore
-   */
-  onMouseMove: PropTypes.func,
-  /**
-   * The minimum increment value change allowed.
-   * @default 1
-   */
-  precision: chainPropTypes(PropTypes.number, (props) => {
-    if (props.precision < 0.1) {
-      return new Error(
-        [
-          'MUI: The prop `precision` should be above 0.1.',
-          'A value below this limit has an imperceptible impact.',
-        ].join('\n'),
-      );
-    }
-    return null;
-  }),
-  /**
-   * Removes all hover effects and pointer events.
-   * @default false
-   */
-  readOnly: PropTypes.bool,
-  /**
-   * The size of the component.
-   * @default 'medium'
-   */
-  size: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['small', 'medium', 'large']),
-    PropTypes.string,
-  ]),
-  /**
-   * The props used for each slot inside.
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    decimal: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    icon: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    label: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * The components used for each slot inside.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    decimal: PropTypes.elementType,
-    icon: PropTypes.elementType,
-    label: PropTypes.elementType,
-    root: PropTypes.elementType,
-  }),
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-  /**
-   * The rating value.
-   */
-  value: PropTypes.number,
-};
 
 export default Rating;
