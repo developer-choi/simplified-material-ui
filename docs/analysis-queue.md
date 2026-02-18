@@ -36,7 +36,7 @@
 - [x] RadioGroup
 - [x] Rating
 - [x] Select
-- [ ] Slider
+- [x] Slider
 
 ### Feedback
 - [ ] Snackbar
