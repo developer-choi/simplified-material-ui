@@ -5,7 +5,7 @@ import getReactElementRef from '@mui/utils/getReactElementRef';
 import debounce from '../utils/debounce';
 import useForkRef from '../utils/useForkRef';
 import { useTheme } from '../zero-styled';
-import { reflow, getTransitionProps } from '../transitions/utils';
+import { reflow } from '../transitions/utils';
 import { ownerWindow } from '../utils';
 
 // Translate the node so it can't be seen on the screen.
@@ -84,24 +84,16 @@ export function setTranslateValue(direction, node, containerProp) {
  */
 const Slide = React.forwardRef(function Slide(props, ref) {
   const theme = useTheme();
-  const defaultEasing = {
-    enter: theme.transitions.easing.easeOut,
-    exit: theme.transitions.easing.sharp,
-  };
-
   const defaultTimeout = {
     enter: theme.transitions.duration.enteringScreen,
     exit: theme.transitions.duration.leavingScreen,
   };
 
   const {
-    appear = true,
     children,
     container: containerProp,
     direction = 'down',
-    easing: easingProp = defaultEasing,
     in: inProp,
-    style,
     timeout = defaultTimeout,
     ...other
   } = props;
@@ -117,32 +109,28 @@ const Slide = React.forwardRef(function Slide(props, ref) {
 
   const handleEntering = () => {
     const node = childrenRef.current;
-    const transitionProps = getTransitionProps(
-      { timeout, style, easing: easingProp },
-      { mode: 'enter' },
-    );
-
     node.style.webkitTransition = theme.transitions.create('-webkit-transform', {
-      ...transitionProps,
+      duration: timeout.enter,
+      easing: theme.transitions.easing.easeOut,
     });
-
     node.style.transition = theme.transitions.create('transform', {
-      ...transitionProps,
+      duration: timeout.enter,
+      easing: theme.transitions.easing.easeOut,
     });
-
     node.style.webkitTransform = 'none';
     node.style.transform = 'none';
   };
 
   const handleExit = () => {
     const node = childrenRef.current;
-    const transitionProps = getTransitionProps(
-      { timeout, style, easing: easingProp },
-      { mode: 'exit' },
-    );
-
-    node.style.webkitTransition = theme.transitions.create('-webkit-transform', transitionProps);
-    node.style.transition = theme.transitions.create('transform', transitionProps);
+    node.style.webkitTransition = theme.transitions.create('-webkit-transform', {
+      duration: timeout.exit,
+      easing: theme.transitions.easing.sharp,
+    });
+    node.style.transition = theme.transitions.create('transform', {
+      duration: timeout.exit,
+      easing: theme.transitions.easing.sharp,
+    });
 
     setTranslateValue(direction, node, containerProp);
   };
@@ -195,7 +183,7 @@ const Slide = React.forwardRef(function Slide(props, ref) {
       onEntering={handleEntering}
       onExit={handleExit}
       onExited={handleExited}
-      appear={appear}
+      appear
       in={inProp}
       timeout={timeout}
       {...other}
@@ -206,7 +194,6 @@ const Slide = React.forwardRef(function Slide(props, ref) {
           ref: handleRef,
           style: {
             visibility: state === 'exited' && !inProp ? 'hidden' : undefined,
-            ...style,
             ...children.props.style,
           },
           ...restChildProps,
