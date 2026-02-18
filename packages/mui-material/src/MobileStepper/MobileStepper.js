@@ -4,7 +4,6 @@ import Paper from '../../../surfaces/Paper';
 import LinearProgress from '../LinearProgress';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import useSlot from '../utils/useSlot';
 
 
 const MobileStepperRoot = styled(Paper, {
@@ -103,13 +102,10 @@ const MobileStepper = React.forwardRef(function MobileStepper(props, ref) {
   const {
     activeStep = 0,
     backButton,
-    LinearProgressProps,
     nextButton,
     position = 'bottom',
     steps,
     variant = 'dots',
-    slots = {},
-    slotProps = {},
     ...other
   } = props;
 
@@ -129,54 +125,8 @@ const MobileStepper = React.forwardRef(function MobileStepper(props, ref) {
     }
   }
 
-  const externalForwardedProps = {
-    slots,
-    slotProps: {
-      progress: LinearProgressProps,
-      ...slotProps,
-    },
-  };
-
-  const [RootSlot, rootSlotProps] = useSlot('root', {
-    ref,
-    elementType: MobileStepperRoot,
-    shouldForwardComponentProp: true,
-    externalForwardedProps: {
-      ...externalForwardedProps,
-      ...other,
-    },
-    ownerState,
-    additionalProps: {
-      square: true,
-      elevation: 0,
-    },
-  });
-
-  const [DotsSlot, dotsSlotProps] = useSlot('dots', {
-    elementType: MobileStepperDots,
-    externalForwardedProps,
-    ownerState,
-  });
-
-  const [DotSlot, dotSlotProps] = useSlot('dot', {
-    elementType: MobileStepperDot,
-    externalForwardedProps,
-    ownerState,
-  });
-
-  const [ProgressSlot, progressSlotProps] = useSlot('progress', {
-    elementType: MobileStepperProgress,
-    shouldForwardComponentProp: true,
-    externalForwardedProps,
-    ownerState,
-    additionalProps: {
-      value,
-      variant: 'determinate',
-    },
-  });
-
   return (
-    <RootSlot {...rootSlotProps}>
+    <MobileStepperRoot ref={ref} square elevation={0} ownerState={ownerState} {...other}>
       {backButton}
       {variant === 'text' && (
         <React.Fragment>
@@ -185,21 +135,27 @@ const MobileStepper = React.forwardRef(function MobileStepper(props, ref) {
       )}
 
       {variant === 'dots' && (
-        <DotsSlot {...dotsSlotProps}>
+        <MobileStepperDots ownerState={ownerState}>
           {[...new Array(steps)].map((_, index) => (
-            <DotSlot
+            <MobileStepperDot
               key={index}
-              {...dotSlotProps}
+              ownerState={ownerState}
               dotActive={index === activeStep}
             />
           ))}
-        </DotsSlot>
+        </MobileStepperDots>
       )}
 
-      {variant === 'progress' && <ProgressSlot {...progressSlotProps} />}
+      {variant === 'progress' && (
+        <MobileStepperProgress
+          ownerState={ownerState}
+          variant="determinate"
+          value={value}
+        />
+      )}
 
       {nextButton}
-    </RootSlot>
+    </MobileStepperRoot>
   );
 });
 
