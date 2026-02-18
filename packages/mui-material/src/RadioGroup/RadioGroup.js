@@ -1,13 +1,12 @@
 'use client';
 import * as React from 'react';
 import FormGroup from '../../../form/FormGroup';
-import useForkRef from '../utils/useForkRef';
 import useControlled from '../utils/useControlled';
 import RadioGroupContext from './RadioGroupContext';
 import useId from '../utils/useId';
 
 
-const RadioGroup = React.forwardRef(function RadioGroup(props, ref) {
+function RadioGroup(props) {
   const {
     children,
     defaultValue,
@@ -22,8 +21,6 @@ const RadioGroup = React.forwardRef(function RadioGroup(props, ref) {
     default: defaultValue,
     name: 'RadioGroup',
   });
-
-  const handleRef = ref;
 
   const name = useId(nameProp);
 
@@ -46,13 +43,12 @@ const RadioGroup = React.forwardRef(function RadioGroup(props, ref) {
     <RadioGroupContext.Provider value={contextValue}>
       <FormGroup
         role="radiogroup"
-        ref={handleRef}
         {...other}
       >
         {children}
       </FormGroup>
     </RadioGroupContext.Provider>
   );
-});
+}
 
 export default RadioGroup;
