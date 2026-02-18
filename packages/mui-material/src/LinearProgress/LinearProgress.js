@@ -3,8 +3,6 @@ import * as React from 'react';
 import { useRtl } from '@mui/system/RtlProvider';
 import { keyframes, css, styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
-import capitalize from '../utils/capitalize';
 const TRANSITION_DURATION = 4; // seconds
 const indeterminate1Keyframe = keyframes`
   0% {
@@ -79,63 +77,26 @@ const bufferAnimation =
       `
     : null;
 
-const getColorShade = (theme, color) => {
-  if (theme.vars) {
-    return theme.vars.palette.LinearProgress[`${color}Bg`];
-  }
-  return theme.palette.mode === 'light'
-    ? theme.lighten(theme.palette[color].main, 0.62)
-    : theme.darken(theme.palette[color].main, 0.5);
-};
 
 const LinearProgressRoot = styled('span', {
   name: 'MuiLinearProgress',
   slot: 'Root',
   overridesResolver: (props, styles) => {
     const { ownerState } = props;
-
-    return [
-      styles.root,
-      styles[`color${capitalize(ownerState.color)}`],
-      styles[ownerState.variant],
-    ];
+    return [styles.root, styles[ownerState.variant]];
   },
 })(
-  memoTheme(({ theme }) => ({
+  memoTheme(() => ({
     position: 'relative',
     overflow: 'hidden',
     display: 'block',
     height: 4,
-    // Fix Safari's bug during composition of different paint.
     zIndex: 0,
+    backgroundColor: 'rgba(25, 118, 210, 0.38)',
     '@media print': {
       colorAdjust: 'exact',
     },
     variants: [
-      ...Object.entries(theme.palette)
-        .filter(createSimplePaletteValueFilter())
-        .map(([color]) => ({
-          props: { color },
-          style: {
-            backgroundColor: getColorShade(theme, color),
-          },
-        })),
-      {
-        props: ({ ownerState }) =>
-          ownerState.color === 'inherit' && ownerState.variant !== 'buffer',
-        style: {
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'currentColor',
-            opacity: 0.3,
-          },
-        },
-      },
       {
         props: { variant: 'buffer' },
         style: { backgroundColor: 'transparent' },
@@ -151,42 +112,18 @@ const LinearProgressRoot = styled('span', {
 const LinearProgressDashed = styled('span', {
   name: 'MuiLinearProgress',
   slot: 'Dashed',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [styles.dashed, styles[`dashedColor${capitalize(ownerState.color)}`]];
-  },
+  overridesResolver: (props, styles) => styles.dashed,
 })(
-  memoTheme(({ theme }) => ({
+  memoTheme(() => ({
     position: 'absolute',
     marginTop: 0,
     height: '100%',
     width: '100%',
     backgroundSize: '10px 10px',
     backgroundPosition: '0 -23px',
-    variants: [
-      {
-        props: { color: 'inherit' },
-        style: {
-          opacity: 0.3,
-          backgroundImage: `radial-gradient(currentColor 0%, currentColor 16%, transparent 42%)`,
-        },
-      },
-      ...Object.entries(theme.palette)
-        .filter(createSimplePaletteValueFilter())
-        .map(([color]) => {
-          const backgroundColor = getColorShade(theme, color);
-          return {
-            props: { color },
-            style: {
-              backgroundImage: `radial-gradient(${backgroundColor} 0%, ${backgroundColor} 16%, transparent 42%)`,
-            },
-          };
-        }),
-    ],
+    backgroundImage: `radial-gradient(rgba(25, 118, 210, 0.38) 0%, rgba(25, 118, 210, 0.38) 16%, transparent 42%)`,
   })),
   bufferAnimation || {
-    // At runtime for Pigment CSS, `bufferAnimation` will be null and the generated keyframe will be used.
     animation: `${bufferKeyframe} 3s infinite linear`,
   },
 );
@@ -196,11 +133,9 @@ const LinearProgressBar1 = styled('span', {
   slot: 'Bar1',
   overridesResolver: (props, styles) => {
     const { ownerState } = props;
-
     return [
       styles.bar,
       styles.bar1,
-      styles[`barColor${capitalize(ownerState.color)}`],
       (ownerState.variant === 'indeterminate' || ownerState.variant === 'query') &&
         styles.bar1Indeterminate,
       ownerState.variant === 'determinate' && styles.bar1Determinate,
@@ -208,43 +143,24 @@ const LinearProgressBar1 = styled('span', {
     ];
   },
 })(
-  memoTheme(({ theme }) => ({
+  memoTheme(() => ({
     width: '100%',
     position: 'absolute',
     left: 0,
     bottom: 0,
     top: 0,
+    backgroundColor: '#1976d2',
     transition: 'transform 0.2s linear',
     transformOrigin: 'left',
     variants: [
       {
-        props: {
-          color: 'inherit',
-        },
-        style: {
-          backgroundColor: 'currentColor',
-        },
-      },
-      ...Object.entries(theme.palette)
-        .filter(createSimplePaletteValueFilter())
-        .map(([color]) => ({
-          props: { color },
-          style: {
-            backgroundColor: (theme.vars || theme).palette[color].main,
-          },
-        })),
-      {
-        props: {
-          variant: 'determinate',
-        },
+        props: { variant: 'determinate' },
         style: {
           transition: `transform .${TRANSITION_DURATION}s linear`,
         },
       },
       {
-        props: {
-          variant: 'buffer',
-        },
+        props: { variant: 'buffer' },
         style: {
           zIndex: 1,
           transition: `transform .${TRANSITION_DURATION}s linear`,
@@ -273,65 +189,32 @@ const LinearProgressBar2 = styled('span', {
   slot: 'Bar2',
   overridesResolver: (props, styles) => {
     const { ownerState } = props;
-
     return [
       styles.bar,
       styles.bar2,
-      styles[`barColor${capitalize(ownerState.color)}`],
       (ownerState.variant === 'indeterminate' || ownerState.variant === 'query') &&
         styles.bar2Indeterminate,
       ownerState.variant === 'buffer' && styles.bar2Buffer,
     ];
   },
 })(
-  memoTheme(({ theme }) => ({
+  memoTheme(() => ({
     width: '100%',
     position: 'absolute',
     left: 0,
     bottom: 0,
     top: 0,
+    backgroundColor: '#1976d2',
     transition: 'transform 0.2s linear',
     transformOrigin: 'left',
     variants: [
-      ...Object.entries(theme.palette)
-        .filter(createSimplePaletteValueFilter())
-        .map(([color]) => ({
-          props: { color },
-          style: {
-            '--LinearProgressBar2-barColor': (theme.vars || theme).palette[color].main,
-          },
-        })),
       {
-        props: ({ ownerState }) =>
-          ownerState.variant !== 'buffer' && ownerState.color !== 'inherit',
+        props: { variant: 'buffer' },
         style: {
-          backgroundColor: 'var(--LinearProgressBar2-barColor, currentColor)',
+          backgroundColor: 'rgba(25, 118, 210, 0.38)',
+          transition: `transform .${TRANSITION_DURATION}s linear`,
         },
       },
-      {
-        props: ({ ownerState }) =>
-          ownerState.variant !== 'buffer' && ownerState.color === 'inherit',
-        style: {
-          backgroundColor: 'currentColor',
-        },
-      },
-      {
-        props: {
-          color: 'inherit',
-        },
-        style: {
-          opacity: 0.3,
-        },
-      },
-      ...Object.entries(theme.palette)
-        .filter(createSimplePaletteValueFilter())
-        .map(([color]) => ({
-          props: { color, variant: 'buffer' },
-          style: {
-            backgroundColor: getColorShade(theme, color),
-            transition: `transform .${TRANSITION_DURATION}s linear`,
-          },
-        })),
       {
         props: ({ ownerState }) =>
           ownerState.variant === 'indeterminate' || ownerState.variant === 'query',
@@ -359,7 +242,6 @@ const LinearProgressBar2 = styled('span', {
  */
 const LinearProgress = React.forwardRef(function LinearProgress(props, ref) {
   const {
-    color = 'primary',
     value,
     valueBuffer,
     variant = 'indeterminate',
@@ -367,7 +249,6 @@ const LinearProgress = React.forwardRef(function LinearProgress(props, ref) {
   } = props;
   const ownerState = {
     ...props,
-    color,
     variant,
   };
 
