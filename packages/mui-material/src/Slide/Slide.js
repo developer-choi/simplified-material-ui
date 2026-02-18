@@ -1,21 +1,12 @@
 'use client';
 import * as React from 'react';
 import { Transition } from 'react-transition-group';
-import { reflow } from '../transitions/utils';
 // Translate the node so it can't be seen on the screen.
 // Later, we're going to translate the node back to its original location with `none`.
 function getTranslateValue(direction, node) {
   const rect = node.getBoundingClientRect();
-  let transform;
-
-  if (node.fakeTransform) {
-    transform = node.fakeTransform;
-  } else {
-    const computedStyle = window.getComputedStyle(node);
-    transform =
-      computedStyle.getPropertyValue('-webkit-transform') ||
-      computedStyle.getPropertyValue('transform');
-  }
+  const computedStyle = window.getComputedStyle(node);
+  const transform = computedStyle.getPropertyValue('transform');
 
   let offsetX = 0;
   let offsetY = 0;
@@ -46,7 +37,6 @@ export function setTranslateValue(direction, node) {
   const transform = getTranslateValue(direction, node);
 
   if (transform) {
-    node.style.webkitTransform = transform;
     node.style.transform = transform;
   }
 }
@@ -66,20 +56,17 @@ function Slide(props) {
   const handleEnter = () => {
     const node = nodeRef.current;
     setTranslateValue(direction, node);
-    reflow(node);
+    node.getBoundingClientRect(); // reflow
   };
 
   const handleEntering = () => {
     const node = nodeRef.current;
-    node.style.webkitTransition = `transform ${timeout.enter}ms cubic-bezier(0, 0, 0.2, 1) 0ms`;
     node.style.transition = `transform ${timeout.enter}ms cubic-bezier(0, 0, 0.2, 1) 0ms`;
-    node.style.webkitTransform = 'none';
     node.style.transform = 'none';
   };
 
   const handleExit = () => {
     const node = nodeRef.current;
-    node.style.webkitTransition = `transform ${timeout.exit}ms cubic-bezier(0.4, 0, 0.6, 1) 0ms`;
     node.style.transition = `transform ${timeout.exit}ms cubic-bezier(0.4, 0, 0.6, 1) 0ms`;
 
     setTranslateValue(direction, node);
@@ -88,7 +75,6 @@ function Slide(props) {
   const handleExited = () => {
     const node = nodeRef.current;
     // No need for transitions when the component is hidden
-    node.style.webkitTransition = '';
     node.style.transition = '';
   };
 
