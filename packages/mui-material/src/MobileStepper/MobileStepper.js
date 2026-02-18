@@ -7,7 +7,6 @@ import capitalize from '../utils/capitalize';
 import LinearProgress from '../LinearProgress';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import slotShouldForwardProp from '../styles/slotShouldForwardProp';
 import { getMobileStepperUtilityClass } from './mobileStepperClasses';
 import useSlot from '../utils/useSlot';
@@ -128,8 +127,7 @@ const MobileStepperProgress = styled(LinearProgress, {
   ],
 });
 
-const MobileStepper = React.forwardRef(function MobileStepper(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiMobileStepper' });
+const MobileStepper = React.forwardRef(function MobileStepper(props, ref) {
   const {
     activeStep = 0,
     backButton,
