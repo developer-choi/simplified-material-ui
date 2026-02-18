@@ -1,7 +1,5 @@
 'use client';
 import * as React from 'react';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { useRtl } from '@mui/system/RtlProvider';
 import useSlotProps from '@mui/utils/useSlotProps';
 import isHostComponent from '@mui/utils/isHostComponent';
@@ -11,10 +9,9 @@ import memoTheme from '../utils/memoTheme';
 
 import slotShouldForwardProp from '../styles/slotShouldForwardProp';
 import shouldSpreadAdditionalProps from '../utils/shouldSpreadAdditionalProps';
-import capitalize from '../utils/capitalize';
 import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
 import BaseSliderValueLabel from './SliderValueLabel';
-import sliderClasses, { getSliderUtilityClass } from './sliderClasses';
+import sliderClasses from './sliderClasses';
 
 function Identity(x) {
   return x;
@@ -23,19 +20,6 @@ function Identity(x) {
 export const SliderRoot = styled('span', {
   name: 'MuiSlider',
   slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.root,
-      styles[`color${capitalize(ownerState.color)}`],
-      ownerState.size !== 'medium' && styles[`size${capitalize(ownerState.size)}`],
-      ownerState.marked && styles.marked,
-      ownerState.orientation === 'vertical' && styles.vertical,
-      ownerState.track === 'inverted' && styles.trackInverted,
-      ownerState.track === false && styles.trackFalse,
-    ];
-  },
 })(
   memoTheme(({ theme }) => ({
     borderRadius: 12,
@@ -512,41 +496,6 @@ export const SliderMarkLabel = styled('span', {
   })),
 );
 
-const useUtilityClasses = (ownerState) => {
-  const { disabled, dragging, marked, orientation, track, classes, color, size } = ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      disabled && 'disabled',
-      dragging && 'dragging',
-      marked && 'marked',
-      orientation === 'vertical' && 'vertical',
-      track === 'inverted' && 'trackInverted',
-      track === false && 'trackFalse',
-      color && `color${capitalize(color)}`,
-      size && `size${capitalize(size)}`,
-    ],
-    rail: ['rail'],
-    track: ['track'],
-    mark: ['mark'],
-    markActive: ['markActive'],
-    markLabel: ['markLabel'],
-    markLabelActive: ['markLabelActive'],
-    valueLabel: ['valueLabel'],
-    thumb: [
-      'thumb',
-      disabled && 'disabled',
-      size && `thumbSize${capitalize(size)}`,
-      color && `thumbColor${capitalize(color)}`,
-    ],
-    active: ['active'],
-    disabled: ['disabled'],
-    focusVisible: ['focusVisible'],
-  };
-
-  return composeClasses(slots, getSliderUtilityClass, classes);
-};
 
 const Forward = ({ children }) => children;
 
@@ -562,8 +511,6 @@ const Slider = React.forwardRef(function Slider(props, ref) {
     components = {},
     componentsProps = {},
     color = 'primary',
-    classes: classesProp,
-    className,
     disableSwap = false,
     disabled = false,
     getAriaLabel,
@@ -594,7 +541,6 @@ const Slider = React.forwardRef(function Slider(props, ref) {
     isRtl,
     max,
     min,
-    classes: classesProp,
     disabled,
     disableSwap,
     orientation,
@@ -631,8 +577,6 @@ const Slider = React.forwardRef(function Slider(props, ref) {
   ownerState.dragging = dragging;
   ownerState.focusedThumbIndex = focusedThumbIndex;
 
-  const classes = useUtilityClasses(ownerState);
-
   // support both `slots` and `components` for backward compatibility
   const RootSlot = slots?.root ?? components.Root ?? SliderRoot;
   const RailSlot = slots?.rail ?? components.Rail ?? SliderRail;
@@ -666,14 +610,12 @@ const Slider = React.forwardRef(function Slider(props, ref) {
       ...ownerState,
       ...rootSlotProps?.ownerState,
     },
-    className: [classes.root, className],
   });
 
   const railProps = useSlotProps({
     elementType: RailSlot,
     externalSlotProps: railSlotProps,
     ownerState,
-    className: classes.rail,
   });
 
   const trackProps = useSlotProps({
@@ -689,7 +631,6 @@ const Slider = React.forwardRef(function Slider(props, ref) {
       ...ownerState,
       ...trackSlotProps?.ownerState,
     },
-    className: classes.track,
   });
 
   const thumbProps = useSlotProps({
@@ -700,7 +641,6 @@ const Slider = React.forwardRef(function Slider(props, ref) {
       ...ownerState,
       ...thumbSlotProps?.ownerState,
     },
-    className: classes.thumb,
   });
 
   const valueLabelProps = useSlotProps({
@@ -710,21 +650,18 @@ const Slider = React.forwardRef(function Slider(props, ref) {
       ...ownerState,
       ...valueLabelSlotProps?.ownerState,
     },
-    className: classes.valueLabel,
   });
 
   const markProps = useSlotProps({
     elementType: MarkSlot,
     externalSlotProps: markSlotProps,
     ownerState,
-    className: classes.mark,
   });
 
   const markLabelProps = useSlotProps({
     elementType: MarkLabelSlot,
     externalSlotProps: markLabelSlotProps,
     ownerState,
-    className: classes.markLabel,
   });
 
   const inputSliderProps = useSlotProps({
@@ -768,9 +705,6 @@ const Slider = React.forwardRef(function Slider(props, ref) {
                   markActive,
                 })}
                 style={{ ...style, ...markProps.style }}
-                className={clsx(markProps.className, {
-                  [classes.markActive]: markActive,
-                })}
               />
               {mark.label != null ? (
                 <MarkLabelSlot
@@ -781,9 +715,6 @@ const Slider = React.forwardRef(function Slider(props, ref) {
                     markLabelActive: markActive,
                   })}
                   style={{ ...style, ...markLabelProps.style }}
-                  className={clsx(classes.markLabel, markLabelProps.className, {
-                    [classes.markLabelActive]: markActive,
-                  })}
                 >
                   {mark.label}
                 </MarkLabelSlot>
@@ -817,10 +748,6 @@ const Slider = React.forwardRef(function Slider(props, ref) {
             <ThumbSlot
               data-index={index}
               {...thumbProps}
-              className={clsx(classes.thumb, thumbProps.className, {
-                [classes.active]: active === index,
-                [classes.focusVisible]: focusedThumbIndex === index,
-              })}
               style={{
                 ...style,
                 ...getThumbStyle(index),
