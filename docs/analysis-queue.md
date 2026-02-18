@@ -11,6 +11,7 @@
 - [x] Grow
 - [x] Link
 - [x] MobileStepper
+- [x] RadioGroup
 - [x] LinearProgress
 - [x] Slide
 
@@ -32,7 +33,7 @@
 
 ### Inputs
 - [ ] NativeSelect
-- [ ] RadioGroup
+- [x] RadioGroup
 - [ ] Rating
 - [ ] Select
 - [ ] Slider
@@ -51,8 +52,8 @@
 
 ## 분석 우선순위
 
-1. **현재 진행 중**: Grid (Layout) 또는 NativeSelect (Inputs)
-2. **다음**: RadioGroup, Rating 등
+1. **현재 진행 중**: Rating (Inputs)
+2. **다음**: Select, Slider 등
 
 ---
 
