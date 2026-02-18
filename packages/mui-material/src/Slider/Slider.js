@@ -493,7 +493,7 @@ export const SliderMarkLabel = styled('span', {
 );
 
 
-const Slider = React.forwardRef(function Slider(props, ref) {
+function Slider(props) {
   const {
     'aria-label': ariaLabel,
     'aria-valuetext': ariaValuetext,
@@ -556,7 +556,7 @@ const Slider = React.forwardRef(function Slider(props, ref) {
     trackOffset,
     trackLeap,
     getThumbStyle,
-  } = useSlider({ ...ownerState, rootRef: ref });
+  } = useSlider({ ...ownerState });
 
   ownerState.marked = marks.length > 0 && marks.some((mark) => mark.label);
   ownerState.dragging = dragging;
@@ -664,7 +664,7 @@ const Slider = React.forwardRef(function Slider(props, ref) {
       })}
     </SliderRoot>
   );
-});
+}
 
 
 export default Slider;
