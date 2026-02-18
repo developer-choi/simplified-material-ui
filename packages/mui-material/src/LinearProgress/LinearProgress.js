@@ -101,10 +101,6 @@ const LinearProgressRoot = styled('span', {
         props: { variant: 'buffer' },
         style: { backgroundColor: 'transparent' },
       },
-      {
-        props: { variant: 'query' },
-        style: { transform: 'rotate(180deg)' },
-      },
     ],
   })),
 );
@@ -136,8 +132,7 @@ const LinearProgressBar1 = styled('span', {
     return [
       styles.bar,
       styles.bar1,
-      (ownerState.variant === 'indeterminate' || ownerState.variant === 'query') &&
-        styles.bar1Indeterminate,
+      ownerState.variant === 'indeterminate' && styles.bar1Indeterminate,
       ownerState.variant === 'determinate' && styles.bar1Determinate,
       ownerState.variant === 'buffer' && styles.bar1Buffer,
     ];
@@ -167,15 +162,13 @@ const LinearProgressBar1 = styled('span', {
         },
       },
       {
-        props: ({ ownerState }) =>
-          ownerState.variant === 'indeterminate' || ownerState.variant === 'query',
+        props: { variant: 'indeterminate' },
         style: {
           width: 'auto',
         },
       },
       {
-        props: ({ ownerState }) =>
-          ownerState.variant === 'indeterminate' || ownerState.variant === 'query',
+        props: { variant: 'indeterminate' },
         style: indeterminate1Animation || {
           animation: `${indeterminate1Keyframe} 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite`,
         },
@@ -192,8 +185,7 @@ const LinearProgressBar2 = styled('span', {
     return [
       styles.bar,
       styles.bar2,
-      (ownerState.variant === 'indeterminate' || ownerState.variant === 'query') &&
-        styles.bar2Indeterminate,
+      ownerState.variant === 'indeterminate' && styles.bar2Indeterminate,
       ownerState.variant === 'buffer' && styles.bar2Buffer,
     ];
   },
@@ -216,15 +208,13 @@ const LinearProgressBar2 = styled('span', {
         },
       },
       {
-        props: ({ ownerState }) =>
-          ownerState.variant === 'indeterminate' || ownerState.variant === 'query',
+        props: { variant: 'indeterminate' },
         style: {
           width: 'auto',
         },
       },
       {
-        props: ({ ownerState }) =>
-          ownerState.variant === 'indeterminate' || ownerState.variant === 'query',
+        props: { variant: 'indeterminate' },
         style: indeterminate2Animation || {
           animation: `${indeterminate2Keyframe} 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) 1.15s infinite`,
         },
