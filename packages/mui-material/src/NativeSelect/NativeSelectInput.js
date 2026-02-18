@@ -5,7 +5,7 @@ import ArrowDropDownIcon from '../internal/svg-icons/ArrowDropDown';
 /**
  * @ignore - internal component.
  */
-const NativeSelectInput = React.forwardRef(function NativeSelectInput(props, ref) {
+function NativeSelectInput(props) {
   const {
     disabled,
     error,
@@ -40,7 +40,6 @@ const NativeSelectInput = React.forwardRef(function NativeSelectInput(props, ref
       <select
         style={selectStyle}
         disabled={disabled}
-        ref={ref}
         multiple={multiple}
         {...other}
       />
@@ -49,6 +48,6 @@ const NativeSelectInput = React.forwardRef(function NativeSelectInput(props, ref
       )}
     </React.Fragment>
   );
-});
+}
 
 export default NativeSelectInput;
