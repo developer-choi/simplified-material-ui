@@ -2,10 +2,7 @@
 // @inheritedComponent Tooltip
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { emphasize } from '@mui/system/colorManipulator';
 import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import Fab from '../../../form/Fab';
 import Tooltip from '../../../data-display/Tooltip';
 
@@ -13,39 +10,27 @@ const SpeedDialActionFab = styled(Fab, {
   name: 'MuiSpeedDialAction',
   slot: 'Fab',
   skipVariantsResolver: false,
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [styles.fab, !ownerState.open && styles.fabClosed];
+})({
+  margin: 8,
+  color: 'rgba(0, 0, 0, 0.6)',
+  backgroundColor: '#fff',
+  '&:hover': {
+    backgroundColor: '#e0e0e0',
   },
-})(
-  memoTheme(({ theme }) => ({
-    margin: 8,
-    color: (theme.vars || theme).palette.text.secondary,
-    backgroundColor: (theme.vars || theme).palette.background.paper,
-    '&:hover': {
-      backgroundColor: theme.vars
-        ? theme.vars.palette.SpeedDialAction.fabHoverBg
-        : emphasize(theme.palette.background.paper, 0.15),
-    },
-    transition: `${theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shorter,
-    })}, opacity 0.8s`,
-    opacity: 1,
-    variants: [
-      {
-        props: ({ ownerState }) => !ownerState.open,
-        style: {
-          opacity: 0,
-          transform: 'scale(0)',
-        },
+  transition: 'transform 150ms cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s',
+  opacity: 1,
+  variants: [
+    {
+      props: ({ ownerState }) => !ownerState.open,
+      style: {
+        opacity: 0,
+        transform: 'scale(0)',
       },
-    ],
-  })),
-);
+    },
+  ],
+});
 
-const SpeedDialAction = React.forwardRef(function SpeedDialAction(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiSpeedDialAction' });
+const SpeedDialAction = React.forwardRef(function SpeedDialAction(props, ref) {
   const {
     className,
     delay = 0,
