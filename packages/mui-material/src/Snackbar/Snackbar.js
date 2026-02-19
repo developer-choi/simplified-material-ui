@@ -1,44 +1,11 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import composeClasses from '@mui/utils/composeClasses';
 import ClickAwayListener from '../../../utils/ClickAwayListener';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
-import capitalize from '../utils/capitalize';
 import SnackbarContent from '../SnackbarContent';
-import { getSnackbarUtilityClass } from './snackbarClasses';
 
-const useUtilityClasses = (ownerState) => {
-  const { classes, anchorOrigin } = ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      `anchorOrigin${capitalize(anchorOrigin.vertical)}${capitalize(anchorOrigin.horizontal)}`,
-    ],
-  };
-
-  return composeClasses(slots, getSnackbarUtilityClass, classes);
-};
-
-const SnackbarRoot = styled('div', {
-  name: 'MuiSnackbar',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.root,
-      styles[
-        `anchorOrigin${capitalize(ownerState.anchorOrigin.vertical)}${capitalize(
-          ownerState.anchorOrigin.horizontal,
-        )}`
-      ],
-    ];
-  },
-})(
+const SnackbarRoot = styled('div')(
   memoTheme(({ theme }) => ({
     zIndex: (theme.vars || theme).zIndex.snackbar,
     position: 'fixed',
@@ -91,27 +58,16 @@ const SnackbarRoot = styled('div', {
 );
 
 const Snackbar = React.forwardRef(function Snackbar(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiSnackbar' });
-
   const {
     action,
     anchorOrigin: { vertical, horizontal } = { vertical: 'bottom', horizontal: 'left' },
     autoHideDuration = null,
     children,
-    className,
     message,
     onClose,
     open,
     ...other
-  } = props;
-
-  const ownerState = {
-    ...props,
-    anchorOrigin: { vertical, horizontal },
-    autoHideDuration,
-  };
-
-  const classes = useUtilityClasses(ownerState);
+  } = inProps;
 
   // ESC 키 닫기
   React.useEffect(() => {
@@ -148,8 +104,6 @@ const Snackbar = React.forwardRef(function Snackbar(inProps, ref) {
     role: 'presentation',
     ...other,
     ref,
-    className: [classes.root, className].filter(Boolean).join(' '),
-    ownerState,
   };
 
   if (!open) {
@@ -164,26 +118,5 @@ const Snackbar = React.forwardRef(function Snackbar(inProps, ref) {
     </ClickAwayListener>
   );
 });
-
-Snackbar.propTypes /* remove-proptypes */ = {
-  action: PropTypes.node,
-  anchorOrigin: PropTypes.shape({
-    horizontal: PropTypes.oneOf(['center', 'left', 'right']).isRequired,
-    vertical: PropTypes.oneOf(['bottom', 'top']).isRequired,
-  }),
-  autoHideDuration: PropTypes.number,
-  children: PropTypes.element,
-  classes: PropTypes.object,
-  className: PropTypes.string,
-  key: () => null,
-  message: PropTypes.node,
-  onClose: PropTypes.func,
-  open: PropTypes.bool,
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-};
 
 export default Snackbar;
