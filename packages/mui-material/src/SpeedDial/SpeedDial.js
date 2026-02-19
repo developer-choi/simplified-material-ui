@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
 import useTimeout from '@mui/utils/useTimeout';
-import clamp from '@mui/utils/clamp';
 import { styled, useTheme } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
@@ -115,98 +114,22 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
   const classes = useUtilityClasses(ownerState);
 
   const eventTimer = useTimeout();
-
-  /**
-   * an index in actions.current
-   */
-  const focusedAction = React.useRef(0);
-
-  /**
-   * pressing this key while the focus is on a child SpeedDialAction focuses
-   * the next SpeedDialAction.
-   * It is equal to the first arrow key pressed while focus is on the SpeedDial
-   * that is not orthogonal to the direction.
-   * @type {utils.ArrowKey?}
-   */
-  const nextItemArrowKey = React.useRef();
-
-  /**
-   * refs to the Button that have an action associated to them in this SpeedDial
-   * [Fab, ...(SpeedDialActions > Button)]
-   * @type {HTMLButtonElement[]}
-   */
-  const actions = React.useRef([]);
-  actions.current = [actions.current[0]];
-
-  const handleOwnFabRef = React.useCallback((fabFef) => {
-    actions.current[0] = fabFef;
-  }, []);
-
-  /**
-   * creates a ref callback for the Button in a SpeedDialAction
-   * Is called before the original ref callback for Button that was set in buttonProps
-   *
-   * @param dialActionIndex {number}
-   * @param origButtonRef {React.RefObject?}
-   * @param fabSlotOrigButtonRef {React.RefObject?}
-   */
-  const createHandleSpeedDialActionButtonRef = (
-    dialActionIndex,
-    origButtonRef,
-    fabSlotOrigButtonRef,
-  ) => {
-    return (buttonRef) => {
-      actions.current[dialActionIndex + 1] = buttonRef;
-      if (origButtonRef) {
-        origButtonRef(buttonRef);
-      }
-      if (fabSlotOrigButtonRef) {
-        fabSlotOrigButtonRef(buttonRef);
-      }
-    };
-  };
+  const fabRef = React.useRef(null);
 
   const handleKeyDown = (event) => {
     if (onKeyDown) {
       onKeyDown(event);
     }
 
-    const key = event.key.replace('Arrow', '').toLowerCase();
-    const { current: nextItemArrowKeyCurrent = key } = nextItemArrowKey;
-
     if (event.key === 'Escape') {
       setOpenState(false);
-      actions.current[0].focus();
+      fabRef.current?.focus();
 
       if (onClose) {
         onClose(event, 'escapeKeyDown');
       }
-      return;
-    }
-
-    if (
-      getOrientation(key) === getOrientation(nextItemArrowKeyCurrent) &&
-      getOrientation(key) !== undefined
-    ) {
-      event.preventDefault();
-
-      const actionStep = key === nextItemArrowKeyCurrent ? 1 : -1;
-
-      // stay within array indices
-      const nextAction = clamp(focusedAction.current + actionStep, 0, actions.current.length - 1);
-      actions.current[nextAction].focus();
-      focusedAction.current = nextAction;
-      nextItemArrowKey.current = nextItemArrowKeyCurrent;
     }
   };
-
-  React.useEffect(() => {
-    // actions were closed while surfaces state was not reset
-    if (!open) {
-      focusedAction.current = 0;
-      nextItemArrowKey.current = undefined;
-    }
-  }, [open]);
 
   const handleClose = (event) => {
     if (event.type === 'mouseleave' && onMouseLeave) {
@@ -327,7 +250,7 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
           aria-controls={`${id}-actions`}
           onClick={handleClick}
           className={classes.fab}
-          ref={handleOwnFabRef}
+          ref={fabRef}
           ownerState={ownerState}
         >
           {React.isValidElement(icon) && isMuiElement(icon, ['SpeedDialIcon'])
