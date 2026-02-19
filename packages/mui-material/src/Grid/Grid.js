@@ -1,22 +1,12 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import requirePropFactory from '../utils/requirePropFactory';
 import { styled } from '../styles';
-import { useDefaultProps } from '../DefaultPropsProvider';
-import useTheme from '../styles/useTheme';
 
-const GridRoot = styled('div', {
-  name: 'MuiGrid',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-    return [styles.root, ownerState.container && styles.container];
-  },
-})(({ theme, ownerState }) => {
+const GridRoot = styled('div')(({ ownerState }) => {
   const gap = typeof ownerState.spacing === 'string'
     ? ownerState.spacing
-    : theme.spacing(ownerState.spacing);
+    : `${ownerState.spacing * 8}px`;
 
   return {
     minWidth: 0,
@@ -56,10 +46,7 @@ const GridRoot = styled('div', {
   };
 });
 
-const Grid = React.forwardRef(function Grid(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiGrid' });
-  const theme = useTheme();
-
+const Grid = React.forwardRef(function Grid(props, ref) {
   const {
     className,
     children,
@@ -110,15 +97,5 @@ Grid.propTypes /* remove-proptypes */ = {
   ]),
   wrap: PropTypes.oneOf(['nowrap', 'wrap-reverse', 'wrap']),
 };
-
-if (process.env.NODE_ENV !== 'production') {
-  const requireProp = requirePropFactory('Grid', Grid);
-  Grid['propTypes' + ''] = {
-    ...Grid.propTypes,
-    direction: requireProp('container'),
-    spacing: requireProp('container'),
-    wrap: requireProp('container'),
-  };
-}
 
 export default Grid;
