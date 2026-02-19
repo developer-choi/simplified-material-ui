@@ -3,10 +3,10 @@ import clsx from 'clsx';
 import { expect } from 'chai';
 import { spy } from 'sinon';
 import { act, createRenderer, fireEvent, screen } from '@mui/internal-test-utils';
-import Snackbar, { snackbarClasses as classes } from '@mui/material/Snackbar';
-import { snackbarContentClasses } from '@mui/material/SnackbarContent';
+import Snackbar, { snackbarClasses as classes } from './index';
+import { snackbarContentClasses } from '../SnackbarContent';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import describeConformance from '../../test/describeConformance';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<Snackbar />', () => {
   const { clock, render: clientRender } = createRenderer({ clock: 'fake' });

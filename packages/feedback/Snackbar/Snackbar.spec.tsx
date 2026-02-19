@@ -1,5 +1,5 @@
 import { mergeSlotProps } from '@mui/material/utils';
-import Snackbar, { SnackbarProps } from '@mui/material/Snackbar';
+import Snackbar, { SnackbarProps } from './index';
 import { expectType } from '@mui/types';
 
 <Snackbar

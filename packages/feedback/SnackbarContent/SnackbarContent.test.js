@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import { createRenderer, screen } from '@mui/internal-test-utils';
-import Paper, { paperClasses } from '../../../surfaces/Paper';
-import SnackbarContent, { snackbarContentClasses as classes } from '@mui/material/SnackbarContent';
+import Paper, { paperClasses } from '../../surfaces/Paper';
+import SnackbarContent, { snackbarContentClasses as classes } from './index';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import describeConformance from '../../test/describeConformance';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<SnackbarContent />', () => {
   const { render } = createRenderer();

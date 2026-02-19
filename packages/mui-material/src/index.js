@@ -282,11 +282,11 @@ export * from '../../utils/Slide';
 export { default as Slider } from '../../form/Slider';
 export * from '../../form/Slider';
 
-export { default as Snackbar } from './Snackbar';
-export * from './Snackbar';
+export { default as Snackbar } from '../../feedback/Snackbar';
+export * from '../../feedback/Snackbar';
 
-export { default as SnackbarContent } from './SnackbarContent';
-export * from './SnackbarContent';
+export { default as SnackbarContent } from '../../feedback/SnackbarContent';
+export * from '../../feedback/SnackbarContent';
 
 export { default as SpeedDial } from './SpeedDial';
 export * from './SpeedDial';

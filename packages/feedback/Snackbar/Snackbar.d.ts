@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { SxProps } from '@mui/system';
-import ClickAwayListener, { ClickAwayListenerProps } from '../../../utils/ClickAwayListener';
-import { Theme } from '../styles';
-import { InternalStandardProps as StandardProps } from '../internal';
+import ClickAwayListener, { ClickAwayListenerProps } from '../../utils/ClickAwayListener';
+import { Theme } from '@mui/material/styles';
+import { InternalStandardProps as StandardProps } from '@mui/material/internal';
 import { SnackbarContentProps } from '../SnackbarContent';
-import { TransitionProps } from '../transitions/transition';
+import { TransitionProps } from '@mui/material/transitions/transition';
 import { SnackbarClasses } from './snackbarClasses';
-import { CreateSlotsAndSlotProps, SlotComponentProps, SlotProps } from '../utils/types';
+import { CreateSlotsAndSlotProps, SlotComponentProps, SlotProps } from '@mui/material/utils/types';
 
 export interface SnackbarSlots {
   /**
