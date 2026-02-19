@@ -13,10 +13,8 @@ import Zoom from '../Zoom';
 import Fab from '../../../form/Fab';
 import capitalize from '../utils/capitalize';
 import isMuiElement from '../utils/isMuiElement';
-import useForkRef from '../utils/useForkRef';
 import useControlled from '../utils/useControlled';
 import speedDialClasses, { getSpeedDialUtilityClass } from './speedDialClasses';
-import useSlot from '../utils/useSlot';
 
 const useUtilityClasses = (ownerState) => {
   const { classes, open, direction } = ownerState;
@@ -153,7 +151,6 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
 
   const {
     ariaLabel,
-    FabProps: { ref: origDialButtonRef, ...FabProps } = {},
     children: childrenProp,
     className,
     direction = 'up',
@@ -168,10 +165,6 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
     onOpen,
     open: openProp,
     openIcon,
-    slots = {},
-    slotProps = {},
-    TransitionComponent: TransitionComponentProp,
-    TransitionProps: TransitionPropsProp,
     transitionDuration = defaultTransitionDuration,
     ...other
   } = props;
@@ -213,7 +206,6 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
   const handleOwnFabRef = React.useCallback((fabFef) => {
     actions.current[0] = fabFef;
   }, []);
-  const handleFabRef = useForkRef(origDialButtonRef, handleOwnFabRef);
 
   /**
    * creates a ref callback for the Button in a SpeedDialAction
@@ -307,10 +299,6 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
   };
 
   const handleClick = (event) => {
-    if (FabProps.onClick) {
-      FabProps.onClick(event);
-    }
-
     eventTimer.clear();
 
     if (open) {
@@ -375,26 +363,11 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
   });
 
   const children = allItems.map((child, index) => {
-    const {
-      FabProps: { ref: origButtonRef } = {},
-      slotProps: childSlotProps = {},
-      tooltipPlacement: tooltipPlacementProp,
-    } = child.props;
-
-    const { fab: { ref: fabSlotOrigButtonRef, ...fabSlotProps } = {}, ...restOfSlotProps } =
-      childSlotProps;
-
+    const tooltipPlacementProp = child.props.tooltipPlacement;
     const tooltipPlacement =
       tooltipPlacementProp || (getOrientation(direction) === 'vertical' ? 'left' : 'top');
 
     return React.cloneElement(child, {
-      slotProps: {
-        fab: {
-          ...fabSlotProps,
-          ref: createHandleSpeedDialActionButtonRef(index, origButtonRef, fabSlotOrigButtonRef),
-        },
-        ...restOfSlotProps,
-      },
       delay: 30 * (open ? index : allItems.length - index),
       open,
       tooltipPlacement,
@@ -402,76 +375,36 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
     });
   });
 
-  const backwardCompatibleSlots = { transition: TransitionComponentProp, ...slots };
-  const backwardCompatibleSlotProps = { transition: TransitionPropsProp, ...slotProps };
-  const externalForwardedProps = {
-    slots: backwardCompatibleSlots,
-    slotProps: backwardCompatibleSlotProps,
-  };
-
-  const [RootSlot, rootSlotProps] = useSlot('root', {
-    elementType: SpeedDialRoot,
-    externalForwardedProps: {
-      ...externalForwardedProps,
-      ...other,
-    },
-    ownerState,
-    ref,
-    className: clsx(classes.root, className),
-    additionalProps: {
-      role: 'presentation',
-    },
-    getSlotProps: (handlers) => ({
-      ...handlers,
-      onKeyDown: (event) => {
-        handlers.onKeyDown?.(event);
-        handleKeyDown(event);
-      },
-      onBlur: (event) => {
-        handlers.onBlur?.(event);
-        handleClose(event);
-      },
-      onFocus: (event) => {
-        handlers.onFocus?.(event);
-        handleOpen(event);
-      },
-      onMouseEnter: (event) => {
-        handlers.onMouseEnter?.(event);
-        handleOpen(event);
-      },
-      onMouseLeave: (event) => {
-        handlers.onMouseLeave?.(event);
-        handleClose(event);
-      },
-    }),
-  });
-
-  const [TransitionSlot, transitionProps] = useSlot('transition', {
-    elementType: Zoom,
-    externalForwardedProps,
-    ownerState,
-  });
-
   return (
-    <RootSlot {...rootSlotProps}>
-      <TransitionSlot in={!hidden} timeout={transitionDuration} unmountOnExit {...transitionProps}>
+    <SpeedDialRoot
+      ref={ref}
+      className={clsx(classes.root, className)}
+      role="presentation"
+      onKeyDown={handleKeyDown}
+      onBlur={handleClose}
+      onFocus={handleOpen}
+      onMouseEnter={handleOpen}
+      onMouseLeave={handleClose}
+      ownerState={ownerState}
+      {...other}
+    >
+      <Zoom in={!hidden} timeout={transitionDuration} unmountOnExit>
         <SpeedDialFab
           color="primary"
           aria-label={ariaLabel}
           aria-haspopup="true"
           aria-expanded={open}
           aria-controls={`${id}-actions`}
-          {...FabProps}
           onClick={handleClick}
-          className={clsx(classes.fab, FabProps.className)}
-          ref={handleFabRef}
+          className={classes.fab}
+          ref={handleOwnFabRef}
           ownerState={ownerState}
         >
           {React.isValidElement(icon) && isMuiElement(icon, ['SpeedDialIcon'])
             ? React.cloneElement(icon, { open })
             : icon}
         </SpeedDialFab>
-      </TransitionSlot>
+      </Zoom>
       <SpeedDialActions
         id={`${id}-actions`}
         role="menu"
@@ -481,7 +414,7 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
       >
         {children}
       </SpeedDialActions>
-    </RootSlot>
+    </SpeedDialRoot>
   );
 });
 
