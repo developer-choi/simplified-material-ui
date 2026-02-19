@@ -11,16 +11,15 @@ import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import Zoom from '../Zoom';
 import Fab from '../../../form/Fab';
-import capitalize from '../utils/capitalize';
 import isMuiElement from '../utils/isMuiElement';
 import useControlled from '../utils/useControlled';
 import speedDialClasses, { getSpeedDialUtilityClass } from './speedDialClasses';
 
 const useUtilityClasses = (ownerState) => {
-  const { classes, open, direction } = ownerState;
+  const { classes, open } = ownerState;
 
   const slots = {
-    root: ['root', `direction${capitalize(direction)}`],
+    root: ['root', 'directionUp'],
     fab: ['fab'],
     actions: ['actions', !open && 'actionsClosed'],
   };
@@ -28,26 +27,11 @@ const useUtilityClasses = (ownerState) => {
   return composeClasses(slots, getSpeedDialUtilityClass, classes);
 };
 
-function getOrientation(direction) {
-  if (direction === 'up' || direction === 'down') {
-    return 'vertical';
-  }
-  if (direction === 'right' || direction === 'left') {
-    return 'horizontal';
-  }
-  return undefined;
-}
-
-const dialRadius = 32;
-const spacingActions = 16;
-
 const SpeedDialRoot = styled('div', {
   name: 'MuiSpeedDial',
   slot: 'Root',
   overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [styles.root, styles[`direction${capitalize(ownerState.direction)}`]];
+    return [styles.root, styles.directionUp];
   },
 })(
   memoTheme(({ theme }) => ({
@@ -55,60 +39,12 @@ const SpeedDialRoot = styled('div', {
     display: 'flex',
     alignItems: 'center',
     pointerEvents: 'none',
-    variants: [
-      {
-        props: {
-          direction: 'up',
-        },
-        style: {
-          flexDirection: 'column-reverse',
-          [`& .${speedDialClasses.actions}`]: {
-            flexDirection: 'column-reverse',
-            marginBottom: -dialRadius,
-            paddingBottom: spacingActions + dialRadius,
-          },
-        },
-      },
-      {
-        props: {
-          direction: 'down',
-        },
-        style: {
-          flexDirection: 'column',
-          [`& .${speedDialClasses.actions}`]: {
-            flexDirection: 'column',
-            marginTop: -dialRadius,
-            paddingTop: spacingActions + dialRadius,
-          },
-        },
-      },
-      {
-        props: {
-          direction: 'left',
-        },
-        style: {
-          flexDirection: 'row-reverse',
-          [`& .${speedDialClasses.actions}`]: {
-            flexDirection: 'row-reverse',
-            marginRight: -dialRadius,
-            paddingRight: spacingActions + dialRadius,
-          },
-        },
-      },
-      {
-        props: {
-          direction: 'right',
-        },
-        style: {
-          flexDirection: 'row',
-          [`& .${speedDialClasses.actions}`]: {
-            flexDirection: 'row',
-            marginLeft: -dialRadius,
-            paddingLeft: spacingActions + dialRadius,
-          },
-        },
-      },
-    ],
+    flexDirection: 'column-reverse',
+    [`& .${speedDialClasses.actions}`]: {
+      flexDirection: 'column-reverse',
+      marginBottom: -32,
+      paddingBottom: 48,
+    },
   })),
 );
 
@@ -153,7 +89,6 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
     ariaLabel,
     children: childrenProp,
     className,
-    direction = 'up',
     hidden = false,
     icon,
     onBlur,
@@ -176,7 +111,7 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
     state: 'open',
   });
 
-  const ownerState = { ...props, open, direction };
+  const ownerState = { ...props, open };
   const classes = useUtilityClasses(ownerState);
 
   const eventTimer = useTimeout();
@@ -363,14 +298,9 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
   });
 
   const children = allItems.map((child, index) => {
-    const tooltipPlacementProp = child.props.tooltipPlacement;
-    const tooltipPlacement =
-      tooltipPlacementProp || (getOrientation(direction) === 'vertical' ? 'left' : 'top');
-
     return React.cloneElement(child, {
       delay: 30 * (open ? index : allItems.length - index),
       open,
-      tooltipPlacement,
       id: `${id}-action-${index}`,
     });
   });
@@ -408,7 +338,6 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
       <SpeedDialActions
         id={`${id}-actions`}
         role="menu"
-        aria-orientation={getOrientation(direction)}
         className={clsx(classes.actions, { [classes.actionsClosed]: !open })}
         ownerState={ownerState}
       >
