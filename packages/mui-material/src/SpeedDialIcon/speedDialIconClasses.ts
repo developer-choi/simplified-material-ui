@@ -1,5 +1,4 @@
 import generateUtilityClasses from '@mui/utils/generateUtilityClasses';
-import generateUtilityClass from '@mui/utils/generateUtilityClass';
 
 export interface SpeedDialIconClasses {
   /** Styles applied to the root element. */
@@ -11,10 +10,6 @@ export interface SpeedDialIconClasses {
 }
 
 export type SpeedDialIconClassKey = keyof SpeedDialIconClasses;
-
-export function getSpeedDialIconUtilityClass(slot: string): string {
-  return generateUtilityClass('MuiSpeedDialIcon', slot);
-}
 
 const speedDialIconClasses: SpeedDialIconClasses = generateUtilityClasses('MuiSpeedDialIcon', [
   'root',

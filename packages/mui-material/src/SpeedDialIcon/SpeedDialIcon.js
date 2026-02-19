@@ -2,36 +2,15 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import AddIcon from '../internal/svg-icons/Add';
-import speedDialIconClasses, { getSpeedDialIconUtilityClass } from './speedDialIconClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, open } = ownerState;
-
-  const slots = {
-    root: ['root'],
-    icon: ['icon', open && 'iconOpen'],
-  };
-
-  return composeClasses(slots, getSpeedDialIconUtilityClass, classes);
-};
+import speedDialIconClasses from './speedDialIconClasses';
 
 const SpeedDialIconRoot = styled('span', {
   name: 'MuiSpeedDialIcon',
   slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      { [`& .${speedDialIconClasses.icon}`]: styles.icon },
-      { [`& .${speedDialIconClasses.icon}`]: ownerState.open && styles.iconOpen },
-      styles.root,
-    ];
-  },
 })(
   memoTheme(({ theme }) => ({
     height: 24,
@@ -58,7 +37,6 @@ const SpeedDialIcon = React.forwardRef(function SpeedDialIcon(inProps, ref) {
   const { className, icon: iconProp, open, ...other } = props;
 
   const ownerState = props;
-  const classes = useUtilityClasses(ownerState);
 
   function formatIcon(icon, newClassName) {
     if (React.isValidElement(icon)) {
@@ -68,14 +46,16 @@ const SpeedDialIcon = React.forwardRef(function SpeedDialIcon(inProps, ref) {
     return icon;
   }
 
+  const iconClassName = clsx(speedDialIconClasses.icon, open && speedDialIconClasses.iconOpen);
+
   return (
     <SpeedDialIconRoot
-      className={clsx(classes.root, className)}
+      className={clsx(speedDialIconClasses.root, className)}
       ref={ref}
       ownerState={ownerState}
       {...other}
     >
-      {iconProp ? formatIcon(iconProp, classes.icon) : <AddIcon className={classes.icon} />}
+      {iconProp ? formatIcon(iconProp, iconClassName) : <AddIcon className={iconClassName} />}
     </SpeedDialIconRoot>
   );
 });
@@ -85,10 +65,6 @@ SpeedDialIcon.propTypes /* remove-proptypes */ = {
   // │ These PropTypes are generated from the TypeScript type definitions. │
   // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
   // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
   /**
    * @ignore
    */
