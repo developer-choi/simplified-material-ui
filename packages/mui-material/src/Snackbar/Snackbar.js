@@ -4,11 +4,10 @@ import PropTypes from 'prop-types';
 import composeClasses from '@mui/utils/composeClasses';
 import useSnackbar from './useSnackbar';
 import ClickAwayListener from '../../../utils/ClickAwayListener';
-import { styled, useTheme } from '../zero-styled';
+import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import capitalize from '../utils/capitalize';
-import Grow from '../../../utils/Grow';
 import SnackbarContent from '../SnackbarContent';
 import { getSnackbarUtilityClass } from './snackbarClasses';
 
@@ -94,11 +93,6 @@ const SnackbarRoot = styled('div', {
 
 const Snackbar = React.forwardRef(function Snackbar(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiSnackbar' });
-  const theme = useTheme();
-  const defaultTransitionDuration = {
-    enter: theme.transitions.duration.enteringScreen,
-    exit: theme.transitions.duration.leavingScreen,
-  };
 
   const {
     action,
@@ -120,8 +114,8 @@ const Snackbar = React.forwardRef(function Snackbar(inProps, ref) {
     slots = {},
     slotProps = {},
     TransitionComponent: TransitionComponentProp,
-    transitionDuration = defaultTransitionDuration,
-    TransitionProps: { onEnter, onExited, ...TransitionPropsProp } = {},
+    transitionDuration,
+    TransitionProps: TransitionPropsProp = {},
     ...other
   } = props;
 
@@ -137,42 +131,6 @@ const Snackbar = React.forwardRef(function Snackbar(inProps, ref) {
   const classes = useUtilityClasses(ownerState);
 
   const { getRootProps, onClickAway } = useSnackbar(ownerState);
-
-  const [exited, setExited] = React.useState(true);
-
-  const handleExited = (node) => {
-    setExited(true);
-    if (onExited) {
-      onExited(node);
-    }
-  };
-
-  const handleEnter = (node, isAppearing) => {
-    setExited(false);
-    if (onEnter) {
-      onEnter(node, isAppearing);
-    }
-  };
-
-  const TransitionComponent = TransitionComponentProp || slots.transition || Grow;
-  const transitionProps = {
-    ...TransitionPropsProp,
-    ...(slotProps.transition || {}),
-    onEnter: (...params) => {
-      TransitionPropsProp?.onEnter?.(...params);
-      slotProps.transition?.onEnter?.(...params);
-      handleEnter(...params);
-    },
-    onExited: (...params) => {
-      TransitionPropsProp?.onExited?.(...params);
-      slotProps.transition?.onExited?.(...params);
-      handleExited(...params);
-    },
-    appear: true,
-    in: open,
-    timeout: transitionDuration,
-    direction: vertical === 'top' ? 'down' : 'up',
-  };
 
   const clickAwayProps = {
     ...(ClickAwayListenerPropsProp || {}),
@@ -200,17 +158,14 @@ const Snackbar = React.forwardRef(function Snackbar(inProps, ref) {
     ownerState,
   };
 
-  // So we only render active snackbars.
-  if (!open && exited) {
+  if (!open) {
     return null;
   }
 
   return (
     <ClickAwayListener {...clickAwayProps}>
       <SnackbarRoot {...rootProps}>
-        <TransitionComponent {...transitionProps}>
-          {children || <SnackbarContent {...contentProps} />}
-        </TransitionComponent>
+        {children || <SnackbarContent {...contentProps} />}
       </SnackbarRoot>
     </ClickAwayListener>
   );
@@ -255,16 +210,6 @@ Snackbar.propTypes /* remove-proptypes */ = {
     PropTypes.func,
     PropTypes.object,
   ]),
-  TransitionComponent: PropTypes.elementType,
-  transitionDuration: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.shape({
-      appear: PropTypes.number,
-      enter: PropTypes.number,
-      exit: PropTypes.number,
-    }),
-  ]),
-  TransitionProps: PropTypes.object,
 };
 
 export default Snackbar;
