@@ -1,25 +1,9 @@
 'use client';
 import * as React from 'react';
 import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
-import { emphasize } from '@mui/system/colorManipulator';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import Paper from '../../../surfaces/Paper';
-import { getSnackbarContentUtilityClass } from './snackbarContentClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-
-  const slots = {
-    root: ['root'],
-    action: ['action'],
-    message: ['message'],
-  };
-
-  return composeClasses(slots, getSnackbarContentUtilityClass, classes);
-};
 
 const SnackbarContentRoot = styled(Paper, {
   name: 'MuiSnackbarContent',
@@ -67,25 +51,19 @@ const SnackbarContentAction = styled('div', {
   marginRight: -8,
 });
 
-function SnackbarContent(inProps) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiSnackbarContent' });
-  const { action, className, message, role = 'alert', ...other } = props;
-  const ownerState = props;
-  const classes = useUtilityClasses(ownerState);
-
+function SnackbarContent({ action, className, message, role = 'alert', ...other }) {
   return (
     <SnackbarContentRoot
       role={role}
       elevation={6}
-      className={clsx(classes.root, className)}
-      ownerState={ownerState}
+      className={clsx(className)}
       {...other}
     >
-      <SnackbarContentMessage className={classes.message} ownerState={ownerState}>
+      <SnackbarContentMessage>
         {message}
       </SnackbarContentMessage>
       {action ? (
-        <SnackbarContentAction className={classes.action} ownerState={ownerState}>
+        <SnackbarContentAction>
           {action}
         </SnackbarContentAction>
       ) : null}
