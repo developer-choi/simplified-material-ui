@@ -100,8 +100,6 @@ const Snackbar = React.forwardRef(function Snackbar(inProps, ref) {
     autoHideDuration = null,
     children,
     className,
-    ClickAwayListenerProps: ClickAwayListenerPropsProp,
-    ContentProps: ContentPropsProp,
     disableWindowBlurListener = false,
     message,
     onBlur,
@@ -111,11 +109,6 @@ const Snackbar = React.forwardRef(function Snackbar(inProps, ref) {
     onMouseLeave,
     open,
     resumeHideDuration,
-    slots = {},
-    slotProps = {},
-    TransitionComponent: TransitionComponentProp,
-    transitionDuration,
-    TransitionProps: TransitionPropsProp = {},
     ...other
   } = props;
 
@@ -124,32 +117,13 @@ const Snackbar = React.forwardRef(function Snackbar(inProps, ref) {
     anchorOrigin: { vertical, horizontal },
     autoHideDuration,
     disableWindowBlurListener,
-    TransitionComponent: TransitionComponentProp,
-    transitionDuration,
   };
 
   const classes = useUtilityClasses(ownerState);
 
   const { getRootProps, onClickAway } = useSnackbar(ownerState);
 
-  const clickAwayProps = {
-    ...(ClickAwayListenerPropsProp || {}),
-    ...(slotProps.clickAwayListener || {}),
-    onClickAway: (event) => {
-      ClickAwayListenerPropsProp?.onClickAway?.(event);
-      slotProps.clickAwayListener?.onClickAway?.(event);
-      if (!event?.defaultMuiPrevented) {
-        onClickAway(event);
-      }
-    },
-  };
-
-  const contentProps = {
-    ...(ContentPropsProp || {}),
-    ...(slotProps.content || {}),
-    message,
-    action,
-  };
+  const contentProps = { message, action };
 
   const rootProps = {
     ...getRootProps(other),
@@ -163,7 +137,7 @@ const Snackbar = React.forwardRef(function Snackbar(inProps, ref) {
   }
 
   return (
-    <ClickAwayListener {...clickAwayProps}>
+    <ClickAwayListener onClickAway={onClickAway}>
       <SnackbarRoot {...rootProps}>
         {children || <SnackbarContent {...contentProps} />}
       </SnackbarRoot>
@@ -181,8 +155,6 @@ Snackbar.propTypes /* remove-proptypes */ = {
   children: PropTypes.element,
   classes: PropTypes.object,
   className: PropTypes.string,
-  ClickAwayListenerProps: PropTypes.object,
-  ContentProps: PropTypes.object,
   disableWindowBlurListener: PropTypes.bool,
   key: () => null,
   message: PropTypes.node,
@@ -193,18 +165,6 @@ Snackbar.propTypes /* remove-proptypes */ = {
   onMouseLeave: PropTypes.func,
   open: PropTypes.bool,
   resumeHideDuration: PropTypes.number,
-  slotProps: PropTypes.shape({
-    clickAwayListener: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    content: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    transition: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  slots: PropTypes.shape({
-    clickAwayListener: PropTypes.elementType,
-    content: PropTypes.elementType,
-    root: PropTypes.elementType,
-    transition: PropTypes.elementType,
-  }),
   sx: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
     PropTypes.func,
