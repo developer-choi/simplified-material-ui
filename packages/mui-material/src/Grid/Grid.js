@@ -1,28 +1,10 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import generateUtilityClass from '@mui/utils/generateUtilityClass';
-import composeClasses from '@mui/utils/composeClasses';
 import requirePropFactory from '../utils/requirePropFactory';
 import { styled } from '../styles';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import useTheme from '../styles/useTheme';
-
-const useUtilityClasses = (ownerState) => {
-  const { container, direction, spacing, wrap, size } = ownerState;
-  const slots = {
-    root: [
-      'root',
-      container && 'container',
-      wrap !== 'wrap' && `wrap-xs-${String(wrap)}`,
-      `direction-xs-${direction}`,
-      size !== undefined && size !== false && `grid-xs-${size}`,
-      container && spacing && `spacing-xs-${spacing}`,
-    ].filter(Boolean),
-  };
-  return composeClasses(slots, (slot) => generateUtilityClass('MuiGrid', slot), {});
-};
 
 const GridRoot = styled('div', {
   name: 'MuiGrid',
@@ -101,13 +83,11 @@ const Grid = React.forwardRef(function Grid(inProps, ref) {
     offset,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <GridRoot
       ref={ref}
       ownerState={ownerState}
-      className={clsx(classes.root, className)}
+      className={className}
       {...other}
     >
       {children}
