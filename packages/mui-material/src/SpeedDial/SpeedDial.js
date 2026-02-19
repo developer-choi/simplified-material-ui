@@ -1,33 +1,15 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { styled, useTheme } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import Zoom from '../Zoom';
 import Fab from '../../../form/Fab';
-import speedDialClasses, { getSpeedDialUtilityClass } from './speedDialClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, open } = ownerState;
-
-  const slots = {
-    root: ['root', 'directionUp'],
-    fab: ['fab'],
-    actions: ['actions', !open && 'actionsClosed'],
-  };
-
-  return composeClasses(slots, getSpeedDialUtilityClass, classes);
-};
 
 const SpeedDialRoot = styled('div', {
   name: 'MuiSpeedDial',
   slot: 'Root',
-  overridesResolver: (props, styles) => {
-    return [styles.root, styles.directionUp];
-  },
 })(
   memoTheme(({ theme }) => ({
     zIndex: (theme.vars || theme).zIndex.speedDial,
@@ -35,11 +17,6 @@ const SpeedDialRoot = styled('div', {
     alignItems: 'center',
     pointerEvents: 'none',
     flexDirection: 'column-reverse',
-    [`& .${speedDialClasses.actions}`]: {
-      flexDirection: 'column-reverse',
-      marginBottom: -32,
-      paddingBottom: 48,
-    },
   })),
 );
 
@@ -53,11 +30,6 @@ const SpeedDialFab = styled(Fab, {
 const SpeedDialActions = styled('div', {
   name: 'MuiSpeedDial',
   slot: 'Actions',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [styles.actions, !ownerState.open && styles.actionsClosed];
-  },
 })({
   display: 'flex',
   pointerEvents: 'auto',
@@ -95,7 +67,6 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
   const [open, setOpenState] = React.useState(false);
 
   const ownerState = { ...props, open };
-  const classes = useUtilityClasses(ownerState);
 
   const timerRef = React.useRef();
   const fabRef = React.useRef(null);
@@ -182,7 +153,7 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
   return (
     <SpeedDialRoot
       ref={ref}
-      className={clsx(classes.root, className)}
+      className={className}
       role="presentation"
       onKeyDown={handleKeyDown}
       onBlur={handleClose}
@@ -200,7 +171,6 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
           aria-expanded={open}
           aria-controls={`${id}-actions`}
           onClick={handleClick}
-          className={classes.fab}
           ref={fabRef}
           ownerState={ownerState}
         >
@@ -212,7 +182,6 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
       <SpeedDialActions
         id={`${id}-actions`}
         role="menu"
-        className={clsx(classes.actions, { [classes.actionsClosed]: !open })}
         ownerState={ownerState}
       >
         {children}
