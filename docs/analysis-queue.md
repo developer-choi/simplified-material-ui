@@ -18,6 +18,7 @@
 - [x] SnackbarContent
 - [x] SpeedDialIcon
 - [x] SpeedDialAction
+- [x] SpeedDial
 
 ## 다음 분석 목록 📋
 
@@ -35,7 +36,7 @@
 - [x] MobileStepper
 - [x] SpeedDialIcon
 - [x] SpeedDialAction
-- [ ] SpeedDial
+- [x] SpeedDial
 
 
 ### Inputs
@@ -59,8 +60,7 @@
 
 ## 분석 우선순위
 
-1. **현재 진행 중**: SpeedDial 그룹 (SpeedDial)
-2. **다음**: Grid, NoSsr, ScopedCssBaseline, CssBaseline, GlobalStyles 등
+1. **다음**: Grid, NoSsr, ScopedCssBaseline, CssBaseline, GlobalStyles 등
 
 ---
 
