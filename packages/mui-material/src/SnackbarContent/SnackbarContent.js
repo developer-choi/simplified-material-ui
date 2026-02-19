@@ -1,73 +1,35 @@
 'use client';
 import * as React from 'react';
-import clsx from 'clsx';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
-import Paper from '../../../surfaces/Paper';
 
-const SnackbarContentRoot = styled(Paper, {
-  name: 'MuiSnackbarContent',
-  slot: 'Root',
-})(
-  memoTheme(({ theme }) => {
-    const emphasis = theme.palette.mode === 'light' ? 0.8 : 0.98;
-
-    return {
-      ...theme.typography.body2,
-      color: theme.vars
-        ? theme.vars.palette.SnackbarContent.color
-        : theme.palette.getContrastText(emphasize(theme.palette.background.default, emphasis)),
-      backgroundColor: theme.vars
-        ? theme.vars.palette.SnackbarContent.bg
-        : emphasize(theme.palette.background.default, emphasis),
-      display: 'flex',
-      alignItems: 'center',
-      flexWrap: 'wrap',
-      padding: '6px 16px',
-      flexGrow: 1,
-      [theme.breakpoints.up('sm')]: {
-        flexGrow: 'initial',
-        minWidth: 288,
-      },
-    };
-  }),
-);
-
-const SnackbarContentMessage = styled('div', {
-  name: 'MuiSnackbarContent',
-  slot: 'Message',
-})({
-  padding: '8px 0',
-});
-
-const SnackbarContentAction = styled('div', {
-  name: 'MuiSnackbarContent',
-  slot: 'Action',
-})({
-  display: 'flex',
-  alignItems: 'center',
-  marginLeft: 'auto',
-  paddingLeft: 16,
-  marginRight: -8,
-});
-
-function SnackbarContent({ action, className, message, role = 'alert', ...other }) {
+function SnackbarContent({ action, message, role = 'alert', ...other }) {
   return (
-    <SnackbarContentRoot
+    <div
       role={role}
-      elevation={6}
-      className={clsx(className)}
+      style={{
+        backgroundColor: '#323232',
+        color: '#fff',
+        fontSize: '0.875rem',
+        lineHeight: 1.43,
+        display: 'flex',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        padding: '6px 16px',
+        flexGrow: 1,
+        minWidth: 288,
+        borderRadius: 4,
+        boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12)',
+      }}
       {...other}
     >
-      <SnackbarContentMessage>
+      <div style={{ padding: '8px 0' }}>
         {message}
-      </SnackbarContentMessage>
+      </div>
       {action ? (
-        <SnackbarContentAction>
+        <div style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto', paddingLeft: 16, marginRight: -8 }}>
           {action}
-        </SnackbarContentAction>
+        </div>
       ) : null}
-    </SnackbarContentRoot>
+    </div>
   );
 }
 
