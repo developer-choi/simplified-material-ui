@@ -18,12 +18,6 @@ const useUtilityClasses = (ownerState) => {
 
   const slots = {
     fab: ['fab', !open && 'fabClosed'],
-    staticTooltip: [
-      'staticTooltip',
-      `tooltipPlacement${capitalize(tooltipPlacement)}`,
-      !open && 'staticTooltipClosed',
-    ],
-    staticTooltipLabel: ['staticTooltipLabel'],
   };
 
   return composeClasses(slots, getSpeedDialActionUtilityClass, classes);
@@ -64,83 +58,6 @@ const SpeedDialActionFab = styled(Fab, {
   })),
 );
 
-const SpeedDialActionStaticTooltip = styled('span', {
-  name: 'MuiSpeedDialAction',
-  slot: 'StaticTooltip',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.staticTooltip,
-      !ownerState.open && styles.staticTooltipClosed,
-      styles[`tooltipPlacement${capitalize(ownerState.tooltipPlacement)}`],
-    ];
-  },
-})(
-  memoTheme(({ theme }) => ({
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-    [`& .${speedDialActionClasses.staticTooltipLabel}`]: {
-      transition: theme.transitions.create(['transform', 'opacity'], {
-        duration: theme.transitions.duration.shorter,
-      }),
-      opacity: 1,
-    },
-    variants: [
-      {
-        props: ({ ownerState }) => !ownerState.open,
-        style: {
-          [`& .${speedDialActionClasses.staticTooltipLabel}`]: {
-            opacity: 0,
-            transform: 'scale(0.5)',
-          },
-        },
-      },
-      {
-        props: {
-          tooltipPlacement: 'left',
-        },
-        style: {
-          [`& .${speedDialActionClasses.staticTooltipLabel}`]: {
-            transformOrigin: '100% 50%',
-            right: '100%',
-            marginRight: 8,
-          },
-        },
-      },
-      {
-        props: {
-          tooltipPlacement: 'right',
-        },
-        style: {
-          [`& .${speedDialActionClasses.staticTooltipLabel}`]: {
-            transformOrigin: '0% 50%',
-            left: '100%',
-            marginLeft: 8,
-          },
-        },
-      },
-    ],
-  })),
-);
-
-const SpeedDialActionStaticTooltipLabel = styled('span', {
-  name: 'MuiSpeedDialAction',
-  slot: 'StaticTooltipLabel',
-})(
-  memoTheme(({ theme }) => ({
-    position: 'absolute',
-    ...theme.typography.body1,
-    backgroundColor: (theme.vars || theme).palette.background.paper,
-    borderRadius: (theme.vars || theme).shape.borderRadius,
-    boxShadow: (theme.vars || theme).shadows[1],
-    color: (theme.vars || theme).palette.text.secondary,
-    padding: '4px 16px',
-    wordBreak: 'keep-all',
-  })),
-);
-
 const SpeedDialAction = React.forwardRef(function SpeedDialAction(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiSpeedDialAction' });
   const {
@@ -149,7 +66,6 @@ const SpeedDialAction = React.forwardRef(function SpeedDialAction(inProps, ref) 
     icon,
     id,
     open,
-    tooltipOpen: tooltipOpenProp = false,
     tooltipPlacement = 'left',
     tooltipTitle,
     ...other
@@ -157,16 +73,6 @@ const SpeedDialAction = React.forwardRef(function SpeedDialAction(inProps, ref) 
 
   const ownerState = { ...props, tooltipPlacement };
   const classes = useUtilityClasses(ownerState);
-
-  const [tooltipOpen, setTooltipOpen] = React.useState(tooltipOpenProp);
-
-  const handleTooltipClose = () => {
-    setTooltipOpen(false);
-  };
-
-  const handleTooltipOpen = () => {
-    setTooltipOpen(true);
-  };
 
   const transitionStyle = { transitionDelay: `${delay}ms` };
 
@@ -183,43 +89,12 @@ const SpeedDialAction = React.forwardRef(function SpeedDialAction(inProps, ref) 
     </SpeedDialActionFab>
   );
 
-  if (tooltipOpenProp) {
-    return (
-      <SpeedDialActionStaticTooltip
-        id={id}
-        ref={ref}
-        className={classes.staticTooltip}
-        ownerState={ownerState}
-        {...other}
-      >
-        <SpeedDialActionStaticTooltipLabel
-          style={transitionStyle}
-          id={`${id}-label`}
-          className={classes.staticTooltipLabel}
-          ownerState={ownerState}
-        >
-          {tooltipTitle}
-        </SpeedDialActionStaticTooltipLabel>
-        {React.cloneElement(fab, {
-          'aria-labelledby': `${id}-label`,
-        })}
-      </SpeedDialActionStaticTooltip>
-    );
-  }
-
-  if (!open && tooltipOpen) {
-    setTooltipOpen(false);
-  }
-
   return (
     <Tooltip
       id={id}
       ref={ref}
       title={tooltipTitle}
-      open={open && tooltipOpen}
       placement={tooltipPlacement}
-      onClose={handleTooltipClose}
-      onOpen={handleTooltipOpen}
       {...other}
     >
       {fab}
@@ -258,12 +133,6 @@ SpeedDialAction.propTypes /* remove-proptypes */ = {
    * If `true`, the component is shown.
    */
   open: PropTypes.bool,
-  /**
-   * Make the tooltip always visible when the SpeedDial is open.
-   * @default false
-   * @deprecated Use `slotProps.tooltip.open` instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   */
-  tooltipOpen: PropTypes.bool,
   /**
    * Placement of the tooltip.
    * @default 'left'
