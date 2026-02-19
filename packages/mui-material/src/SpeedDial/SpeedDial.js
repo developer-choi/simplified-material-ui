@@ -1,44 +1,8 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { styled } from '../zero-styled';
 import Zoom from '../Zoom';
 import Fab from '../../../form/Fab';
-
-const SpeedDialRoot = styled('div', {
-  name: 'MuiSpeedDial',
-  slot: 'Root',
-})({
-  zIndex: 1050,
-  display: 'flex',
-  alignItems: 'center',
-  pointerEvents: 'none',
-  flexDirection: 'column-reverse',
-});
-
-const SpeedDialFab = styled(Fab, {
-  name: 'MuiSpeedDial',
-  slot: 'Fab',
-})({
-  pointerEvents: 'auto',
-});
-
-const SpeedDialActions = styled('div', {
-  name: 'MuiSpeedDial',
-  slot: 'Actions',
-})({
-  display: 'flex',
-  pointerEvents: 'auto',
-  variants: [
-    {
-      props: ({ ownerState }) => !ownerState.open,
-      style: {
-        transition: 'top 0s linear 0.2s',
-        pointerEvents: 'none',
-      },
-    },
-  ],
-});
 
 const SpeedDial = React.forwardRef(function SpeedDial(props, ref) {
   const {
@@ -53,8 +17,6 @@ const SpeedDial = React.forwardRef(function SpeedDial(props, ref) {
   } = props;
 
   const [open, setOpenState] = React.useState(false);
-
-  const ownerState = { ...props, open };
 
   const timerRef = React.useRef();
   const fabRef = React.useRef(null);
@@ -138,21 +100,38 @@ const SpeedDial = React.forwardRef(function SpeedDial(props, ref) {
     });
   });
 
+  const rootStyle = {
+    zIndex: 1050,
+    display: 'flex',
+    alignItems: 'center',
+    pointerEvents: 'none',
+    flexDirection: 'column-reverse',
+  };
+
+  const actionsStyle = {
+    display: 'flex',
+    flexDirection: 'column-reverse',
+    marginBottom: -32,
+    paddingBottom: 48,
+    pointerEvents: open ? 'auto' : 'none',
+    transition: open ? undefined : 'top 0s linear 0.2s',
+  };
+
   return (
-    <SpeedDialRoot
+    <div
       ref={ref}
       className={className}
+      style={rootStyle}
       role="presentation"
       onKeyDown={handleKeyDown}
       onBlur={handleClose}
       onFocus={handleOpen}
       onMouseEnter={handleOpen}
       onMouseLeave={handleClose}
-      ownerState={ownerState}
       {...other}
     >
       <Zoom in={!hidden} timeout={{ enter: 225, exit: 195 }} unmountOnExit>
-        <SpeedDialFab
+        <Fab
           color="primary"
           aria-label={ariaLabel}
           aria-haspopup="true"
@@ -160,21 +139,17 @@ const SpeedDial = React.forwardRef(function SpeedDial(props, ref) {
           aria-controls={`${id}-actions`}
           onClick={handleClick}
           ref={fabRef}
-          ownerState={ownerState}
+          style={{ pointerEvents: 'auto' }}
         >
           {React.isValidElement(icon)
             ? React.cloneElement(icon, { open })
             : icon}
-        </SpeedDialFab>
+        </Fab>
       </Zoom>
-      <SpeedDialActions
-        id={`${id}-actions`}
-        role="menu"
-        ownerState={ownerState}
-      >
+      <div id={`${id}-actions`} role="menu" style={actionsStyle}>
         {children}
-      </SpeedDialActions>
-    </SpeedDialRoot>
+      </div>
+    </div>
   );
 });
 
