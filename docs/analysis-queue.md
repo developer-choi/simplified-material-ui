@@ -19,12 +19,12 @@
 - [x] SpeedDialIcon
 - [x] SpeedDialAction
 - [x] SpeedDial
+- [x] Grid
 
 ## 다음 분석 목록 📋
 
 ### Layout Components
-- [ ] Grid
-- [ ] GridLegacy (Grid 분석 후)
+- [x] Grid
 
 ### Transitions
 - [x] Slide
@@ -60,7 +60,7 @@
 
 ## 분석 우선순위
 
-1. **다음**: Grid, NoSsr, ScopedCssBaseline, CssBaseline, GlobalStyles 등
+1. **다음**: NoSsr, ScopedCssBaseline, CssBaseline, GlobalStyles 등
 
 ---
 
@@ -80,3 +80,4 @@
 - PigmentContainer (Pigment CSS 전용)
 - PigmentGrid (Pigment CSS 전용)
 - PigmentStack (Pigment CSS 전용)
+- GridLegacy (deprecated, Grid v2로 대체됨)
