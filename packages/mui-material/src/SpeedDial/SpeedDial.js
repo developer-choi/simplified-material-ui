@@ -1,24 +1,20 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { styled, useTheme } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
+import { styled } from '../zero-styled';
 import Zoom from '../Zoom';
 import Fab from '../../../form/Fab';
 
 const SpeedDialRoot = styled('div', {
   name: 'MuiSpeedDial',
   slot: 'Root',
-})(
-  memoTheme(({ theme }) => ({
-    zIndex: (theme.vars || theme).zIndex.speedDial,
-    display: 'flex',
-    alignItems: 'center',
-    pointerEvents: 'none',
-    flexDirection: 'column-reverse',
-  })),
-);
+})({
+  zIndex: 1050,
+  display: 'flex',
+  alignItems: 'center',
+  pointerEvents: 'none',
+  flexDirection: 'column-reverse',
+});
 
 const SpeedDialFab = styled(Fab, {
   name: 'MuiSpeedDial',
@@ -44,14 +40,7 @@ const SpeedDialActions = styled('div', {
   ],
 });
 
-const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiSpeedDial' });
-  const theme = useTheme();
-  const defaultTransitionDuration = {
-    enter: theme.transitions.duration.enteringScreen,
-    exit: theme.transitions.duration.leavingScreen,
-  };
-
+const SpeedDial = React.forwardRef(function SpeedDial(props, ref) {
   const {
     ariaLabel,
     children: childrenProp,
@@ -60,7 +49,6 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
     icon,
     onClose,
     onOpen,
-    transitionDuration = defaultTransitionDuration,
     ...other
   } = props;
 
@@ -163,7 +151,7 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
       ownerState={ownerState}
       {...other}
     >
-      <Zoom in={!hidden} timeout={transitionDuration} unmountOnExit>
+      <Zoom in={!hidden} timeout={{ enter: 225, exit: 195 }} unmountOnExit>
         <SpeedDialFab
           color="primary"
           aria-label={ariaLabel}
