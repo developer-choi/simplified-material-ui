@@ -100,15 +100,9 @@ const Snackbar = React.forwardRef(function Snackbar(inProps, ref) {
     autoHideDuration = null,
     children,
     className,
-    disableWindowBlurListener = false,
     message,
-    onBlur,
     onClose,
-    onFocus,
-    onMouseEnter,
-    onMouseLeave,
     open,
-    resumeHideDuration,
     ...other
   } = props;
 
@@ -116,7 +110,6 @@ const Snackbar = React.forwardRef(function Snackbar(inProps, ref) {
     ...props,
     anchorOrigin: { vertical, horizontal },
     autoHideDuration,
-    disableWindowBlurListener,
   };
 
   const classes = useUtilityClasses(ownerState);
@@ -155,16 +148,10 @@ Snackbar.propTypes /* remove-proptypes */ = {
   children: PropTypes.element,
   classes: PropTypes.object,
   className: PropTypes.string,
-  disableWindowBlurListener: PropTypes.bool,
   key: () => null,
   message: PropTypes.node,
-  onBlur: PropTypes.func,
   onClose: PropTypes.func,
-  onFocus: PropTypes.func,
-  onMouseEnter: PropTypes.func,
-  onMouseLeave: PropTypes.func,
   open: PropTypes.bool,
-  resumeHideDuration: PropTypes.number,
   sx: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
     PropTypes.func,
