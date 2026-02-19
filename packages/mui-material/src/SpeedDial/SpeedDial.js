@@ -1,17 +1,13 @@
 'use client';
 import * as React from 'react';
-import { isFragment } from 'react-is';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
-import useTimeout from '@mui/utils/useTimeout';
 import { styled, useTheme } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import Zoom from '../Zoom';
 import Fab from '../../../form/Fab';
-import isMuiElement from '../utils/isMuiElement';
-import useControlled from '../utils/useControlled';
 import speedDialClasses, { getSpeedDialUtilityClass } from './speedDialClasses';
 
 const useUtilityClasses = (ownerState) => {
@@ -90,37 +86,25 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
     className,
     hidden = false,
     icon,
-    onBlur,
     onClose,
-    onFocus,
-    onKeyDown,
-    onMouseEnter,
-    onMouseLeave,
     onOpen,
-    open: openProp,
-    openIcon,
     transitionDuration = defaultTransitionDuration,
     ...other
   } = props;
 
-  const [open, setOpenState] = useControlled({
-    controlled: openProp,
-    default: false,
-    name: 'SpeedDial',
-    state: 'open',
-  });
+  const [open, setOpenState] = React.useState(false);
 
   const ownerState = { ...props, open };
   const classes = useUtilityClasses(ownerState);
 
-  const eventTimer = useTimeout();
+  const timerRef = React.useRef();
   const fabRef = React.useRef(null);
 
-  const handleKeyDown = (event) => {
-    if (onKeyDown) {
-      onKeyDown(event);
-    }
+  React.useEffect(() => {
+    return () => clearTimeout(timerRef.current);
+  }, []);
 
+  const handleKeyDown = (event) => {
     if (event.key === 'Escape') {
       setOpenState(false);
       fabRef.current?.focus();
@@ -132,22 +116,14 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
   };
 
   const handleClose = (event) => {
-    if (event.type === 'mouseleave' && onMouseLeave) {
-      onMouseLeave(event);
-    }
-
-    if (event.type === 'blur' && onBlur) {
-      onBlur(event);
-    }
-
-    eventTimer.clear();
+    clearTimeout(timerRef.current);
     if (event.type === 'blur') {
-      eventTimer.start(0, () => {
+      timerRef.current = setTimeout(() => {
         setOpenState(false);
         if (onClose) {
           onClose(event, 'blur');
         }
-      });
+      }, 0);
     } else {
       setOpenState(false);
       if (onClose) {
@@ -157,7 +133,7 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
   };
 
   const handleClick = (event) => {
-    eventTimer.clear();
+    clearTimeout(timerRef.current);
 
     if (open) {
       setOpenState(false);
@@ -173,22 +149,10 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
   };
 
   const handleOpen = (event) => {
-    if (event.type === 'mouseenter' && onMouseEnter) {
-      onMouseEnter(event);
-    }
-
-    if (event.type === 'focus' && onFocus) {
-      onFocus(event);
-    }
-
-    // When moving the focus between two items,
-    // a chain if blur and focus event is triggered.
-    // We only handle the last event.
-    eventTimer.clear();
+    clearTimeout(timerRef.current);
 
     if (!open) {
-      // Wait for a future focus or click event
-      eventTimer.start(0, () => {
+      timerRef.current = setTimeout(() => {
         setOpenState(true);
         if (onOpen) {
           const eventMap = {
@@ -198,27 +162,14 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
 
           onOpen(event, eventMap[event.type]);
         }
-      });
+      }, 0);
     }
   };
 
   // Filter the label for valid id characters.
   const id = ariaLabel.replace(/^[^a-z]+|[^\w:.-]+/gi, '');
 
-  const allItems = React.Children.toArray(childrenProp).filter((child) => {
-    if (process.env.NODE_ENV !== 'production') {
-      if (isFragment(child)) {
-        console.error(
-          [
-            "MUI: The SpeedDial component doesn't accept a Fragment as a child.",
-            'Consider providing an array instead.',
-          ].join('\n'),
-        );
-      }
-    }
-
-    return React.isValidElement(child);
-  });
+  const allItems = React.Children.toArray(childrenProp).filter(React.isValidElement);
 
   const children = allItems.map((child, index) => {
     return React.cloneElement(child, {
@@ -253,7 +204,7 @@ const SpeedDial = React.forwardRef(function SpeedDial(inProps, ref) {
           ref={fabRef}
           ownerState={ownerState}
         >
-          {React.isValidElement(icon) && isMuiElement(icon, ['SpeedDialIcon'])
+          {React.isValidElement(icon)
             ? React.cloneElement(icon, { open })
             : icon}
         </SpeedDialFab>
