@@ -1,7 +1,5 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
-
 const Grid = React.forwardRef(function Grid(props, ref) {
   const {
     className,
@@ -59,16 +57,5 @@ const Grid = React.forwardRef(function Grid(props, ref) {
     </div>
   );
 });
-
-Grid.propTypes /* remove-proptypes */ = {
-  children: PropTypes.node,
-  columns: PropTypes.number,
-  container: PropTypes.bool,
-  direction: PropTypes.oneOf(['column-reverse', 'column', 'row-reverse', 'row']),
-  offset: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  size: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number]),
-  spacing: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  wrap: PropTypes.oneOf(['nowrap', 'wrap-reverse', 'wrap']),
-};
 
 export default Grid;
