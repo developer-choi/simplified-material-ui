@@ -2,25 +2,12 @@
 // @inheritedComponent Tooltip
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { emphasize } from '@mui/system/colorManipulator';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import Fab from '../../../form/Fab';
 import Tooltip from '../../../data-display/Tooltip';
-import speedDialActionClasses, { getSpeedDialActionUtilityClass } from './speedDialActionClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { open, classes } = ownerState;
-
-  const slots = {
-    fab: ['fab', !open && 'fabClosed'],
-  };
-
-  return composeClasses(slots, getSpeedDialActionUtilityClass, classes);
-};
 
 const SpeedDialActionFab = styled(Fab, {
   name: 'MuiSpeedDialAction',
@@ -70,13 +57,12 @@ const SpeedDialAction = React.forwardRef(function SpeedDialAction(inProps, ref) 
   } = props;
 
   const ownerState = props;
-  const classes = useUtilityClasses(ownerState);
 
   const transitionStyle = { transitionDelay: `${delay}ms` };
 
   const fab = (
     <SpeedDialActionFab
-      className={clsx(classes.fab, className)}
+      className={className}
       style={transitionStyle}
       tabIndex={-1}
       role="menuitem"
@@ -105,10 +91,6 @@ SpeedDialAction.propTypes /* remove-proptypes */ = {
   // │ These PropTypes are generated from the TypeScript type definitions. │
   // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
   // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
   /**
    * @ignore
    */
