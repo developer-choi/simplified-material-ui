@@ -2,33 +2,8 @@
 // @inheritedComponent Tooltip
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { styled } from '../zero-styled';
 import Fab from '../../../form/Fab';
 import Tooltip from '../../../data-display/Tooltip';
-
-const SpeedDialActionFab = styled(Fab, {
-  name: 'MuiSpeedDialAction',
-  slot: 'Fab',
-  skipVariantsResolver: false,
-})({
-  margin: 8,
-  color: 'rgba(0, 0, 0, 0.6)',
-  backgroundColor: '#fff',
-  '&:hover': {
-    backgroundColor: '#e0e0e0',
-  },
-  transition: 'transform 150ms cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s',
-  opacity: 1,
-  variants: [
-    {
-      props: ({ ownerState }) => !ownerState.open,
-      style: {
-        opacity: 0,
-        transform: 'scale(0)',
-      },
-    },
-  ],
-});
 
 const SpeedDialAction = React.forwardRef(function SpeedDialAction(props, ref) {
   const {
@@ -41,22 +16,15 @@ const SpeedDialAction = React.forwardRef(function SpeedDialAction(props, ref) {
     ...other
   } = props;
 
-  const ownerState = props;
-
-  const transitionStyle = { transitionDelay: `${delay}ms` };
-
-  const fab = (
-    <SpeedDialActionFab
-      className={className}
-      style={transitionStyle}
-      tabIndex={-1}
-      role="menuitem"
-      size="small"
-      ownerState={ownerState}
-    >
-      {icon}
-    </SpeedDialActionFab>
-  );
+  const fabStyle = {
+    margin: 8,
+    color: 'rgba(0, 0, 0, 0.6)',
+    backgroundColor: '#fff',
+    transition: 'transform 150ms cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s',
+    transitionDelay: `${delay}ms`,
+    opacity: open ? 1 : 0,
+    transform: open ? 'scale(1)' : 'scale(0)',
+  };
 
   return (
     <Tooltip
@@ -66,7 +34,15 @@ const SpeedDialAction = React.forwardRef(function SpeedDialAction(props, ref) {
       placement="left"
       {...other}
     >
-      {fab}
+      <Fab
+        className={className}
+        style={fabStyle}
+        tabIndex={-1}
+        role="menuitem"
+        size="small"
+      >
+        {icon}
+      </Fab>
     </Tooltip>
   );
 });
