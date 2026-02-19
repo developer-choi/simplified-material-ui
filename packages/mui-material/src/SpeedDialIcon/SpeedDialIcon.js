@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import AddIcon from '../internal/svg-icons/Add';
 
 const SpeedDialIcon = React.forwardRef(function SpeedDialIcon(props, ref) {
@@ -23,26 +22,6 @@ const SpeedDialIcon = React.forwardRef(function SpeedDialIcon(props, ref) {
     </span>
   );
 });
-
-SpeedDialIcon.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * The icon to display.
-   */
-  icon: PropTypes.node,
-  /**
-   * @ignore
-   * If `true`, the component is shown.
-   */
-  open: PropTypes.bool,
-};
 
 SpeedDialIcon.muiName = 'SpeedDialIcon';
 
