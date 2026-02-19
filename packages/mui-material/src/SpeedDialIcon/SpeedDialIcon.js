@@ -3,37 +3,30 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import AddIcon from '../internal/svg-icons/Add';
 import speedDialIconClasses from './speedDialIconClasses';
 
 const SpeedDialIconRoot = styled('span', {
   name: 'MuiSpeedDialIcon',
   slot: 'Root',
-})(
-  memoTheme(({ theme }) => ({
-    height: 24,
-    [`& .${speedDialIconClasses.icon}`]: {
-      transition: theme.transitions.create(['transform', 'opacity'], {
-        duration: theme.transitions.duration.short,
-      }),
-    },
-    variants: [
-      {
-        props: ({ ownerState }) => ownerState.open,
-        style: {
-          [`& .${speedDialIconClasses.icon}`]: {
-            transform: 'rotate(45deg)',
-          },
+})({
+  height: 24,
+  [`& .${speedDialIconClasses.icon}`]: {
+    transition: 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1), opacity 200ms cubic-bezier(0.4, 0, 0.2, 1)',
+  },
+  variants: [
+    {
+      props: ({ ownerState }) => ownerState.open,
+      style: {
+        [`& .${speedDialIconClasses.icon}`]: {
+          transform: 'rotate(45deg)',
         },
       },
-    ],
-  })),
-);
+    },
+  ],
+});
 
-const SpeedDialIcon = React.forwardRef(function SpeedDialIcon(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiSpeedDialIcon' });
+const SpeedDialIcon = React.forwardRef(function SpeedDialIcon(props, ref) {
   const { className, icon: iconProp, open, ...other } = props;
 
   const ownerState = props;
