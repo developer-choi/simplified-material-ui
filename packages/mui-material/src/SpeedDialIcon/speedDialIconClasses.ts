@@ -8,12 +8,6 @@ export interface SpeedDialIconClasses {
   icon: string;
   /** Styles applied to the icon component if `open={true}`. */
   iconOpen: string;
-  /** Styles applied to the icon when an `openIcon` is provided and if `open={true}`. */
-  iconWithOpenIconOpen: string;
-  /** Styles applied to the `openIcon` if provided. */
-  openIcon: string;
-  /** Styles applied to the `openIcon` if provided and if `open={true}`. */
-  openIconOpen: string;
 }
 
 export type SpeedDialIconClassKey = keyof SpeedDialIconClasses;
@@ -26,9 +20,6 @@ const speedDialIconClasses: SpeedDialIconClasses = generateUtilityClasses('MuiSp
   'root',
   'icon',
   'iconOpen',
-  'iconWithOpenIconOpen',
-  'openIcon',
-  'openIconOpen',
 ]);
 
 export default speedDialIconClasses;
