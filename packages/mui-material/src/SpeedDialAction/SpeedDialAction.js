@@ -10,11 +10,10 @@ import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import Fab from '../../../form/Fab';
 import Tooltip from '../../../data-display/Tooltip';
-import capitalize from '../utils/capitalize';
 import speedDialActionClasses, { getSpeedDialActionUtilityClass } from './speedDialActionClasses';
 
 const useUtilityClasses = (ownerState) => {
-  const { open, tooltipPlacement, classes } = ownerState;
+  const { open, classes } = ownerState;
 
   const slots = {
     fab: ['fab', !open && 'fabClosed'],
@@ -66,12 +65,11 @@ const SpeedDialAction = React.forwardRef(function SpeedDialAction(inProps, ref) 
     icon,
     id,
     open,
-    tooltipPlacement = 'left',
     tooltipTitle,
     ...other
   } = props;
 
-  const ownerState = { ...props, tooltipPlacement };
+  const ownerState = props;
   const classes = useUtilityClasses(ownerState);
 
   const transitionStyle = { transitionDelay: `${delay}ms` };
@@ -94,7 +92,7 @@ const SpeedDialAction = React.forwardRef(function SpeedDialAction(inProps, ref) 
       id={id}
       ref={ref}
       title={tooltipTitle}
-      placement={tooltipPlacement}
+      placement="left"
       {...other}
     >
       {fab}
@@ -133,28 +131,6 @@ SpeedDialAction.propTypes /* remove-proptypes */ = {
    * If `true`, the component is shown.
    */
   open: PropTypes.bool,
-  /**
-   * Placement of the tooltip.
-   * @default 'left'
-   * @deprecated Use `slotProps.tooltip.placement` instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   */
-  tooltipPlacement: PropTypes.oneOf([
-    'auto-end',
-    'auto-start',
-    'auto',
-    'bottom-end',
-    'bottom-start',
-    'bottom',
-    'left-end',
-    'left-start',
-    'left',
-    'right-end',
-    'right-start',
-    'right',
-    'top-end',
-    'top-start',
-    'top',
-  ]),
   /**
    * Label to display in the tooltip.
    * @deprecated Use `slotProps.tooltip.title` instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](/material-ui/migration/migrating-from-deprecated-apis/) for more details.
