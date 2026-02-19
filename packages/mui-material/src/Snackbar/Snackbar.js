@@ -2,7 +2,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import composeClasses from '@mui/utils/composeClasses';
-import useSnackbar from './useSnackbar';
 import ClickAwayListener from '../../../utils/ClickAwayListener';
 import { styled } from '../zero-styled';
 import memoTheme from '../utils/memoTheme';
@@ -114,12 +113,40 @@ const Snackbar = React.forwardRef(function Snackbar(inProps, ref) {
 
   const classes = useUtilityClasses(ownerState);
 
-  const { getRootProps, onClickAway } = useSnackbar(ownerState);
+  // ESC 키 닫기
+  React.useEffect(() => {
+    if (!open) return undefined;
+
+    function handleKeyDown(nativeEvent) {
+      if (!nativeEvent.defaultPrevented && nativeEvent.key === 'Escape') {
+        onClose?.(nativeEvent, 'escapeKeyDown');
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [open, onClose]);
+
+  // autoHideDuration 타이머
+  React.useEffect(() => {
+    if (!open || autoHideDuration == null || !onClose) return undefined;
+
+    const timer = setTimeout(() => {
+      onClose(null, 'timeout');
+    }, autoHideDuration);
+
+    return () => clearTimeout(timer);
+  }, [open, autoHideDuration, onClose]);
+
+  const handleClickAway = (event) => {
+    onClose?.(event, 'clickaway');
+  };
 
   const contentProps = { message, action };
 
   const rootProps = {
-    ...getRootProps(other),
+    role: 'presentation',
+    ...other,
     ref,
     className: [classes.root, className].filter(Boolean).join(' '),
     ownerState,
@@ -130,7 +157,7 @@ const Snackbar = React.forwardRef(function Snackbar(inProps, ref) {
   }
 
   return (
-    <ClickAwayListener onClickAway={onClickAway}>
+    <ClickAwayListener onClickAway={handleClickAway}>
       <SnackbarRoot {...rootProps}>
         {children || <SnackbarContent {...contentProps} />}
       </SnackbarRoot>
