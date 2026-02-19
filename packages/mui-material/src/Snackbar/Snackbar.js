@@ -1,61 +1,41 @@
 'use client';
 import * as React from 'react';
 import ClickAwayListener from '../../../utils/ClickAwayListener';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import SnackbarContent from '../SnackbarContent';
 
-const SnackbarRoot = styled('div')(
-  memoTheme(({ theme }) => ({
-    zIndex: (theme.vars || theme).zIndex.snackbar,
+function getPositionStyle(vertical, horizontal) {
+  const style = {
     position: 'fixed',
+    zIndex: 1400,
     display: 'flex',
     left: 8,
     right: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    variants: [
-      {
-        props: ({ ownerState }) => ownerState.anchorOrigin.vertical === 'top',
-        style: { top: 8, [theme.breakpoints.up('sm')]: { top: 24 } },
-      },
-      {
-        props: ({ ownerState }) => ownerState.anchorOrigin.vertical !== 'top',
-        style: { bottom: 8, [theme.breakpoints.up('sm')]: { bottom: 24 } },
-      },
-      {
-        props: ({ ownerState }) => ownerState.anchorOrigin.horizontal === 'left',
-        style: {
-          justifyContent: 'flex-start',
-          [theme.breakpoints.up('sm')]: {
-            left: 24,
-            right: 'auto',
-          },
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.anchorOrigin.horizontal === 'right',
-        style: {
-          justifyContent: 'flex-end',
-          [theme.breakpoints.up('sm')]: {
-            right: 24,
-            left: 'auto',
-          },
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.anchorOrigin.horizontal === 'center',
-        style: {
-          [theme.breakpoints.up('sm')]: {
-            left: '50%',
-            right: 'auto',
-            transform: 'translateX(-50%)',
-          },
-        },
-      },
-    ],
-  })),
-);
+  };
+
+  if (vertical === 'top') {
+    style.top = 8;
+  } else {
+    style.bottom = 8;
+  }
+
+  if (horizontal === 'left') {
+    style.justifyContent = 'flex-start';
+    style.left = 24;
+    style.right = 'auto';
+  } else if (horizontal === 'right') {
+    style.justifyContent = 'flex-end';
+    style.right = 24;
+    style.left = 'auto';
+  } else if (horizontal === 'center') {
+    style.left = '50%';
+    style.right = 'auto';
+    style.transform = 'translateX(-50%)';
+  }
+
+  return style;
+}
 
 const Snackbar = React.forwardRef(function Snackbar(inProps, ref) {
   const {
@@ -98,23 +78,20 @@ const Snackbar = React.forwardRef(function Snackbar(inProps, ref) {
     onClose?.(event, 'clickaway');
   };
 
-  const contentProps = { message, action };
-
-  const rootProps = {
-    role: 'presentation',
-    ...other,
-    ref,
-  };
-
   if (!open) {
     return null;
   }
 
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
-      <SnackbarRoot {...rootProps}>
-        {children || <SnackbarContent {...contentProps} />}
-      </SnackbarRoot>
+      <div
+        role="presentation"
+        style={getPositionStyle(vertical, horizontal)}
+        ref={ref}
+        {...other}
+      >
+        {children || <SnackbarContent message={message} action={action} />}
+      </div>
     </ClickAwayListener>
   );
 });
