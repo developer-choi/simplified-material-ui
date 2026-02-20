@@ -51,16 +51,16 @@
 - [x] SnackbarContent
 
 ### Utils
-- [ ] NoSsr
-- [ ] ScopedCssBaseline
-- [ ] CssBaseline
-- [ ] GlobalStyles
+- [-] NoSsr (간소화 안함)
+- [-] ScopedCssBaseline (간소화 안함)
+- [-] CssBaseline (간소화 안함)
+- [-] GlobalStyles (간소화 안함)
 
 ---
 
 ## 분석 우선순위
 
-1. **다음**: NoSsr, ScopedCssBaseline, CssBaseline, GlobalStyles 등
+1. **다음**: -
 
 ---
 
