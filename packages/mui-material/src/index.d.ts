@@ -157,8 +157,8 @@ export * from '../../form/FormLabel';
 export { default as GridLegacy } from './GridLegacy';
 export { GridLegacyProps, GridLegacyTypeMap } from './GridLegacy';
 
-export { default as Grid } from './Grid';
-export * from './Grid';
+export { default as Grid } from '../../layout/Grid';
+export * from '../../layout/Grid';
 
 export { default as Grow } from '../../utils/Grow';
 export * from '../../utils/Grow';
@@ -292,14 +292,14 @@ export * from '../../feedback/Snackbar';
 export { default as SnackbarContent } from '../../feedback/SnackbarContent';
 export * from '../../feedback/SnackbarContent';
 
-export { default as SpeedDial } from './SpeedDial';
-export * from './SpeedDial';
+export { default as SpeedDial } from '../../navigation/SpeedDial';
+export * from '../../navigation/SpeedDial';
 
-export { default as SpeedDialAction } from './SpeedDialAction';
-export * from './SpeedDialAction';
+export { default as SpeedDialAction } from '../../navigation/SpeedDialAction';
+export * from '../../navigation/SpeedDialAction';
 
-export { default as SpeedDialIcon } from './SpeedDialIcon';
-export * from './SpeedDialIcon';
+export { default as SpeedDialIcon } from '../../navigation/SpeedDialIcon';
+export * from '../../navigation/SpeedDialIcon';
 
 export { default as Stack } from './Stack';
 export * from './Stack';

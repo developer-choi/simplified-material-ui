@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import AddIcon from '../internal/svg-icons/Add';
+import AddIcon from '@mui/material/internal/svg-icons/Add';
 
 const SpeedDialIcon = React.forwardRef(function SpeedDialIcon(props, ref) {
   const { className, icon: iconProp, open, ...other } = props;

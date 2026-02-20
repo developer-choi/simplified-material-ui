@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { SxProps } from '@mui/system';
-import { Theme } from '../styles';
-import { InternalStandardProps as StandardProps } from '../internal';
-import { FabProps } from '../../../form/Fab';
-import { TooltipProps } from '../../../data-display/Tooltip';
+import { Theme } from '@mui/material/styles';
+import { InternalStandardProps as StandardProps } from '@mui/material/internal';
+import { FabProps } from '../../form/Fab';
+import { TooltipProps } from '../../data-display/Tooltip';
 import { SpeedDialActionClasses } from './speedDialActionClasses';
-import { CreateSlotsAndSlotProps, SlotProps } from '../utils/types';
+import { CreateSlotsAndSlotProps, SlotProps } from '@mui/material/utils/types';
 
 export interface SpeedDialActionSlots {
   /**

@@ -7,12 +7,12 @@ import {
   fireDiscreteEvent,
   screen,
 } from '@mui/internal-test-utils';
-import Icon from '../../../data-display/Icon';
-import SpeedDial, { speedDialClasses as classes } from '@mui/material/SpeedDial';
-import SpeedDialAction from '@mui/material/SpeedDialAction';
-import { tooltipClasses } from '../../../data-display/Tooltip';
+import Icon from '../../data-display/Icon';
+import SpeedDial, { speedDialClasses as classes } from './index';
+import SpeedDialAction from '../SpeedDialAction';
+import { tooltipClasses } from '../../data-display/Tooltip';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import describeConformance from '../../test/describeConformance';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<SpeedDial />', () => {
   const { clock, render } = createRenderer({ clock: 'fake' });

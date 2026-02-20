@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import { createRenderer, screen } from '@mui/internal-test-utils';
-import Icon from '../../../data-display/Icon';
-import SpeedDialIcon, { speedDialIconClasses as classes } from '@mui/material/SpeedDialIcon';
-import describeConformance from '../../test/describeConformance';
+import Icon from '../../data-display/Icon';
+import SpeedDialIcon, { speedDialIconClasses as classes } from './index';
+import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<SpeedDialIcon />', () => {
   const { render } = createRenderer();

@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
-import Fab from '../../../form/Fab';
-import Tooltip from '../../../data-display/Tooltip';
+import Fab from '../../form/Fab';
+import Tooltip from '../../data-display/Tooltip';
 
 const SpeedDialAction = React.forwardRef(function SpeedDialAction(props, ref) {
   const {
