@@ -3,12 +3,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import CheckCircle from '../internal/svg-icons/CheckCircle';
-import Warning from '../internal/svg-icons/Warning';
-import SvgIcon from '../SvgIcon';
 import stepIconClasses, { getStepIconUtilityClass } from './stepIconClasses';
 
 const useUtilityClasses = (ownerState) => {
@@ -22,37 +17,16 @@ const useUtilityClasses = (ownerState) => {
   return composeClasses(slots, getStepIconUtilityClass, classes);
 };
 
-const StepIconRoot = styled(SvgIcon, {
-  name: 'MuiStepIcon',
-  slot: 'Root',
-})(
-  memoTheme(({ theme }) => ({
-    display: 'block',
-    transition: theme.transitions.create('color', {
-      duration: theme.transitions.duration.shortest,
-    }),
-    color: (theme.vars || theme).palette.text.disabled,
-    [`&.${stepIconClasses.completed}`]: {
-      color: (theme.vars || theme).palette.primary.main,
-    },
-    [`&.${stepIconClasses.active}`]: {
-      color: (theme.vars || theme).palette.primary.main,
-    },
-    [`&.${stepIconClasses.error}`]: {
-      color: (theme.vars || theme).palette.error.main,
-    },
-  })),
+const CheckCircleIcon = () => (
+  <svg viewBox="0 0 24 24" style={{ display: 'block', width: '1em', height: '1em', fill: 'currentColor' }}>
+    <path d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24zm-2 17l-5-5 1.4-1.4 3.6 3.6 7.6-7.6L19 8l-9 9z" />
+  </svg>
 );
 
-const StepIconText = styled('text', {
-  name: 'MuiStepIcon',
-  slot: 'Text',
-})(
-  memoTheme(({ theme }) => ({
-    fill: (theme.vars || theme).palette.primary.contrastText,
-    fontSize: theme.typography.caption.fontSize,
-    fontFamily: theme.typography.fontFamily,
-  })),
+const WarningIcon = () => (
+  <svg viewBox="0 0 24 24" style={{ display: 'block', width: '1em', height: '1em', fill: 'currentColor' }}>
+    <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
+  </svg>
 );
 
 const StepIcon = React.forwardRef(function StepIcon(inProps, ref) {
@@ -63,53 +37,67 @@ const StepIcon = React.forwardRef(function StepIcon(inProps, ref) {
     completed = false,
     error = false,
     icon,
+    style,
     ...other
   } = props;
 
   const ownerState = { ...props, active, completed, error };
   const classes = useUtilityClasses(ownerState);
 
+  const color = error ? '#d32f2f' : (active || completed) ? '#1976d2' : '#bdbdbd';
+
   if (typeof icon === 'number' || typeof icon === 'string') {
     const className = clsx(classNameProp, classes.root);
 
     if (error) {
       return (
-        <StepIconRoot
-          as={Warning}
+        <span
           className={className}
           ref={ref}
-          ownerState={ownerState}
+          style={{ display: 'block', fontSize: '1.5rem', color, ...style }}
           {...other}
-        />
+        >
+          <WarningIcon />
+        </span>
       );
     }
 
     if (completed) {
       return (
-        <StepIconRoot
-          as={CheckCircle}
+        <span
           className={className}
           ref={ref}
-          ownerState={ownerState}
+          style={{ display: 'block', fontSize: '1.5rem', color, ...style }}
           {...other}
-        />
+        >
+          <CheckCircleIcon />
+        </span>
       );
     }
 
     return (
-      <StepIconRoot className={className} ref={ref} ownerState={ownerState} {...other}>
-        <circle cx="12" cy="12" r="12" />
-        <StepIconText
+      <svg
+        className={className}
+        ref={ref}
+        style={{ display: 'block', width: '1em', height: '1em', fontSize: '1.5rem', color, ...style }}
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        {...other}
+      >
+        <circle cx="12" cy="12" r="12" fill="currentColor" />
+        <text
           className={classes.text}
           x="12"
           y="12"
           textAnchor="middle"
           dominantBaseline="central"
-          ownerState={ownerState}
+          fill="#fff"
+          fontSize="12"
+          fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
         >
           {icon}
-        </StepIconText>
-      </StepIconRoot>
+        </text>
+      </svg>
     );
   }
 
