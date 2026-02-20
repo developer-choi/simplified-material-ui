@@ -1,7 +1,5 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import { useDefaultProps } from '../DefaultPropsProvider';
 
 const CheckCircleIcon = () => (
   <svg viewBox="0 0 24 24" style={{ display: 'block', width: '1em', height: '1em', fill: 'currentColor' }}>
@@ -15,11 +13,10 @@ const WarningIcon = () => (
   </svg>
 );
 
-const StepIcon = React.forwardRef(function StepIcon(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiStepIcon' });
+const StepIcon = React.forwardRef(function StepIcon(props, ref) {
   const {
     active = false,
-    className: classNameProp,
+    className,
     completed = false,
     error = false,
     icon,
@@ -33,7 +30,7 @@ const StepIcon = React.forwardRef(function StepIcon(inProps, ref) {
     if (error) {
       return (
         <span
-          className={classNameProp}
+          className={className}
           ref={ref}
           style={{ display: 'block', fontSize: '1.5rem', color, ...style }}
           {...other}
@@ -46,7 +43,7 @@ const StepIcon = React.forwardRef(function StepIcon(inProps, ref) {
     if (completed) {
       return (
         <span
-          className={classNameProp}
+          className={className}
           ref={ref}
           style={{ display: 'block', fontSize: '1.5rem', color, ...style }}
           {...other}
@@ -58,7 +55,7 @@ const StepIcon = React.forwardRef(function StepIcon(inProps, ref) {
 
     return (
       <svg
-        className={classNameProp}
+        className={className}
         ref={ref}
         style={{ display: 'block', width: '1em', height: '1em', fontSize: '1.5rem', color, ...style }}
         viewBox="0 0 24 24"
@@ -83,47 +80,5 @@ const StepIcon = React.forwardRef(function StepIcon(inProps, ref) {
 
   return icon;
 });
-
-StepIcon.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * Whether this step is active.
-   * @default false
-   */
-  active: PropTypes.bool,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * Mark the step as completed. Is passed to child components.
-   * @default false
-   */
-  completed: PropTypes.bool,
-  /**
-   * If `true`, the step is marked as failed.
-   * @default false
-   */
-  error: PropTypes.bool,
-  /**
-   * The label displayed in the step icon.
-   */
-  icon: PropTypes.node,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-};
 
 export default StepIcon;
