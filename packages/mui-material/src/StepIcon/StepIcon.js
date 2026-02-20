@@ -1,21 +1,7 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import stepIconClasses, { getStepIconUtilityClass } from './stepIconClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, active, completed, error } = ownerState;
-
-  const slots = {
-    root: ['root', active && 'active', completed && 'completed', error && 'error'],
-    text: ['text'],
-  };
-
-  return composeClasses(slots, getStepIconUtilityClass, classes);
-};
 
 const CheckCircleIcon = () => (
   <svg viewBox="0 0 24 24" style={{ display: 'block', width: '1em', height: '1em', fill: 'currentColor' }}>
@@ -41,18 +27,13 @@ const StepIcon = React.forwardRef(function StepIcon(inProps, ref) {
     ...other
   } = props;
 
-  const ownerState = { ...props, active, completed, error };
-  const classes = useUtilityClasses(ownerState);
-
   const color = error ? '#d32f2f' : (active || completed) ? '#1976d2' : '#bdbdbd';
 
   if (typeof icon === 'number' || typeof icon === 'string') {
-    const className = clsx(classNameProp, classes.root);
-
     if (error) {
       return (
         <span
-          className={className}
+          className={classNameProp}
           ref={ref}
           style={{ display: 'block', fontSize: '1.5rem', color, ...style }}
           {...other}
@@ -65,7 +46,7 @@ const StepIcon = React.forwardRef(function StepIcon(inProps, ref) {
     if (completed) {
       return (
         <span
-          className={className}
+          className={classNameProp}
           ref={ref}
           style={{ display: 'block', fontSize: '1.5rem', color, ...style }}
           {...other}
@@ -77,7 +58,7 @@ const StepIcon = React.forwardRef(function StepIcon(inProps, ref) {
 
     return (
       <svg
-        className={className}
+        className={classNameProp}
         ref={ref}
         style={{ display: 'block', width: '1em', height: '1em', fontSize: '1.5rem', color, ...style }}
         viewBox="0 0 24 24"
@@ -86,7 +67,6 @@ const StepIcon = React.forwardRef(function StepIcon(inProps, ref) {
       >
         <circle cx="12" cy="12" r="12" fill="currentColor" />
         <text
-          className={classes.text}
           x="12"
           y="12"
           textAnchor="middle"
