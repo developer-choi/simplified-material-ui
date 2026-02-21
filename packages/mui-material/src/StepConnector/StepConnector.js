@@ -1,12 +1,9 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import StepperContext from '../Stepper/StepperContext';
 import StepContext from '../Step/StepContext';
 
-const StepConnector = React.forwardRef(function StepConnector(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiStepConnector' });
+const StepConnector = React.forwardRef(function StepConnector(props, ref) {
   const { className, style, ...other } = props;
 
   const { orientation = 'horizontal' } = React.useContext(StepperContext);
@@ -38,28 +35,5 @@ const StepConnector = React.forwardRef(function StepConnector(inProps, ref) {
     </div>
   );
 });
-
-StepConnector.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-};
 
 export default StepConnector;
