@@ -6,11 +6,8 @@ import * as React from 'react';
 import StepContext from '../Step/StepContext';
 import StepIcon from '../StepIcon';
 import StepperContext from '../Stepper/StepperContext';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import stepLabelClasses, { getStepLabelUtilityClass } from './stepLabelClasses';
-import useSlot from '../utils/useSlot';
+import { getStepLabelUtilityClass } from './stepLabelClasses';
 
 const useUtilityClasses = (ownerState) => {
   const { classes, orientation, active, completed, error, disabled, alternativeLabel } = ownerState;
@@ -45,111 +42,21 @@ const useUtilityClasses = (ownerState) => {
   return composeClasses(slots, getStepLabelUtilityClass, classes);
 };
 
-const StepLabelRoot = styled('span', {
-  name: 'MuiStepLabel',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [styles.root, styles[ownerState.orientation]];
-  },
-})({
-  display: 'flex',
-  alignItems: 'center',
-  [`&.${stepLabelClasses.alternativeLabel}`]: {
-    flexDirection: 'column',
-  },
-  [`&.${stepLabelClasses.disabled}`]: {
-    cursor: 'default',
-  },
-  variants: [
-    {
-      props: { orientation: 'vertical' },
-      style: {
-        textAlign: 'left',
-        padding: '8px 0',
-      },
-    },
-  ],
-});
-
-const StepLabelLabel = styled('span', {
-  name: 'MuiStepLabel',
-  slot: 'Label',
-})(
-  memoTheme(({ theme }) => ({
-    ...theme.typography.body2,
-    display: 'block',
-    transition: theme.transitions.create('color', {
-      duration: theme.transitions.duration.shortest,
-    }),
-    [`&.${stepLabelClasses.active}`]: {
-      color: (theme.vars || theme).palette.text.primary,
-      fontWeight: 500,
-    },
-    [`&.${stepLabelClasses.completed}`]: {
-      color: (theme.vars || theme).palette.text.primary,
-      fontWeight: 500,
-    },
-    [`&.${stepLabelClasses.alternativeLabel}`]: {
-      marginTop: 16,
-    },
-    [`&.${stepLabelClasses.error}`]: {
-      color: (theme.vars || theme).palette.error.main,
-    },
-  })),
-);
-
-const StepLabelIconContainer = styled('span', {
-  name: 'MuiStepLabel',
-  slot: 'IconContainer',
-})({
-  flexShrink: 0,
-  display: 'flex',
-  paddingRight: 8,
-  [`&.${stepLabelClasses.alternativeLabel}`]: {
-    paddingRight: 0,
-  },
-});
-
-const StepLabelLabelContainer = styled('span', {
-  name: 'MuiStepLabel',
-  slot: 'LabelContainer',
-})(
-  memoTheme(({ theme }) => ({
-    width: '100%',
-    color: (theme.vars || theme).palette.text.secondary,
-    [`&.${stepLabelClasses.alternativeLabel}`]: {
-      textAlign: 'center',
-    },
-  })),
-);
-
 const StepLabel = React.forwardRef(function StepLabel(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiStepLabel' });
   const {
     children,
     className,
-    componentsProps = {},
     error = false,
     icon: iconProp,
     optional,
-    slots = {},
-    slotProps = {},
-    StepIconComponent: StepIconComponentProp,
-    StepIconProps,
+    style,
     ...other
   } = props;
 
   const { alternativeLabel, orientation } = React.useContext(StepperContext);
   const { active, disabled, completed, icon: iconContext } = React.useContext(StepContext);
   const icon = iconProp || iconContext;
-
-  let StepIconComponent = StepIconComponentProp;
-
-  if (icon && !StepIconComponent) {
-    StepIconComponent = StepIcon;
-  }
 
   const ownerState = {
     ...props,
@@ -163,60 +70,47 @@ const StepLabel = React.forwardRef(function StepLabel(inProps, ref) {
 
   const classes = useUtilityClasses(ownerState);
 
-  const externalForwardedProps = {
-    slots,
-    slotProps: {
-      stepIcon: StepIconProps,
-      ...componentsProps,
-      ...slotProps,
-    },
-  };
-
-  const [RootSlot, rootProps] = useSlot('root', {
-    elementType: StepLabelRoot,
-    externalForwardedProps: {
-      ...externalForwardedProps,
-      ...other,
-    },
-    ownerState,
-    ref,
-    className: clsx(classes.root, className),
-  });
-
-  const [LabelSlot, labelProps] = useSlot('label', {
-    elementType: StepLabelLabel,
-    externalForwardedProps,
-    ownerState,
-  });
-
-  const [StepIconSlot, stepIconProps] = useSlot('stepIcon', {
-    elementType: StepIconComponent,
-    externalForwardedProps,
-    ownerState,
-  });
+  const labelColor = error
+    ? '#d32f2f'
+    : (active || completed)
+      ? 'rgba(0, 0, 0, 0.87)'
+      : 'rgba(0, 0, 0, 0.6)';
 
   return (
-    <RootSlot {...rootProps}>
-      {icon || StepIconSlot ? (
-        <StepLabelIconContainer className={classes.iconContainer} ownerState={ownerState}>
-          <StepIconSlot
-            completed={completed}
-            active={active}
-            error={error}
-            icon={icon}
-            {...stepIconProps}
-          />
-        </StepLabelIconContainer>
-      ) : null}
-      <StepLabelLabelContainer className={classes.labelContainer} ownerState={ownerState}>
-        {children ? (
-          <LabelSlot {...labelProps} className={clsx(classes.label, labelProps?.className)}>
+    <span
+      className={clsx(classes.root, className)}
+      ref={ref}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        ...(orientation === 'vertical' && { textAlign: 'left', padding: '8px 0' }),
+        ...(disabled && { cursor: 'default' }),
+        ...style,
+      }}
+      {...other}
+    >
+      {icon && (
+        <span className={classes.iconContainer} style={{ flexShrink: 0, display: 'flex', paddingRight: 8 }}>
+          <StepIcon active={active} completed={completed} error={error} icon={icon} />
+        </span>
+      )}
+      <span className={classes.labelContainer} style={{ width: '100%', color: 'rgba(0, 0, 0, 0.6)' }}>
+        {children && (
+          <span
+            className={classes.label}
+            style={{
+              display: 'block',
+              fontSize: '0.875rem',
+              color: labelColor,
+              ...((active || completed) && { fontWeight: 500 }),
+            }}
+          >
             {children}
-          </LabelSlot>
-        ) : null}
+          </span>
+        )}
         {optional}
-      </StepLabelLabelContainer>
-    </RootSlot>
+      </span>
+    </span>
   );
 });
 
