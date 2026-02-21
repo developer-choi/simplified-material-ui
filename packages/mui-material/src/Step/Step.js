@@ -1,24 +1,10 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import integerPropType from '@mui/utils/integerPropType';
-import composeClasses from '@mui/utils/composeClasses';
 import StepperContext from '../Stepper/StepperContext';
 import StepContext from './StepContext';
 import StepConnector from '../StepConnector';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import { getStepUtilityClass } from './stepClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, orientation, alternativeLabel, completed } = ownerState;
-
-  const slots = {
-    root: ['root', orientation, alternativeLabel && 'alternativeLabel', completed && 'completed'],
-  };
-
-  return composeClasses(slots, getStepUtilityClass, classes);
-};
 
 const Step = React.forwardRef(function Step(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiStep' });
@@ -57,21 +43,9 @@ const Step = React.forwardRef(function Step(inProps, ref) {
     [index, last, expanded, active, completed, disabled],
   );
 
-  const ownerState = {
-    ...props,
-    active,
-    orientation,
-    completed,
-    disabled,
-    expanded,
-    component,
-  };
-
-  const classes = useUtilityClasses(ownerState);
-
   const stepContent = (
     <div
-      className={clsx(classes.root, className)}
+      className={className}
       ref={ref}
       style={{
         ...(orientation === 'horizontal' && { paddingLeft: 8, paddingRight: 8 }),
