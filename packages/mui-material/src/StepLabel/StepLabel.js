@@ -1,46 +1,10 @@
 'use client';
-import composeClasses from '@mui/utils/composeClasses';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import StepContext from '../Step/StepContext';
 import StepIcon from '../StepIcon';
 import StepperContext from '../Stepper/StepperContext';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import { getStepLabelUtilityClass } from './stepLabelClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, orientation, active, completed, error, disabled, alternativeLabel } = ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      orientation,
-      error && 'error',
-      disabled && 'disabled',
-      alternativeLabel && 'alternativeLabel',
-    ],
-    label: [
-      'label',
-      active && 'active',
-      completed && 'completed',
-      error && 'error',
-      disabled && 'disabled',
-      alternativeLabel && 'alternativeLabel',
-    ],
-    iconContainer: [
-      'iconContainer',
-      active && 'active',
-      completed && 'completed',
-      error && 'error',
-      disabled && 'disabled',
-      alternativeLabel && 'alternativeLabel',
-    ],
-    labelContainer: ['labelContainer', alternativeLabel && 'alternativeLabel'],
-  };
-
-  return composeClasses(slots, getStepLabelUtilityClass, classes);
-};
 
 const StepLabel = React.forwardRef(function StepLabel(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiStepLabel' });
@@ -58,18 +22,6 @@ const StepLabel = React.forwardRef(function StepLabel(inProps, ref) {
   const { active, disabled, completed, icon: iconContext } = React.useContext(StepContext);
   const icon = iconProp || iconContext;
 
-  const ownerState = {
-    ...props,
-    active,
-    alternativeLabel,
-    completed,
-    disabled,
-    error,
-    orientation,
-  };
-
-  const classes = useUtilityClasses(ownerState);
-
   const labelColor = error
     ? '#d32f2f'
     : (active || completed)
@@ -78,7 +30,7 @@ const StepLabel = React.forwardRef(function StepLabel(inProps, ref) {
 
   return (
     <span
-      className={clsx(classes.root, className)}
+      className={className}
       ref={ref}
       style={{
         display: 'flex',
@@ -90,14 +42,13 @@ const StepLabel = React.forwardRef(function StepLabel(inProps, ref) {
       {...other}
     >
       {icon && (
-        <span className={classes.iconContainer} style={{ flexShrink: 0, display: 'flex', paddingRight: 8 }}>
+        <span style={{ flexShrink: 0, display: 'flex', paddingRight: 8 }}>
           <StepIcon active={active} completed={completed} error={error} icon={icon} />
         </span>
       )}
-      <span className={classes.labelContainer} style={{ width: '100%', color: 'rgba(0, 0, 0, 0.6)' }}>
+      <span style={{ width: '100%', color: 'rgba(0, 0, 0, 0.6)' }}>
         {children && (
           <span
-            className={classes.label}
             style={{
               display: 'block',
               fontSize: '0.875rem',
