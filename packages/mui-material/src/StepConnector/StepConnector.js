@@ -1,47 +1,22 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
-import capitalize from '../utils/capitalize';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import StepperContext from '../Stepper/StepperContext';
 import StepContext from '../Step/StepContext';
-import { getStepConnectorUtilityClass } from './stepConnectorClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, orientation, alternativeLabel, active, completed, disabled } = ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      orientation,
-      alternativeLabel && 'alternativeLabel',
-      active && 'active',
-      completed && 'completed',
-      disabled && 'disabled',
-    ],
-    line: ['line', `line${capitalize(orientation)}`],
-  };
-
-  return composeClasses(slots, getStepConnectorUtilityClass, classes);
-};
 
 const StepConnector = React.forwardRef(function StepConnector(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiStepConnector' });
   const { className, style, ...other } = props;
 
   const { orientation = 'horizontal' } = React.useContext(StepperContext);
-  const { active, disabled, completed } = React.useContext(StepContext);
-
-  const ownerState = { ...props, orientation, active, completed, disabled };
-  const classes = useUtilityClasses(ownerState);
+  const { active, completed } = React.useContext(StepContext);
 
   const lineColor = (active || completed) ? '#1976d2' : '#bdbdbd';
 
   return (
     <div
-      className={clsx(classes.root, className)}
+      className={className}
       ref={ref}
       style={{
         flex: '1 1 auto',
@@ -51,7 +26,6 @@ const StepConnector = React.forwardRef(function StepConnector(inProps, ref) {
       {...other}
     >
       <span
-        className={classes.line}
         style={{
           display: 'block',
           borderColor: lineColor,
