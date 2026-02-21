@@ -1,47 +1,19 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import integerPropType from '@mui/utils/integerPropType';
-import composeClasses from '@mui/utils/composeClasses';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import { getStepperUtilityClass } from './stepperClasses';
-import StepConnector from '../StepConnector';
 import StepperContext from './StepperContext';
-
-const useUtilityClasses = (ownerState) => {
-  const { orientation, nonLinear, alternativeLabel, classes } = ownerState;
-  const slots = {
-    root: ['root', orientation, nonLinear && 'nonLinear', alternativeLabel && 'alternativeLabel'],
-  };
-
-  return composeClasses(slots, getStepperUtilityClass, classes);
-};
 
 const Stepper = React.forwardRef(function Stepper(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiStepper' });
   const {
     activeStep = 0,
-    alternativeLabel = false,
     children,
     className,
-    component = 'div',
-    connector,
-    nonLinear = false,
     orientation = 'horizontal',
     style,
     ...other
   } = props;
-
-  const ownerState = {
-    ...props,
-    nonLinear,
-    alternativeLabel,
-    orientation,
-    component,
-  };
-
-  const classes = useUtilityClasses(ownerState);
 
   const childrenArray = React.Children.toArray(children).filter(Boolean);
   const steps = childrenArray.map((step, index) => {
@@ -59,7 +31,7 @@ const Stepper = React.forwardRef(function Stepper(inProps, ref) {
   return (
     <StepperContext.Provider value={contextValue}>
       <div
-        className={clsx(classes.root, className)}
+        className={className}
         ref={ref}
         style={{
           display: 'flex',
