@@ -6,7 +6,7 @@ import integerPropType from '@mui/utils/integerPropType';
 import composeClasses from '@mui/utils/composeClasses';
 import StepperContext from '../Stepper/StepperContext';
 import StepContext from './StepContext';
-import { styled } from '../zero-styled';
+import StepConnector from '../StepConnector';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import { getStepUtilityClass } from './stepClasses';
 
@@ -20,38 +20,6 @@ const useUtilityClasses = (ownerState) => {
   return composeClasses(slots, getStepUtilityClass, classes);
 };
 
-const StepRoot = styled('div', {
-  name: 'MuiStep',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.root,
-      styles[ownerState.orientation],
-      ownerState.alternativeLabel && styles.alternativeLabel,
-      ownerState.completed && styles.completed,
-    ];
-  },
-})({
-  variants: [
-    {
-      props: { orientation: 'horizontal' },
-      style: {
-        paddingLeft: 8,
-        paddingRight: 8,
-      },
-    },
-    {
-      props: { alternativeLabel: true },
-      style: {
-        flex: 1,
-        position: 'relative',
-      },
-    },
-  ],
-});
-
 const Step = React.forwardRef(function Step(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiStep' });
   const {
@@ -64,11 +32,11 @@ const Step = React.forwardRef(function Step(inProps, ref) {
     expanded = false,
     index,
     last,
+    style,
     ...other
   } = props;
 
-  const { activeStep, connector, alternativeLabel, orientation, nonLinear } =
-    React.useContext(StepperContext);
+  const { activeStep, orientation, nonLinear } = React.useContext(StepperContext);
 
   let [active = false, completed = false, disabled = false] = [
     activeProp,
@@ -93,7 +61,6 @@ const Step = React.forwardRef(function Step(inProps, ref) {
     ...props,
     active,
     orientation,
-    alternativeLabel,
     completed,
     disabled,
     expanded,
@@ -102,29 +69,28 @@ const Step = React.forwardRef(function Step(inProps, ref) {
 
   const classes = useUtilityClasses(ownerState);
 
-  const newChildren = (
-    <StepRoot
-      as={component}
+  const stepContent = (
+    <div
       className={clsx(classes.root, className)}
       ref={ref}
-      ownerState={ownerState}
+      style={{
+        ...(orientation === 'horizontal' && { paddingLeft: 8, paddingRight: 8 }),
+        ...style,
+      }}
       {...other}
     >
-      {connector && alternativeLabel && index !== 0 ? connector : null}
       {children}
-    </StepRoot>
+    </div>
   );
 
   return (
     <StepContext.Provider value={contextValue}>
-      {connector && !alternativeLabel && index !== 0 ? (
+      {index !== 0 ? (
         <React.Fragment>
-          {connector}
-          {newChildren}
+          <StepConnector />
+          {stepContent}
         </React.Fragment>
-      ) : (
-        newChildren
-      )}
+      ) : stepContent}
     </StepContext.Provider>
   );
 });
