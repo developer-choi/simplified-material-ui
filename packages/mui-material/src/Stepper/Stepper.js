@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import integerPropType from '@mui/utils/integerPropType';
 import composeClasses from '@mui/utils/composeClasses';
-import { styled } from '../zero-styled';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import { getStepperUtilityClass } from './stepperClasses';
 import StepConnector from '../StepConnector';
@@ -19,45 +18,6 @@ const useUtilityClasses = (ownerState) => {
   return composeClasses(slots, getStepperUtilityClass, classes);
 };
 
-const StepperRoot = styled('div', {
-  name: 'MuiStepper',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-    return [
-      styles.root,
-      styles[ownerState.orientation],
-      ownerState.alternativeLabel && styles.alternativeLabel,
-      ownerState.nonLinear && styles.nonLinear,
-    ];
-  },
-})({
-  display: 'flex',
-  variants: [
-    {
-      props: { orientation: 'horizontal' },
-      style: {
-        flexDirection: 'row',
-        alignItems: 'center',
-      },
-    },
-    {
-      props: { orientation: 'vertical' },
-      style: {
-        flexDirection: 'column',
-      },
-    },
-    {
-      props: { alternativeLabel: true },
-      style: {
-        alignItems: 'flex-start',
-      },
-    },
-  ],
-});
-
-const defaultConnector = <StepConnector />;
-
 const Stepper = React.forwardRef(function Stepper(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiStepper' });
   const {
@@ -66,9 +26,10 @@ const Stepper = React.forwardRef(function Stepper(inProps, ref) {
     children,
     className,
     component = 'div',
-    connector = defaultConnector,
+    connector,
     nonLinear = false,
     orientation = 'horizontal',
+    style,
     ...other
   } = props;
 
@@ -91,21 +52,25 @@ const Stepper = React.forwardRef(function Stepper(inProps, ref) {
     });
   });
   const contextValue = React.useMemo(
-    () => ({ activeStep, alternativeLabel, connector, nonLinear, orientation }),
-    [activeStep, alternativeLabel, connector, nonLinear, orientation],
+    () => ({ activeStep, orientation }),
+    [activeStep, orientation],
   );
 
   return (
     <StepperContext.Provider value={contextValue}>
-      <StepperRoot
-        as={component}
-        ownerState={ownerState}
+      <div
         className={clsx(classes.root, className)}
         ref={ref}
+        style={{
+          display: 'flex',
+          flexDirection: orientation === 'vertical' ? 'column' : 'row',
+          alignItems: 'center',
+          ...style,
+        }}
         {...other}
       >
         {steps}
-      </StepperRoot>
+      </div>
     </StepperContext.Provider>
   );
 });
