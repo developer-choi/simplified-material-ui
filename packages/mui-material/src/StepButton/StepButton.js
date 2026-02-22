@@ -1,23 +1,10 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import StepLabel from '../StepLabel';
 import StepperContext from '../Stepper/StepperContext';
 import StepContext from '../Step/StepContext';
-import { getStepButtonUtilityClass } from './stepButtonClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, orientation } = ownerState;
-
-  const slots = {
-    root: ['root', orientation],
-  };
-
-  return composeClasses(slots, getStepButtonUtilityClass, classes);
-};
 
 const StepButton = React.forwardRef(function StepButton(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiStepButton' });
@@ -26,13 +13,9 @@ const StepButton = React.forwardRef(function StepButton(inProps, ref) {
   const { disabled, active } = React.useContext(StepContext);
   const { orientation } = React.useContext(StepperContext);
 
-  const ownerState = { ...props, orientation };
-
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <button
-      className={clsx(classes.root, className)}
+      className={className}
       ref={ref}
       disabled={disabled}
       aria-current={active ? 'step' : undefined}
