@@ -1,32 +1,23 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import { useDefaultProps } from '../DefaultPropsProvider';
 
 const tabSelectedColor = { primary: '#1976d2', secondary: '#9c27b0' };
 
-const Tab = React.forwardRef(function Tab(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiTab' });
+const Tab = React.forwardRef(function Tab(props, ref) {
   const {
     className,
     disabled = false,
-    disableFocusRipple = false,
-    // eslint-disable-next-line react/prop-types
     fullWidth,
     icon: iconProp,
     iconPosition = 'top',
-    // eslint-disable-next-line react/prop-types
     indicator,
     label,
     onChange,
     onClick,
     onFocus,
-    // eslint-disable-next-line react/prop-types
     selected,
-    // eslint-disable-next-line react/prop-types
     selectionFollowsFocus,
     style,
-    // eslint-disable-next-line react/prop-types
     textColor = 'inherit',
     value,
     wrapped = false,
@@ -115,31 +106,5 @@ const Tab = React.forwardRef(function Tab(inProps, ref) {
     </button>
   );
 });
-
-Tab.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  children: PropTypes.node,
-  classes: PropTypes.object,
-  className: PropTypes.string,
-  disabled: PropTypes.bool,
-  disableFocusRipple: PropTypes.bool,
-  disableRipple: PropTypes.bool,
-  icon: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
-  iconPosition: PropTypes.oneOf(['bottom', 'end', 'start', 'top']),
-  label: PropTypes.node,
-  onChange: PropTypes.func,
-  onClick: PropTypes.func,
-  onFocus: PropTypes.func,
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-  value: PropTypes.any,
-  wrapped: PropTypes.bool,
-};
 
 export default Tab;
