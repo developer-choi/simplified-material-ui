@@ -1,21 +1,7 @@
 'use client';
-import composeClasses from '@mui/utils/composeClasses';
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import capitalize from '../utils/capitalize';
-import tableSortLabelClasses, { getTableSortLabelUtilityClass } from './tableSortLabelClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, direction, active } = ownerState;
-
-  const slots = {
-    root: ['root', active && 'active', `direction${capitalize(direction)}`],
-    icon: ['icon', `iconDirection${capitalize(direction)}`],
-  };
-
-  return composeClasses(slots, getTableSortLabelUtilityClass, classes);
-};
 
 const ArrowDownwardIcon = () => (
   <svg
@@ -36,27 +22,17 @@ const TableSortLabel = React.forwardRef(function TableSortLabel(inProps, ref) {
     active = false,
     children,
     className,
-    classes: classesProp,
     direction = 'asc',
     hideSortIcon = false,
     ...other
   } = props;
-
-  const ownerState = {
-    ...props,
-    active,
-    direction,
-    hideSortIcon,
-  };
-
-  const classes = useUtilityClasses(ownerState);
 
   const showIcon = active || !hideSortIcon;
 
   return (
     <span
       ref={ref}
-      className={[classes.root, className].filter(Boolean).join(' ')}
+      className={className}
       style={{
         cursor: 'pointer',
         display: 'inline-flex',
@@ -70,7 +46,6 @@ const TableSortLabel = React.forwardRef(function TableSortLabel(inProps, ref) {
       {children}
       {showIcon && (
         <span
-          className={classes.icon}
           style={{
             fontSize: 18,
             marginRight: 4,
@@ -103,10 +78,6 @@ TableSortLabel.propTypes /* remove-proptypes */ = {
    * Label contents, the arrow will be appended automatically.
    */
   children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
   /**
    * @ignore
    */
