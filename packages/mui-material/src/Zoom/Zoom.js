@@ -3,10 +3,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Transition } from 'react-transition-group';
 import elementAcceptingRef from '@mui/utils/elementAcceptingRef';
-import getReactElementRef from '@mui/utils/getReactElementRef';
-import { useTheme } from '../zero-styled';
-import { reflow, getTransitionProps } from '../transitions/utils';
-import useForkRef from '../utils/useForkRef';
 
 const styles = {
   entering: {
@@ -23,10 +19,9 @@ const styles = {
  * It uses [react-transition-group](https://github.com/reactjs/react-transition-group) internally.
  */
 const Zoom = React.forwardRef(function Zoom(props, ref) {
-  const theme = useTheme();
   const defaultTimeout = {
-    enter: theme.transitions.duration.enteringScreen,
-    exit: theme.transitions.duration.leavingScreen,
+    enter: 225,
+    exit: 195,
   };
 
   const {
@@ -49,66 +44,77 @@ const Zoom = React.forwardRef(function Zoom(props, ref) {
   } = props;
 
   const nodeRef = React.useRef(null);
-  const handleRef = useForkRef(nodeRef, getReactElementRef(children), ref);
 
-  const normalizedTransitionCallback = (callback) => (maybeIsAppearing) => {
-    if (callback) {
-      const node = nodeRef.current;
+  const handleEnter = (maybeIsAppearing) => {
+    const node = nodeRef.current;
 
-      // onEnterXxx and onExitXxx callbacks have a different arguments.length value.
-      if (maybeIsAppearing === undefined) {
-        callback(node);
-      } else {
-        callback(node, maybeIsAppearing);
-      }
+    node.scrollTop; // So the animation always start from the start.
+
+    const duration =
+      style?.transitionDuration ??
+      (typeof timeout === 'number' ? timeout : timeout.enter ?? 0);
+    const easingVal =
+      style?.transitionTimingFunction ??
+      (typeof easing === 'object' ? easing.enter : easing) ??
+      'cubic-bezier(0.4, 0, 0.2, 1)';
+    const delay = style?.transitionDelay;
+
+    const transition = `transform ${typeof duration === 'string' ? duration : `${duration}ms`} ${easingVal} ${delay ?? '0ms'}`;
+    node.style.webkitTransition = transition;
+    node.style.transition = transition;
+
+    if (onEnter) {
+      onEnter(node, maybeIsAppearing);
     }
   };
 
-  const handleEntering = normalizedTransitionCallback(onEntering);
-
-  const handleEnter = normalizedTransitionCallback((node, isAppearing) => {
-    reflow(node); // So the animation always start from the start.
-
-    const transitionProps = getTransitionProps(
-      { style, timeout, easing },
-      {
-        mode: 'enter',
-      },
-    );
-
-    node.style.webkitTransition = theme.transitions.create('transform', transitionProps);
-    node.style.transition = theme.transitions.create('transform', transitionProps);
-
-    if (onEnter) {
-      onEnter(node, isAppearing);
+  const handleEntering = (maybeIsAppearing) => {
+    if (onEntering) {
+      onEntering(nodeRef.current, maybeIsAppearing);
     }
-  });
+  };
 
-  const handleEntered = normalizedTransitionCallback(onEntered);
+  const handleEntered = (maybeIsAppearing) => {
+    if (onEntered) {
+      onEntered(nodeRef.current, maybeIsAppearing);
+    }
+  };
 
-  const handleExiting = normalizedTransitionCallback(onExiting);
+  const handleExiting = () => {
+    if (onExiting) {
+      onExiting(nodeRef.current);
+    }
+  };
 
-  const handleExit = normalizedTransitionCallback((node) => {
-    const transitionProps = getTransitionProps(
-      { style, timeout, easing },
-      {
-        mode: 'exit',
-      },
-    );
+  const handleExit = () => {
+    const node = nodeRef.current;
 
-    node.style.webkitTransition = theme.transitions.create('transform', transitionProps);
-    node.style.transition = theme.transitions.create('transform', transitionProps);
+    const duration =
+      style?.transitionDuration ??
+      (typeof timeout === 'number' ? timeout : timeout.exit ?? 0);
+    const easingVal =
+      style?.transitionTimingFunction ??
+      (typeof easing === 'object' ? easing.exit : easing) ??
+      'cubic-bezier(0.4, 0, 0.2, 1)';
+    const delay = style?.transitionDelay;
+
+    const transition = `transform ${typeof duration === 'string' ? duration : `${duration}ms`} ${easingVal} ${delay ?? '0ms'}`;
+    node.style.webkitTransition = transition;
+    node.style.transition = transition;
 
     if (onExit) {
       onExit(node);
     }
-  });
+  };
 
-  const handleExited = normalizedTransitionCallback(onExited);
+  const handleExited = () => {
+    if (onExited) {
+      onExited(nodeRef.current);
+    }
+  };
 
   const handleAddEndListener = (next) => {
     if (addEndListener) {
-      // Old call signature before `react-transition-group` implemented `nodeRef`
       addEndListener(nodeRef.current, next);
     }
   };
@@ -138,7 +144,7 @@ const Zoom = React.forwardRef(function Zoom(props, ref) {
             ...style,
             ...children.props.style,
           },
-          ref: handleRef,
+          ref: nodeRef,
           ...restChildProps,
         });
       }}
