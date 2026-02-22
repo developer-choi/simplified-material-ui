@@ -1,20 +1,7 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import { getSvgIconUtilityClass } from './svgIconClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { color, fontSize, classes } = ownerState;
-
-  const slots = {
-    root: ['root'],
-  };
-
-  return composeClasses(slots, getSvgIconUtilityClass, classes);
-};
 
 const fontSizeMap = {
   inherit: 'inherit',
@@ -47,11 +34,9 @@ const SvgIcon = React.forwardRef(function SvgIcon(inProps, ref) {
     hasSvgAsChild,
   };
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <svg
-      className={clsx(classes.root, className)}
+      className={className}
       focusable="false"
       color={htmlColor}
       aria-hidden={titleAccess ? undefined : true}
