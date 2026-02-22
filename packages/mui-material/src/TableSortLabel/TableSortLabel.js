@@ -1,16 +1,10 @@
 'use client';
 import composeClasses from '@mui/utils/composeClasses';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import * as React from 'react';
-import ButtonBase from '../../../form/ButtonBase';
-import ArrowDownwardIcon from '../internal/svg-icons/ArrowDownward';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import capitalize from '../utils/capitalize';
 import tableSortLabelClasses, { getTableSortLabelUtilityClass } from './tableSortLabelClasses';
-import useSlot from '../utils/useSlot';
 
 const useUtilityClasses = (ownerState) => {
   const { classes, direction, active } = ownerState;
@@ -23,77 +17,14 @@ const useUtilityClasses = (ownerState) => {
   return composeClasses(slots, getTableSortLabelUtilityClass, classes);
 };
 
-const TableSortLabelRoot = styled(ButtonBase, {
-  name: 'MuiTableSortLabel',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [styles.root, ownerState.active && styles.active];
-  },
-})(
-  memoTheme(({ theme }) => ({
-    cursor: 'pointer',
-    display: 'inline-flex',
-    justifyContent: 'flex-start',
-    flexDirection: 'inherit',
-    alignItems: 'center',
-    '&:focus': {
-      color: (theme.vars || theme).palette.text.secondary,
-    },
-    '&:hover': {
-      color: (theme.vars || theme).palette.text.secondary,
-      [`& .${tableSortLabelClasses.icon}`]: {
-        opacity: 0.5,
-      },
-    },
-    [`&.${tableSortLabelClasses.active}`]: {
-      color: (theme.vars || theme).palette.text.primary,
-      [`& .${tableSortLabelClasses.icon}`]: {
-        opacity: 1,
-        color: (theme.vars || theme).palette.text.secondary,
-      },
-    },
-  })),
-);
-
-const TableSortLabelIcon = styled('span', {
-  name: 'MuiTableSortLabel',
-  slot: 'Icon',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [styles.icon, styles[`iconDirection${capitalize(ownerState.direction)}`]];
-  },
-})(
-  memoTheme(({ theme }) => ({
-    fontSize: 18,
-    marginRight: 4,
-    marginLeft: 4,
-    opacity: 0,
-    transition: theme.transitions.create(['opacity', 'transform'], {
-      duration: theme.transitions.duration.shorter,
-    }),
-    userSelect: 'none',
-    variants: [
-      {
-        props: {
-          direction: 'desc',
-        },
-        style: {
-          transform: 'rotate(0deg)',
-        },
-      },
-      {
-        props: {
-          direction: 'asc',
-        },
-        style: {
-          transform: 'rotate(180deg)',
-        },
-      },
-    ],
-  })),
+const ArrowDownwardIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+    style={{ display: 'block', width: '1em', height: '1em', fill: 'currentColor' }}
+  >
+    <path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z" />
+  </svg>
 );
 
 /**
@@ -105,11 +36,9 @@ const TableSortLabel = React.forwardRef(function TableSortLabel(inProps, ref) {
     active = false,
     children,
     className,
+    classes: classesProp,
     direction = 'asc',
     hideSortIcon = false,
-    IconComponent = ArrowDownwardIcon,
-    slots = {},
-    slotProps = {},
     ...other
   } = props;
 
@@ -118,36 +47,45 @@ const TableSortLabel = React.forwardRef(function TableSortLabel(inProps, ref) {
     active,
     direction,
     hideSortIcon,
-    IconComponent,
   };
 
   const classes = useUtilityClasses(ownerState);
 
-  const externalForwardedProps = {
-    slots,
-    slotProps,
-  };
-
-  const [RootSlot, rootProps] = useSlot('root', {
-    elementType: TableSortLabelRoot,
-    externalForwardedProps,
-    ownerState,
-    className: clsx(classes.root, className),
-    ref,
-  });
-
-  const [IconSlot, iconProps] = useSlot('icon', {
-    elementType: TableSortLabelIcon,
-    externalForwardedProps,
-    ownerState,
-    className: classes.icon,
-  });
+  const showIcon = active || !hideSortIcon;
 
   return (
-    <RootSlot disableRipple component="span" {...rootProps} {...other}>
+    <span
+      ref={ref}
+      className={[classes.root, className].filter(Boolean).join(' ')}
+      style={{
+        cursor: 'pointer',
+        display: 'inline-flex',
+        justifyContent: 'flex-start',
+        flexDirection: 'inherit',
+        alignItems: 'center',
+        ...(active && { color: 'rgba(0,0,0,0.87)' }),
+      }}
+      {...other}
+    >
       {children}
-      {hideSortIcon && !active ? null : <IconSlot as={IconComponent} {...iconProps} />}
-    </RootSlot>
+      {showIcon && (
+        <span
+          className={classes.icon}
+          style={{
+            fontSize: 18,
+            marginRight: 4,
+            marginLeft: 4,
+            opacity: active ? 1 : 0,
+            color: active ? 'rgba(0,0,0,0.6)' : 'inherit',
+            transition: 'opacity 200ms cubic-bezier(0.4, 0, 0.2, 1), transform 200ms cubic-bezier(0.4, 0, 0.2, 1)',
+            userSelect: 'none',
+            transform: direction === 'asc' ? 'rotate(180deg)' : 'rotate(0deg)',
+          }}
+        >
+          <ArrowDownwardIcon />
+        </span>
+      )}
+    </span>
   );
 });
 
@@ -183,35 +121,6 @@ TableSortLabel.propTypes /* remove-proptypes */ = {
    * @default false
    */
   hideSortIcon: PropTypes.bool,
-  /**
-   * Sort icon to use.
-   * @default ArrowDownwardIcon
-   */
-  IconComponent: PropTypes.elementType,
-  /**
-   * The props used for each slot inside.
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    icon: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * The components used for each slot inside.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    icon: PropTypes.elementType,
-    root: PropTypes.elementType,
-  }),
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
 };
 
 export default TableSortLabel;
