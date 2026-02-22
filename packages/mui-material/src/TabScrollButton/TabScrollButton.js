@@ -1,7 +1,5 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import { useDefaultProps } from '../DefaultPropsProvider';
 
 const KeyboardArrowLeft = () => (
   <svg
@@ -23,13 +21,13 @@ const KeyboardArrowRight = () => (
   </svg>
 );
 
-const TabScrollButton = React.forwardRef(function TabScrollButton(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiTabScrollButton' });
+const TabScrollButton = React.forwardRef(function TabScrollButton(props, ref) {
   const {
     className,
     direction,
-    disabled,
+    disabled = false,
     orientation,
+    style,
     ...other
   } = props;
 
@@ -48,7 +46,7 @@ const TabScrollButton = React.forwardRef(function TabScrollButton(inProps, ref) 
         height: isVertical ? 40 : undefined,
         opacity: disabled ? 0 : 0.8,
         cursor: disabled ? 'default' : 'pointer',
-        ...other.style,
+        ...style,
       }}
       {...other}
     >
@@ -58,14 +56,5 @@ const TabScrollButton = React.forwardRef(function TabScrollButton(inProps, ref) 
     </div>
   );
 });
-
-TabScrollButton.propTypes /* remove-proptypes */ = {
-  children: PropTypes.node,
-  className: PropTypes.string,
-  direction: PropTypes.oneOf(['left', 'right']).isRequired,
-  disabled: PropTypes.bool,
-  orientation: PropTypes.oneOf(['horizontal', 'vertical']).isRequired,
-  style: PropTypes.object,
-};
 
 export default TabScrollButton;
