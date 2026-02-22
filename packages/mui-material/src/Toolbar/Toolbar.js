@@ -1,20 +1,7 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import { getToolbarUtilityClass } from './toolbarClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, disableGutters, variant } = ownerState;
-
-  const slots = {
-    root: ['root', !disableGutters && 'gutters', variant],
-  };
-
-  return composeClasses(slots, getToolbarUtilityClass, classes);
-};
 
 const Toolbar = React.forwardRef(function Toolbar(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiToolbar' });
@@ -26,17 +13,9 @@ const Toolbar = React.forwardRef(function Toolbar(inProps, ref) {
     ...other
   } = props;
 
-  const ownerState = {
-    ...props,
-    disableGutters,
-    variant,
-  };
-
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <div
-      className={clsx(classes.root, className)}
+      className={className}
       ref={ref}
       style={{
         position: 'relative',
