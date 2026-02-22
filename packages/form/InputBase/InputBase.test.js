@@ -6,7 +6,7 @@ import { act, createRenderer, fireEvent, screen, reactMajor } from '@mui/interna
 import { ThemeProvider } from '@emotion/react';
 import FormControl, { useFormControl } from '../FormControl';
 import InputAdornment from '../InputAdornment';
-import TextField from '@mui/material/TextField';
+import TextField from '../TextField';
 import Select from '../Select';
 import InputBase, { inputBaseClasses as classes } from './index';
 import { createTheme } from '@mui/material/styles';

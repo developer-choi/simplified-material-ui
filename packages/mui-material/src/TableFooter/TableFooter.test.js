@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createRenderer, screen } from '@mui/internal-test-utils';
 import TableFooter, { tableFooterClasses as classes } from '@mui/material/TableFooter';
-import Tablelvl2Context from '../Table/Tablelvl2Context';
+import Tablelvl2Context from '../../../data-display/Table/Tablelvl2Context';
 import describeConformance from '../../test/describeConformance';
 
 describe('<TableFooter />', () => {

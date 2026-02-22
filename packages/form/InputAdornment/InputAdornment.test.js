@@ -6,7 +6,7 @@ import {
 } from '@mui/internal-test-utils';
 import { typographyClasses } from '../../data-display/Typography';
 import InputAdornment, { inputAdornmentClasses as classes } from './index';
-import TextField from '@mui/material/TextField';
+import TextField from '../TextField';
 import FormControl from '../FormControl';
 import Input from '../Input';
 import describeConformance from '../../mui-material/test/describeConformance';

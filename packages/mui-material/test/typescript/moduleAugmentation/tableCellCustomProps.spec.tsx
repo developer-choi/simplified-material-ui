@@ -1,9 +1,9 @@
 import * as React from 'react';
-import Table from '@mui/material/Table';
+import Table from '../../../../data-display/Table';
 import TableCell from '@mui/material/TableCell';
 import { createTheme } from '@mui/material/styles';
 
-declare module '@mui/material/Table' {
+declare module '../../../../data-display/Table' {
   interface TablePropsSizeOverrides {
     large: true;
   }

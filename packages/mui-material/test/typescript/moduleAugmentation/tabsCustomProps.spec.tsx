@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
+import Tabs from '../../../../navigation/Tabs';
 import { createTheme } from '@mui/material/styles';
 
-declare module '@mui/material/Tabs' {
+declare module '../../../../navigation/Tabs' {
   interface TabsPropsIndicatorColorOverrides {
     success: true;
   }

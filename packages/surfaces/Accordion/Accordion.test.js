@@ -9,7 +9,7 @@ import Collapse from '../../utils/Collapse';
 import Fade from '../../utils/Fade';
 import Slide from '../../utils/Slide';
 import Grow from '../../utils/Grow';
-import Zoom from '@mui/material/Zoom';
+import Zoom from '../../utils/Zoom';
 import AccordionSummary from '../AccordionSummary';
 import describeSkipIf from '@mui/internal-test-utils/describeSkipIf';
 import describeConformance from '../../mui-material/test/describeConformance';

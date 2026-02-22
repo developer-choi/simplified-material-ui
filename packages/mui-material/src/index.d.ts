@@ -301,8 +301,8 @@ export * from '../../navigation/SpeedDialAction';
 export { default as SpeedDialIcon } from '../../navigation/SpeedDialIcon';
 export * from '../../navigation/SpeedDialIcon';
 
-export { default as Stack } from './Stack';
-export * from './Stack';
+export { default as Stack } from '../../layout/Stack';
+export * from '../../layout/Stack';
 
 export { default as Step } from '../../navigation/Step';
 export * from '../../navigation/Step';
@@ -337,8 +337,8 @@ export * from './Switch';
 export { default as Tab } from './Tab';
 export * from './Tab';
 
-export { default as Table } from './Table';
-export * from './Table';
+export { default as Table } from '../../data-display/Table';
+export * from '../../data-display/Table';
 
 export { default as TableBody } from './TableBody';
 export * from './TableBody';
@@ -355,26 +355,26 @@ export * from './TableFooter';
 export { default as TableHead } from './TableHead';
 export * from './TableHead';
 
-export { default as TablePagination } from './TablePagination';
-export * from './TablePagination';
+export { default as TablePagination } from '../../data-display/TablePagination';
+export * from '../../data-display/TablePagination';
 
-export { default as TablePaginationActions } from './TablePaginationActions';
-export * from './TablePaginationActions';
+export { default as TablePaginationActions } from '../../data-display/TablePaginationActions';
+export * from '../../data-display/TablePaginationActions';
 
 export { default as TableRow } from './TableRow';
 export * from './TableRow';
 
-export { default as TableSortLabel } from './TableSortLabel';
-export * from './TableSortLabel';
+export { default as TableSortLabel } from '../../data-display/TableSortLabel';
+export * from '../../data-display/TableSortLabel';
 
-export { default as Tabs } from './Tabs';
-export * from './Tabs';
+export { default as Tabs } from '../../navigation/Tabs';
+export * from '../../navigation/Tabs';
 
-export { default as TabScrollButton } from './TabScrollButton';
-export * from './TabScrollButton';
+export { default as TabScrollButton } from '../../navigation/TabScrollButton';
+export * from '../../navigation/TabScrollButton';
 
-export { default as TextField } from './TextField';
-export * from './TextField';
+export { default as TextField } from '../../form/TextField';
+export * from '../../form/TextField';
 
 export { default as TextareaAutosize } from './TextareaAutosize';
 export * from './TextareaAutosize';
@@ -400,8 +400,8 @@ export * from './useMediaQuery';
 export { default as useScrollTrigger } from './useScrollTrigger';
 export * from './useScrollTrigger';
 
-export { default as Zoom } from './Zoom';
-export * from './Zoom';
+export { default as Zoom } from '../../utils/Zoom';
+export * from '../../utils/Zoom';
 
 export { default as useAutocomplete } from './useAutocomplete';
 export * from './useAutocomplete';

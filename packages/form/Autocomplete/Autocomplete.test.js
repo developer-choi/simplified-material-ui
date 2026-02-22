@@ -11,7 +11,7 @@ import {
 import { spy } from 'sinon';
 import Box from '@mui/system/Box';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import TextField from '@mui/material/TextField';
+import TextField from '../TextField';
 import Chip, { chipClasses } from '../../data-display/Chip';
 import Autocomplete, {
   autocompleteClasses as classes,

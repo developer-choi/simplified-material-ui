@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createRenderer, screen } from '@mui/internal-test-utils';
 import TableHead, { tableHeadClasses as classes } from '@mui/material/TableHead';
-import Tablelvl2Context from '../Table/Tablelvl2Context';
+import Tablelvl2Context from '../../../data-display/Table/Tablelvl2Context';
 import describeConformance from '../../test/describeConformance';
 
 describe('<TableHead />', () => {

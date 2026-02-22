@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import Zoom from '@mui/material/Zoom';
+import Zoom from '../../utils/Zoom';
 import Fab from '../../form/Fab';
 
 const SpeedDial = React.forwardRef(function SpeedDial(props, ref) {

@@ -5,7 +5,7 @@ import Fade from '../../utils/Fade';
 import Collapse from '../../utils/Collapse';
 import Grow from '../../utils/Grow';
 import Slide from '../../utils/Slide';
-import Zoom from '@mui/material/Zoom';
+import Zoom from '../../utils/Zoom';
 
 <StepContent TransitionComponent={Fade}>Step Content</StepContent>;
 <StepContent TransitionComponent={Collapse}>Step Content</StepContent>;

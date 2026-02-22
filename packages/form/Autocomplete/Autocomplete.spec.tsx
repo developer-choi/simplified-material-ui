@@ -5,7 +5,7 @@ import Autocomplete, {
   AutocompleteProps,
   AutocompleteRenderGetTagProps,
 } from './index';
-import TextField from '@mui/material/TextField';
+import TextField from '../TextField';
 import { ChipTypeMap } from '../../data-display/Chip';
 
 interface MyAutocompleteProps<

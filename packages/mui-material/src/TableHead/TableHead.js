@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import Tablelvl2Context from '../Table/Tablelvl2Context';
+import Tablelvl2Context from '../../../data-display/Table/Tablelvl2Context';
 
 const tablelvl2 = { variant: 'head' };
 

@@ -3,7 +3,7 @@ import { createRenderer, screen } from '@mui/internal-test-utils';
 import TableCell, { tableCellClasses as classes } from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Table from '@mui/material/Table';
+import Table from '../../../data-display/Table';
 import describeConformance from '../../test/describeConformance';
 
 describe('<TableCell />', () => {

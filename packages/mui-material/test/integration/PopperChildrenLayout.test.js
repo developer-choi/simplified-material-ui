@@ -7,7 +7,7 @@ import Collapse from '../../../utils/Collapse';
 import Fade from '../../../utils/Fade';
 import Grow from '../../../utils/Grow';
 import Slide from '../../../utils/Slide';
-import Zoom from '@mui/material/Zoom';
+import Zoom from '../../../utils/Zoom';
 import Popper from '../../../layout/Popper';
 
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);

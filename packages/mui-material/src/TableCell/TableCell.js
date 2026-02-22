@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
-import TableContext from '../Table/TableContext';
-import Tablelvl2Context from '../Table/Tablelvl2Context';
+import TableContext from '../../../data-display/Table/TableContext';
+import Tablelvl2Context from '../../../data-display/Table/Tablelvl2Context';
 
 /**
  * The component renders a `<th>` element when the parent context is a header

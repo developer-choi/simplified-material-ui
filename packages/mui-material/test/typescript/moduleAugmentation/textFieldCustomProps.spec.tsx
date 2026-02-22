@@ -1,9 +1,9 @@
 import * as React from 'react';
-import TextField from '@mui/material/TextField';
+import TextField from '../../../../form/TextField';
 import { createTheme } from '@mui/material/styles';
 
 // Update the TextField's extendable props options
-declare module '@mui/material/TextField' {
+declare module '../../../../form/TextField' {
   interface TextFieldPropsColorOverrides {
     customPalette: true;
   }
@@ -62,7 +62,7 @@ const theme = createTheme({
   Custom Size TextField
 </TextField>;
 
-declare module '@mui/material/TextField' {
+declare module '../../../../form/TextField' {
   interface TextFieldFormHelperTextSlotPropsOverrides {
     'data-cy'?: string;
   }
