@@ -1,11 +1,8 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import ToggleButtonGroupContext from './ToggleButtonGroupContext';
 
-const ToggleButtonGroup = React.forwardRef(function ToggleButtonGroup(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiToggleButtonGroup' });
+const ToggleButtonGroup = React.forwardRef(function ToggleButtonGroup(props, ref) {
   const {
     children,
     className,
@@ -94,34 +91,5 @@ const ToggleButtonGroup = React.forwardRef(function ToggleButtonGroup(inProps, r
     </div>
   );
 });
-
-ToggleButtonGroup.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  children: PropTypes.node,
-  classes: PropTypes.object,
-  className: PropTypes.string,
-  color: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['standard', 'primary', 'secondary', 'error', 'info', 'success', 'warning']),
-    PropTypes.string,
-  ]),
-  disabled: PropTypes.bool,
-  exclusive: PropTypes.bool,
-  fullWidth: PropTypes.bool,
-  onChange: PropTypes.func,
-  orientation: PropTypes.oneOf(['horizontal', 'vertical']),
-  size: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['small', 'medium', 'large']),
-    PropTypes.string,
-  ]),
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-  value: PropTypes.any,
-};
 
 export default ToggleButtonGroup;
