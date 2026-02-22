@@ -3,12 +3,8 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
-import ButtonBase from '../../../form/ButtonBase';
 import capitalize from '../utils/capitalize';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import unsupportedProp from '../utils/unsupportedProp';
 import tabClasses, { getTabUtilityClass } from './tabClasses';
 
 const useUtilityClasses = (ownerState) => {
@@ -30,162 +26,7 @@ const useUtilityClasses = (ownerState) => {
   return composeClasses(slots, getTabUtilityClass, classes);
 };
 
-const TabRoot = styled(ButtonBase, {
-  name: 'MuiTab',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.root,
-      ownerState.label && ownerState.icon && styles.labelIcon,
-      styles[`textColor${capitalize(ownerState.textColor)}`],
-      ownerState.fullWidth && styles.fullWidth,
-      ownerState.wrapped && styles.wrapped,
-      {
-        [`& .${tabClasses.iconWrapper}`]: styles.iconWrapper,
-      },
-      {
-        [`& .${tabClasses.icon}`]: styles.icon,
-      },
-    ];
-  },
-})(
-  memoTheme(({ theme }) => ({
-    ...theme.typography.button,
-    maxWidth: 360,
-    minWidth: 90,
-    position: 'relative',
-    minHeight: 48,
-    flexShrink: 0,
-    padding: '12px 16px',
-    overflow: 'hidden',
-    whiteSpace: 'normal',
-    textAlign: 'center',
-    lineHeight: 1.25,
-    variants: [
-      {
-        props: ({ ownerState }) =>
-          ownerState.label &&
-          (ownerState.iconPosition === 'top' || ownerState.iconPosition === 'bottom'),
-        style: {
-          flexDirection: 'column',
-        },
-      },
-      {
-        props: ({ ownerState }) =>
-          ownerState.label &&
-          ownerState.iconPosition !== 'top' &&
-          ownerState.iconPosition !== 'bottom',
-        style: {
-          flexDirection: 'row',
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.icon && ownerState.label,
-        style: {
-          minHeight: 72,
-          paddingTop: 9,
-          paddingBottom: 9,
-        },
-      },
-      {
-        props: ({ ownerState, iconPosition }) =>
-          ownerState.icon && ownerState.label && iconPosition === 'top',
-        style: {
-          [`& > .${tabClasses.icon}`]: {
-            marginBottom: 6,
-          },
-        },
-      },
-      {
-        props: ({ ownerState, iconPosition }) =>
-          ownerState.icon && ownerState.label && iconPosition === 'bottom',
-        style: {
-          [`& > .${tabClasses.icon}`]: {
-            marginTop: 6,
-          },
-        },
-      },
-      {
-        props: ({ ownerState, iconPosition }) =>
-          ownerState.icon && ownerState.label && iconPosition === 'start',
-        style: {
-          [`& > .${tabClasses.icon}`]: {
-            marginRight: theme.spacing(1),
-          },
-        },
-      },
-      {
-        props: ({ ownerState, iconPosition }) =>
-          ownerState.icon && ownerState.label && iconPosition === 'end',
-        style: {
-          [`& > .${tabClasses.icon}`]: {
-            marginLeft: theme.spacing(1),
-          },
-        },
-      },
-      {
-        props: {
-          textColor: 'inherit',
-        },
-        style: {
-          color: 'inherit',
-          opacity: 0.6, // same opacity as theme.palette.text.secondary
-          [`&.${tabClasses.selected}`]: {
-            opacity: 1,
-          },
-          [`&.${tabClasses.disabled}`]: {
-            opacity: (theme.vars || theme).palette.action.disabledOpacity,
-          },
-        },
-      },
-      {
-        props: {
-          textColor: 'primary',
-        },
-        style: {
-          color: (theme.vars || theme).palette.text.secondary,
-          [`&.${tabClasses.selected}`]: {
-            color: (theme.vars || theme).palette.primary.main,
-          },
-          [`&.${tabClasses.disabled}`]: {
-            color: (theme.vars || theme).palette.text.disabled,
-          },
-        },
-      },
-      {
-        props: {
-          textColor: 'secondary',
-        },
-        style: {
-          color: (theme.vars || theme).palette.text.secondary,
-          [`&.${tabClasses.selected}`]: {
-            color: (theme.vars || theme).palette.secondary.main,
-          },
-          [`&.${tabClasses.disabled}`]: {
-            color: (theme.vars || theme).palette.text.disabled,
-          },
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.fullWidth,
-        style: {
-          flexShrink: 1,
-          flexGrow: 1,
-          flexBasis: 0,
-          maxWidth: 'none',
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.wrapped,
-        style: {
-          fontSize: theme.typography.pxToRem(12),
-        },
-      },
-    ],
-  })),
-);
+const tabSelectedColor = { primary: '#1976d2', secondary: '#9c27b0' };
 
 const Tab = React.forwardRef(function Tab(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiTab' });
@@ -207,6 +48,7 @@ const Tab = React.forwardRef(function Tab(inProps, ref) {
     selected,
     // eslint-disable-next-line react/prop-types
     selectionFollowsFocus,
+    style,
     // eslint-disable-next-line react/prop-types
     textColor = 'inherit',
     value,
@@ -228,35 +70,35 @@ const Tab = React.forwardRef(function Tab(inProps, ref) {
   };
 
   const classes = useUtilityClasses(ownerState);
-  const icon =
-    iconProp && label && React.isValidElement(iconProp)
-      ? React.cloneElement(iconProp, {
-          className: clsx(classes.icon, iconProp.props.className),
-        })
-      : iconProp;
-  const handleClick = (event) => {
-    if (!selected && onChange) {
-      onChange(event, value);
-    }
 
-    if (onClick) {
-      onClick(event);
-    }
+  const handleClick = (event) => {
+    if (!selected && onChange) onChange(event, value);
+    if (onClick) onClick(event);
   };
 
   const handleFocus = (event) => {
-    if (selectionFollowsFocus && !selected && onChange) {
-      onChange(event, value);
-    }
-
-    if (onFocus) {
-      onFocus(event);
-    }
+    if (selectionFollowsFocus && !selected && onChange) onChange(event, value);
+    if (onFocus) onFocus(event);
   };
 
+  const hasIconAndLabel = !!iconProp && !!label;
+  const iconEl = hasIconAndLabel
+    ? <span style={{
+        ...(iconPosition === 'top'    && { marginBottom: 6 }),
+        ...(iconPosition === 'bottom' && { marginTop: 6 }),
+        ...(iconPosition === 'start'  && { marginRight: 8 }),
+        ...(iconPosition === 'end'    && { marginLeft: 8 }),
+      }}>{iconProp}</span>
+    : iconProp;
+
+  const textColorStyle = textColor === 'inherit'
+    ? { color: 'inherit', opacity: disabled ? 0.38 : selected ? 1 : 0.6 }
+    : { color: disabled ? 'rgba(0,0,0,0.38)' : selected
+        ? (tabSelectedColor[textColor] ?? 'rgba(0,0,0,0.87)')
+        : 'rgba(0,0,0,0.6)' };
+
   return (
-    <TabRoot
-      focusRipple={!disableFocusRipple}
+    <button
       className={clsx(classes.root, className)}
       ref={ref}
       role="tab"
@@ -264,24 +106,51 @@ const Tab = React.forwardRef(function Tab(inProps, ref) {
       disabled={disabled}
       onClick={handleClick}
       onFocus={handleFocus}
-      ownerState={ownerState}
       tabIndex={selected ? 0 : -1}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+        boxSizing: 'border-box',
+        outline: 0,
+        margin: 0,
+        appearance: 'none',
+        border: 0,
+        backgroundColor: 'transparent',
+        cursor: disabled ? 'default' : 'pointer',
+        textDecoration: 'none',
+        userSelect: 'none',
+        verticalAlign: 'middle',
+        maxWidth: fullWidth ? 'none' : 360,
+        minWidth: 90,
+        minHeight: hasIconAndLabel ? 72 : 48,
+        flexShrink: fullWidth ? 1 : 0,
+        ...(fullWidth && { flexGrow: 1, flexBasis: 0 }),
+        padding: hasIconAndLabel ? '9px 16px' : '12px 16px',
+        overflow: 'hidden',
+        whiteSpace: 'normal',
+        textAlign: 'center',
+        lineHeight: 1.25,
+        flexDirection: hasIconAndLabel && (iconPosition === 'top' || iconPosition === 'bottom')
+          ? 'column' : 'row',
+        fontFamily: 'inherit',
+        fontSize: wrapped ? '0.75rem' : '0.875rem',
+        fontWeight: 500,
+        letterSpacing: '0.02857em',
+        textTransform: 'uppercase',
+        ...textColorStyle,
+        ...style,
+      }}
       {...other}
     >
       {iconPosition === 'top' || iconPosition === 'start' ? (
-        <React.Fragment>
-          {icon}
-          {label}
-        </React.Fragment>
+        <React.Fragment>{iconEl}{label}</React.Fragment>
       ) : (
-        <React.Fragment>
-          {label}
-          {icon}
-        </React.Fragment>
+        <React.Fragment>{label}{iconEl}</React.Fragment>
       )}
-
       {indicator}
-    </TabRoot>
+    </button>
   );
 });
 
@@ -290,79 +159,24 @@ Tab.propTypes /* remove-proptypes */ = {
   // │ These PropTypes are generated from the TypeScript type definitions. │
   // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
   // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * This prop isn't supported.
-   * Use the `component` prop if you need to change the children structure.
-   */
-  children: unsupportedProp,
-  /**
-   * Override or extend the styles applied to the component.
-   */
+  children: PropTypes.node,
   classes: PropTypes.object,
-  /**
-   * @ignore
-   */
   className: PropTypes.string,
-  /**
-   * If `true`, the component is disabled.
-   * @default false
-   */
   disabled: PropTypes.bool,
-  /**
-   * If `true`, the  keyboard focus ripple is disabled.
-   * @default false
-   */
   disableFocusRipple: PropTypes.bool,
-  /**
-   * If `true`, the ripple effect is disabled.
-   *
-   * ⚠️ Without a ripple there is no styling for :focus-visible by default. Be sure
-   * to highlight the element by applying separate styles with the `.Mui-focusVisible` class.
-   * @default false
-   */
   disableRipple: PropTypes.bool,
-  /**
-   * The icon to display.
-   */
   icon: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
-  /**
-   * The position of the icon relative to the label.
-   * @default 'top'
-   */
   iconPosition: PropTypes.oneOf(['bottom', 'end', 'start', 'top']),
-  /**
-   * The label element.
-   */
   label: PropTypes.node,
-  /**
-   * @ignore
-   */
   onChange: PropTypes.func,
-  /**
-   * @ignore
-   */
   onClick: PropTypes.func,
-  /**
-   * @ignore
-   */
   onFocus: PropTypes.func,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
   sx: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
     PropTypes.func,
     PropTypes.object,
   ]),
-  /**
-   * You can provide your own value. Otherwise, we fallback to the child position index.
-   */
   value: PropTypes.any,
-  /**
-   * Tab labels appear in a single row.
-   * They can use a second line if needed.
-   * @default false
-   */
   wrapped: PropTypes.bool,
 };
 
