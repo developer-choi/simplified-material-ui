@@ -1,15 +1,7 @@
 'use client';
-/* eslint-disable jsx-a11y/aria-role */
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
-import { useRtl } from '@mui/system/RtlProvider';
-import useSlotProps from '@mui/utils/useSlotProps';
-import KeyboardArrowLeft from '../internal/svg-icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '../internal/svg-icons/KeyboardArrowRight';
-import ButtonBase from '../../../form/ButtonBase';
-import { styled } from '../zero-styled';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import tabScrollButtonClasses, { getTabScrollButtonUtilityClass } from './tabScrollButtonClasses';
 
@@ -23,160 +15,74 @@ const useUtilityClasses = (ownerState) => {
   return composeClasses(slots, getTabScrollButtonUtilityClass, classes);
 };
 
-const TabScrollButtonRoot = styled(ButtonBase, {
-  name: 'MuiTabScrollButton',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
+const KeyboardArrowLeft = () => (
+  <svg
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+    style={{ display: 'block', width: '1em', height: '1em', fill: 'currentColor' }}
+  >
+    <path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z" />
+  </svg>
+);
 
-    return [styles.root, ownerState.orientation && styles[ownerState.orientation]];
-  },
-})({
-  width: 40,
-  flexShrink: 0,
-  opacity: 0.8,
-  [`&.${tabScrollButtonClasses.disabled}`]: {
-    opacity: 0,
-  },
-  variants: [
-    {
-      props: {
-        orientation: 'vertical',
-      },
-      style: {
-        width: '100%',
-        height: 40,
-        '& svg': {
-          transform: 'var(--TabScrollButton-svgRotate)',
-        },
-      },
-    },
-  ],
-});
+const KeyboardArrowRight = () => (
+  <svg
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+    style={{ display: 'block', width: '1em', height: '1em', fill: 'currentColor' }}
+  >
+    <path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z" />
+  </svg>
+);
 
 const TabScrollButton = React.forwardRef(function TabScrollButton(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiTabScrollButton' });
   const {
     className,
-    slots = {},
-    slotProps = {},
     direction,
-    orientation,
     disabled,
+    orientation,
     ...other
   } = props;
 
-  const isRtl = useRtl();
-
-  const ownerState = { isRtl, ...props };
+  const ownerState = { ...props };
 
   const classes = useUtilityClasses(ownerState);
 
-  const StartButtonIcon = slots.StartScrollButtonIcon ?? KeyboardArrowLeft;
-  const EndButtonIcon = slots.EndScrollButtonIcon ?? KeyboardArrowRight;
-
-  const startButtonIconProps = useSlotProps({
-    elementType: StartButtonIcon,
-    externalSlotProps: slotProps.startScrollButtonIcon,
-    additionalProps: {
-      fontSize: 'small',
-    },
-    ownerState,
-  });
-
-  const endButtonIconProps = useSlotProps({
-    elementType: EndButtonIcon,
-    externalSlotProps: slotProps.endScrollButtonIcon,
-    additionalProps: {
-      fontSize: 'small',
-    },
-    ownerState,
-  });
+  const isVertical = orientation === 'vertical';
 
   return (
-    <TabScrollButtonRoot
-      component="div"
-      className={clsx(classes.root, className)}
+    <div
       ref={ref}
-      role={null}
-      ownerState={ownerState}
-      tabIndex={null}
-      {...other}
+      className={[classes.root, className].filter(Boolean).join(' ')}
       style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexShrink: 0,
+        width: isVertical ? '100%' : 40,
+        height: isVertical ? 40 : undefined,
+        opacity: disabled ? 0 : 0.8,
+        cursor: disabled ? 'default' : 'pointer',
         ...other.style,
-        ...(orientation === 'vertical' && {
-          '--TabScrollButton-svgRotate': `rotate(${isRtl ? -90 : 90}deg)`,
-        }),
       }}
+      {...other}
     >
-      {direction === 'left' ? (
-        <StartButtonIcon {...startButtonIconProps} />
-      ) : (
-        <EndButtonIcon {...endButtonIconProps} />
-      )}
-    </TabScrollButtonRoot>
+      <span style={{ display: 'block', transform: isVertical ? 'rotate(90deg)' : undefined }}>
+        {direction === 'left' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+      </span>
+    </div>
   );
 });
 
 TabScrollButton.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * The content of the component.
-   */
   children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
   classes: PropTypes.object,
-  /**
-   * @ignore
-   */
   className: PropTypes.string,
-  /**
-   * The direction the button should indicate.
-   */
   direction: PropTypes.oneOf(['left', 'right']).isRequired,
-  /**
-   * If `true`, the component is disabled.
-   * @default false
-   */
   disabled: PropTypes.bool,
-  /**
-   * The component orientation (layout flow direction).
-   */
   orientation: PropTypes.oneOf(['horizontal', 'vertical']).isRequired,
-  /**
-   * The extra props for the slot components.
-   * You can override the existing props or add new ones.
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    endScrollButtonIcon: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    startScrollButtonIcon: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * The components used for each slot inside.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    EndScrollButtonIcon: PropTypes.elementType,
-    StartScrollButtonIcon: PropTypes.elementType,
-  }),
-  /**
-   * @ignore
-   */
   style: PropTypes.object,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
 };
 
 export default TabScrollButton;
