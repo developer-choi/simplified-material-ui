@@ -1,19 +1,7 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import composeClasses from '@mui/utils/composeClasses';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import tabScrollButtonClasses, { getTabScrollButtonUtilityClass } from './tabScrollButtonClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, orientation, disabled } = ownerState;
-
-  const slots = {
-    root: ['root', orientation, disabled && 'disabled'],
-  };
-
-  return composeClasses(slots, getTabScrollButtonUtilityClass, classes);
-};
 
 const KeyboardArrowLeft = () => (
   <svg
@@ -45,16 +33,12 @@ const TabScrollButton = React.forwardRef(function TabScrollButton(inProps, ref) 
     ...other
   } = props;
 
-  const ownerState = { ...props };
-
-  const classes = useUtilityClasses(ownerState);
-
   const isVertical = orientation === 'vertical';
 
   return (
     <div
       ref={ref}
-      className={[classes.root, className].filter(Boolean).join(' ')}
+      className={className}
       style={{
         display: 'flex',
         alignItems: 'center',
@@ -77,7 +61,6 @@ const TabScrollButton = React.forwardRef(function TabScrollButton(inProps, ref) 
 
 TabScrollButton.propTypes /* remove-proptypes */ = {
   children: PropTypes.node,
-  classes: PropTypes.object,
   className: PropTypes.string,
   direction: PropTypes.oneOf(['left', 'right']).isRequired,
   disabled: PropTypes.bool,
