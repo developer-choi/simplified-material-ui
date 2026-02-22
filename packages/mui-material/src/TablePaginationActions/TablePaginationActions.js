@@ -1,16 +1,8 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { useRtl } from '@mui/system/RtlProvider';
 import composeClasses from '@mui/utils/composeClasses';
-import clsx from 'clsx';
-import { styled } from '../zero-styled';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import KeyboardArrowLeft from '../internal/svg-icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '../internal/svg-icons/KeyboardArrowRight';
-import IconButton from '../../../form/IconButton';
-import LastPageIconDefault from '../internal/svg-icons/LastPage';
-import FirstPageIconDefault from '../internal/svg-icons/FirstPage';
 import { getTablePaginationActionsUtilityClass } from './tablePaginationActionsClasses';
 
 const useUtilityClasses = (ownerState) => {
@@ -23,227 +15,139 @@ const useUtilityClasses = (ownerState) => {
   return composeClasses(slots, getTablePaginationActionsUtilityClass, classes);
 };
 
-const TablePaginationActionsRoot = styled('div', {
-  name: 'MuiTablePaginationActions',
-  slot: 'Root',
-})({});
+const FirstPageIcon = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true"
+    style={{ display: 'block', width: '1em', height: '1em', fill: 'currentColor' }}>
+    <path d="M18.41 16.59L13.82 12l4.59-4.59L17 6l-6 6 6 6zM6 6h2v12H6z" />
+  </svg>
+);
+
+const LastPageIcon = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true"
+    style={{ display: 'block', width: '1em', height: '1em', fill: 'currentColor' }}>
+    <path d="M5.59 7.41L10.18 12l-4.59 4.59L7 18l6-6-6-6zM16 6h2v12h-2z" />
+  </svg>
+);
+
+const KeyboardArrowLeft = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true"
+    style={{ display: 'block', width: '1em', height: '1em', fill: 'currentColor' }}>
+    <path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z" />
+  </svg>
+);
+
+const KeyboardArrowRight = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true"
+    style={{ display: 'block', width: '1em', height: '1em', fill: 'currentColor' }}>
+    <path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z" />
+  </svg>
+);
 
 const TablePaginationActions = React.forwardRef(function TablePaginationActions(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiTablePaginationActions' });
 
   const {
-    backIconButtonProps,
     className,
+    classes: classesProp,
     count,
     disabled = false,
     getItemAriaLabel,
-    nextIconButtonProps,
     onPageChange,
     page,
     rowsPerPage,
     showFirstButton,
     showLastButton,
-    slots = {},
-    slotProps = {},
+    style,
     ...other
   } = props;
 
-  const isRtl = useRtl();
-
   const ownerState = props;
-
   const classes = useUtilityClasses(ownerState);
 
-  const handleFirstPageButtonClick = (event) => {
-    onPageChange(event, 0);
-  };
-
-  const handleBackButtonClick = (event) => {
-    onPageChange(event, page - 1);
-  };
-
-  const handleNextButtonClick = (event) => {
-    onPageChange(event, page + 1);
-  };
-
-  const handleLastPageButtonClick = (event) => {
+  const handleFirstPageButtonClick = (event) => onPageChange(event, 0);
+  const handleBackButtonClick = (event) => onPageChange(event, page - 1);
+  const handleNextButtonClick = (event) => onPageChange(event, page + 1);
+  const handleLastPageButtonClick = (event) =>
     onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+
+  const lastPage = Math.ceil(count / rowsPerPage) - 1;
+
+  const btnStyle = {
+    background: 'none',
+    border: 'none',
+    padding: 8,
+    borderRadius: '50%',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '1.5rem',
+    cursor: 'pointer',
   };
-
-  const FirstButton = slots.firstButton ?? IconButton;
-  const LastButton = slots.lastButton ?? IconButton;
-  const NextButton = slots.nextButton ?? IconButton;
-  const PreviousButton = slots.previousButton ?? IconButton;
-  const FirstButtonIcon = slots.firstButtonIcon ?? FirstPageIconDefault;
-  const LastButtonIcon = slots.lastButtonIcon ?? LastPageIconDefault;
-  const NextButtonIcon = slots.nextButtonIcon ?? KeyboardArrowRight;
-  const PreviousButtonIcon = slots.previousButtonIcon ?? KeyboardArrowLeft;
-
-  const FirstButtonSlot = isRtl ? LastButton : FirstButton;
-  const PreviousButtonSlot = isRtl ? NextButton : PreviousButton;
-  const NextButtonSlot = isRtl ? PreviousButton : NextButton;
-  const LastButtonSlot = isRtl ? FirstButton : LastButton;
-
-  const firstButtonSlotProps = isRtl ? slotProps.lastButton : slotProps.firstButton;
-  const previousButtonSlotProps = isRtl ? slotProps.nextButton : slotProps.previousButton;
-  const nextButtonSlotProps = isRtl ? slotProps.previousButton : slotProps.nextButton;
-  const lastButtonSlotProps = isRtl ? slotProps.firstButton : slotProps.lastButton;
 
   return (
-    <TablePaginationActionsRoot ref={ref} className={clsx(classes.root, className)} {...other}>
+    <div
+      ref={ref}
+      className={[classes.root, className].filter(Boolean).join(' ')}
+      style={style}
+      {...other}
+    >
       {showFirstButton && (
-        <FirstButtonSlot
+        <button
           onClick={handleFirstPageButtonClick}
           disabled={disabled || page === 0}
           aria-label={getItemAriaLabel('first', page)}
           title={getItemAriaLabel('first', page)}
-          {...firstButtonSlotProps}
+          style={btnStyle}
         >
-          {isRtl ? (
-            <LastButtonIcon {...slotProps.lastButtonIcon} />
-          ) : (
-            <FirstButtonIcon {...slotProps.firstButtonIcon} />
-          )}
-        </FirstButtonSlot>
+          <FirstPageIcon />
+        </button>
       )}
-      <PreviousButtonSlot
+      <button
         onClick={handleBackButtonClick}
         disabled={disabled || page === 0}
-        color="inherit"
         aria-label={getItemAriaLabel('previous', page)}
         title={getItemAriaLabel('previous', page)}
-        {...(previousButtonSlotProps ?? backIconButtonProps)}
+        style={btnStyle}
       >
-        {isRtl ? (
-          <NextButtonIcon {...slotProps.nextButtonIcon} />
-        ) : (
-          <PreviousButtonIcon {...slotProps.previousButtonIcon} />
-        )}
-      </PreviousButtonSlot>
-      <NextButtonSlot
+        <KeyboardArrowLeft />
+      </button>
+      <button
         onClick={handleNextButtonClick}
-        disabled={disabled || (count !== -1 ? page >= Math.ceil(count / rowsPerPage) - 1 : false)}
-        color="inherit"
+        disabled={disabled || (count !== -1 ? page >= lastPage : false)}
         aria-label={getItemAriaLabel('next', page)}
         title={getItemAriaLabel('next', page)}
-        {...(nextButtonSlotProps ?? nextIconButtonProps)}
+        style={btnStyle}
       >
-        {isRtl ? (
-          <PreviousButtonIcon {...slotProps.previousButtonIcon} />
-        ) : (
-          <NextButtonIcon {...slotProps.nextButtonIcon} />
-        )}
-      </NextButtonSlot>
+        <KeyboardArrowRight />
+      </button>
       {showLastButton && (
-        <LastButtonSlot
+        <button
           onClick={handleLastPageButtonClick}
-          disabled={disabled || page >= Math.ceil(count / rowsPerPage) - 1}
+          disabled={disabled || page >= lastPage}
           aria-label={getItemAriaLabel('last', page)}
           title={getItemAriaLabel('last', page)}
-          {...lastButtonSlotProps}
+          style={btnStyle}
         >
-          {isRtl ? (
-            <FirstButtonIcon {...slotProps.firstButtonIcon} />
-          ) : (
-            <LastButtonIcon {...slotProps.lastButtonIcon} />
-          )}
-        </LastButtonSlot>
+          <LastPageIcon />
+        </button>
       )}
-    </TablePaginationActionsRoot>
+    </div>
   );
 });
 
 TablePaginationActions.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * This prop is an alias for `slotProps.previousButton` and will be overridden by it if both are used.
-   * @deprecated Use `slotProps.previousButton` instead.
-   */
-  backIconButtonProps: PropTypes.object,
-  /**
-   * @ignore
-   */
   children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
   classes: PropTypes.object,
-  /**
-   * @ignore
-   */
   className: PropTypes.string,
-  /**
-   * @ignore
-   */
   count: PropTypes.number.isRequired,
-  /**
-   * If `true`, the component is disabled.
-   * @default false
-   */
   disabled: PropTypes.bool,
-  /**
-   * Accepts a function which returns a string value that provides a user-friendly name for the current page.
-   * This is important for screen reader users.
-   *
-   * For localization purposes, you can use the provided [translations](https://mui.com/material-ui/guides/localization/).
-   * @param {string} type The link or button type to format ('first' | 'last' | 'next' | 'previous').
-   * @returns {string}
-   */
   getItemAriaLabel: PropTypes.func.isRequired,
-  /**
-   * This prop is an alias for `slotProps.nextButton` and will be overridden by it if both are used.
-   * @deprecated Use `slotProps.nextButton` instead.
-   */
-  nextIconButtonProps: PropTypes.object,
-  /**
-   * @ignore
-   */
   onPageChange: PropTypes.func.isRequired,
-  /**
-   * @ignore
-   */
   page: PropTypes.number.isRequired,
-  /**
-   * @ignore
-   */
   rowsPerPage: PropTypes.number.isRequired,
-  /**
-   * @ignore
-   */
   showFirstButton: PropTypes.bool.isRequired,
-  /**
-   * @ignore
-   */
   showLastButton: PropTypes.bool.isRequired,
-  /**
-   * @ignore
-   */
-  slotProps: PropTypes.shape({
-    firstButton: PropTypes.object,
-    firstButtonIcon: PropTypes.object,
-    lastButton: PropTypes.object,
-    lastButtonIcon: PropTypes.object,
-    nextButton: PropTypes.object,
-    nextButtonIcon: PropTypes.object,
-    previousButton: PropTypes.object,
-    previousButtonIcon: PropTypes.object,
-  }),
-  /**
-   * @ignore
-   */
-  slots: PropTypes.shape({
-    firstButton: PropTypes.elementType,
-    firstButtonIcon: PropTypes.elementType,
-    lastButton: PropTypes.elementType,
-    lastButtonIcon: PropTypes.elementType,
-    nextButton: PropTypes.elementType,
-    nextButtonIcon: PropTypes.elementType,
-    previousButton: PropTypes.elementType,
-    previousButtonIcon: PropTypes.elementType,
-  }),
+  style: PropTypes.object,
 };
 
 export default TablePaginationActions;
