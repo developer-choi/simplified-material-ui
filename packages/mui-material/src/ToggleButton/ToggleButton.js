@@ -1,7 +1,5 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import ToggleButtonGroupContext from '../ToggleButtonGroup/ToggleButtonGroupContext';
 import isValueSelected from '../ToggleButtonGroup/isValueSelected';
 
@@ -17,14 +15,12 @@ const selectedColors = {
 
 const sizePaddingMap = { small: 7, medium: 11, large: 15 };
 
-const ToggleButton = React.forwardRef(function ToggleButton(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiToggleButton' });
+const ToggleButton = React.forwardRef(function ToggleButton(props, ref) {
   const {
     children,
     className,
     color: colorProp,
     disabled: disabledProp,
-    disableFocusRipple,
     fullWidth: fullWidthProp,
     onChange: onChangeProp,
     onClick,
@@ -94,36 +90,5 @@ const ToggleButton = React.forwardRef(function ToggleButton(inProps, ref) {
     </button>
   );
 });
-
-ToggleButton.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  children: PropTypes.node,
-  classes: PropTypes.object,
-  className: PropTypes.string,
-  color: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['standard', 'primary', 'secondary', 'error', 'info', 'success', 'warning']),
-    PropTypes.string,
-  ]),
-  disabled: PropTypes.bool,
-  disableFocusRipple: PropTypes.bool,
-  disableRipple: PropTypes.bool,
-  fullWidth: PropTypes.bool,
-  onChange: PropTypes.func,
-  onClick: PropTypes.func,
-  selected: PropTypes.bool,
-  size: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['small', 'medium', 'large']),
-    PropTypes.string,
-  ]),
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-  value: PropTypes /* @typescript-to-proptypes-ignore */.any.isRequired,
-};
 
 export default ToggleButton;
