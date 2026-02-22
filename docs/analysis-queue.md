@@ -20,6 +20,7 @@
 - [x] SpeedDialAction
 - [x] SpeedDial
 - [x] Grid
+- [x] Zoom
 
 ## 다음 분석 목록 📋
 
