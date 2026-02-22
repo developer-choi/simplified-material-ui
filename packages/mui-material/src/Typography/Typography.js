@@ -3,125 +3,18 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
-import { styled, internal_createExtendSxProp } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import capitalize from '../utils/capitalize';
-import createSimplePaletteValueFilter from '../utils/createSimplePaletteValueFilter';
 import { getTypographyUtilityClass } from './typographyClasses';
 
-const v6Colors = {
-  primary: true,
-  secondary: true,
-  error: true,
-  info: true,
-  success: true,
-  warning: true,
-  textPrimary: true,
-  textSecondary: true,
-  textDisabled: true,
-};
-
-const extendSxProp = internal_createExtendSxProp();
-
 const useUtilityClasses = (ownerState) => {
-  const { align, gutterBottom, noWrap, paragraph, variant, classes } = ownerState;
+  const { align, gutterBottom, noWrap, variant, classes } = ownerState;
 
   const slots = {
-    root: [
-      'root',
-      variant,
-      ownerState.align !== 'inherit' && `align${capitalize(align)}`,
-      gutterBottom && 'gutterBottom',
-      noWrap && 'noWrap',
-      paragraph && 'paragraph',
-    ],
+    root: ['root', variant],
   };
 
   return composeClasses(slots, getTypographyUtilityClass, classes);
 };
-
-export const TypographyRoot = styled('span', {
-  name: 'MuiTypography',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [
-      styles.root,
-      ownerState.variant && styles[ownerState.variant],
-      ownerState.align !== 'inherit' && styles[`align${capitalize(ownerState.align)}`],
-      ownerState.noWrap && styles.noWrap,
-      ownerState.gutterBottom && styles.gutterBottom,
-      ownerState.paragraph && styles.paragraph,
-    ];
-  },
-})(
-  memoTheme(({ theme }) => ({
-    margin: 0,
-    variants: [
-      {
-        props: {
-          variant: 'inherit',
-        },
-        style: {
-          // Some elements, like <button> on Chrome have default font that doesn't inherit, reset this.
-          font: 'inherit',
-          lineHeight: 'inherit',
-          letterSpacing: 'inherit',
-        },
-      },
-      ...Object.entries(theme.typography)
-        .filter(([variant, value]) => variant !== 'inherit' && value && typeof value === 'object')
-        .map(([variant, value]) => ({
-          props: { variant },
-          style: value,
-        })),
-      ...Object.entries(theme.palette)
-        .filter(createSimplePaletteValueFilter())
-        .map(([color]) => ({
-          props: { color },
-          style: {
-            color: (theme.vars || theme).palette[color].main,
-          },
-        })),
-      ...Object.entries(theme.palette?.text || {})
-        .filter(([, value]) => typeof value === 'string')
-        .map(([color]) => ({
-          props: { color: `text${capitalize(color)}` },
-          style: {
-            color: (theme.vars || theme).palette.text[color],
-          },
-        })),
-      {
-        props: ({ ownerState }) => ownerState.align !== 'inherit',
-        style: {
-          textAlign: 'var(--Typography-textAlign)',
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.noWrap,
-        style: {
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.gutterBottom,
-        style: {
-          marginBottom: '0.35em',
-        },
-      },
-      {
-        props: ({ ownerState }) => ownerState.paragraph,
-        style: {
-          marginBottom: 16,
-        },
-      },
-    ],
-  })),
-);
 
 const defaultVariantMapping = {
   h1: 'h1',
@@ -137,59 +30,68 @@ const defaultVariantMapping = {
   inherit: 'p',
 };
 
+const typographyStyles = {
+  h1:        { fontSize: '6rem',     fontWeight: 300, lineHeight: 1.167, letterSpacing: '-0.01562em' },
+  h2:        { fontSize: '3.75rem',  fontWeight: 300, lineHeight: 1.2,   letterSpacing: '-0.00833em' },
+  h3:        { fontSize: '3rem',     fontWeight: 400, lineHeight: 1.167, letterSpacing: '0em' },
+  h4:        { fontSize: '2.125rem', fontWeight: 400, lineHeight: 1.235, letterSpacing: '0.00735em' },
+  h5:        { fontSize: '1.5rem',   fontWeight: 400, lineHeight: 1.334, letterSpacing: '0em' },
+  h6:        { fontSize: '1.25rem',  fontWeight: 500, lineHeight: 1.6,   letterSpacing: '0.0075em' },
+  subtitle1: { fontSize: '1rem',     fontWeight: 400, lineHeight: 1.75,  letterSpacing: '0.00938em' },
+  subtitle2: { fontSize: '0.875rem', fontWeight: 500, lineHeight: 1.57,  letterSpacing: '0.00714em' },
+  body1:     { fontSize: '1rem',     fontWeight: 400, lineHeight: 1.5,   letterSpacing: '0.00938em' },
+  body2:     { fontSize: '0.875rem', fontWeight: 400, lineHeight: 1.43,  letterSpacing: '0.01071em' },
+  button:    { fontSize: '0.875rem', fontWeight: 500, lineHeight: 1.75,  letterSpacing: '0.02857em', textTransform: 'uppercase' },
+  caption:   { fontSize: '0.75rem',  fontWeight: 400, lineHeight: 1.66,  letterSpacing: '0.03333em' },
+  overline:  { fontSize: '0.75rem',  fontWeight: 400, lineHeight: 2.66,  letterSpacing: '0.08333em', textTransform: 'uppercase' },
+  inherit:   { font: 'inherit', lineHeight: 'inherit', letterSpacing: 'inherit' },
+};
+
 const Typography = React.forwardRef(function Typography(inProps, ref) {
-  const { color, ...themeProps } = useDefaultProps({ props: inProps, name: 'MuiTypography' });
-  const isSxColor = !v6Colors[color];
-  // TODO: Remove `extendSxProp` in v7
-  const props = extendSxProp({
-    ...themeProps,
-    ...(isSxColor && { color }),
-  });
+  const props = useDefaultProps({ props: inProps, name: 'MuiTypography' });
 
   const {
     align = 'inherit',
+    children,
     className,
     component,
     gutterBottom = false,
     noWrap = false,
-    paragraph = false,
     variant = 'body1',
     variantMapping = defaultVariantMapping,
+    style,
     ...other
   } = props;
 
   const ownerState = {
     ...props,
     align,
-    color,
-    className,
-    component,
     gutterBottom,
     noWrap,
-    paragraph,
     variant,
     variantMapping,
   };
 
-  const Component =
-    component ||
-    (paragraph ? 'p' : variantMapping[variant] || defaultVariantMapping[variant]) ||
-    'span';
+  const Component = component || variantMapping[variant] || defaultVariantMapping[variant] || 'span';
 
   const classes = useUtilityClasses(ownerState);
 
   return (
-    <TypographyRoot
-      as={Component}
+    <Component
       ref={ref}
       className={clsx(classes.root, className)}
-      {...other}
-      ownerState={ownerState}
       style={{
-        ...(align !== 'inherit' && { '--Typography-textAlign': align }),
-        ...other.style,
+        margin: 0,
+        ...typographyStyles[variant],
+        ...(align !== 'inherit' && { textAlign: align }),
+        ...(noWrap && { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }),
+        ...(gutterBottom && { marginBottom: '0.35em' }),
+        ...style,
       }}
-    />
+      {...other}
+    >
+      {children}
+    </Component>
   );
 });
 
@@ -216,27 +118,7 @@ Typography.propTypes /* remove-proptypes */ = {
    */
   className: PropTypes.string,
   /**
-   * The color of the component.
-   * It supports both default and custom theme colors, which can be added as shown in the
-   * [palette customization guide](https://mui.com/material-ui/customization/palette/#custom-colors).
-   */
-  color: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf([
-      'primary',
-      'secondary',
-      'success',
-      'error',
-      'info',
-      'warning',
-      'textPrimary',
-      'textSecondary',
-      'textDisabled',
-    ]),
-    PropTypes.string,
-  ]),
-  /**
    * The component used for the root node.
-   * Either a string to use a HTML element or a component.
    */
   component: PropTypes.elementType,
   /**
@@ -246,73 +128,26 @@ Typography.propTypes /* remove-proptypes */ = {
   gutterBottom: PropTypes.bool,
   /**
    * If `true`, the text will not wrap, but instead will truncate with a text overflow ellipsis.
-   *
-   * Note that text overflow can only happen with block or inline-block level elements
-   * (the element needs to have a width in order to overflow).
    * @default false
    */
   noWrap: PropTypes.bool,
-  /**
-   * If `true`, the element will be a paragraph element.
-   * @default false
-   * @deprecated Use the `component` prop instead. This prop will be removed in a future major release. See [Migrating from deprecated APIs](https://mui.com/material-ui/migration/migrating-from-deprecated-apis/) for more details.
-   */
-  paragraph: PropTypes.bool,
   /**
    * @ignore
    */
   style: PropTypes.object,
   /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-  /**
    * Applies the theme typography styles.
    * @default 'body1'
    */
-  variant: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf([
-      'body1',
-      'body2',
-      'button',
-      'caption',
-      'h1',
-      'h2',
-      'h3',
-      'h4',
-      'h5',
-      'h6',
-      'inherit',
-      'overline',
-      'subtitle1',
-      'subtitle2',
-    ]),
-    PropTypes.string,
+  variant: PropTypes.oneOf([
+    'body1', 'body2', 'button', 'caption',
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+    'inherit', 'overline', 'subtitle1', 'subtitle2',
   ]),
   /**
    * The component maps the variant prop to a range of different HTML element types.
-   * For instance, subtitle1 to `<h6>`.
-   * If you wish to change that mapping, you can provide your own.
-   * Alternatively, you can use the `component` prop.
-   * @default {
-   *   h1: 'h1',
-   *   h2: 'h2',
-   *   h3: 'h3',
-   *   h4: 'h4',
-   *   h5: 'h5',
-   *   h6: 'h6',
-   *   subtitle1: 'h6',
-   *   subtitle2: 'h6',
-   *   body1: 'p',
-   *   body2: 'p',
-   *   inherit: 'p',
-   * }
    */
-  variantMapping: PropTypes /* @typescript-to-proptypes-ignore */.object,
+  variantMapping: PropTypes.object,
 };
 
 export default Typography;
