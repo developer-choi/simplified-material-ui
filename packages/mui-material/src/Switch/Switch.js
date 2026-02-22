@@ -1,11 +1,7 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import refType from '@mui/utils/refType';
-import { useDefaultProps } from '../DefaultPropsProvider';
 
-const Switch = React.forwardRef(function Switch(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiSwitch' });
+const Switch = React.forwardRef(function Switch(props, ref) {
   const {
     checked: checkedProp,
     className,
@@ -110,54 +106,5 @@ const Switch = React.forwardRef(function Switch(inProps, ref) {
     </span>
   );
 });
-
-Switch.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  checked: PropTypes.bool,
-  checkedIcon: PropTypes.node,
-  classes: PropTypes.object,
-  className: PropTypes.string,
-  color: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['default', 'primary', 'secondary', 'error', 'info', 'success', 'warning']),
-    PropTypes.string,
-  ]),
-  defaultChecked: PropTypes.bool,
-  disabled: PropTypes.bool,
-  disableRipple: PropTypes.bool,
-  edge: PropTypes.oneOf(['end', 'start', false]),
-  icon: PropTypes.node,
-  id: PropTypes.string,
-  inputProps: PropTypes.object,
-  inputRef: refType,
-  onChange: PropTypes.func,
-  required: PropTypes.bool,
-  size: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['medium', 'small']),
-    PropTypes.string,
-  ]),
-  slotProps: PropTypes.shape({
-    input: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    switchBase: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    thumb: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    track: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  slots: PropTypes.shape({
-    input: PropTypes.elementType,
-    root: PropTypes.elementType,
-    switchBase: PropTypes.elementType,
-    thumb: PropTypes.elementType,
-    track: PropTypes.elementType,
-  }),
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-  value: PropTypes.any,
-};
 
 export default Switch;
