@@ -1,28 +1,8 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import capitalize from '../utils/capitalize';
-import toggleButtonGroupClasses, {
-  getToggleButtonGroupUtilityClass,
-} from './toggleButtonGroupClasses';
 import ToggleButtonGroupContext from './ToggleButtonGroupContext';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, orientation, fullWidth, disabled } = ownerState;
-
-  const slots = {
-    root: ['root', orientation, fullWidth && 'fullWidth'],
-    grouped: ['grouped', `grouped${capitalize(orientation)}`, disabled && 'disabled'],
-    firstButton: ['firstButton'],
-    lastButton: ['lastButton'],
-    middleButton: ['middleButton'],
-  };
-
-  return composeClasses(slots, getToggleButtonGroupUtilityClass, classes);
-};
 
 const ToggleButtonGroup = React.forwardRef(function ToggleButtonGroup(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiToggleButtonGroup' });
@@ -40,9 +20,6 @@ const ToggleButtonGroup = React.forwardRef(function ToggleButtonGroup(inProps, r
     value,
     ...other
   } = props;
-
-  const ownerState = { ...props, disabled, fullWidth, orientation, size };
-  const classes = useUtilityClasses(ownerState);
 
   const handleChange = React.useCallback(
     (event, buttonValue) => {
@@ -100,7 +77,7 @@ const ToggleButtonGroup = React.forwardRef(function ToggleButtonGroup(inProps, r
   return (
     <div
       role="group"
-      className={clsx(classes.root, className)}
+      className={className}
       ref={ref}
       style={{
         display: 'inline-flex',
