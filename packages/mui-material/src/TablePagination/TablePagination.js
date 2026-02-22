@@ -1,117 +1,13 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import integerPropType from '@mui/utils/integerPropType';
 import chainPropTypes from '@mui/utils/chainPropTypes';
 import composeClasses from '@mui/utils/composeClasses';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import InputBase from '../../../form/InputBase';
-import MenuItem from '../../../menu/MenuItem';
-import Select from '../../../form/Select';
 import TableCell from '../TableCell';
-import Toolbar from '../../../surfaces/Toolbar';
 import TablePaginationActions from '../TablePaginationActions';
-import useId from '../utils/useId';
 import tablePaginationClasses, { getTablePaginationUtilityClass } from './tablePaginationClasses';
-import useSlot from '../utils/useSlot';
-
-const TablePaginationRoot = styled(TableCell, {
-  name: 'MuiTablePagination',
-  slot: 'Root',
-})(
-  memoTheme(({ theme }) => ({
-    overflow: 'auto',
-    color: (theme.vars || theme).palette.text.primary,
-    fontSize: theme.typography.pxToRem(14),
-    // Increase the specificity to override TableCell.
-    '&:last-child': {
-      padding: 0,
-    },
-  })),
-);
-
-const TablePaginationToolbar = styled(Toolbar, {
-  name: 'MuiTablePagination',
-  slot: 'Toolbar',
-  overridesResolver: (props, styles) => ({
-    [`& .${tablePaginationClasses.actions}`]: styles.actions,
-    ...styles.toolbar,
-  }),
-})(
-  memoTheme(({ theme }) => ({
-    minHeight: 52,
-    paddingRight: 2,
-    [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: {
-      minHeight: 52,
-    },
-    [theme.breakpoints.up('sm')]: {
-      minHeight: 52,
-      paddingRight: 2,
-    },
-    [`& .${tablePaginationClasses.actions}`]: {
-      flexShrink: 0,
-      marginLeft: 20,
-    },
-  })),
-);
-
-const TablePaginationSpacer = styled('div', {
-  name: 'MuiTablePagination',
-  slot: 'Spacer',
-})({
-  flex: '1 1 100%',
-});
-
-const TablePaginationSelectLabel = styled('p', {
-  name: 'MuiTablePagination',
-  slot: 'SelectLabel',
-})(
-  memoTheme(({ theme }) => ({
-    ...theme.typography.body2,
-    flexShrink: 0,
-  })),
-);
-
-const TablePaginationSelect = styled(Select, {
-  name: 'MuiTablePagination',
-  slot: 'Select',
-  overridesResolver: (props, styles) => ({
-    [`& .${tablePaginationClasses.selectIcon}`]: styles.selectIcon,
-    [`& .${tablePaginationClasses.select}`]: styles.select,
-    ...styles.input,
-    ...styles.selectRoot,
-  }),
-})({
-  color: 'inherit',
-  fontSize: 'inherit',
-  flexShrink: 0,
-  marginRight: 32,
-  marginLeft: 8,
-  [`& .${tablePaginationClasses.select}`]: {
-    paddingLeft: 8,
-    paddingRight: 24,
-    textAlign: 'right',
-    textAlignLast: 'right', // Align <select> on Chrome.
-  },
-});
-
-const TablePaginationMenuItem = styled(MenuItem, {
-  name: 'MuiTablePagination',
-  slot: 'MenuItem',
-})({});
-
-const TablePaginationDisplayedRows = styled('p', {
-  name: 'MuiTablePagination',
-  slot: 'DisplayedRows',
-})(
-  memoTheme(({ theme }) => ({
-    ...theme.typography.body2,
-    flexShrink: 0,
-  })),
-);
 
 function defaultLabelDisplayedRows({ from, to, count }) {
   return `${from}–${to} of ${count !== -1 ? count : `more than ${to}`}`;
@@ -145,43 +41,28 @@ const useUtilityClasses = (ownerState) => {
 const TablePagination = React.forwardRef(function TablePagination(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiTablePagination' });
   const {
-    ActionsComponent = TablePaginationActions,
-    backIconButtonProps,
     colSpan: colSpanProp,
-    component = TableCell,
     count,
     disabled = false,
     getItemAriaLabel = defaultGetAriaLabel,
     labelDisplayedRows = defaultLabelDisplayedRows,
     labelRowsPerPage = 'Rows per page:',
-    nextIconButtonProps,
     onPageChange,
     onRowsPerPageChange,
     page,
     rowsPerPage,
     rowsPerPageOptions = [10, 25, 50, 100],
-    SelectProps = {},
     showFirstButton = false,
     showLastButton = false,
-    slotProps = {},
-    slots = {},
     ...other
   } = props;
 
   const ownerState = props;
   const classes = useUtilityClasses(ownerState);
 
-  const selectProps = slotProps?.select ?? SelectProps;
-
-  const MenuItemComponent = selectProps.native ? 'option' : TablePaginationMenuItem;
-
-  let colSpan;
-  if (component === TableCell || component === 'td') {
-    colSpan = colSpanProp || 1000; // col-span over everything
-  }
-
-  const selectId = useId(selectProps.id);
-  const labelId = useId(selectProps.labelId);
+  const colSpan = colSpanProp || 1000;
+  const selectId = React.useId();
+  const labelId = React.useId();
 
   const getLabelDisplayedRowsTo = () => {
     if (count === -1) {
@@ -190,133 +71,69 @@ const TablePagination = React.forwardRef(function TablePagination(inProps, ref) 
     return rowsPerPage === -1 ? count : Math.min(count, (page + 1) * rowsPerPage);
   };
 
-  const externalForwardedProps = { slots, slotProps };
-
-  const [RootSlot, rootSlotProps] = useSlot('root', {
-    ref,
-    className: classes.root,
-    elementType: TablePaginationRoot,
-    externalForwardedProps: {
-      ...externalForwardedProps,
-      component,
-      ...other,
-    },
-    ownerState,
-    additionalProps: {
-      colSpan,
-    },
-  });
-
-  const [ToolbarSlot, toolbarSlotProps] = useSlot('toolbar', {
-    className: classes.toolbar,
-    elementType: TablePaginationToolbar,
-    externalForwardedProps,
-    ownerState,
-  });
-
-  const [SpacerSlot, spacerSlotProps] = useSlot('spacer', {
-    className: classes.spacer,
-    elementType: TablePaginationSpacer,
-    externalForwardedProps,
-    ownerState,
-  });
-
-  const [SelectLabelSlot, selectLabelSlotProps] = useSlot('selectLabel', {
-    className: classes.selectLabel,
-    elementType: TablePaginationSelectLabel,
-    externalForwardedProps,
-    ownerState,
-    additionalProps: {
-      id: labelId,
-    },
-  });
-
-  const [SelectSlot, selectSlotProps] = useSlot('select', {
-    className: classes.select,
-    elementType: TablePaginationSelect,
-    externalForwardedProps,
-    ownerState,
-  });
-
-  const [MenuItemSlot, menuItemSlotProps] = useSlot('menuItem', {
-    className: classes.menuItem,
-    elementType: MenuItemComponent,
-    externalForwardedProps,
-    ownerState,
-  });
-
-  const [DisplayedRows, displayedRowsProps] = useSlot('displayedRows', {
-    className: classes.displayedRows,
-    elementType: TablePaginationDisplayedRows,
-    externalForwardedProps,
-    ownerState,
-  });
+  const body2 = { fontSize: '0.875rem', lineHeight: 1.43, fontWeight: 400 };
 
   return (
-    <RootSlot {...rootSlotProps}>
-      <ToolbarSlot {...toolbarSlotProps}>
-        <SpacerSlot {...spacerSlotProps} />
+    <TableCell
+      ref={ref}
+      colSpan={colSpan}
+      className={classes.root}
+      style={{ overflow: 'auto', color: 'rgba(0,0,0,0.87)', fontSize: '0.875rem', padding: 0 }}
+      {...other}
+    >
+      <div
+        className={classes.toolbar}
+        style={{ display: 'flex', alignItems: 'center', minHeight: 52, paddingRight: 2 }}
+      >
+        <div className={classes.spacer} style={{ flex: '1 1 100%' }} />
         {rowsPerPageOptions.length > 1 && (
-          <SelectLabelSlot {...selectLabelSlotProps}>{labelRowsPerPage}</SelectLabelSlot>
+          <p id={labelId} className={classes.selectLabel} style={{ ...body2, flexShrink: 0, margin: 0 }}>
+            {labelRowsPerPage}
+          </p>
         )}
-
         {rowsPerPageOptions.length > 1 && (
-          <SelectSlot
-            variant="standard"
-            {...(!selectProps.variant && { input: <InputBase /> })}
+          <select
+            id={selectId}
+            aria-labelledby={labelId}
             value={rowsPerPage}
             onChange={onRowsPerPageChange}
-            id={selectId}
-            labelId={labelId}
-            {...selectProps}
-            classes={{
-              ...selectProps.classes,
-              // TODO v5 remove `classes.input`
-              root: clsx(classes.input, classes.selectRoot, (selectProps.classes || {}).root),
-              select: clsx(classes.select, (selectProps.classes || {}).select),
-              // TODO v5 remove `selectIcon`
-              icon: clsx(classes.selectIcon, (selectProps.classes || {}).icon),
-            }}
             disabled={disabled}
-            {...selectSlotProps}
+            className={classes.select}
+            style={{ color: 'inherit', fontSize: 'inherit', flexShrink: 0, marginRight: 32, marginLeft: 8 }}
           >
-            {rowsPerPageOptions.map((rowsPerPageOption) => (
-              <MenuItemSlot
-                {...menuItemSlotProps}
-                key={rowsPerPageOption.label ? rowsPerPageOption.label : rowsPerPageOption}
-                value={rowsPerPageOption.value ? rowsPerPageOption.value : rowsPerPageOption}
+            {rowsPerPageOptions.map((option) => (
+              <option
+                className={classes.menuItem}
+                key={option.label ?? option}
+                value={option.value ?? option}
               >
-                {rowsPerPageOption.label ? rowsPerPageOption.label : rowsPerPageOption}
-              </MenuItemSlot>
+                {option.label ?? option}
+              </option>
             ))}
-          </SelectSlot>
+          </select>
         )}
-
-        <DisplayedRows {...displayedRowsProps}>
+        <p className={classes.displayedRows} style={{ ...body2, flexShrink: 0, margin: 0 }}>
           {labelDisplayedRows({
             from: count === 0 ? 0 : page * rowsPerPage + 1,
             to: getLabelDisplayedRowsTo(),
             count: count === -1 ? -1 : count,
             page,
           })}
-        </DisplayedRows>
-        <ActionsComponent
+        </p>
+        <TablePaginationActions
           className={classes.actions}
-          backIconButtonProps={backIconButtonProps}
           count={count}
-          nextIconButtonProps={nextIconButtonProps}
           onPageChange={onPageChange}
           page={page}
           rowsPerPage={rowsPerPage}
           showFirstButton={showFirstButton}
           showLastButton={showLastButton}
-          slotProps={slotProps.actions}
-          slots={slots.actions}
           getItemAriaLabel={getItemAriaLabel}
           disabled={disabled}
+          style={{ flexShrink: 0, marginLeft: 20 }}
         />
-      </ToolbarSlot>
-    </RootSlot>
+      </div>
+    </TableCell>
   );
 });
 
@@ -326,19 +143,6 @@ TablePagination.propTypes /* remove-proptypes */ = {
   // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
   // └─────────────────────────────────────────────────────────────────────┘
   /**
-   * The component used for displaying the actions.
-   * Either a string to use a HTML element or a component.
-   * @default TablePaginationActions
-   */
-  ActionsComponent: PropTypes.elementType,
-  /**
-   * Props applied to the back arrow [`IconButton`](https://mui.com/material-ui/api/icon-button/) component.
-   *
-   * This prop is an alias for `slotProps.actions.previousButton` and will be overridden by it if both are used.
-   * @deprecated Use `slotProps.actions.previousButton` instead.
-   */
-  backIconButtonProps: PropTypes.object,
-  /**
    * Override or extend the styles applied to the component.
    */
   classes: PropTypes.object,
@@ -346,11 +150,6 @@ TablePagination.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   colSpan: PropTypes.number,
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
   /**
    * The total number of rows.
    *
@@ -391,13 +190,6 @@ TablePagination.propTypes /* remove-proptypes */ = {
    * @default 'Rows per page:'
    */
   labelRowsPerPage: PropTypes.node,
-  /**
-   * Props applied to the next arrow [`IconButton`](https://mui.com/material-ui/api/icon-button/) element.
-   *
-   * This prop is an alias for `slotProps.actions.nextButton` and will be overridden by it if both are used.
-   * @deprecated Use `slotProps.actions.nextButton` instead.
-   */
-  nextIconButtonProps: PropTypes.object,
   /**
    * Callback fired when the page is changed.
    *
@@ -452,15 +244,6 @@ TablePagination.propTypes /* remove-proptypes */ = {
     ]).isRequired,
   ),
   /**
-   * Props applied to the rows per page [`Select`](https://mui.com/material-ui/api/select/) element.
-   *
-   * This prop is an alias for `slotProps.select` and will be overridden by it if both are used.
-   * @deprecated Use `slotProps.select` instead.
-   *
-   * @default {}
-   */
-  SelectProps: PropTypes.object,
-  /**
    * If `true`, show the first-page button.
    * @default false
    */
@@ -470,52 +253,6 @@ TablePagination.propTypes /* remove-proptypes */ = {
    * @default false
    */
   showLastButton: PropTypes.bool,
-  /**
-   * The props used for each slot inside.
-   * @default {}
-   */
-  slotProps: PropTypes.shape({
-    actions: PropTypes.shape({
-      firstButton: PropTypes.object,
-      firstButtonIcon: PropTypes.object,
-      lastButton: PropTypes.object,
-      lastButtonIcon: PropTypes.object,
-      nextButton: PropTypes.object,
-      nextButtonIcon: PropTypes.object,
-      previousButton: PropTypes.object,
-      previousButtonIcon: PropTypes.object,
-    }),
-    displayedRows: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    menuItem: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    select: PropTypes.object,
-    selectLabel: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    spacer: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-    toolbar: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  }),
-  /**
-   * The components used for each slot inside.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    actions: PropTypes.shape({
-      firstButton: PropTypes.elementType,
-      firstButtonIcon: PropTypes.elementType,
-      lastButton: PropTypes.elementType,
-      lastButtonIcon: PropTypes.elementType,
-      nextButton: PropTypes.elementType,
-      nextButtonIcon: PropTypes.elementType,
-      previousButton: PropTypes.elementType,
-      previousButtonIcon: PropTypes.elementType,
-    }),
-    displayedRows: PropTypes.elementType,
-    menuItem: PropTypes.elementType,
-    root: PropTypes.elementType,
-    select: PropTypes.elementType,
-    selectLabel: PropTypes.elementType,
-    spacer: PropTypes.elementType,
-    toolbar: PropTypes.elementType,
-  }),
   /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
