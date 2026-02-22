@@ -19,119 +19,47 @@ const styles = {
  * It uses [react-transition-group](https://github.com/reactjs/react-transition-group) internally.
  */
 const Zoom = React.forwardRef(function Zoom(props, ref) {
-  const defaultTimeout = {
-    enter: 225,
-    exit: 195,
-  };
-
   const {
-    addEndListener,
-    appear = true,
     children,
-    easing,
     in: inProp,
-    onEnter,
-    onEntered,
-    onEntering,
-    onExit,
-    onExited,
-    onExiting,
     style,
-    timeout = defaultTimeout,
-    // eslint-disable-next-line react/prop-types
-    TransitionComponent = Transition,
     ...other
   } = props;
 
   const nodeRef = React.useRef(null);
 
-  const handleEnter = (maybeIsAppearing) => {
+  const handleEnter = () => {
     const node = nodeRef.current;
 
     node.scrollTop; // So the animation always start from the start.
 
-    const duration =
-      style?.transitionDuration ??
-      (typeof timeout === 'number' ? timeout : timeout.enter ?? 0);
-    const easingVal =
-      style?.transitionTimingFunction ??
-      (typeof easing === 'object' ? easing.enter : easing) ??
-      'cubic-bezier(0.4, 0, 0.2, 1)';
-    const delay = style?.transitionDelay;
+    const duration = style?.transitionDuration || 225;
+    const easing = style?.transitionTimingFunction || 'cubic-bezier(0.4, 0, 0.2, 1)';
+    const delay = style?.transitionDelay || 0;
 
-    const transition = `transform ${typeof duration === 'string' ? duration : `${duration}ms`} ${easingVal} ${delay ?? '0ms'}`;
-    node.style.webkitTransition = transition;
-    node.style.transition = transition;
-
-    if (onEnter) {
-      onEnter(node, maybeIsAppearing);
-    }
-  };
-
-  const handleEntering = (maybeIsAppearing) => {
-    if (onEntering) {
-      onEntering(nodeRef.current, maybeIsAppearing);
-    }
-  };
-
-  const handleEntered = (maybeIsAppearing) => {
-    if (onEntered) {
-      onEntered(nodeRef.current, maybeIsAppearing);
-    }
-  };
-
-  const handleExiting = () => {
-    if (onExiting) {
-      onExiting(nodeRef.current);
-    }
+    node.style.webkitTransition = `transform ${duration}ms ${easing} ${delay}ms`;
+    node.style.transition = `transform ${duration}ms ${easing} ${delay}ms`;
   };
 
   const handleExit = () => {
     const node = nodeRef.current;
 
-    const duration =
-      style?.transitionDuration ??
-      (typeof timeout === 'number' ? timeout : timeout.exit ?? 0);
-    const easingVal =
-      style?.transitionTimingFunction ??
-      (typeof easing === 'object' ? easing.exit : easing) ??
-      'cubic-bezier(0.4, 0, 0.2, 1)';
-    const delay = style?.transitionDelay;
+    const duration = style?.transitionDuration || 195;
+    const easing = style?.transitionTimingFunction || 'cubic-bezier(0.4, 0, 0.2, 1)';
+    const delay = style?.transitionDelay || 0;
 
-    const transition = `transform ${typeof duration === 'string' ? duration : `${duration}ms`} ${easingVal} ${delay ?? '0ms'}`;
-    node.style.webkitTransition = transition;
-    node.style.transition = transition;
-
-    if (onExit) {
-      onExit(node);
-    }
-  };
-
-  const handleExited = () => {
-    if (onExited) {
-      onExited(nodeRef.current);
-    }
-  };
-
-  const handleAddEndListener = (next) => {
-    if (addEndListener) {
-      addEndListener(nodeRef.current, next);
-    }
+    node.style.webkitTransition = `transform ${duration}ms ${easing} ${delay}ms`;
+    node.style.transition = `transform ${duration}ms ${easing} ${delay}ms`;
   };
 
   return (
-    <TransitionComponent
-      appear={appear}
+    <Transition
+      appear={true}
       in={inProp}
       nodeRef={nodeRef}
       onEnter={handleEnter}
-      onEntered={handleEntered}
-      onEntering={handleEntering}
       onExit={handleExit}
-      onExited={handleExited}
-      onExiting={handleExiting}
-      addEndListener={handleAddEndListener}
-      timeout={timeout}
+      timeout={{ enter: 225, exit: 195 }}
       {...other}
     >
       {/* Ensure "ownerState" is not forwarded to the child DOM element when a direct HTML element is used. This avoids unexpected behavior since "ownerState" is intended for internal styling, component props and not as a DOM attribute. */}
@@ -148,7 +76,7 @@ const Zoom = React.forwardRef(function Zoom(props, ref) {
           ...restChildProps,
         });
       }}
-    </TransitionComponent>
+    </Transition>
   );
 });
 
