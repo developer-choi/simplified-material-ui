@@ -1,20 +1,7 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import { getTypographyUtilityClass } from './typographyClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { align, gutterBottom, noWrap, variant, classes } = ownerState;
-
-  const slots = {
-    root: ['root', variant],
-  };
-
-  return composeClasses(slots, getTypographyUtilityClass, classes);
-};
 
 const defaultVariantMapping = {
   h1: 'h1',
@@ -74,12 +61,10 @@ const Typography = React.forwardRef(function Typography(inProps, ref) {
 
   const Component = component || variantMapping[variant] || defaultVariantMapping[variant] || 'span';
 
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <Component
       ref={ref}
-      className={clsx(classes.root, className)}
+      className={className}
       style={{
         margin: 0,
         ...typographyStyles[variant],
