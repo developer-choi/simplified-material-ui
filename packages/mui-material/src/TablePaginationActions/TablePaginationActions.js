@@ -1,7 +1,5 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import { useDefaultProps } from '../DefaultPropsProvider';
 
 const FirstPageIcon = () => (
   <svg viewBox="0 0 24 24" aria-hidden="true"
@@ -31,9 +29,7 @@ const KeyboardArrowRight = () => (
   </svg>
 );
 
-const TablePaginationActions = React.forwardRef(function TablePaginationActions(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiTablePaginationActions' });
-
+const TablePaginationActions = React.forwardRef(function TablePaginationActions(props, ref) {
   const {
     className,
     count,
@@ -113,19 +109,5 @@ const TablePaginationActions = React.forwardRef(function TablePaginationActions(
     </div>
   );
 });
-
-TablePaginationActions.propTypes /* remove-proptypes */ = {
-  children: PropTypes.node,
-  className: PropTypes.string,
-  count: PropTypes.number.isRequired,
-  disabled: PropTypes.bool,
-  getItemAriaLabel: PropTypes.func.isRequired,
-  onPageChange: PropTypes.func.isRequired,
-  page: PropTypes.number.isRequired,
-  rowsPerPage: PropTypes.number.isRequired,
-  showFirstButton: PropTypes.bool.isRequired,
-  showLastButton: PropTypes.bool.isRequired,
-  style: PropTypes.object,
-};
 
 export default TablePaginationActions;
