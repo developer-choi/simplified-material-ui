@@ -1,7 +1,5 @@
 'use client';
-import PropTypes from 'prop-types';
 import * as React from 'react';
-import { useDefaultProps } from '../DefaultPropsProvider';
 
 const ArrowDownwardIcon = () => (
   <svg
@@ -13,17 +11,14 @@ const ArrowDownwardIcon = () => (
   </svg>
 );
 
-/**
- * A button based label for placing inside `TableCell` for column sorting.
- */
-const TableSortLabel = React.forwardRef(function TableSortLabel(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiTableSortLabel' });
+const TableSortLabel = React.forwardRef(function TableSortLabel(props, ref) {
   const {
     active = false,
     children,
     className,
     direction = 'asc',
     hideSortIcon = false,
+    style,
     ...other
   } = props;
 
@@ -40,6 +35,7 @@ const TableSortLabel = React.forwardRef(function TableSortLabel(inProps, ref) {
         flexDirection: 'inherit',
         alignItems: 'center',
         ...(active && { color: 'rgba(0,0,0,0.87)' }),
+        ...style,
       }}
       {...other}
     >
@@ -63,35 +59,5 @@ const TableSortLabel = React.forwardRef(function TableSortLabel(inProps, ref) {
     </span>
   );
 });
-
-TableSortLabel.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * If `true`, the label will have the active styling (should be true for the sorted column).
-   * @default false
-   */
-  active: PropTypes.bool,
-  /**
-   * Label contents, the arrow will be appended automatically.
-   */
-  children: PropTypes.node,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * The current sort direction.
-   * @default 'asc'
-   */
-  direction: PropTypes.oneOf(['asc', 'desc']),
-  /**
-   * Hide sort icon when active is false.
-   * @default false
-   */
-  hideSortIcon: PropTypes.bool,
-};
 
 export default TableSortLabel;
