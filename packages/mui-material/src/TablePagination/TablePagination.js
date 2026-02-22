@@ -3,11 +3,9 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import integerPropType from '@mui/utils/integerPropType';
 import chainPropTypes from '@mui/utils/chainPropTypes';
-import composeClasses from '@mui/utils/composeClasses';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import TableCell from '../TableCell';
 import TablePaginationActions from '../TablePaginationActions';
-import tablePaginationClasses, { getTablePaginationUtilityClass } from './tablePaginationClasses';
 
 function defaultLabelDisplayedRows({ from, to, count }) {
   return `${from}–${to} of ${count !== -1 ? count : `more than ${to}`}`;
@@ -16,24 +14,6 @@ function defaultLabelDisplayedRows({ from, to, count }) {
 function defaultGetAriaLabel(type) {
   return `Go to ${type} page`;
 }
-
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-  const slots = {
-    root: ['root'],
-    toolbar: ['toolbar'],
-    spacer: ['spacer'],
-    selectLabel: ['selectLabel'],
-    select: ['select'],
-    input: ['input'],
-    selectIcon: ['selectIcon'],
-    menuItem: ['menuItem'],
-    displayedRows: ['displayedRows'],
-    actions: ['actions'],
-  };
-
-  return composeClasses(slots, getTablePaginationUtilityClass, classes);
-};
 
 /**
  * A `TableCell` based component for placing inside `TableFooter` for pagination.
@@ -57,9 +37,6 @@ const TablePagination = React.forwardRef(function TablePagination(inProps, ref) 
     ...other
   } = props;
 
-  const ownerState = props;
-  const classes = useUtilityClasses(ownerState);
-
   const colSpan = colSpanProp || 1000;
   const selectId = React.useId();
   const labelId = React.useId();
@@ -77,17 +54,15 @@ const TablePagination = React.forwardRef(function TablePagination(inProps, ref) 
     <TableCell
       ref={ref}
       colSpan={colSpan}
-      className={classes.root}
       style={{ overflow: 'auto', color: 'rgba(0,0,0,0.87)', fontSize: '0.875rem', padding: 0 }}
       {...other}
     >
       <div
-        className={classes.toolbar}
         style={{ display: 'flex', alignItems: 'center', minHeight: 52, paddingRight: 2 }}
       >
-        <div className={classes.spacer} style={{ flex: '1 1 100%' }} />
+        <div style={{ flex: '1 1 100%' }} />
         {rowsPerPageOptions.length > 1 && (
-          <p id={labelId} className={classes.selectLabel} style={{ ...body2, flexShrink: 0, margin: 0 }}>
+          <p id={labelId} style={{ ...body2, flexShrink: 0, margin: 0 }}>
             {labelRowsPerPage}
           </p>
         )}
@@ -98,12 +73,10 @@ const TablePagination = React.forwardRef(function TablePagination(inProps, ref) 
             value={rowsPerPage}
             onChange={onRowsPerPageChange}
             disabled={disabled}
-            className={classes.select}
             style={{ color: 'inherit', fontSize: 'inherit', flexShrink: 0, marginRight: 32, marginLeft: 8 }}
           >
             {rowsPerPageOptions.map((option) => (
               <option
-                className={classes.menuItem}
                 key={option.label ?? option}
                 value={option.value ?? option}
               >
@@ -112,7 +85,7 @@ const TablePagination = React.forwardRef(function TablePagination(inProps, ref) 
             ))}
           </select>
         )}
-        <p className={classes.displayedRows} style={{ ...body2, flexShrink: 0, margin: 0 }}>
+        <p style={{ ...body2, flexShrink: 0, margin: 0 }}>
           {labelDisplayedRows({
             from: count === 0 ? 0 : page * rowsPerPage + 1,
             to: getLabelDisplayedRowsTo(),
@@ -121,7 +94,6 @@ const TablePagination = React.forwardRef(function TablePagination(inProps, ref) 
           })}
         </p>
         <TablePaginationActions
-          className={classes.actions}
           count={count}
           onPageChange={onPageChange}
           page={page}
@@ -142,10 +114,6 @@ TablePagination.propTypes /* remove-proptypes */ = {
   // │ These PropTypes are generated from the TypeScript type definitions. │
   // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
   // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
   /**
    * @ignore
    */
