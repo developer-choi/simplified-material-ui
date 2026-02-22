@@ -1,7 +1,6 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import composeClasses from '@mui/utils/composeClasses';
 import refType from '@mui/utils/refType';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import Input from '../../../form/Input';
@@ -11,22 +10,10 @@ import InputLabel from '../../../form/InputLabel';
 import FormControl from '../../../form/FormControl';
 import FormHelperText from '../../../form/FormHelperText';
 import Select from '../../../form/Select';
-import { getTextFieldUtilityClass } from './textFieldClasses';
-
 const variantComponent = {
   standard: Input,
   filled: FilledInput,
   outlined: OutlinedInput,
-};
-
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-
-  const slots = {
-    root: ['root'],
-  };
-
-  return composeClasses(slots, getTextFieldUtilityClass, classes);
 };
 
 /**
@@ -99,21 +86,6 @@ const TextField = React.forwardRef(function TextField(inProps, ref) {
     ...other
   } = props;
 
-  const ownerState = {
-    ...props,
-    autoFocus,
-    color,
-    disabled,
-    error,
-    fullWidth,
-    multiline,
-    required,
-    select,
-    variant,
-  };
-
-  const classes = useUtilityClasses(ownerState);
-
   const generatedId = React.useId();
   const rootId = idOverride || generatedId;
   const helperTextId = helperText && rootId ? `${rootId}-helper-text` : undefined;
@@ -163,7 +135,7 @@ const TextField = React.forwardRef(function TextField(inProps, ref) {
   return (
     <FormControl
       ref={ref}
-      className={`${classes.root}${className ? ` ${className}` : ''}`}
+      className={className}
       disabled={disabled}
       error={error}
       fullWidth={fullWidth}
@@ -222,10 +194,6 @@ TextField.propTypes /* remove-proptypes */ = {
    * @ignore
    */
   children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
   /**
    * @ignore
    */
