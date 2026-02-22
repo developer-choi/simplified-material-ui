@@ -25,6 +25,7 @@
 - [x] TableSortLabel
 - [x] TabScrollButton
 - [x] TablePaginationActions
+- [x] TablePagination
 
 ## 다음 분석 목록 📋
 
@@ -66,6 +67,7 @@
 ## 분석 우선순위
 
 1. **다음**: -
+
 
 ---
 
