@@ -24,6 +24,7 @@
 - [x] Table 가족 (TableContainer, Table, TableBody, TableHead, TableFooter, TableRow, TableCell)
 - [x] TableSortLabel
 - [x] TabScrollButton
+- [x] TablePaginationActions
 
 ## 다음 분석 목록 📋
 
