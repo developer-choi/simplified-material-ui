@@ -2,91 +2,79 @@
 
 ## 완료 ✅
 
+### 초기 (대규모 단순화)
+- [x] AppBar
+- [x] Avatar
+- [x] Dialog (+ DialogTitle, DialogContent, DialogActions, DialogContentText)
+- [x] Drawer
+- [x] FocusTrap
+- [x] Modal
+- [x] Portal
+
+### 개별 단순화
 - [x] Box
 - [x] ButtonGroup
 - [x] CircularProgress
 - [x] Container
 - [x] Fab
 - [x] FormControlLabel
+- [x] Grid
 - [x] Grow
+- [x] LinearProgress
 - [x] Link
 - [x] MobileStepper
 - [x] RadioGroup
-- [x] LinearProgress
 - [x] Slide
 - [x] Snackbar
 - [x] SnackbarContent
-- [x] SpeedDialIcon
-- [x] SpeedDialAction
 - [x] SpeedDial
-- [x] Grid
-- [x] Zoom
+- [x] SpeedDialAction
+- [x] SpeedDialIcon
+- [x] Stack
+- [x] StepIcon
+- [x] SvgIcon
+- [x] Switch
+- [x] Tab
 - [x] Table 가족 (TableContainer, Table, TableBody, TableHead, TableFooter, TableRow, TableCell)
+- [x] TablePagination
+- [x] TablePaginationActions
 - [x] TableSortLabel
 - [x] TabScrollButton
-- [x] TablePaginationActions
-- [x] TablePagination
-- [x] Stack
 - [x] TextField
-
-## 다음 분석 목록 📋
-
-### Layout Components
-- [x] Grid
-
-### Transitions
-- [x] Slide
-
-### Progress Indicators
-
-### Navigation
-- [x] Link
-- [x] MobileStepper
-- [x] SpeedDialIcon
-- [x] SpeedDialAction
-- [x] SpeedDial
-
-
-### Inputs
-- [x] NativeSelect
-- [x] RadioGroup
-- [x] Rating
-- [x] Select
-- [x] Slider
-
-### Feedback
-- [x] Snackbar
-- [x] SnackbarContent
-
-### Utils
-- [-] NoSsr (간소화 안함)
-- [-] ScopedCssBaseline (간소화 안함)
-- [-] CssBaseline (간소화 안함)
-- [-] GlobalStyles (간소화 안함)
+- [x] ToggleButton
+- [x] ToggleButtonGroup
+- [x] Toolbar
+- [x] Typography
+- [x] Zoom
 
 ---
 
-## 분석 우선순위
+## 남은 분석 목록 📋
 
-1. **다음**: -
+| 컴포넌트 | 줄수 | 난이도 | 특징 |
+|---------|------|--------|------|
+| Tabs | 1103 | 상 | 스크롤, ResizeObserver, 복잡한 이벤트 처리 |
+| SwipeableDrawer | 805 | 상 | 터치 이벤트, velocity, 스와이프 제스처 |
+| TextareaAutosize | 295 | 중 | useEffect로 높이 자동 조정, ResizeObserver |
 
+---
+
+## 간소화 안함 ❌
+
+| 항목 | 이유 |
+|------|------|
+| NoSsr | 서버사이드 렌더링 제어 목적, 핵심 로직 자체가 단순 |
+| CssBaseline | 글로벌 CSS 리셋, 간소화 불가 |
+| ScopedCssBaseline | CssBaseline의 scoped 버전 |
+| GlobalStyles | 글로벌 스타일 주입 유틸 |
 
 ---
 
 ## 제외 대상
 
-다음 항목들은 컴포넌트가 아니므로 분석 대상에서 제외:
-- className
-- colors
-- darkScrollbar
-- DefaultPropsProvider
-- generateUtilityClass
-- generateUtilityClasses
-- InitColorSchemeScript
-- internal
-- locale
+컴포넌트가 아니므로 분석 대상에서 제외:
+- className, colors, darkScrollbar
+- DefaultPropsProvider, generateUtilityClass, generateUtilityClasses
+- GridLegacy (deprecated), InitColorSchemeScript, internal, locale
 - OverridableComponent
-- PigmentContainer (Pigment CSS 전용)
-- PigmentGrid (Pigment CSS 전용)
-- PigmentStack (Pigment CSS 전용)
-- GridLegacy (deprecated, Grid v2로 대체됨)
+- PigmentContainer, PigmentGrid, PigmentStack (Pigment CSS 전용)
