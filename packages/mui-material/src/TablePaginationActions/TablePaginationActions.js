@@ -1,19 +1,7 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import composeClasses from '@mui/utils/composeClasses';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import { getTablePaginationActionsUtilityClass } from './tablePaginationActionsClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes } = ownerState;
-
-  const slots = {
-    root: ['root'],
-  };
-
-  return composeClasses(slots, getTablePaginationActionsUtilityClass, classes);
-};
 
 const FirstPageIcon = () => (
   <svg viewBox="0 0 24 24" aria-hidden="true"
@@ -48,7 +36,6 @@ const TablePaginationActions = React.forwardRef(function TablePaginationActions(
 
   const {
     className,
-    classes: classesProp,
     count,
     disabled = false,
     getItemAriaLabel,
@@ -60,9 +47,6 @@ const TablePaginationActions = React.forwardRef(function TablePaginationActions(
     style,
     ...other
   } = props;
-
-  const ownerState = props;
-  const classes = useUtilityClasses(ownerState);
 
   const handleFirstPageButtonClick = (event) => onPageChange(event, 0);
   const handleBackButtonClick = (event) => onPageChange(event, page - 1);
@@ -85,12 +69,7 @@ const TablePaginationActions = React.forwardRef(function TablePaginationActions(
   };
 
   return (
-    <div
-      ref={ref}
-      className={[classes.root, className].filter(Boolean).join(' ')}
-      style={style}
-      {...other}
-    >
+    <div ref={ref} className={className} style={style} {...other}>
       {showFirstButton && (
         <button
           onClick={handleFirstPageButtonClick}
@@ -137,7 +116,6 @@ const TablePaginationActions = React.forwardRef(function TablePaginationActions(
 
 TablePaginationActions.propTypes /* remove-proptypes */ = {
   children: PropTypes.node,
-  classes: PropTypes.object,
   className: PropTypes.string,
   count: PropTypes.number.isRequired,
   disabled: PropTypes.bool,
