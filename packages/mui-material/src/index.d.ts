@@ -304,29 +304,29 @@ export * from '../../navigation/SpeedDialIcon';
 export { default as Stack } from './Stack';
 export * from './Stack';
 
-export { default as Step } from './Step';
-export * from './Step';
+export { default as Step } from '../../navigation/Step';
+export * from '../../navigation/Step';
 
-export { default as StepButton } from './StepButton';
-export * from './StepButton';
+export { default as StepButton } from '../../navigation/StepButton';
+export * from '../../navigation/StepButton';
 
-export { default as StepConnector } from './StepConnector';
-export * from './StepConnector';
+export { default as StepConnector } from '../../navigation/StepConnector';
+export * from '../../navigation/StepConnector';
 
-export { default as StepContent } from './StepContent';
-export * from './StepContent';
+export { default as StepContent } from '../../navigation/StepContent';
+export * from '../../navigation/StepContent';
 
 export { default as StepIcon } from './StepIcon';
 export * from './StepIcon';
 
-export { default as StepLabel } from './StepLabel';
-export * from './StepLabel';
+export { default as StepLabel } from '../../navigation/StepLabel';
+export * from '../../navigation/StepLabel';
 
-export { default as Stepper } from './Stepper';
-export * from './Stepper';
+export { default as Stepper } from '../../navigation/Stepper';
+export * from '../../navigation/Stepper';
 
-export { default as SvgIcon } from './SvgIcon';
-export * from './SvgIcon';
+export { default as SvgIcon } from '../../data-display/SvgIcon';
+export * from '../../data-display/SvgIcon';
 
 export { default as SwipeableDrawer } from './SwipeableDrawer';
 export * from './SwipeableDrawer';
@@ -379,20 +379,20 @@ export * from './TextField';
 export { default as TextareaAutosize } from './TextareaAutosize';
 export * from './TextareaAutosize';
 
-export { default as ToggleButton } from './ToggleButton';
-export * from './ToggleButton';
+export { default as ToggleButton } from '../../button/ToggleButton';
+export * from '../../button/ToggleButton';
 
-export { default as ToggleButtonGroup } from './ToggleButtonGroup';
-export * from './ToggleButtonGroup';
+export { default as ToggleButtonGroup } from '../../button/ToggleButtonGroup';
+export * from '../../button/ToggleButtonGroup';
 
-export { default as Toolbar } from './Toolbar';
-export * from './Toolbar';
+export { default as Toolbar } from '../../surfaces/Toolbar';
+export * from '../../surfaces/Toolbar';
 
 export { default as Tooltip } from '../../data-display/Tooltip';
 export * from '../../data-display/Tooltip';
 
-export { default as Typography } from './Typography';
-export * from './Typography';
+export { default as Typography } from '../../data-display/Typography';
+export * from '../../data-display/Typography';
 
 export { default as useMediaQuery } from './useMediaQuery';
 export * from './useMediaQuery';

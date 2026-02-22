@@ -11,7 +11,7 @@ import { inputClasses } from '../../../form/Input';
 import { outlinedInputClasses } from '../../../form/OutlinedInput';
 import { filledInputClasses } from '../../../form/FilledInput';
 import IconButton, { iconButtonClasses } from '../../../form/IconButton';
-import { svgIconClasses } from '@mui/material/SvgIcon';
+import { svgIconClasses } from '../../../data-display/SvgIcon';
 import { createSvgIcon } from '@mui/material/utils';
 import describeConformance from '../../test/describeConformance';
 

@@ -6,7 +6,7 @@ import { Theme } from '../styles';
 import TabScrollButton, { TabScrollButtonProps } from '../TabScrollButton';
 import { OverridableComponent, OverrideProps } from '../OverridableComponent';
 import { TabsClasses } from './tabsClasses';
-import SvgIcon from '../SvgIcon';
+import SvgIcon from '../../../data-display/SvgIcon';
 
 export interface TabsPropsIndicatorColorOverrides {}
 

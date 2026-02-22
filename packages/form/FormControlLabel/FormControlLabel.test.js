@@ -6,7 +6,7 @@ import FormControlLabel, {
 } from './index';
 import Checkbox from '../Checkbox';
 import FormControl from '../FormControl';
-import Typography from '@mui/material/Typography';
+import Typography from '../../data-display/Typography';
 import describeConformance from '../../mui-material/test/describeConformance';
 
 describe('<FormControlLabel />', () => {

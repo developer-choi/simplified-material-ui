@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { isFragment } from 'react-is';
 import { styled } from '@mui/material/zero-styled';
-import Typography from '@mui/material/Typography';
+import Typography from '../../data-display/Typography';
 import BreadcrumbCollapsed from './BreadcrumbCollapsed';
 
 const BreadcrumbsRoot = styled(Typography, {

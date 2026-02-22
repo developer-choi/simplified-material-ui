@@ -1,5 +1,5 @@
 import TablePagination, { TablePaginationOwnerState } from '@mui/material/TablePagination';
-import SvgIcon from '@mui/material/SvgIcon';
+import SvgIcon from '../../../data-display/SvgIcon';
 import IconButton, { IconButtonProps } from '../../../form/IconButton';
 import { expectType } from '@mui/types';
 

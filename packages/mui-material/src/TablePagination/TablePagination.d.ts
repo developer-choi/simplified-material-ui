@@ -11,7 +11,7 @@ import { IconButtonProps } from '../../../form/IconButton';
 import { SelectProps } from '../../../form/Select';
 import { TablePaginationClasses } from './tablePaginationClasses';
 import { CreateSlotsAndSlotProps, SlotProps } from '../utils/types';
-import { ToolbarProps } from '../Toolbar';
+import { ToolbarProps } from '../../../surfaces/Toolbar';
 import { MenuItemProps } from '../../../menu/MenuItem';
 
 export interface LabelDisplayedRowsArgs {

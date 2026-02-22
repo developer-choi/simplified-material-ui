@@ -13,7 +13,7 @@ import {
 import describeSkipIf from '@mui/internal-test-utils/describeSkipIf';
 import Tab from '@mui/material/Tab';
 import Tabs, { tabsClasses as classes } from '@mui/material/Tabs';
-import { svgIconClasses } from '@mui/material/SvgIcon';
+import { svgIconClasses } from '../../../data-display/SvgIcon';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { createSvgIcon } from '@mui/material/utils';
 import capitalize from '../utils/capitalize';

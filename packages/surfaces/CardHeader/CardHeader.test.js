@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { createRenderer } from '@mui/internal-test-utils';
-import { typographyClasses } from '@mui/material/Typography';
+import { typographyClasses } from '../../data-display/Typography';
 import Avatar from '../../data-display/Avatar';
 import IconButton from '../../form/IconButton';
 import CardHeader, { cardHeaderClasses as classes } from './index';

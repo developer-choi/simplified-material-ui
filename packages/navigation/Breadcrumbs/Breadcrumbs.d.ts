@@ -4,7 +4,7 @@ import { SlotComponentProps } from '@mui/material/utils/types';
 import { Theme } from '@mui/material/styles';
 import { OverridableComponent, OverrideProps } from '@mui/material/OverridableComponent';
 import { BreadcrumbsClasses } from './breadcrumbsClasses';
-import SvgIcon from '@mui/material/SvgIcon';
+import SvgIcon from '../../data-display/SvgIcon';
 
 export interface BreadcrumbsCollapsedIconSlotPropsOverrides {}
 

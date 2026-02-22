@@ -6,7 +6,7 @@ import {
   strictModeDoubleLoggingSuppressed,
 } from '@mui/internal-test-utils';
 import Breadcrumbs, { breadcrumbsClasses as classes } from './index';
-import Typography from '@mui/material/Typography';
+import Typography from '../../data-display/Typography';
 import FirstPageIcon from '@mui/material/internal/svg-icons/FirstPage';
 import describeConformance from '../../mui-material/test/describeConformance';
 

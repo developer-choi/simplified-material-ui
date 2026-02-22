@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { spy } from 'sinon';
 import { act, createRenderer, fireEvent, screen } from '@mui/internal-test-utils';
 import Link, { linkClasses as classes } from './index';
-import Typography, { typographyClasses } from '@mui/material/Typography';
+import Typography, { typographyClasses } from '../../data-display/Typography';
 import describeConformance from '../../mui-material/test/describeConformance';
 
 function focusVisible(element) {

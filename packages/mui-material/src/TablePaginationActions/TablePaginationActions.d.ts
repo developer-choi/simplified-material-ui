@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IconButtonProps } from '../../../form/IconButton/IconButton';
-import { SvgIconProps } from '../SvgIcon';
+import { SvgIconProps } from '../../../data-display/SvgIcon';
 
 export interface TablePaginationActionsProps extends React.HTMLAttributes<HTMLDivElement> {
   /**

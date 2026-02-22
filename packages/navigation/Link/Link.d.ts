@@ -3,7 +3,7 @@ import { DistributiveOmit } from '@mui/types';
 import { SxProps } from '@mui/system';
 import { OverridableComponent, OverrideProps } from '@mui/material/OverridableComponent';
 import { Theme } from '@mui/material/styles';
-import { TypographyOwnProps } from '@mui/material/Typography';
+import { TypographyOwnProps } from '../../data-display/Typography';
 import { LinkClasses } from './linkClasses';
 
 export interface LinkOwnProps extends DistributiveOmit<LinkBaseProps, 'classes'> {

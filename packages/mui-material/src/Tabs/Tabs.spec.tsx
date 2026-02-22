@@ -2,7 +2,7 @@ import * as React from 'react';
 import { expectType } from '@mui/types';
 import { createTheme } from '@mui/material/styles';
 import Tabs from '@mui/material/Tabs';
-import SvgIcon from '@mui/material/SvgIcon';
+import SvgIcon from '../../../data-display/SvgIcon';
 
 function testOnChange() {
   function handleTabsChange(event: React.SyntheticEvent, tabsValue: unknown) {}

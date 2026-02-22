@@ -2,7 +2,7 @@ import * as React from 'react';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
 import { InternalStandardProps as StandardProps } from '@mui/material/internal';
-import Typography, { TypographyProps } from '@mui/material/Typography';
+import Typography, { TypographyProps } from '../../data-display/Typography';
 import { FormControlLabelClasses } from './formControlLabelClasses';
 import { CreateSlotsAndSlotProps, SlotProps } from '@mui/material/utils/types';
 

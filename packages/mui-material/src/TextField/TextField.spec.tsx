@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { expectType } from '@mui/types';
 import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
+import Typography from '../../../data-display/Typography';
 import { FormHelperTextProps } from '../../../form/FormHelperText';
 
 {

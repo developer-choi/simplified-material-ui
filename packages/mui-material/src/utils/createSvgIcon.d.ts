@@ -1,3 +1,3 @@
-import SvgIcon from '../SvgIcon';
+import SvgIcon from '../../../data-display/SvgIcon';
 
 export default function createSvgIcon(path: React.ReactNode, displayName: string): typeof SvgIcon;

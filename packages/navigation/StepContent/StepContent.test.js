@@ -1,0 +1,89 @@
+import { expect } from 'chai';
+import { createRenderer, screen } from '@mui/internal-test-utils';
+import { collapseClasses } from '../../utils/Collapse';
+import Stepper from '../Stepper';
+import Step from '../Step';
+import StepContent, { stepContentClasses as classes } from './index';
+import describeConformance from '../../mui-material/test/describeConformance';
+
+describe('<StepContent />', () => {
+  const { render } = createRenderer();
+
+  describeConformance(<StepContent />, () => ({
+    classes,
+    inheritComponent: 'div',
+    muiName: 'MuiStepContent',
+    refInstanceof: window.HTMLDivElement,
+    render: (node) => {
+      const { container, ...other } = render(
+        <Stepper orientation="vertical">
+          <Step>{node}</Step>
+        </Stepper>,
+      );
+      return { container: container.firstChild.firstChild, ...other };
+    },
+    skip: ['componentProp', 'componentsProp', 'themeVariants'],
+    slots: {
+      transition: {
+        expectedClassName: classes.transition,
+        testWithElement: null,
+      },
+    },
+  }));
+
+  it('renders children inside an Collapse component', () => {
+    const { container } = render(
+      <Stepper orientation="vertical">
+        <Step>
+          <StepContent>
+            <div className="test-content">This is my content!</div>
+          </StepContent>
+        </Step>
+      </Stepper>,
+    );
+
+    const collapse = container.querySelector(`.${collapseClasses.root}`);
+    const innerDiv = container.querySelector(`.test-content`);
+
+    expect(collapse).not.to.equal(null);
+    expect(innerDiv).not.to.equal(null);
+    screen.getByText('This is my content!');
+  });
+
+  describe('prop: transitionDuration', () => {
+    it('should use default Collapse component', () => {
+      const { container } = render(
+        <Stepper orientation="vertical">
+          <Step>
+            <StepContent>
+              <div />
+            </StepContent>
+          </Step>
+        </Stepper>,
+      );
+
+      const collapse = container.querySelector(`.${collapseClasses.root}`);
+      expect(collapse).not.to.equal(null);
+    });
+
+    it('should use custom TransitionComponent', () => {
+      function TransitionComponent() {
+        return <div data-testid="custom-transition" />;
+      }
+
+      const { container } = render(
+        <Stepper orientation="vertical">
+          <Step>
+            <StepContent TransitionComponent={TransitionComponent}>
+              <div />
+            </StepContent>
+          </Step>
+        </Stepper>,
+      );
+
+      const collapse = container.querySelector(`.${collapseClasses.container}`);
+      expect(collapse).to.equal(null);
+      screen.getByTestId('custom-transition');
+    });
+  });
+});

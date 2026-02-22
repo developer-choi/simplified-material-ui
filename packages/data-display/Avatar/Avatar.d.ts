@@ -5,7 +5,7 @@ import { Theme } from '@mui/material/styles';
 import { OverridableComponent, OverrideProps } from '@mui/material/OverridableComponent';
 import { AvatarClasses } from './avatarClasses';
 import { CreateSlotsAndSlotProps, SlotProps } from '@mui/material/utils/types';
-import { SvgIconProps } from '@mui/material/SvgIcon';
+import { SvgIconProps } from '../SvgIcon';
 
 export interface AvatarSlots {
   /**

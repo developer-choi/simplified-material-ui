@@ -12,7 +12,7 @@ import InputBase from '../../../form/InputBase';
 import MenuItem from '../../../menu/MenuItem';
 import Select from '../../../form/Select';
 import TableCell from '../TableCell';
-import Toolbar from '../Toolbar';
+import Toolbar from '../../../surfaces/Toolbar';
 import TablePaginationActions from '../TablePaginationActions';
 import useId from '../utils/useId';
 import tablePaginationClasses, { getTablePaginationUtilityClass } from './tablePaginationClasses';

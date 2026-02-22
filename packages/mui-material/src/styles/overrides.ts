@@ -89,14 +89,14 @@ import { SpeedDialClassKey } from '../../../navigation/SpeedDial';
 import { SpeedDialActionClassKey } from '../../../navigation/SpeedDialAction';
 import { SpeedDialIconClassKey } from '../../../navigation/SpeedDialIcon';
 import { StackClassKey } from '../Stack';
-import { StepButtonClasskey } from '../StepButton';
-import { StepClasskey } from '../Step';
-import { StepConnectorClasskey } from '../StepConnector';
-import { StepContentClasskey } from '../StepContent';
+import { StepButtonClasskey } from '../../../navigation/StepButton';
+import { StepClasskey } from '../../../navigation/Step';
+import { StepConnectorClasskey } from '../../../navigation/StepConnector';
+import { StepContentClasskey } from '../../../navigation/StepContent';
 import { StepIconClasskey } from '../StepIcon';
-import { StepLabelClasskey } from '../StepLabel';
-import { StepperClasskey } from '../Stepper';
-import { SvgIconClassKey } from '../SvgIcon';
+import { StepLabelClasskey } from '../../../navigation/StepLabel';
+import { StepperClasskey } from '../../../navigation/Stepper';
+import { SvgIconClassKey } from '../../../data-display/SvgIcon';
 import { SwitchClassKey } from '../Switch';
 import { TabClassKey } from '../Tab';
 import { TableBodyClassKey } from '../TableBody';
@@ -111,12 +111,12 @@ import { TableRowClassKey } from '../TableRow';
 import { TableSortLabelClassKey } from '../TableSortLabel';
 import { TabsClassKey } from '../Tabs';
 import { TextFieldClassKey } from '../TextField';
-import { ToggleButtonClassKey } from '../ToggleButton';
-import { ToggleButtonGroupClassKey } from '../ToggleButtonGroup';
-import { ToolbarClassKey } from '../Toolbar';
+import { ToggleButtonClassKey } from '../../../button/ToggleButton';
+import { ToggleButtonGroupClassKey } from '../../../button/ToggleButtonGroup';
+import { ToolbarClassKey } from '../../../surfaces/Toolbar';
 import { TooltipClassKey } from '../../../data-display/Tooltip';
 import { TouchRippleClassKey } from '../../../form/ButtonBase/TouchRipple';
-import { TypographyClassKey } from '../Typography';
+import { TypographyClassKey } from '../../../data-display/Typography';
 
 export type OverridesStyleRules<
   ClassKey extends string = string,

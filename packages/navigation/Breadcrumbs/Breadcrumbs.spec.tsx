@@ -1,5 +1,5 @@
 import Breadcrumbs from './index';
-import SvgIcon from '@mui/material/SvgIcon';
+import SvgIcon from '../../data-display/SvgIcon';
 
 function SampleIcon() {
   return (

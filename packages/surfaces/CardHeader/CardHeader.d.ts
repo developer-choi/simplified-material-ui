@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SxProps } from '@mui/system';
-import { TypographyProps } from '@mui/material/Typography';
+import { TypographyProps } from '../../data-display/Typography';
 import { OverridableComponent, OverrideProps } from '@mui/material/OverridableComponent';
 import { Theme } from '@mui/material/styles';
 import { CreateSlotsAndSlotProps, SlotProps } from '@mui/material/utils/types';

@@ -1,7 +1,7 @@
 // testing docs/src/pages/customization/typography/typography.md
 import * as React from 'react';
 import { createTheme } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
+import Typography from '../../../../data-display/Typography';
 
 declare module '@mui/material/styles' {
   interface TypographyVariants {
@@ -15,7 +15,7 @@ declare module '@mui/material/styles' {
 }
 
 // Update the Typography's variant prop options
-declare module '@mui/material/Typography' {
+declare module '../../../../data-display/Typography' {
   interface TypographyPropsVariantOverrides {
     poster: true;
     h3: false;

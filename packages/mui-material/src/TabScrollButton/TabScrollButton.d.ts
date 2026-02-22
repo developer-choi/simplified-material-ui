@@ -3,7 +3,7 @@ import { SxProps } from '@mui/system';
 import { SlotComponentProps } from '../utils/types';
 import { ButtonBaseProps } from '../../../form/ButtonBase';
 import { Theme } from '../styles';
-import SvgIcon from '../SvgIcon';
+import SvgIcon from '../../../data-display/SvgIcon';
 import { TabScrollButtonClasses } from './tabScrollButtonClasses';
 
 export interface TabScrollButtonStartIconSlotPropsOverrides {}

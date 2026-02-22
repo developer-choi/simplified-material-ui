@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import SvgIcon from '../SvgIcon';
+import SvgIcon from '../../../data-display/SvgIcon';
 
 /**
  * Private module reserved for @mui packages.

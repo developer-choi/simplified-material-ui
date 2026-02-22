@@ -4,7 +4,7 @@ import {
   strictModeDoubleLoggingSuppressed,
   screen,
 } from '@mui/internal-test-utils';
-import { typographyClasses } from '@mui/material/Typography';
+import { typographyClasses } from '../../data-display/Typography';
 import InputAdornment, { inputAdornmentClasses as classes } from './index';
 import TextField from '@mui/material/TextField';
 import FormControl from '../FormControl';
