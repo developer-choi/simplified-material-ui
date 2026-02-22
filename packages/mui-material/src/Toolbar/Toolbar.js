@@ -1,10 +1,7 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import { useDefaultProps } from '../DefaultPropsProvider';
 
-const Toolbar = React.forwardRef(function Toolbar(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiToolbar' });
+const Toolbar = React.forwardRef(function Toolbar(props, ref) {
   const {
     className,
     disableGutters = false,
@@ -30,51 +27,5 @@ const Toolbar = React.forwardRef(function Toolbar(inProps, ref) {
     />
   );
 });
-
-Toolbar.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * The Toolbar children, usually a mixture of `IconButton`, `Button` and `Typography`.
-   * The Toolbar is a flex container, allowing flex item properties to be used to lay out the children.
-   */
-  children: PropTypes.node,
-  /**
-   * Override or extend the styles applied to the component.
-   */
-  classes: PropTypes.object,
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: PropTypes.elementType,
-  /**
-   * If `true`, disables gutter padding.
-   * @default false
-   */
-  disableGutters: PropTypes.bool,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-  /**
-   * The variant to use.
-   * @default 'regular'
-   */
-  variant: PropTypes /* @typescript-to-proptypes-ignore */.oneOfType([
-    PropTypes.oneOf(['dense', 'regular']),
-    PropTypes.string,
-  ]),
-};
 
 export default Toolbar;
