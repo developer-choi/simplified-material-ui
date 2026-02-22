@@ -1,19 +1,8 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
 import { useDefaultProps } from '../DefaultPropsProvider';
 import StepContext from '../Step/StepContext';
-import { getStepContentUtilityClass } from './stepContentClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, last } = ownerState;
-
-  const slots = { root: ['root', last && 'last'] };
-
-  return composeClasses(slots, getStepContentUtilityClass, classes);
-};
 
 const StepContent = React.forwardRef(function StepContent(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiStepContent' });
@@ -21,12 +10,9 @@ const StepContent = React.forwardRef(function StepContent(inProps, ref) {
 
   const { active, last } = React.useContext(StepContext);
 
-  const ownerState = { ...props, last };
-  const classes = useUtilityClasses(ownerState);
-
   return (
     <div
-      className={clsx(classes.root, className)}
+      className={className}
       ref={ref}
       style={{
         marginLeft: 12,
