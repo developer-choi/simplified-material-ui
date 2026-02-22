@@ -1,6 +1,5 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import TableContext from '../Table/TableContext';
 import Tablelvl2Context from '../Table/Tablelvl2Context';
 
@@ -94,29 +93,5 @@ const TableCell = React.forwardRef(function TableCell(props, ref) {
     />
   );
 });
-
-TableCell.propTypes /* remove-proptypes */ = {
-  align: PropTypes.oneOf(['center', 'inherit', 'justify', 'left', 'right']),
-  children: PropTypes.node,
-  classes: PropTypes.object,
-  className: PropTypes.string,
-  component: PropTypes.elementType,
-  padding: PropTypes.oneOf(['checkbox', 'none', 'normal']),
-  scope: PropTypes.string,
-  size: PropTypes.oneOfType([
-    PropTypes.oneOf(['medium', 'small']),
-    PropTypes.string,
-  ]),
-  sortDirection: PropTypes.oneOf(['asc', 'desc', false]),
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-  variant: PropTypes.oneOfType([
-    PropTypes.oneOf(['body', 'footer', 'head']),
-    PropTypes.string,
-  ]),
-};
 
 export default TableCell;
