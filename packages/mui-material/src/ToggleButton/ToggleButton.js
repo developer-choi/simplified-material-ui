@@ -1,30 +1,9 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
-import capitalize from '../utils/capitalize';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import toggleButtonClasses, { getToggleButtonUtilityClass } from './toggleButtonClasses';
 import ToggleButtonGroupContext from '../ToggleButtonGroup/ToggleButtonGroupContext';
 import isValueSelected from '../ToggleButtonGroup/isValueSelected';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, fullWidth, selected, disabled, size, color } = ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      selected && 'selected',
-      disabled && 'disabled',
-      fullWidth && 'fullWidth',
-      `size${capitalize(size)}`,
-      color,
-    ],
-  };
-
-  return composeClasses(slots, getToggleButtonUtilityClass, classes);
-};
 
 const selectedColors = {
   standard:  { color: 'rgba(0,0,0,0.87)', backgroundColor: 'rgba(0,0,0,0.08)' },
@@ -64,17 +43,6 @@ const ToggleButton = React.forwardRef(function ToggleButton(inProps, ref) {
   const onChange = groupContext.onChange ?? onChangeProp;
   const selected = selectedProp !== undefined ? selectedProp : isValueSelected(value, contextValue);
 
-  const ownerState = {
-    ...props,
-    color,
-    disabled,
-    fullWidth,
-    size,
-    selected,
-  };
-
-  const classes = useUtilityClasses(ownerState);
-
   const handleChange = (event) => {
     if (onClick) {
       onClick(event, value);
@@ -87,7 +55,7 @@ const ToggleButton = React.forwardRef(function ToggleButton(inProps, ref) {
 
   return (
     <button
-      className={clsx(classes.root, className)}
+      className={className}
       ref={ref}
       disabled={disabled}
       aria-pressed={selected}
