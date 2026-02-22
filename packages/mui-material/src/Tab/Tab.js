@@ -1,30 +1,7 @@
 'use client';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import composeClasses from '@mui/utils/composeClasses';
-import capitalize from '../utils/capitalize';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import tabClasses, { getTabUtilityClass } from './tabClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, textColor, fullWidth, wrapped, icon, label, selected, disabled } = ownerState;
-
-  const slots = {
-    root: [
-      'root',
-      icon && label && 'labelIcon',
-      `textColor${capitalize(textColor)}`,
-      fullWidth && 'fullWidth',
-      wrapped && 'wrapped',
-      selected && 'selected',
-      disabled && 'disabled',
-    ],
-    icon: ['iconWrapper', 'icon'],
-  };
-
-  return composeClasses(slots, getTabUtilityClass, classes);
-};
 
 const tabSelectedColor = { primary: '#1976d2', secondary: '#9c27b0' };
 
@@ -56,21 +33,6 @@ const Tab = React.forwardRef(function Tab(inProps, ref) {
     ...other
   } = props;
 
-  const ownerState = {
-    ...props,
-    disabled,
-    disableFocusRipple,
-    selected,
-    icon: !!iconProp,
-    iconPosition,
-    label: !!label,
-    fullWidth,
-    textColor,
-    wrapped,
-  };
-
-  const classes = useUtilityClasses(ownerState);
-
   const handleClick = (event) => {
     if (!selected && onChange) onChange(event, value);
     if (onClick) onClick(event);
@@ -99,7 +61,7 @@ const Tab = React.forwardRef(function Tab(inProps, ref) {
 
   return (
     <button
-      className={clsx(classes.root, className)}
+      className={className}
       ref={ref}
       role="tab"
       aria-selected={selected}
