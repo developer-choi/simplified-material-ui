@@ -2,34 +2,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import refType from '@mui/utils/refType';
-import composeClasses from '@mui/utils/composeClasses';
-import capitalize from '../utils/capitalize';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import switchClasses, { getSwitchUtilityClass } from './switchClasses';
-
-const useUtilityClasses = (ownerState) => {
-  const { classes, edge, size, color, checked, disabled } = ownerState;
-
-  const slots = {
-    root: ['root', edge && `edge${capitalize(edge)}`, `size${capitalize(size)}`],
-    switchBase: [
-      'switchBase',
-      `color${capitalize(color)}`,
-      checked && 'checked',
-      disabled && 'disabled',
-    ],
-    thumb: ['thumb'],
-    track: ['track'],
-    input: ['input'],
-  };
-
-  const composedClasses = composeClasses(slots, getSwitchUtilityClass, classes);
-
-  return {
-    ...classes,
-    ...composedClasses,
-  };
-};
 
 const Switch = React.forwardRef(function Switch(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiSwitch' });
@@ -52,17 +25,6 @@ const Switch = React.forwardRef(function Switch(inProps, ref) {
     if (checkedProp === undefined) setInternalChecked(event.target.checked);
     onChange?.(event);
   };
-
-  const ownerState = {
-    ...props,
-    color: props.color || 'primary',
-    edge,
-    size,
-    checked: isChecked,
-    disabled,
-  };
-
-  const classes = useUtilityClasses(ownerState);
 
   const isSmall = size === 'small';
   const thumbSize = isSmall ? 16 : 20;
