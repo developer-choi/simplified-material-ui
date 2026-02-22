@@ -1,9 +1,5 @@
 'use client';
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import integerPropType from '@mui/utils/integerPropType';
-import chainPropTypes from '@mui/utils/chainPropTypes';
-import { useDefaultProps } from '../DefaultPropsProvider';
 import TableCell from '../TableCell';
 import TablePaginationActions from '../TablePaginationActions';
 
@@ -15,11 +11,7 @@ function defaultGetAriaLabel(type) {
   return `Go to ${type} page`;
 }
 
-/**
- * A `TableCell` based component for placing inside `TableFooter` for pagination.
- */
-const TablePagination = React.forwardRef(function TablePagination(inProps, ref) {
-  const props = useDefaultProps({ props: inProps, name: 'MuiTablePagination' });
+const TablePagination = React.forwardRef(function TablePagination(props, ref) {
   const {
     colSpan: colSpanProp,
     count,
@@ -108,127 +100,5 @@ const TablePagination = React.forwardRef(function TablePagination(inProps, ref) 
     </TableCell>
   );
 });
-
-TablePagination.propTypes /* remove-proptypes */ = {
-  // ┌────────────────────────────── Warning ──────────────────────────────┐
-  // │ These PropTypes are generated from the TypeScript type definitions. │
-  // │    To update them, edit the d.ts file and run `pnpm proptypes`.     │
-  // └─────────────────────────────────────────────────────────────────────┘
-  /**
-   * @ignore
-   */
-  colSpan: PropTypes.number,
-  /**
-   * The total number of rows.
-   *
-   * To enable server side pagination for an unknown number of items, provide -1.
-   */
-  count: integerPropType.isRequired,
-  /**
-   * If `true`, the component is disabled.
-   * @default false
-   */
-  disabled: PropTypes.bool,
-  /**
-   * Accepts a function which returns a string value that provides a user-friendly name for the current page.
-   * This is important for screen reader users.
-   *
-   * For localization purposes, you can use the provided [translations](https://mui.com/material-ui/guides/localization/).
-   * @param {string} type The link or button type to format ('first' | 'last' | 'next' | 'previous').
-   * @returns {string}
-   * @default function defaultGetAriaLabel(type) {
-   *   return `Go to ${type} page`;
-   * }
-   */
-  getItemAriaLabel: PropTypes.func,
-  /**
-   * Customize the displayed rows label. Invoked with a `{ from, to, count, page }`
-   * object.
-   *
-   * For localization purposes, you can use the provided [translations](https://mui.com/material-ui/guides/localization/).
-   * @default function defaultLabelDisplayedRows({ from, to, count }) {
-   *   return `${from}–${to} of ${count !== -1 ? count : `more than ${to}`}`;
-   * }
-   */
-  labelDisplayedRows: PropTypes.func,
-  /**
-   * Customize the rows per page label.
-   *
-   * For localization purposes, you can use the provided [translations](https://mui.com/material-ui/guides/localization/).
-   * @default 'Rows per page:'
-   */
-  labelRowsPerPage: PropTypes.node,
-  /**
-   * Callback fired when the page is changed.
-   *
-   * @param {React.MouseEvent<HTMLButtonElement> | null} event The event source of the callback.
-   * @param {number} page The page selected.
-   */
-  onPageChange: PropTypes.func.isRequired,
-  /**
-   * Callback fired when the number of rows per page is changed.
-   *
-   * @param {React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>} event The event source of the callback.
-   */
-  onRowsPerPageChange: PropTypes.func,
-  /**
-   * The zero-based index of the current page.
-   */
-  page: chainPropTypes(integerPropType.isRequired, (props) => {
-    const { count, page, rowsPerPage } = props;
-
-    if (count === -1) {
-      return null;
-    }
-
-    const newLastPage = Math.max(0, Math.ceil(count / rowsPerPage) - 1);
-    if (page < 0 || page > newLastPage) {
-      return new Error(
-        'MUI: The page prop of a TablePagination is out of range ' +
-          `(0 to ${newLastPage}, but page is ${page}).`,
-      );
-    }
-    return null;
-  }),
-  /**
-   * The number of rows per page.
-   *
-   * Set -1 to display all the rows.
-   */
-  rowsPerPage: integerPropType.isRequired,
-  /**
-   * Customizes the options of the rows per page select field. If less than two options are
-   * available, no select field will be displayed.
-   * Use -1 for the value with a custom label to show all the rows.
-   * @default [10, 25, 50, 100]
-   */
-  rowsPerPageOptions: PropTypes.arrayOf(
-    PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.shape({
-        label: PropTypes.string.isRequired,
-        value: PropTypes.number.isRequired,
-      }),
-    ]).isRequired,
-  ),
-  /**
-   * If `true`, show the first-page button.
-   * @default false
-   */
-  showFirstButton: PropTypes.bool,
-  /**
-   * If `true`, show the last-page button.
-   * @default false
-   */
-  showLastButton: PropTypes.bool,
-  /**
-   * The system prop that allows defining system overrides as well as additional CSS styles.
-   */
-  sx: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
-    PropTypes.func,
-    PropTypes.object,
-  ]),
-};
 
 export default TablePagination;
