@@ -3,116 +3,42 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import composeClasses from '@mui/utils/composeClasses';
-import { styled } from '../zero-styled';
-import memoTheme from '../utils/memoTheme';
 import { useDefaultProps } from '../DefaultPropsProvider';
-import Collapse from '../../../utils/Collapse';
-import StepperContext from '../Stepper/StepperContext';
 import StepContext from '../Step/StepContext';
 import { getStepContentUtilityClass } from './stepContentClasses';
-import useSlot from '../utils/useSlot';
 
 const useUtilityClasses = (ownerState) => {
   const { classes, last } = ownerState;
 
-  const slots = { root: ['root', last && 'last'], transition: ['transition'] };
+  const slots = { root: ['root', last && 'last'] };
 
   return composeClasses(slots, getStepContentUtilityClass, classes);
 };
 
-const StepContentRoot = styled('div', {
-  name: 'MuiStepContent',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const { ownerState } = props;
-
-    return [styles.root, ownerState.last && styles.last];
-  },
-})(
-  memoTheme(({ theme }) => ({
-    marginLeft: 12, // half icon
-    paddingLeft: 8 + 12, // margin + half icon
-    paddingRight: 8,
-    borderLeft: theme.vars
-      ? `1px solid ${theme.vars.palette.StepContent.border}`
-      : `1px solid ${
-          theme.palette.mode === 'light' ? theme.palette.grey[400] : theme.palette.grey[600]
-        }`,
-    variants: [
-      {
-        props: { last: true },
-        style: {
-          borderLeft: 'none',
-        },
-      },
-    ],
-  })),
-);
-
-const StepContentTransition = styled(Collapse, {
-  name: 'MuiStepContent',
-  slot: 'Transition',
-})({});
-
 const StepContent = React.forwardRef(function StepContent(inProps, ref) {
   const props = useDefaultProps({ props: inProps, name: 'MuiStepContent' });
-  const {
-    children,
-    className,
-    TransitionComponent = Collapse,
-    transitionDuration: transitionDurationProp = 'auto',
-    TransitionProps,
-    slots = {},
-    slotProps = {},
-    ...other
-  } = props;
+  const { children, className, style, ...other } = props;
 
-  const { orientation } = React.useContext(StepperContext);
-  const { active, last, expanded } = React.useContext(StepContext);
+  const { active, last } = React.useContext(StepContext);
 
   const ownerState = { ...props, last };
   const classes = useUtilityClasses(ownerState);
 
-  if (process.env.NODE_ENV !== 'production') {
-    if (orientation !== 'vertical') {
-      console.error('MUI: <StepContent /> is only designed for use with the vertical stepper.');
-    }
-  }
-
-  let transitionDuration = transitionDurationProp;
-
-  if (transitionDurationProp === 'auto' && !TransitionComponent.muiSupportAuto) {
-    transitionDuration = undefined;
-  }
-
-  const externalForwardedProps = {
-    slots,
-    slotProps: { transition: TransitionProps, ...slotProps },
-  };
-
-  const [TransitionSlot, transitionProps] = useSlot('transition', {
-    elementType: StepContentTransition,
-    externalForwardedProps,
-    ownerState,
-    className: classes.transition,
-    additionalProps: {
-      in: active || expanded,
-      timeout: transitionDuration,
-      unmountOnExit: true,
-    },
-  });
-
   return (
-    <StepContentRoot
+    <div
       className={clsx(classes.root, className)}
       ref={ref}
-      ownerState={ownerState}
+      style={{
+        marginLeft: 12,
+        paddingLeft: 20,
+        paddingRight: 8,
+        borderLeft: last ? 'none' : '1px solid #bdbdbd',
+        ...style,
+      }}
       {...other}
     >
-      <TransitionSlot as={TransitionComponent} {...transitionProps}>
-        {children}
-      </TransitionSlot>
-    </StepContentRoot>
+      {active && children}
+    </div>
   );
 });
 
