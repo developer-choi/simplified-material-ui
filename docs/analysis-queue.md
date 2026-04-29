@@ -33,13 +33,16 @@
 - [x] Stack
 - [x] StepIcon
 - [x] SvgIcon
+- [x] SwipeableDrawer
 - [x] Switch
 - [x] Tab
+- [x] Tabs
 - [x] Table 가족 (TableContainer, Table, TableBody, TableHead, TableFooter, TableRow, TableCell)
 - [x] TablePagination
 - [x] TablePaginationActions
 - [x] TableSortLabel
 - [x] TabScrollButton
+- [x] TextareaAutosize
 - [x] TextField
 - [x] ToggleButton
 - [x] ToggleButtonGroup
@@ -51,11 +54,7 @@
 
 ## 남은 분석 목록 📋
 
-| 컴포넌트 | 줄수 | 난이도 | 특징 |
-|---------|------|--------|------|
-| Tabs | 1103 | 상 | 스크롤, ResizeObserver, 복잡한 이벤트 처리 |
-| SwipeableDrawer | 805 | 상 | 터치 이벤트, velocity, 스와이프 제스처 |
-| TextareaAutosize | 295 | 중 | useEffect로 높이 자동 조정, ResizeObserver |
+(없음)
 
 ---
 
